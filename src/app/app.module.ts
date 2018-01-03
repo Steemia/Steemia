@@ -7,13 +7,11 @@ import { HttpModule } from '@angular/http'
 
 import { MyApp } from './app.component';
 import { DataProvider } from '../providers/data/data';
-import {TabsPage} from '../pages/tabs/tabs'
 
 
 @NgModule({
   declarations: [
     MyApp,
-    TabsPage
   ],
   imports: [
     BrowserModule,
@@ -23,7 +21,6 @@ import {TabsPage} from '../pages/tabs/tabs'
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    TabsPage
   ],
   providers: [
     StatusBar,

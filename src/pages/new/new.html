@@ -1,88 +1,34 @@
-<!--
-  Generated template for the FeedPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
-
-    <ion-item-divider class="noborder">
-      <ion-avatar item-end *ngIf="user">
-        <img src="https://img.busy.org/@{{user}}?s=100">
-      </ion-avatar>
-    </ion-item-divider>
-
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title>
+      iSteem
+    </ion-title>
+    
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="ios-search-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+        
   </ion-navbar>
 </ion-header>
-
+    
 <ion-content padding>
+    
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-item class="item-bg">
-  <ion-card *ngFor="let content of contents; let i = index">
-
-    <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
-      <ion-icon *ngIf="content.reblogged_by.length>0"  name="return-right"></ion-icon>
-      Reblogged by {{content.reblogged_by}}
-    </ion-note>
-
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="https://img.busy.org/@{{content.author}}?s=100">
-      </ion-avatar>
-      <div>
-        <ion-badge class="reputation" mini color="gray" >{{ content.author }}</ion-badge>
-        <ion-badge class="reputation" mini color="light" >{{ content.author_reputation }}</ion-badge>
-      </div>
-      <div class="mt3">
-        <ion-badge color="light">
-          <ion-icon mini name="attach"></ion-icon>
-          &nbsp; {{content.category}}
-        </ion-badge>
-        <ion-note end >{{meta[i].created}}</ion-note>
-      </div>
-    </ion-item>
-
-    <ion-card-content>
-      <h3 style="overflow: scroll" ion-text >{{content.title}}</h3>
-      <!-- <p [innerHTML]="content.body"></p> -->
-    </ion-card-content>
-    <img *ngIf="meta[i].image" src="{{ meta[i].image[0] }}">
-
-    <ion-row>
-      <ion-col col-4>
-        <button ion-button clear small>
-          <ion-icon name="ios-thumbs-up"></ion-icon>
-          &nbsp;
-          <div>{{content.net_votes}}</div>
-        </button>
-      </ion-col>
-
-      <ion-col col-4>
-        <button ion-button clear small left>
-          <ion-icon name="ios-text"></ion-icon>
-          &nbsp;
-          <div>{{content.children}}</div>
-        </button>
-      </ion-col>
-
-
-      <ion-col col-4>
-        <button end ion-button icon-right clear small>
-          <ion-icon name="cash"></ion-icon>
-          &nbsp;
-          <div>
-            {{contents[i].pending_payout_value}}
-          </div>
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  </ion-item>
-
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+          
+  <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
+  
+  <post-render [posts]="contents" [meta]="meta"></post-render>
+        
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+    
 </ion-content>

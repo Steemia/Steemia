@@ -8,7 +8,7 @@ import {TabsPage} from '../pages/tabs/tabs'
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = TabsPage;
+  rootPage:any = "TabsPage";
   user;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
@@ -17,6 +17,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
+      statusBar.backgroundColorByName('black');
       splashScreen.hide();
     });
   }

@@ -1,17 +1,27 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "lib": [
       "dom",
-      "es2015"
+      "es2015",
+      "es2016"
     ],
     "module": "es2015",
     "moduleResolution": "node",
+    "paths": {
+      "providers/*": ["./src/providers/*"],
+      "models/*": ["./src/models/*"]
+    },
     "sourceMap": true,
     "target": "es5",
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "noImplicitAny": false,
     "typeRoots": [
       "../node_modules/@types"
     ]

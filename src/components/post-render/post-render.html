@@ -1,0 +1,61 @@
+<ion-item class="item-bg" no-lines>
+
+  <ion-card *ngFor="let content of contents; let i = index">
+
+    <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
+      <ion-icon *ngIf="content.reblogged_by.length>0"  name="return-right"></ion-icon>
+      Reblogged by {{content.reblogged_by}}
+    </ion-note>
+
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="https://img.busy.org/@{{content.author}}?s=100">
+      </ion-avatar>
+      <div>
+        <ion-badge class="reputation" mini color="gray" >{{ content.author }}</ion-badge>
+        <ion-badge class="reputation" mini color="light" >{{ content.author_reputation }}</ion-badge>
+      </div>
+      <div class="mt3">
+        <ion-badge color="light">
+          <ion-icon mini name="attach"></ion-icon>
+          &nbsp; {{content.category}}
+        </ion-badge>
+        <ion-note end >{{meta[i].created | amCalendar }}</ion-note>
+      </div>
+    </ion-item>
+
+    <ion-card-content>
+      <h3 style="overflow: scroll" ion-text >{{content.title}}</h3>
+    </ion-card-content>
+    <img *ngIf="meta[i].image" src="{{ meta[i].image[0] }}">
+
+    <ion-row>
+      <ion-col col-4 text-center>
+        <button ion-button clear small>
+          <ion-icon name="ios-thumbs-up"></ion-icon>
+          &nbsp;
+          <div>{{content.net_votes}}</div>
+        </button>
+      </ion-col>
+
+      <ion-col col-4 text-center>
+        <button ion-button clear small left>
+          <ion-icon name="ios-text"></ion-icon>
+          &nbsp;
+          <div>{{content.children}}</div>
+        </button>
+      </ion-col>
+
+
+      <ion-col col-4 text-center>
+        <button end ion-button icon-right clear small>
+          <ion-icon name="cash"></ion-icon>
+          &nbsp;
+          <div>
+            {{contents[i].pending_payout_value | currency:'USD': 'symbol'}}
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-item>
