@@ -1,7 +1,10 @@
 <ion-tabs>
     <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="list"></ion-tab>
     <ion-tab [root]="trendRoot" tabTitle="Trend" tabIcon="pulse"></ion-tab>
-    <ion-tab [root]="addRoot" tabTitle="Write" tabIcon="create"></ion-tab>
+    <ion-tab [root]="" tabTitle="" tabIcon=""></ion-tab>
     <ion-tab [root]="hotRoot" tabTitle="Hot" tabIcon="flame"></ion-tab>
     <ion-tab [root]="newRoot" tabTitle="New" tabIcon="flash"></ion-tab>
+    <ion-fab center bottom #fab4>
+        <button ion-fab color="primary"><ion-icon ios="md-create" md="md-create"></ion-icon></button>      
+    </ion-fab>
 </ion-tabs>

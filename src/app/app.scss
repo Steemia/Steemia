@@ -106,3 +106,32 @@ ion-app.ios [margin-top], ion-app.ios [margin-top] .scroll-content {
 ion-app.md [margin-top], ion-app.md [margin-top] .scroll-content {
   margin-top: 112px;
 }
+
+.refresher-pulling-icon, .refresher-refreshing-icon {
+  color: white !important;
+}
+
+ion-spinner * {
+  width: 28px;
+  height: 28px;
+  stroke: white !important;
+  fill: transparent !important;
+}
+
+ion-spinner {
+  margin: 0 auto;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title.title-md, .title.title-wp {
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  transform: translateX(-50%) !important;
+  height: 100% !important;
+  width: 70% !important;
+  text-align: center !important;
+}

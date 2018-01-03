@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
-import * as moment from 'moment';
+import { Post } from '../../models/models';
+import { TRENDING } from '../../constants/constants';
 
 /**
  * Generated class for the TrendPage page.
@@ -16,57 +17,76 @@ import * as moment from 'moment';
   templateUrl: 'trend.html',
 })
 export class TrendPage {
-  contents = [];
-  meta = [];
-  user = DataProvider.user;
-  count = 10;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private DataProvider:DataProvider) {
-    this.getTrending()
+  private contents: Array<Post> = [];
+  private meta: Array<any> = [];
+  private perPage = 15;
+  
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              private dataProvider: DataProvider) {
+
+    // Initialize the first load of data with a pager of 10.
+    this.getFeed().then((content: Array<Post>) => {
+      this.contents = content;
+    });
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TrendPage');
-  }
-  getTrending(){
-    this.DataProvider.getTrending(this.count).subscribe(data => {
-      this.contents = data;
-      console.log(this.contents);
+  /**
+   * 
+   * Method to get post in the current topic and transform its data.
+   * 
+   * @returns {Promise<Array<Post>>}: A promise with the requested posts.
+   * @author Jayser Mendez.
+   */
+  private getFeed(): Promise<Array<Post>> {
+    return new Promise((resolve) => {this.dataProvider.getData(TRENDING, this.perPage)
+    .subscribe((data: Array<Post>) => {
 
-      for (var i=0; i<this.contents.length; i++){
+      for (var i=0; i < data.length; i++) {
         // Parse metadata
-        this.contents[i].json_metadata = JSON.parse(this.contents[i].json_metadata);
+        data[i].json_metadata = JSON.parse((data[i].json_metadata as string));
         // make meta value
-        this.meta[i] = this.contents[i].json_metadata;
+        this.meta[i] = data[i].json_metadata;
         //payout fixed to 2
-        this.contents[i].pending_payout_value = parseFloat(this.contents[i].pending_payout_value).toFixed(2);
-        this.meta[i].created = moment(this.contents[i].created).fromNow();
-        console.log(this.contents[i].json_metadata);
-
-        this.contents[i].author_reputation = Math.floor(((((Math.log10(this.contents[i].author_reputation)) - 9)*9)+25).toFixed(2));
-        //  console.log(this.contents[i].author_reputation)
+        data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
+      
+        data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString())))-9)*9)+25).toFixed(2));
       }
+
+      // Resolve the promise
+      resolve(data)
+
+    })})
+  }
+
+  /**
+   * 
+   * Method to refresh the current post for future data.
+   * 
+   * @param {Event} refresher
+   */
+  private doRefresh(refresher): void {
+
+    this.getFeed().then((content: Array<Post>) => {
+      this.contents = content;
+      refresher.complete();
     });
   }
-  doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
-    this.getTrending();
 
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      refresher.complete();
-    }, 2000);
-  }
-
-  doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      this.count += 5;
-      this.getTrending();
-
-      console.log('Async operation has ended');
+  /**
+   * 
+   * Method to load data while scrolling.
+   * 
+   * @param {Event} infiniteScroll
+   */
+  private doInfinite(infiniteScroll): void {
+    this.perPage += 15;
+    this.getFeed();
+    this.getFeed().then((content: Array<Post>) => {
+      this.contents = content;
       infiniteScroll.complete();
-    }, 1000);
+    });
   }
 }
