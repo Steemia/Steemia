@@ -1,0 +1,108 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.button-clear-md {
+  border-color: transparent;
+  color: #c5c5c5;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  opacity: 1;
+}
+.button-clear-ios  {
+  border-color: transparent;
+  color: #c5c5c5;
+  background-color: transparent;
+}
+.button-clear-wp  {
+  border-color: transparent;
+  color: #c5c5c5;
+  background-color: transparent;
+}
+.reputation{
+  left: 80px;
+}
+.card {
+  -webkit-border-radius: 10px !important;
+  -moz-border-radius: 10px !important;
+  border-radius: 10px !important;
+  width: 100% !important;
+  margin: 0 0 10px 0;
+  padding-top: 2px;
+}
+.topic {
+  border:1px solid lightgray !important;
+  border-radius: 5px !important;
+  font-size: 15px;
+}
+.item-ios {
+  background-color: #191F23 ;
+}
+.item-md{
+  background-color: #191F23 ;
+}
+.item-bg {
+  background-color: #0F1112 !important;
+}
+.note-ios {
+  color: #c5c5c5 !important;
+}
+.note-md {
+  color: #c5c5c5 !important;
+}
+.text {
+  color: #c5c5c5 ;
+}
+.text-md {
+  color: #c5c5c5 !important;
+}
+.tabs-md .tab-button-icon {
+  color: #c5c5c5 ;
+}
+.tabs-ios .tab-button-icon {
+  color: #c5c5c5 ;
+}
+.tabs-ios .tab-button-text {
+  color: #c5c5c5 ;
+}
+.tabs-md .tab-button-text {
+  color: #c5c5c5 ;
+}
+
+.has-refresher > .scroll-content {
+  border: none !important;
+}
+.toolbar-md {
+  padding: 0px 0px 0px 0px !important;
+}
+.toolbar-ios {
+  padding: 10px 0px 0px 0px !important;
+}
+.scroll-content {
+  padding: 0px !important;
+}
+.bg{
+  background-image: url("https://blog.csiro.au/wp-content/uploads/2016/11/blockchain.jpg");
+  max-height: 20%;
+  background-size: cover;
+}
+ion-app.ios [margin-top], ion-app.ios [margin-top] .scroll-content {
+  margin-top: 112px;
+}
+ion-app.md [margin-top], ion-app.md [margin-top] .scroll-content {
+  margin-top: 112px;
+}
