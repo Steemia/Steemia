@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
 import { BY_CREATED } from '../../constants/constants';
 
 @IonicPage()

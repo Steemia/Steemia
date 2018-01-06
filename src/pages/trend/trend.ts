@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
 import { TRENDING } from '../../constants/constants';
 
-/**
- * Generated class for the TrendPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({

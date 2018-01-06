@@ -1,13 +1,36 @@
 page-feed {
 
-}
-.mt3{
-  margin-top: 3px;
-}
-.reblog {
-  margin-left: 5px !important;
-  color: #c5c5c5;
-}
-.noborder {
-  border: none !important;
+  // Resolve width for general tablets
+  @media only screen and (device-width: 768px) {
+    .scroll-content {
+      width: 89% !important;
+      margin-left: auto;
+      margin-right: auto;;
+    }
+  }
+
+  // Resolve width for Ipad Pro
+  @media only screen 
+  and (min-device-width : 1024px) 
+  and (max-device-width : 1366px) { 
+
+    .scroll-content {
+      width: 75% !important;
+      margin-left: auto;
+      margin-right: auto;;
+    }
+  }
+
+  .mt3{
+    margin-top: 3px;
+  }
+  .reblog {
+    margin-left: 5px !important;
+    color: #c5c5c5;
+  }
+  .noborder {
+    border: none !important;
+  }
+  
+
 }

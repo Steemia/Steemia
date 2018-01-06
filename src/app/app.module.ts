@@ -4,9 +4,13 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http'
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { MyApp } from './app.component';
-import { DataProvider } from '../providers/data/data';
+import { DataProvider } from 'providers/data/data';
+import { SteemProvider } from 'providers/steemconnect/steemconnect';
+import { ActionsSteem } from 'providers/steemconnect/actions';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 @NgModule({
@@ -15,8 +19,9 @@ import { DataProvider } from '../providers/data/data';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -24,9 +29,12 @@ import { DataProvider } from '../providers/data/data';
   ],
   providers: [
     StatusBar,
+    InAppBrowser,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DataProvider
+    DataProvider,
+    SteemProvider,
+    ActionsSteem
   ]
 })
 export class AppModule {}

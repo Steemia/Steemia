@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BY_HOT } from '../../constants/constants';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
 
 
 @IonicPage()
