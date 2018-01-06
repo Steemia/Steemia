@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, App} from 'ionic-angular';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
+import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -12,9 +13,10 @@ export class FeedPage {
 
   private contents: Array<Post> = [];
   private meta: Array<any> = [];
-  private perPage = 15;
+  private perPage = 10;
 
   constructor(public navCtrl: NavController, 
+              public app: App,
               public navParams: NavParams, 
               private dataProvider: DataProvider) {
 
@@ -43,6 +45,9 @@ export class FeedPage {
         this.meta[i] = data[i].json_metadata;
         //payout fixed to 2
         data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
+
+        // HERE IS THE BUG
+        this.meta[i].created = moment(data[i].created).fromNow();
       
         data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString())))-9)*9)+25).toFixed(2));
       }
@@ -74,11 +79,19 @@ export class FeedPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.perPage += 15;
+    this.perPage += 10;
     this.getFeed();
     this.getFeed().then((content: Array<Post>) => {
       this.contents = content;
       infiniteScroll.complete();
+    });
+  }
+
+  private openPost(event) {
+    console.log(event)
+    this.app.getRootNav().push('PostSinglePage', {
+      permlink: event.Post.permlink,
+      author: event.Post.author
     });
   }
 }

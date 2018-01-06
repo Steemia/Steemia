@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
 import { TRENDING } from '../../constants/constants';
 
-/**
- * Generated class for the TrendPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -51,6 +45,8 @@ export class TrendPage {
         this.meta[i] = data[i].json_metadata;
         //payout fixed to 2
         data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
+
+        this.meta[i].created = data[i].created;
       
         data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString())))-9)*9)+25).toFixed(2));
       }

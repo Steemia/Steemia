@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BY_HOT } from '../../constants/constants';
-import { DataProvider } from '../../providers/data/data';
-import { Post } from '../../models/models';
+import { DataProvider } from 'providers/data/data';
+import { Post } from 'models/models';
 
 
 @IonicPage()
@@ -45,6 +45,8 @@ export class HotPage {
         this.meta[i] = data[i].json_metadata;
         //payout fixed to 2
         data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
+
+        this.meta[i].created = data[i].created;
       
         data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString())))-9)*9)+25).toFixed(2));
       }

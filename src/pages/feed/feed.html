@@ -5,7 +5,7 @@
     </button>
 
     <ion-title>
-      iSteem
+      Steemia
     </ion-title>
 
     <ion-buttons end>
@@ -25,7 +25,7 @@
 
   <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
       
-  <post-render [posts]="contents" [meta]="meta"></post-render>
+  <post-render [posts]="contents" [meta]="meta" (clickedPost)="openPost($event)"></post-render>
     
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

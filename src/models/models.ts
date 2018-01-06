@@ -60,3 +60,58 @@ export interface Post {
     url?: string;
     vote_rshares?: string;
 };
+
+export interface steemConnect {
+    userId?: number;
+    isAuthenticated?: boolean;
+    username?: string;
+    permissions?: Array<string>;
+    token?: Array<string>;
+};
+
+// Broadcast
+
+export interface Vote {
+    voter?: string;
+    author?: string;
+    permlink?: string;
+    weight?: number;
+};
+
+export interface Comment {
+    parentAuthor?: string;
+    parentPermlink?: string;
+    author?: string;
+    permlink?: string;
+    title?: string;
+    body?: string;
+    jsonMetadata?: {
+        app?: string;
+        created?: string;
+        format?: string;
+        image?: Array<string>;
+        tags?: Array<string>;
+        users?: Array<string>;  
+    }
+};
+
+export interface deleteComment {
+    author?: string;
+    permlink?: string;
+};
+
+export interface Follow {
+    follower?: string; 
+    following?: string;
+};
+
+export interface Ignore {
+    follower?: string;
+    following?: string;
+};
+
+export interface Reblog {
+    account?: string;
+    author?: string;
+    permlink?: string;
+};

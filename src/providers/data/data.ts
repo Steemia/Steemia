@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,Response } from '@angular/http';
+import { Http,Response, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -40,8 +40,6 @@ export class DataProvider {
         .do(this.logResponse)
         .catch(this.catchError);
     }
-    
-
   }
 
   getContent(author, permalink){
