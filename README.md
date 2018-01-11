@@ -8,8 +8,8 @@ You can download and try the application.  (NodeJS and NPM must be installed.)
 ```
 $ sudo npm install -g cordova
 $ sudo npm install -g ionic
-$ git clone https://github.com/hsynterkr/iSteem.git
-$ cd iSteem
+$ git clone https://github.com/hsynterkr/Steemia.git
+$ cd Steemia
 $ npm install
 $ ionic serve --l
 ```
