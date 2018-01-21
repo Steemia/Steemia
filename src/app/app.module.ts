@@ -12,15 +12,19 @@ import { SteemProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem } from 'providers/steemconnect/actions';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { MaterialMenuComponent } from '../components/material-menu/material-menu';
 
 @NgModule({
   declarations: [
+    MaterialMenuComponent,
     MyApp,
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'top',
+    }),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],

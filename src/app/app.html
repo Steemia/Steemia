@@ -1,49 +1,8 @@
 <ion-menu [content]="content">
-  <ion-content padding class="bg">
-    <img src="https://img.busy.org/@{{user}}?s=100" style="border: 2px solid white; margin-top: 1.5em; width: 30%; height: auto; margin-left: 36%; border-radius: 50%;">
+  <ion-content>
+    <!-- simply use the the ion-material-sidemenu -->
+    <material-menu [options]="menuOptions"></material-menu>
   </ion-content>
-
-  <ion-list margin-top="30% !important">
-    <!-- Item with an avatar on the left and button on the right -->
-    <ion-item-divider>
-      <ion-avatar item-start>
-        <img src="https://img.busy.org/@{{user}}?s=100">
-      </ion-avatar>
-      <span style="color: white !important;">{{user}}</span>
-      <ion-badge color="light">53</ion-badge>
-      <button ion-button outline item-end>Profile</button>
-    </ion-item-divider>
-    <ion-item>
-      <ion-icon name="home" item-start></ion-icon>
-      Feed
-    </ion-item>
-    <ion-item>
-      <ion-icon name="cash" item-start></ion-icon>
-      Wallet
-    </ion-item>
-    <ion-item>
-      <ion-icon name="notifications" item-start></ion-icon>
-      Notifications
-    </ion-item>
-    <ion-item>
-      <ion-icon name="bookmarks" item-start></ion-icon>
-      Bookmarks
-    </ion-item>
-    <ion-item>
-      <ion-icon name="settings" item-start></ion-icon>
-      Settings
-    </ion-item>
-    <ion-item>
-      <ion-icon name="information-circle" item-start></ion-icon>
-      About
-    </ion-item>
-
-    <ion-item (tap)="openPage('LoginPage')">
-      login
-    </ion-item>
-
-
-  </ion-list>
 </ion-menu>
 
 <ion-nav [root]="rootPage" #content></ion-nav>

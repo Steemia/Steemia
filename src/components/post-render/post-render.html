@@ -1,6 +1,6 @@
-<ion-grid>
-  <ion-row>
-    <ion-col *ngFor="let content of contents; let i = index" col-12>
+<ion-grid no-padding>
+  <ion-row no-padding>
+    <ion-col *ngFor="let content of contents; let i = index" col-12 no-padding>
       <ion-card (tap)="postOpen(content, i)">
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">

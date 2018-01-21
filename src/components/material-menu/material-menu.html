@@ -1,0 +1,39 @@
+<div class="ion-material-sidemenu-container">
+  <div 
+    class="ion-material-sidemenu-header" 
+    (click)="_options.header.onClick && _options.header.onClick()"
+    [ngStyle]="_options.header.background && {'background': _options.header.background}"
+  >
+    <img src="{{_options.header.picture}}" class="picture"/>
+    <div class="subtitle">
+      <h1>{{_options.header.username}}</h1>
+      <h2 *ngIf="_options.header.email">{{_options.header.email}}</h2>
+    </div>
+  </div>
+  <!-- end cover header -->
+
+  <!-- content -->
+  <ion-list no-lines>
+    <div *ngFor="let entry of _options.entries">  
+      <ion-list-header *ngIf="isDividerEntry(entry) && entry.title">
+        {{entry.title}}
+      </ion-list-header>
+      <div class="list-separator" *ngIf="isDividerEntry(entry) && !entry.title"></div>
+      <button 
+        ion-item 
+        menuClose
+        detail-none
+        [class]="entry.classes"
+        [ngClass]="{'menu-item': true, 'activated': entry.isSelected}" 
+        *ngIf="!isDividerEntry(entry)"
+        (click)="entry.onClick && entry.onClick(entry)"
+      >
+        <ion-icon name="{{entry.leftIcon}}" item-left *ngIf="entry.leftIcon"></ion-icon>
+        {{entry.title}}
+        <ion-icon name="{{entry.rightIcon}}" item-right *ngIf="entry.rightIcon && !isBadgeEntry(entry)"></ion-icon>
+        <ion-badge [color]="entry.badge.color" item-right *ngIf="isBadgeEntry(entry)">{{entry.badge.text}}</ion-badge>
+      </button>
+    </div>
+  </ion-list>
+  <!-- end content -->
+</div>

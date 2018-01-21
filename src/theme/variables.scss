@@ -11,13 +11,7 @@ $font-path: "../assets/fonts";
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-$background-color:#0F1112;
-
-$card-md-background-color: #191F23;
-$card-ios-background-color: #191F23;
-$card-wp-background-color: #191F23;
-
-
+$primary-dark-color: #616161;
 
 @import "ionic.globals";
 
@@ -78,7 +72,7 @@ $colors: (
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import "ionic.theme.dark";
+//@import "ionic.theme.dark";
 
 
 // Ionicons
