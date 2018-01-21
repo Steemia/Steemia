@@ -48,7 +48,7 @@ export class MyApp {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
-        picture: 'https://img.busy.org/@jaysermendez?s=100',
+        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
         username: 'Steemia',
         email: 'steemia@steemia.org',
         onClick: () => { alert('menu header clicked'); }
@@ -82,6 +82,11 @@ export class MyApp {
         { 
           title: 'Bookmarks', 
           leftIcon: 'bookmarks', 
+          onClick: () => {  } 
+        },
+        { 
+          title: 'Settings', 
+          leftIcon: 'settings', 
           onClick: () => {  } 
         },
         { 
