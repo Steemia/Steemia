@@ -1,6 +1,6 @@
-<ion-grid>
-  <ion-row>
-    <ion-col *ngFor="let content of contents; let i = index" col-12>
+<ion-grid no-padding>
+  <ion-row no-padding>
+    <ion-col *ngFor="let content of contents; let i = index" col-12 no-padding>
       <ion-card (tap)="postOpen(content, i)">
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
@@ -29,35 +29,37 @@
           <h3 style="overflow: scroll" ion-text padding>{{content.title}}</h3>
 
           <img *ngIf="meta[i].image" [src]="meta[i].image[0]">
-          
-          <ion-row>
-            <ion-col col-4 text-center>
-              <button ion-button clear small>
-                <ion-icon name="ios-thumbs-up"></ion-icon>
-                &nbsp;
-                <div>{{content.net_votes}}</div>
-              </button>
-            </ion-col>
         
-            <ion-col col-4 text-center>
-              <button ion-button clear small left>
-                <ion-icon name="ios-text"></ion-icon>
-                &nbsp;
-                <div>{{content.children}}</div>
-              </button>
-            </ion-col>
-
-            <ion-col col-4 text-center>
-              <button end ion-button icon-right clear small>
-                <ion-icon name="cash"></ion-icon>
-                &nbsp;
-                <div>
-                  {{contents[i].pending_payout_value | currency:'USD': 'symbol'}}
-                </div>
-              </button>
-            </ion-col>
-          </ion-row>
         </ion-card-content>
+
+        <ion-row>
+          <ion-col col-4 text-center>
+            <button ion-button clear small>
+              <ion-icon name="ios-thumbs-up"></ion-icon>
+              &nbsp;
+              <div>{{content.net_votes}}</div>
+            </button>
+          </ion-col>
+      
+          <ion-col col-4 text-center>
+            <button ion-button clear small left>
+              <ion-icon name="ios-text"></ion-icon>
+              &nbsp;
+              <div>{{content.children}}</div>
+            </button>
+          </ion-col>
+
+          <ion-col col-4 text-center>
+            <button end ion-button icon-right clear small>
+              <ion-icon name="cash"></ion-icon>
+              &nbsp;
+              <div>
+                {{contents[i].pending_payout_value | currency:'USD': 'symbol'}}
+              </div>
+            </button>
+          </ion-col>
+        </ion-row>
+        
       </ion-card>
     </ion-col>
   </ion-row>
