@@ -1,7 +1,7 @@
 # Steemia
 A mobile app for the platform [Steemit.com](https://steemit.com/). This app is capable of running on iOS and Android sharing the same basecode. Also, this application will include all the features present in the Steemit.com](https://steemit.com/) website for those who prefer to use a mobile device instead of a desktop computer.
  
-![](https://i.hizliresim.com/OyWjYD.png)
+![](https://i.hizliresim.com/dO5pYL.png)
 
 You can download and try the application.  (NodeJS and NPM must be installed.)
 ## How to install
