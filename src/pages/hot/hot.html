@@ -22,8 +22,8 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
-  <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
+
+  <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
   
   <post-render [posts]="contents" [meta]="meta"></post-render>
       
