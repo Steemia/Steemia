@@ -21,7 +21,6 @@
       <div class="list-separator" *ngIf="isDividerEntry(entry) && !entry.title"></div>
       <button 
         ion-item 
-        menuClose
         detail-none
         [class]="entry.classes"
         [ngClass]="{'menu-item': true, 'activated': entry.isSelected}" 

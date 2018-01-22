@@ -6,6 +6,17 @@ import { SteemProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 
+export interface PageInterface {
+  title: string;
+  name: string;
+  component: any;
+  icon: string;
+  logsOut?: boolean;
+  index?: number;
+  tabName?: string;
+  tabComponent?: any;
+}
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,16 +29,55 @@ export class MyApp {
   private isLoggedIn: boolean
 
   menuOptions: MaterialMenuOptions;
+  private loggedInPages: MaterialMenuOptions;
+  private loggedOutPages: MaterialMenuOptions;
 
   constructor(private platform: Platform, 
               private statusBar: StatusBar, 
               private splashScreen: SplashScreen,
               steemProvider: SteemProvider,
               private menuCtrl: MenuController,
-              steemActions: ActionsSteem,) {
+              steemActions: ActionsSteem) {
     
     this.initializeApp();
-    this.menuOptions = this.intializeMenu(); 
+    this.menuOptions = this.intializeMenu();
+
+    this.loggedInPages = {
+      header: {
+        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
+        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
+        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
+        username: 'Steemia',
+        email: 'steemia@steemia.io',
+        onClick: () => { alert('menu header clicked'); }
+      },
+      entries: [
+        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
+        { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage") } },
+        { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage("NotificationsPage") } },
+        { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
+        { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
+        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
+      ]
+    };
+
+    this.loggedOutPages = {
+      header: {
+        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
+        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
+        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
+        username: 'Steemia',
+        email: 'steemia@steemia.io',
+        onClick: () => { alert('menu header clicked'); }
+      },
+      entries: [
+        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
+        { title: 'Login', leftIcon: 'settings', onClick: () => { this.openPage("LoginPage") } },
+        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
+      ]
+    };
   }
 
   private initializeApp() {
@@ -50,15 +100,14 @@ export class MyApp {
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
         username: 'Steemia',
-        email: 'steemia@steemia.org',
+        email: 'steemia@steemia.io',
         onClick: () => { alert('menu header clicked'); }
       },
       entries: [
-        { 
-          title: 'Feed', 
-          leftIcon: 'home', 
-          isSelected: true,
-          onClick: () => {  } 
+        {
+          title: 'Home',
+          leftIcon: 'home',
+          onClick: () => { this.nav.setRoot("FeedPage")}
         },
         { 
           title: 'Wallet', 
@@ -68,50 +117,28 @@ export class MyApp {
         { 
           title: 'Notifications', 
           leftIcon: 'notifications', 
-          onClick: () => {  } 
+          onClick: () => { this.openPage("WalletPage") } 
         },
         { 
           title: 'My Profile', 
           leftIcon: 'person', 
-          onClick: () => {  } 
+          onClick: () => { this.openPage("ProfilePage") } 
         },
         { 
           title: 'Bookmarks', 
           leftIcon: 'bookmarks', 
-          onClick: () => {  } 
+          onClick: () => { this.openPage("BookmarksPage") } 
         },
         { 
           title: 'Settings', 
           leftIcon: 'settings', 
-          onClick: () => {  } 
+          onClick: () => { this.openPage("SettingsPage") } 
         },
         { 
           title: 'About', 
           leftIcon: 'information-circle', 
-          onClick: () => {  } 
-        },
-        // { title: 'Labels', isDivider: true },
-        // // item with a right icon
-        // { 
-        //   title: 'Label 1', 
-        //   leftIcon: 'square-outline', 
-        //   rightIcon: 'ios-arrow-forward', // define a right icon
-        //   onClick: () => { _t.nav.setRoot("Page1") } 
-        // },
-        // // item with a badge
-        // { title: 'Label 2', 
-        //   leftIcon: 'square-outline',
-        //   classes: 'my-custom-css-class', // optional custom classes
-        //   badge: { //you can also define a badge
-        //     text: '3',
-        //     color: 'secondary'
-        //   },
-        //   onClick: () => { _t.nav.setRoot("Page1") }
-        // },
-        // { title: 'Label 3', leftIcon: 'square-outline', onClick: () => { _t.nav.setRoot("Page1") } },
-        // { title: 'Label 4', leftIcon: 'square-outline', onClick: () => { _t.nav.setRoot("Page1") } },
-        // { title: 'Label 5', leftIcon: 'square-outline', onClick: () => { _t.nav.setRoot("Page1") } },
-        // { title: 'Label 6', leftIcon: 'square-outline', onClick: () => { _t.nav.setRoot("Page1") } },
+          onClick: () => { this.openPage("AboutPage") } 
+        }
       ]
     };
   }

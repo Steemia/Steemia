@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -8,13 +8,15 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class TabsPage {
 
-  feedRoot = 'FeedPage'
-  trendRoot = 'TrendPage'
-  addRoot = 'AddPage'
-  hotRoot = 'HotPage'
-  newRoot = 'NewPage'
+  private feedRoot: string = 'FeedPage'
+  private trendRoot: string = 'TrendPage'
+  private addRoot: string = 'AddPage'
+  private hotRoot: string = 'HotPage'
+  private newRoot: string = 'NewPage'
+  mySelectedIndex: number;
 
-
-  constructor(public navCtrl: NavController) {}
+  constructor(navParams: NavParams) {
+    this.mySelectedIndex = navParams.data.tabIndex || 0;
+  }
 
 }

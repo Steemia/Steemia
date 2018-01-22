@@ -1,7 +1,11 @@
 <ion-menu [content]="content">
   <ion-content>
-    <!-- simply use the the ion-material-sidemenu -->
-    <material-menu [options]="menuOptions"></material-menu>
+    <!-- Menu For Logged In User -->
+    <material-menu [options]="loggedInPages"></material-menu>
+
+     <!-- Menu For not logged in user -->
+     <!-- TODO: Handle the login in state -->
+     <!-- <material-menu [options]="loggedOutPages"></material-menu> -->
   </ion-content>
 </ion-menu>
 
