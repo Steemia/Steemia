@@ -1,0 +1,34 @@
+<ion-grid no-padding>
+  <ion-row no-padding>
+    <ion-col *ngFor="let list of mockArray" col-12 no-padding>
+      <ion-card no-padding>
+        <ion-card-header no-padding>
+          <ion-item>
+            <ion-avatar item-start>
+              <div class="profile-placeholder principal-animation"></div>
+            </ion-avatar>
+            <div class="author-placeholder principal-animation"></div>
+            <div class="category-placeholder principal-animation"></div>
+          </ion-item>
+        </ion-card-header>
+
+        <div class="text-placeholder principal-animation" text-center></div>
+        <div class="image-placeholder principal-animation"></div>
+        
+        <ion-row>
+          <ion-col col-4 text-center>
+            <div class="bottom-placeholder principal-animation" text-center></div>
+          </ion-col>
+        
+          <ion-col col-4 text-center>
+              <div class="bottom-placeholder principal-animation" text-center></div>
+          </ion-col>
+  
+          <ion-col col-4 text-center>
+            <div class="bottom-placeholder principal-animation" text-center></div>
+          </ion-col>
+        </ion-row>  
+      </ion-card>      
+    </ion-col>
+  </ion-row>
+</ion-grid>

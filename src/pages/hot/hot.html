@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
   
     <ion-title>
-      iSteem
+      Steemia
     </ion-title>
   
     <ion-buttons end>
@@ -22,12 +22,12 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
-  <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
-  
-  <post-render [posts]="contents" [meta]="meta"></post-render>
+
+  <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
       
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" distance="1%">
+  <post-render *ngIf="contents.length > 1" [posts]="contents" [meta]="meta" (clickedPost)="openPost($event)"></post-render>
+    
+  <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
   
