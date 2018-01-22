@@ -37,7 +37,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(true);
-      this.statusBar.backgroundColorByHexString('#000000');
+      this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
     });
   }
@@ -55,13 +55,9 @@ export class MyApp {
       },
       entries: [
         { 
-          title: 'Inbox', 
-          leftIcon: 'mail',
-          onClick: () => {  }
-        },
-        { 
           title: 'Feed', 
           leftIcon: 'home', 
+          isSelected: true,
           onClick: () => {  } 
         },
         { 
