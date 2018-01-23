@@ -34,6 +34,12 @@ export class DataProvider {
         .do(this.logResponse)
         .catch(this.catchError);
     }
+    else if (feedType == 'by_blog') {
+      return this.http.get(this.api + feeds.BY_BLOG + this.user + '%22%2C%20%22limit%22%3A%20%22' + perPage + '%22%7D')
+        .map(this.extractData)
+        .do(this.logResponse)
+        .catch(this.catchError);
+    }
     else {
       return this.http.get(this.api + feedType + perPage + '%22%7D')
         .map(this.extractData)
@@ -42,8 +48,22 @@ export class DataProvider {
     }
   }
 
-  getContent(author, permalink){
+  getContent(author, permalink) {
     return this.http.get(this.api+'/get_content?author='+author+'&permlink='+permalink+'\n')
+      .map(this.extractData)
+      .do(this.logResponse)
+      .catch(this.catchError)
+  }
+
+  getAccount(account) {
+    return this.http.get(this.api+'/get_accounts?names[]=%5B%22'+account+'%22%5D')
+      .map(this.extractData)
+      .do(this.logResponse)
+      .catch(this.catchError)
+  }
+  
+  getFollow(account) {
+    return this.http.get(this.api+'/get_follow_count?account='+account)
       .map(this.extractData)
       .do(this.logResponse)
       .catch(this.catchError)

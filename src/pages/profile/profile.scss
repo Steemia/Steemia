@@ -1,3 +1,55 @@
 page-profile {
 
-}
+    .background{
+        margin: 0px !important;
+        height: 165px;
+        padding: 16px 16px 8px 16px;
+        background-size: cover;
+    }
+     
+    .picture {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-top: 10px;
+    }
+        
+    .subtitle {
+        margin-top: 6px;
+        height: 52px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+        
+    div.subtitle h1, h2 {
+        margin: 4px 0 0 0;
+        width: 100%;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+    }
+        
+    div.subtitle h2 {
+        font-weight: 400;
+    }
+    .toolbar-ios {
+        padding: 0px !important;
+    }
+    .toolbar-md {
+        padding: 0px !important;
+    }
+    .profile {
+        min-height: 40px !important
+    }
+    .info {
+        bottom: 133px !important;
+        left: 80px !important;
+    }
+    .card-content {
+        padding: 0px !important;
+    }
+    }
