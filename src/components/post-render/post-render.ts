@@ -9,6 +9,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from 'models/models';
 
+
 @Component({
   selector: 'post-render',
   templateUrl: 'post-render.html'
@@ -19,7 +20,9 @@ export class PostRenderComponent {
   @Input('meta') private meta: Array<any> = [];
   @Output() private clickedPost = new EventEmitter();
 
-  constructor() {}
+  constructor() {
+    
+  }
 
   /**
    * Method to emit clicked event of a post to main

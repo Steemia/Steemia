@@ -11,7 +11,6 @@ import { DataProvider } from 'providers/data/data';
 import { SteemProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem } from 'providers/steemconnect/actions';
 import { IonicStorageModule } from '@ionic/storage';
-
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
 
 @NgModule({
@@ -25,7 +24,7 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
     IonicModule.forRoot(MyApp, {
       tabsPlacement: 'top',
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

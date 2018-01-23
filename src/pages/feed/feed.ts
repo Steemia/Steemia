@@ -4,6 +4,7 @@ import { DataProvider } from 'providers/data/data';
 import { Post } from 'models/models';
 import * as moment from 'moment';
 
+
 @IonicPage()
 @Component({
   selector: 'page-feed',
