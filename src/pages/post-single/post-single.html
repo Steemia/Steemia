@@ -6,13 +6,50 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Post Details</ion-title>
+  <ion-navbar color="primary">
+    <ion-title></ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="ios-bookmark-outline"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="ios-share-outline"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="ios-flag-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-{{ test }}
+<ion-content>
+
+  <ion-card no-padding>
+    <h2 class="title" padding>{{ post?.title }}</h2>
+    <ion-card-header no-padding>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://img.busy.org/@{{post?.author}}?s=100">
+        </ion-avatar>
+        <div>
+          {{ post?.author }} ({{ post?.author_reputation }})
+        </div>
+            
+        <div>
+          <ion-note end >{{ created }}</ion-note>
+        </div>
+      </ion-item>
+    </ion-card-header>
+
+    <hr />
+
+    <ion-card-content no-padding>
+        <div id="content" [innerHTML]="body"></div>
+    </ion-card-content>
+  </ion-card>
+  
 </ion-content>

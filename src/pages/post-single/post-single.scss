@@ -21,4 +21,49 @@ page-post-single {
         }
     }
 
+    code {
+        overflow-x:scroll !important;
+    }
+
+    pre {
+        background-color: #e8e8e8;
+        padding: 13px;
+        overflow-x: scroll !important;
+    }
+
+    .card:first-child {
+        margin: 0 !important;
+    }
+
+    ion-card-header {
+        display: inline !important;
+    }
+
+    .title {
+        margin: 2px 0 -14px 0 !important;
+        font-size: 2.0rem !important;
+        font-weight: 500 !important;
+        color: #222;
+    }
+
+    #content {
+        p {
+            img {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                right: 50%;
+                margin-left: -50vw;
+                margin-right: -50vw;
+                max-width: 100vw;
+            }
+             
+            padding: 5px 16px 5px 16px;
+        }
+        h2 {
+            padding: 5px 16px 5px 16px;
+        }
+        
+    }
+
 }

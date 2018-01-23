@@ -9,6 +9,7 @@ import { ComponentsModule } from '../../components/components.module';
   ],
   imports: [
     ComponentsModule,
+    
     IonicPageModule.forChild(FeedPage),
   ],
 })

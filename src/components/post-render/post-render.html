@@ -26,9 +26,11 @@
         </ion-card-header>
 
         <ion-card-content no-padding (tap)="postOpen(content, i)">
-          <h3 style="overflow: scroll" ion-text padding>{{content.title}}</h3>
 
           <img *ngIf="meta[i].image" [src]="meta[i].image[0]">
+
+          <h2 style="overflow: scroll" padding>{{content.title}}</h2>
+          
         
         </ion-card-content>
 
