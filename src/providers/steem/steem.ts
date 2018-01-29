@@ -43,7 +43,7 @@ export class SteemProvider {
       post.json_metadata = JSON.parse((post.json_metadata as string));
 
       // Parse created time
-      post.json_metadata.created = moment.utc(post.created).local().fromNow();
+      post.created = moment.utc(post.created).local().fromNow();
 
     });
 

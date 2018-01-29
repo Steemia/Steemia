@@ -1,11 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, App} from 'ionic-angular';
-import { DataProvider } from 'providers/data/data';
+import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 import { Post } from 'models/models';
-import * as moment from 'moment';
 import { SteemProvider } from '../../../providers/steem/steem';
-
-
 
 @IonicPage()
 @Component({
@@ -15,14 +11,9 @@ import { SteemProvider } from '../../../providers/steem/steem';
 export class FeedPage {
 
   private contents: Array<Post> = [];
-  private meta: Array<any> = [];
   private perPage = 10;
 
-  constructor(public navCtrl: NavController, 
-              public app: App,
-              public navParams: NavParams, 
-              private dataProvider: DataProvider,
-              private steemProvider: SteemProvider) {
+  constructor(private steemProvider: SteemProvider) {
 
     // Initialize the first load of data with a pager of 10.
     this.getFeed().then(data => {
@@ -42,7 +33,6 @@ export class FeedPage {
     return new Promise((resolve) => {
       this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
-
         // Resolve the promise
         resolve(data)
 
@@ -75,14 +65,6 @@ export class FeedPage {
     this.getFeed().then((content: Array<Post>) => {
       this.contents = content;
       infiniteScroll.complete();
-    });
-  }
-
-  private openPost(event) {
-    console.log(event)
-    this.app.getRootNav().push('PostSinglePage', {
-      permlink: event.Post.permlink,
-      author: event.Post.author
     });
   }
 }

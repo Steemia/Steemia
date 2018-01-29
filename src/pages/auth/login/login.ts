@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { SteemProvider } from 'providers/steemconnect/steemconnect';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
@@ -15,7 +15,7 @@ export class LoginPage {
   constructor(public navCtrl: NavController, 
               private platform: Platform,
               public navParams: NavParams,
-              private steeem: SteemProvider,
+              private steeem: SteemConnectProvider,
               private iab: InAppBrowser) {
 
     this.loginUrl = this.steeem.loginUrl;

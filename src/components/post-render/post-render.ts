@@ -6,8 +6,9 @@
  * @version 1.0
  */
 
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Post } from 'models/models';
+import { App } from 'ionic-angular';
 
 
 @Component({
@@ -17,12 +18,8 @@ import { Post } from 'models/models';
 export class PostRenderComponent {
 
   @Input('posts') private contents: Array<Post> = [];
-  @Input('meta') private meta: Array<any> = [];
-  @Output() private clickedPost = new EventEmitter();
 
-  constructor() {
-    
-  }
+  constructor(public app: App) { }
 
   /**
    * Method to emit clicked event of a post to main
@@ -30,14 +27,10 @@ export class PostRenderComponent {
    * @param post 
    * @param meta
    */
-  private postOpen(post, i) {
-
-    // Send post details to host component.
-    this.clickedPost.emit({
-      Post: post,
-      Meta: this.meta[i]
-    });
-
+  private postOpen(post) {
+    this.app.getRootNav().push('PostSinglePage', {
+      post: post
+    })
   }
 
 }
