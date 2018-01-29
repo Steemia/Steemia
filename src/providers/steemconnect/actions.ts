@@ -8,12 +8,12 @@
 
 import { Injectable, OnInit } from '@angular/core';
 import { Vote, Comment, deleteComment, Follow, Ignore, Reblog } from 'models/models';
-import { SteemProvider } from './steemconnect'
+import { SteemConnectProvider } from './steemconnect'
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular'
 
 @Injectable()
-export class ActionsSteem extends SteemProvider {
+export class ActionsSteem extends SteemConnectProvider {
 
   constructor(public storage: Storage, public platform: Platform) {
 

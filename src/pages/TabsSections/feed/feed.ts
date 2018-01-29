@@ -3,12 +3,14 @@ import { IonicPage, NavController, NavParams, App} from 'ionic-angular';
 import { DataProvider } from 'providers/data/data';
 import { Post } from 'models/models';
 import * as moment from 'moment';
+import { SteemProvider } from '../../../providers/steem/steem';
+
 
 
 @IonicPage()
 @Component({
   selector: 'page-feed',
-  templateUrl: 'feed.html',
+  templateUrl: 'feed.html'
 })
 export class FeedPage {
 
@@ -19,12 +21,13 @@ export class FeedPage {
   constructor(public navCtrl: NavController, 
               public app: App,
               public navParams: NavParams, 
-              private dataProvider: DataProvider) {
+              private dataProvider: DataProvider,
+              private steemProvider: SteemProvider) {
 
     // Initialize the first load of data with a pager of 10.
-    this.getFeed().then((content: Array<Post>) => {
-      this.contents = content;
-    });
+    this.getFeed().then(data => {
+      this.contents = data;
+    })
 
   }
 
@@ -36,27 +39,14 @@ export class FeedPage {
    * @author Jayser Mendez.
    */
   private getFeed(): Promise<Array<Post>> {
-    return new Promise((resolve) => {this.dataProvider.getData('by_feed', this.perPage)
-    .subscribe((data: Array<Post>) => {
+    return new Promise((resolve) => {
+      this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
+      .subscribe((data: Array<Post>) => {
 
-      for (var i=0; i < data.length; i++) {
-        // Parse metadata
-        data[i].json_metadata = JSON.parse((data[i].json_metadata as string));
-        // make meta value
-        this.meta[i] = data[i].json_metadata;
-        //payout fixed to 2
-        data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
+        // Resolve the promise
+        resolve(data)
 
-        // HERE IS THE BUG
-        this.meta[i].created = moment(data[i].created).fromNow();
-      
-        data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString())))-9)*9)+25).toFixed(2));
-      }
-
-      // Resolve the promise
-      resolve(data)
-
-    })})
+      })})
   }
 
   /**

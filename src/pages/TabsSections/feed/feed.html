@@ -28,7 +28,7 @@
 
   <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
       
-  <post-render *ngIf="contents.length > 1" [posts]="contents" [meta]="meta" (clickedPost)="openPost($event)"></post-render>
+  <post-render *ngIf="contents.length > 1" [posts]="contents" [meta]="contents.json_metadata" (clickedPost)="openPost($event)"></post-render>
     
   <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

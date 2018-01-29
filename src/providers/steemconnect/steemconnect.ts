@@ -13,7 +13,7 @@ import * as steemconnect from 'sc2-sdk';
 import { Storage } from '@ionic/storage';
 
 @Injectable()
-export class SteemProvider {
+export class SteemConnectProvider {
 
   public loginUrl: string;
   public loginStatus: boolean;

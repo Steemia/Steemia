@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DataProvider } from 'providers/data/data';
 import { Post } from 'models/models';
-import { TRENDING } from '../../constants/constants';
+import { TRENDING } from '../../../constants/constants';
 
 
 @IonicPage()
