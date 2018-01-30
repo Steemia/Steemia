@@ -28,7 +28,7 @@ export class PostRenderComponent {
    * @param meta
    */
   private postOpen(post) {
-    this.app.getRootNav().push('PostSinglePage', {
+    this.app.getRootNavs()[0].push('PostSinglePage', {
       post: post
     })
   }

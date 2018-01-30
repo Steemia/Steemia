@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 
@@ -13,7 +13,7 @@ export class HotPage {
   private contents: Array<Post> = [];
   private perPage = 15;
   
-  constructor(public navCtrl: NavController,
+  constructor(public appCtrl: App,
               private steemProvider: SteemProvider) {
 
     // Initialize the first load of data with a pager of 10.
@@ -67,5 +67,13 @@ export class HotPage {
       this.contents = content;
       infiniteScroll.complete();
     });
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.appCtrl.getRootNavs()[0].push(str);
   }
 }
