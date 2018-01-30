@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { SteemProvider } from 'providers/steemconnect/steemconnect';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 
@@ -35,7 +35,7 @@ export class MyApp {
   constructor(private platform: Platform, 
               private statusBar: StatusBar, 
               private splashScreen: SplashScreen,
-              steemProvider: SteemProvider,
+              steemProvider: SteemConnectProvider,
               private menuCtrl: MenuController,
               steemActions: ActionsSteem) {
     

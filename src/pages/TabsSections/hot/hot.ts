@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { BY_HOT } from '../../../constants/constants';
 import { DataProvider } from 'providers/data/data';
 import { Post } from 'models/models';
-import { BY_CREATED } from '../../constants/constants';
+
 
 @IonicPage()
 @Component({
-  selector: 'page-new',
-  templateUrl: 'new.html',
+  selector: 'page-hot',
+  templateUrl: 'hot.html',
 })
-export class NewPage {
-
+export class HotPage {
+  
   private contents: Array<Post> = [];
   private meta: Array<any> = [];
   private perPage = 15;
-
+  
   constructor(public navCtrl: NavController, 
-              public navParams: NavParams, 
+              public navParams: NavParams,
               private dataProvider: DataProvider) {
 
     // Initialize the first load of data with a pager of 10.
@@ -34,7 +35,7 @@ export class NewPage {
    * @author Jayser Mendez.
    */
   private getFeed(): Promise<Array<Post>> {
-    return new Promise((resolve) => {this.dataProvider.getData(BY_CREATED, this.perPage)
+    return new Promise((resolve) => {this.dataProvider.getData(BY_HOT, this.perPage)
     .subscribe((data: Array<Post>) => {
 
       for (var i=0; i < data.length; i++) {
@@ -84,5 +85,4 @@ export class NewPage {
       infiniteScroll.complete();
     });
   }
-
 }

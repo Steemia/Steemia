@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Post } from 'models/models';
-import { DataProvider } from 'providers/data/data';
 import marked from 'marked';
-import * as moment from 'moment';
+import { SteemProvider } from '../../providers/steem/steem';
+import * as remarkable from 'remarkable';
+import { EmbedVideoService } from 'ngx-embed-video';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import * as urslMd from 'urls-md';
 
 @IonicPage()
 @Component({
@@ -13,23 +16,34 @@ import * as moment from 'moment';
 export class PostSinglePage {
   
   private post: Post;
-  private body: string;
+  private body: SafeHtml;
   private created: string;
 
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              private dataProvider: DataProvider) {
-  
-    this.dataProvider.getContent(this.navParams.get('author'), this.navParams.get('permlink'))
-    .subscribe((data: Post) => {
-      this.post = data;
-      this.body = marked(data.body);
-      data.author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data.author_reputation.toString())))-9)*9)+25).toFixed(2));
-      this.created = moment(data.created).fromNow();
+              public steemData: SteemProvider,
+              private embedService: EmbedVideoService,
+              private sanitizer: DomSanitizer) {
+
+    this.post = this.navParams.get('post');
+    
+    this.body = marked(this.post.body, {
+      gfm: true,
+      tables: true,
+      smartLists: true,
+      breaks: true,
+      pedantic: false,
+      sanitize: false,
+      smartypants: false
+    });
+    //this.body = md.render(this.post.body)
+    //this.body = this.post.body.replace(image_url,this.embedService.embed('$1'))
+    this.steemData.getComments({author: this.post.author, permlink: this.post.permlink}).subscribe(data => {
+      console.log(data)
     })
 
-
   }
+  
 
 }

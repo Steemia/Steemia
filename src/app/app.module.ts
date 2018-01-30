@@ -8,10 +8,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { MyApp } from './app.component';
 import { DataProvider } from 'providers/data/data';
-import { SteemProvider } from 'providers/steemconnect/steemconnect';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem } from 'providers/steemconnect/actions';
 import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
+import { SteemProvider } from '../providers/steem/steem';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
     MyApp,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
@@ -37,7 +40,8 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataProvider,
     SteemProvider,
-    ActionsSteem
+    ActionsSteem,
+    SteemConnectProvider
   ]
 })
 export class AppModule {}

@@ -43,7 +43,7 @@ export interface Post {
     net_rshares?: string;
     net_votes?: number;
     parent_author?: string;
-    parent_permlink: string;
+    parent_permlink?: string;
     pending_payout_value?: string;
     pending_steem_dollars?: number;
     permlink?: string;

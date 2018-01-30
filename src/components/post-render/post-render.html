@@ -5,7 +5,7 @@
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
             <ion-icon name="return-right"></ion-icon>
-            Reblogged by {{content.reblogged_by}}
+            Reblogged by {{ content.reblogged_by }}
           </ion-note>
 
           <ion-item>
@@ -18,18 +18,18 @@
             <div class="mt3">
               <ion-badge color="light">
                 <ion-icon mini name="attach"></ion-icon>
-                &nbsp; {{content.category}}
+                &nbsp; {{ content.category }}
               </ion-badge>
-              <ion-note end >{{ meta[i].created }}</ion-note>
+              <ion-note end >{{ content.created }}</ion-note>
             </div>
           </ion-item>
         </ion-card-header>
 
         <ion-card-content no-padding (tap)="postOpen(content, i)">
 
-          <img *ngIf="meta[i].image" [src]="meta[i].image[0]">
+          <img *ngIf="content.json_metadata.image" [src]="content.json_metadata.image[0]">
 
-          <h2 style="overflow: scroll" padding>{{content.title}}</h2>
+          <h2 style="overflow: scroll" padding>{{ content.title }}</h2>
           
         
         </ion-card-content>
@@ -39,7 +39,7 @@
             <button ion-button clear small>
               <ion-icon name="ios-thumbs-up"></ion-icon>
               &nbsp;
-              <div>{{content.net_votes}}</div>
+              <div>{{ content.net_votes }}</div>
             </button>
           </ion-col>
       
@@ -47,7 +47,7 @@
             <button ion-button clear small left>
               <ion-icon name="ios-text"></ion-icon>
               &nbsp;
-              <div>{{content.children}}</div>
+              <div>{{ content.children }}</div>
             </button>
           </ion-col>
 
@@ -56,7 +56,7 @@
               <ion-icon name="cash"></ion-icon>
               &nbsp;
               <div>
-                {{contents[i].pending_payout_value | currency:'USD': 'symbol'}}
+                {{ content.pending_payout_value | currency:'USD': 'symbol' }}
               </div>
             </button>
           </ion-col>

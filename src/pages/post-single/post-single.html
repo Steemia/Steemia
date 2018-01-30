@@ -40,7 +40,7 @@
         </div>
             
         <div>
-          <ion-note end >{{ created }}</ion-note>
+          <ion-note end >{{ post?.created }}</ion-note>
         </div>
       </ion-item>
     </ion-card-header>
@@ -48,7 +48,7 @@
     <hr />
 
     <ion-card-content no-padding>
-        <div id="content" [innerHTML]="body"></div>
+        <div id="content" [innerHTML]="body | keepHtml"></div>
     </ion-card-content>
   </ion-card>
   
