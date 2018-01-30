@@ -31,7 +31,7 @@ export class PromotedPage {
    */
   private getPromoted(): Promise<Array<Post>> {
     return new Promise((resolve) => {
-      this.steemProvider.getByNew({tag:"", limit: this.perPage})
+      this.steemProvider.getByPromoted({tag:"", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
         // Resolve the promise
         resolve(data);
