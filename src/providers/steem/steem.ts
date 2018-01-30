@@ -10,7 +10,7 @@ const BASE_ENDPOINT = 'https://api.steemjs.com/';
 
 // SEARCH ENDPOINT
 // https://github.com/Hoxly/asksteem-docs/wiki
-const SEARCH_ENDPOINT = 'https://api.asksteem.com/search?q='
+const SEARCH_ENDPOINT = 'https://api.asksteem.com/search?'
 
 // MAIN TABS CONTENT
 const BY_FEED = BASE_ENDPOINT + 'get_discussions_by_feed?query=';
@@ -45,6 +45,10 @@ export class SteemProvider {
 
   constructor(private http: Http) {}
 
+  /**
+   * @method getSearch: Method to perform a search in the blockchain
+   * @param query: {"q": "test", "sort_by": "created", "order": "desc"}
+   */
   public getSearch(query: Object) {
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(query))
       .map(res => res.json())
