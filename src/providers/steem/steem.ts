@@ -45,6 +45,13 @@ export class SteemProvider {
 
   constructor(private http: Http) {}
 
+  public getSearch(query: Object) {
+    return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(query))
+      .map(res => res.json())
+      .catch(this.catchErrors);
+    
+  }
+
   /**
    * @method getComments: Method to retrieve comments from a post
    * @param query
@@ -141,7 +148,6 @@ export class SteemProvider {
    * @returns returns an observable with the error
    */
   private catchErrors(error: Response | any) {
-    console.log(error)
     return Observable.throw(error.json().error || "Server Error");
   }
 
@@ -160,7 +166,7 @@ export class SteemProvider {
    * @param {Object} parameters: parameters to add to url
    * @returns url with the parameters added
    */
-  encodeQueryData(parameters: any) {
+  private encodeQueryData(parameters: any) {
     let ret = [];
     for (let d in parameters)
       ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(parameters[d]));

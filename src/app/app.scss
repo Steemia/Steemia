@@ -78,3 +78,23 @@ ion-spinner {
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
   display: none !important;
 }
+
+// Hide scrollbars
+
+div::-webkit-scrollbar {
+  border:none;
+  width:0;
+  background: rgba(0,0,0,0);
+} 
+
+div::-webkit-scrollbar-track {
+  border:none;
+  width:0;
+  background: rgba(0,0,0,0);
+}
+ 
+div::-webkit-scrollbar-thumb {
+  border:none;
+  width:0;
+  background: rgba(0,0,0,0);
+}
