@@ -67,7 +67,8 @@ export class SteemProvider {
     let params = {
       q: query,
       sort_by: sort_by,
-      order: order
+      order: order,
+      include: "meta"
     };
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
       .map(res => res.json())
