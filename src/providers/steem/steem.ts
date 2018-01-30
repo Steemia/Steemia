@@ -92,6 +92,16 @@ export class SteemProvider {
   }
 
   /**
+   * Method to get posts filtered by promoted.
+   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getByPromoted(query: Object) {
+    return this.http.get(BY_PROMOTED + this.encodeParams(query))
+        .map(this.parseData)
+        .catch(this.catchErrors);
+  }
+
+  /**
    * @method parseData: Method to parse data from the HTTP response
    * @param {Response} res: Response from HTTP GET
    * @returns returns the parsed response with the correct attributes

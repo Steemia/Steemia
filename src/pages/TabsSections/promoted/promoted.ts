@@ -5,10 +5,10 @@ import { SteemProvider } from '../../../providers/steem/steem';
 
 @IonicPage()
 @Component({
-  selector: 'page-new',
-  templateUrl: 'new.html',
+  selector: 'page-promoted',
+  templateUrl: 'promoted.html',
 })
-export class NewPage {
+export class PromotedPage {
 
   private contents: Array<Post> = [];
   private perPage = 15;
@@ -17,20 +17,19 @@ export class NewPage {
               private steemProvider: SteemProvider) {
 
     // Initialize the first load of data with a pager of 10.
-    this.getNew().then((content: Array<Post>) => {
+    this.getPromoted().then((content: Array<Post>) => {
       this.contents = content;
     });
-
   }
-
+  
   /**
    * 
-   * Method to get posts filtered by its creation date
+   * Method to get posts filtered by promoted
    * 
    * @returns {Promise<Array<Post>>}: A promise with the requested posts.
    * @author Jayser Mendez.
    */
-  private getNew(): Promise<Array<Post>> {
+  private getPromoted(): Promise<Array<Post>> {
     return new Promise((resolve) => {
       this.steemProvider.getByNew({tag:"", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
@@ -48,7 +47,7 @@ export class NewPage {
    */
   private doRefresh(refresher): void {
 
-    this.getNew().then((content: Array<Post>) => {
+    this.getPromoted().then((content: Array<Post>) => {
       this.contents = content;
       refresher.complete();
     });
@@ -62,8 +61,8 @@ export class NewPage {
    */
   private doInfinite(infiniteScroll): void {
     this.perPage += 15;
-    this.getNew();
-    this.getNew().then((content: Array<Post>) => {
+    this.getPromoted();
+    this.getPromoted().then((content: Array<Post>) => {
       this.contents = content;
       infiniteScroll.complete();
     });

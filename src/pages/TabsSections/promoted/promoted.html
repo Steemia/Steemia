@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+      
+    <ion-title>
+      Steemia
+    </ion-title>
+      
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="ios-search-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+          
+  </ion-navbar>
+</ion-header>
+      
+<ion-content>
+      
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+            
+  <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
+        
+  <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
+      
+  <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+      
+</ion-content>
