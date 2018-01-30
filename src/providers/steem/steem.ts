@@ -8,6 +8,10 @@ import * as moment from 'moment';
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
 
+// SEARCH ENDPOINT
+// https://github.com/Hoxly/asksteem-docs/wiki
+const SEARCH_ENDPOINT = 'https://api.asksteem.com/search?q='
+
 // MAIN TABS CONTENT
 const BY_FEED = BASE_ENDPOINT + 'get_discussions_by_feed?query=';
 const BY_TRENDING = BASE_ENDPOINT + 'get_discussions_by_trending?query=';
@@ -116,7 +120,12 @@ export class SteemProvider {
       post.pending_payout_value = parseFloat(post.pending_payout_value).toFixed(2);
 
       // Parse Metadata
-      post.json_metadata = JSON.parse((post.json_metadata as string));
+      try {
+        post.json_metadata = JSON.parse((post.json_metadata as string));
+      } catch (e) {
+        // do not parse JSON
+      }
+      
 
       // Parse created time
       post.created = moment.utc(post.created).local().fromNow();
@@ -132,6 +141,7 @@ export class SteemProvider {
    * @returns returns an observable with the error
    */
   private catchErrors(error: Response | any) {
+    console.log(error)
     return Observable.throw(error.json().error || "Server Error");
   }
 

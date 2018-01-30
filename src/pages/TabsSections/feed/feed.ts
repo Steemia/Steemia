@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 
@@ -13,7 +13,8 @@ export class FeedPage {
   private contents: Array<Post> = [];
   private perPage = 10;
 
-  constructor(private steemProvider: SteemProvider) {
+  constructor(private steemProvider: SteemProvider,
+              private navCtrl: NavController) {
 
     // Initialize the first load of data with a pager of 10.
     this.getFeed().then(data => {
@@ -65,5 +66,13 @@ export class FeedPage {
       this.contents = content;
       infiniteScroll.complete();
     });
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.navCtrl.push(str);
   }
 }

@@ -69,4 +69,12 @@ export class TrendPage {
       infiniteScroll.complete();
     });
   }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.navCtrl.push(str);
+  }
 }
