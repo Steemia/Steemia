@@ -3,10 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Post } from 'models/models';
 import marked from 'marked';
 import { SteemProvider } from '../../providers/steem/steem';
-import * as remarkable from 'remarkable';
 import { EmbedVideoService } from 'ngx-embed-video';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import * as urslMd from 'urls-md';
 
 @IonicPage()
 @Component({
@@ -16,15 +13,11 @@ import * as urslMd from 'urls-md';
 export class PostSinglePage {
   
   private post: Post;
-  private body: SafeHtml;
-  private created: string;
-
+  private body: string;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              public steemData: SteemProvider,
-              private embedService: EmbedVideoService,
-              private sanitizer: DomSanitizer) {
+              public steemData: SteemProvider,) {
 
     this.post = this.navParams.get('post');
     
