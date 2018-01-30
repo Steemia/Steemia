@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { MarkdownPipe } from './markdown/markdown';
+import { KeepHtmlPipe } from './keep-html/keep-html';
 @NgModule({
-	declarations: [MarkdownPipe],
+	declarations: [MarkdownPipe,
+    KeepHtmlPipe],
 	imports: [],
-	exports: [MarkdownPipe]
+	exports: [MarkdownPipe,
+    KeepHtmlPipe]
 })
 export class PipesModule {}

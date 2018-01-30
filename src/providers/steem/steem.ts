@@ -5,9 +5,27 @@ import { Post } from '../../models/models';
 import * as steem from 'steem';
 import * as moment from 'moment';
 
+// BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
+
+// MAIN TABS CONTENT
 const BY_FEED = BASE_ENDPOINT + 'get_discussions_by_feed?query=';
+const BY_TRENDING = BASE_ENDPOINT + 'get_discussions_by_trending?query=';
+const BY_HOT = BASE_ENDPOINT + 'get_discussions_by_hot?query=';
+const BY_CREATED = BASE_ENDPOINT + 'get_discussions_by_created?query=';
+const BY_PROMOTED = BASE_ENDPOINT + 'get_discussions_by_promoted?query=';
+
+// COMMENTS FOR POSTS
 const GET_COMMENTS = BASE_ENDPOINT + 'get_content_replies?';
+
+// PROFILE
+const BY_BLOG = BASE_ENDPOINT + 'get_discussions_by_blog?query=';
+
+// ENDPOINTS FOR FILTERING
+const BY_VOTES = BASE_ENDPOINT + 'get_discussions_by_votes?query=';
+const BY_PAYOUT = BASE_ENDPOINT + 'get_discussions_by_payout?query=';
+const BY_ACTIVE = BASE_ENDPOINT + 'get_discussions_by_active?query=';
+const BY_CASHOUT = BASE_ENDPOINT + 'get_discussions_by_cashout?query=';
 
 @Injectable()
 export class SteemProvider {

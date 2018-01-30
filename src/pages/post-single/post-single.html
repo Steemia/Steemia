@@ -48,7 +48,7 @@
     <hr />
 
     <ion-card-content no-padding>
-        <div id="content" [innerHTML]="body"></div>
+        <div id="content" [innerHTML]="body | keepHtml"></div>
     </ion-card-content>
   </ion-card>
   
