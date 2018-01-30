@@ -12,11 +12,16 @@
   </ion-navbar>
 
   <ion-toolbar color="primary">
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar (keyup)="searchTerm$.next($event.target.value)"></ion-searchbar>
   </ion-toolbar>
   
 </ion-header>
 
 <ion-content>
-
+    <ul *ngIf="results">
+        <li *ngFor="let result of results | slice:0:9">
+          
+            {{ result.title }}
+        </li>
+      </ul>
 </ion-content>

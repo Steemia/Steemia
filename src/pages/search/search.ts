@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the SearchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Subject } from 'rxjs/Subject';
+import { SteemProvider } from '../../providers/steem/steem';
 
 @IonicPage()
 @Component({
@@ -15,11 +10,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SearchPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  results: Object;
+  searchTerm$ = new Subject<string>();
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              private steemProvider: SteemProvider) {
+
+      this.steemProvider
+      .getSearch(this.searchTerm$, "created", "desc")
+      .subscribe(results => {
+        this.results = results.results;
+      });
   }
 
 }

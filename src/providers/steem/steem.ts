@@ -4,6 +4,10 @@ import { Observable } from "rxjs/Observable";
 import { Post } from '../../models/models';
 import * as steem from 'steem';
 import * as moment from 'moment';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
@@ -46,11 +50,26 @@ export class SteemProvider {
   constructor(private http: Http) {}
 
   /**
+   * @method getSearch: Perform the search with observables
+   * @param query: Observable object for the search
+   */
+  public getSearch(query: Observable<string>, sort_by: string, order: string) {
+    return query.debounceTime(400)
+        .distinctUntilChanged()
+        .switchMap(term => this.doSearch(term, sort_by, order));
+  }
+  
+  /**
    * @method getSearch: Method to perform a search in the blockchain
    * @param query: {"q": "test", "sort_by": "created", "order": "desc"}
    */
-  public getSearch(query: Object) {
-    return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(query))
+  public doSearch(query, sort_by: string, order: string) {
+    let params = {
+      q: query,
+      sort_by: sort_by,
+      order: order
+    };
+    return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
       .map(res => res.json())
       .catch(this.catchErrors);
     
