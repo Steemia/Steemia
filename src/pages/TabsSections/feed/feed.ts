@@ -24,7 +24,7 @@ export class FeedPage {
 
   /**
    * 
-   * Method to get post in the current topic and transform its data.
+   * Method to get posts in the user feed
    * 
    * @returns {Promise<Array<Post>>}: A promise with the requested posts.
    * @author Jayser Mendez.
@@ -34,9 +34,9 @@ export class FeedPage {
       this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
         // Resolve the promise
-        resolve(data)
-
-      })})
+        resolve(data);
+      });
+    });
   }
 
   /**
@@ -46,7 +46,6 @@ export class FeedPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-
     this.getFeed().then((content: Array<Post>) => {
       this.contents = content;
       refresher.complete();

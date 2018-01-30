@@ -59,7 +59,37 @@ export class SteemProvider {
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map(this.parseData)
         .catch(this.catchErrors);
-  } 
+  }
+
+   /**
+   * Method to get posts filtered by hot.
+   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getByHot(query: Object) {
+    return this.http.get(BY_HOT + this.encodeParams(query))
+        .map(this.parseData)
+        .catch(this.catchErrors);
+  }
+
+  /**
+   * Method to get posts filtered by creation date.
+   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getByNew(query: Object) {
+    return this.http.get(BY_CREATED + this.encodeParams(query))
+        .map(this.parseData)
+        .catch(this.catchErrors);
+  }
+
+  /**
+   * Method to get posts filtered by trending.
+   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getByTrending(query: Object) {
+    return this.http.get(BY_TRENDING + this.encodeParams(query))
+        .map(this.parseData)
+        .catch(this.catchErrors);
+  }
 
   /**
    * @method parseData: Method to parse data from the HTTP response
