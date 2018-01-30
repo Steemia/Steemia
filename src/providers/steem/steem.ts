@@ -27,6 +27,15 @@ const BY_PAYOUT = BASE_ENDPOINT + 'get_discussions_by_payout?query=';
 const BY_ACTIVE = BASE_ENDPOINT + 'get_discussions_by_active?query=';
 const BY_CASHOUT = BASE_ENDPOINT + 'get_discussions_by_cashout?query=';
 
+// Regex
+const urls = /(\b(https?|ftp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim;
+const users = /(^|\s)(@[a-z][-\.a-z\d]+[a-z\d])/gim;
+const imgs = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gim;
+const youtube = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+const youtubeid = /(?:(?:youtube.com\/watch\?v=)|(?:youtu.be\/))([A-Za-z0-9\_\-]+)/i;
+const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
+const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
+
 @Injectable()
 export class SteemProvider {
 

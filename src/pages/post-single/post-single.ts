@@ -6,13 +6,7 @@ import { SteemProvider } from '../../providers/steem/steem';
 import * as remarkable from 'remarkable';
 import { EmbedVideoService } from 'ngx-embed-video';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
-
-const md = new remarkable();
-md.set({
-  html: true,
-  breaks: true
-});
+import * as urslMd from 'urls-md';
 
 @IonicPage()
 @Component({
@@ -32,33 +26,8 @@ export class PostSinglePage {
               private embedService: EmbedVideoService,
               private sanitizer: DomSanitizer) {
 
-                
-    let videos_url = /^^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/gm;
-    let images_url = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)/gim;
     this.post = this.navParams.get('post');
     
-    let videos = this.post.body.match(videos_url);
-    
-
-    // this.post.body.replace(/(!\[.*?\]\()(.+?)(\))/g, function(whole, a, image, c) {
-    //   whole = '<img src="' + image;
-      
-    //   return whole;
-    // });
-
-    let images = this.post.body.match(images_url);
-
-    // if (images) {
-    //   for (let i = 0; i < images.length; i++) {
-    //     this.post.body = this.post.body.replace(images[i], '<img src="' + images[i] + '" />');
-    //   }
-    // }
-
-    if (videos) {
-      for (let i = 0; i < videos.length; i++) {
-        this.post.body = this.post.body.replace(videos[i], this.embedService.embed(videos[i]));
-      }
-    }
     this.body = marked(this.post.body, {
       gfm: true,
       tables: true,
@@ -75,5 +44,6 @@ export class PostSinglePage {
     })
 
   }
+  
 
 }
