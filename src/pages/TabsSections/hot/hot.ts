@@ -35,7 +35,6 @@ export class HotPage {
     return new Promise((resolve) => {
       this.steemProvider.getByHot({tag:"", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
-        console.log(data)
         // Resolve the promise
         resolve(data);
       });

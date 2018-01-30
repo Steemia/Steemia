@@ -35,7 +35,6 @@ export class NewPage {
     return new Promise((resolve) => {
       this.steemProvider.getByNew({tag:"", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
-        console.log(data)
         // Resolve the promise
         resolve(data);
       });

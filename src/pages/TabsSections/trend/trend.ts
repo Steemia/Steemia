@@ -35,7 +35,6 @@ export class TrendPage {
     return new Promise((resolve) => {
       this.steemProvider.getByTrending({tag:"", limit: this.perPage})
       .subscribe((data: Array<Post>) => {
-        console.log(data)
         // Resolve the promise
         resolve(data);
       });
