@@ -11,11 +11,12 @@ import 'rxjs/add/operator/takeUntil';
 })
 export class SearchPage implements OnInit, OnDestroy {
 
-  private currentVal: string;
+  objectKeys = Object.keys;
   private destroyed$: Subject<{}> = new Subject();
   results: Object;
   searchTerm$ = new Subject<string>();
   isSearching: boolean = false;
+  gender: string = 'Post';
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,

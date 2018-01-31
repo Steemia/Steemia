@@ -5,13 +5,12 @@
     <ion-title>
         
     </ion-title>
+
+    <ion-searchbar (ionInput)="performSearch($event.target.value)"
+                   placeholder="What are you looking for?">
+      </ion-searchbar>
+    
   </ion-navbar>
-  
-  <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="currentVal"
-                   (ionInput)="performSearch($event.target.value)"
-                   placeholder="What are you looking for?"></ion-searchbar>
-  </ion-toolbar>
   
 </ion-header>
 
@@ -39,4 +38,13 @@
       <p>{{ result.summary }}</p>
     </ion-item>
   </ion-list>
+
+  <ion-grid *ngIf="results && objectKeys(results).length == 0 && !isSearching"class="noResults">
+    <ion-row>
+      <ion-col text-center>
+          <ion-icon name="search" class="notFound"></ion-icon>
+          <p>Sorry, we couldn't find any results matching this search.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
