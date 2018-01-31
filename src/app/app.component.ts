@@ -86,8 +86,7 @@ export class MyApp {
       this.user = 'hsynterkr';
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.statusBar.overlaysWebView(true);
+      this.statusBar.styleBlackOpaque();
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
     });
