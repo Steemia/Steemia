@@ -73,8 +73,6 @@ export class SteemProvider {
     };
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
       .map(res => res.json())
-      .publishReplay(1)
-      .refCount()
       .catch(this.catchErrors);
     
   }
