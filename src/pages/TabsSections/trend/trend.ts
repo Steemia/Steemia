@@ -1,43 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
   selector: 'page-trend',
   templateUrl: 'trend.html',
 })
-export class TrendPage {
+export class TrendPage implements OnInit, OnDestroy {
 
+  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
-  private perPage = 15;
+  private perPage = 10;
   
   constructor(public appCtrl: App,
               private steemProvider: SteemProvider) {
 
-    // Initialize the first load of data with a pager of 10.
-    this.getTrending().then((content: Array<Post>) => {
-      this.contents = content;
-    });
-
   }
 
+  public ngOnInit() {
+    this.getTrending()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
+      this.contents = data;
+    });
+  }
+
+  public ngOnDestroy() {
+    this.destroyed$.next(); /* Emit a notification on the subject. */
+    this.destroyed$.complete();
+  }
+  
   /**
    * 
    * Method to get posts filtered by trending.
    * 
-   * @returns {Promise<Array<Post>>}: A promise with the requested posts.
+   * @returns Observable with an array of posts
    * @author Jayser Mendez.
    */
-  private getTrending(): Promise<Array<Post>> {
-    return new Promise((resolve) => {
-      this.steemProvider.getByTrending({tag:"", limit: this.perPage})
-      .subscribe((data: Array<Post>) => {
-        // Resolve the promise
-        resolve(data);
-      });
-    });
+  private getTrending(): Observable<Array<Post>> {
+    return this.steemProvider.getByTrending({tag:"", limit: this.perPage})
   }
 
   /**
@@ -47,9 +53,10 @@ export class TrendPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-
-    this.getTrending().then((content: Array<Post>) => {
-      this.contents = content;
+    this.getTrending()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
+      this.contents = data;
       refresher.complete();
     });
   }
@@ -61,10 +68,11 @@ export class TrendPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.perPage += 15;
-    this.getTrending();
-    this.getTrending().then((content: Array<Post>) => {
-      this.contents = content;
+    this.perPage += 10;
+    this.getTrending()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
+      this.contents = data;
       infiniteScroll.complete();
     });
   }

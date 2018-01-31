@@ -58,7 +58,8 @@ export class MyApp {
         { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
+        { title: 'Login', leftIcon: 'information-circle', onClick: () => { this.openPage("LoginPage") } }
       ]
     };
 
@@ -138,6 +139,12 @@ export class MyApp {
           title: 'About', 
           leftIcon: 'information-circle', 
           onClick: () => { this.openPage("AboutPage") } 
+        }
+        ,
+        { 
+          title: 'Login', 
+          leftIcon: 'information-circle', 
+          onClick: () => { this.openPage("LoginPage") } 
         }
       ]
     };

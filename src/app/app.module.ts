@@ -27,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
-      tabsPlacement: 'top',
+      tabsPlacement: 'top'
     }),
     IonicStorageModule.forRoot(),
   ],

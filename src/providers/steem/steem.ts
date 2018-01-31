@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/publishReplay';
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
@@ -72,6 +73,8 @@ export class SteemProvider {
     };
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
       .map(res => res.json())
+      .publishReplay(1)
+      .refCount()
       .catch(this.catchErrors);
     
   }
@@ -83,6 +86,8 @@ export class SteemProvider {
   public getComments(query: Object) {
     return this.http.get(GET_COMMENTS + this.encodeQueryData(query))
       .map(this.parseData)
+      .publishReplay(1)
+      .refCount()
       .catch(this.catchErrors);
   }
 
@@ -93,6 +98,8 @@ export class SteemProvider {
   public getFeed(query: Object) {
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -103,6 +110,8 @@ export class SteemProvider {
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -113,6 +122,8 @@ export class SteemProvider {
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -123,6 +134,8 @@ export class SteemProvider {
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -133,6 +146,8 @@ export class SteemProvider {
   public getByPromoted(query: Object) {
     return this.http.get(BY_PROMOTED + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
