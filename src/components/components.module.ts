@@ -4,9 +4,10 @@ import { PostRenderComponent } from './post-render/post-render';
 import { MomentModule } from 'angular2-moment';
 import { IonicModule } from "ionic-angular"
 import { SkeletonLoadingComponent } from './skeleton-loading/skeleton-loading';
+
 @NgModule({
 	declarations: [PostRenderComponent,
-    SkeletonLoadingComponent],
+    SkeletonLoadingComponent ],
 	imports: [IonicModule, CommonModule, MomentModule],
 	exports: [PostRenderComponent,
     SkeletonLoadingComponent],

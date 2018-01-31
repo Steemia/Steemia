@@ -12,6 +12,7 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
+    "@angular/animations": "^5.2.2",
     "@angular/common": "5.0.3",
     "@angular/compiler": "5.0.3",
     "@angular/compiler-cli": "5.0.3",
@@ -28,7 +29,7 @@
     "angular2-moment": "^1.7.1",
     "cordova-android": "7.0.0",
     "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-inappbrowser": "^2.0.1",
+    "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-statusbar": "^2.4.1",

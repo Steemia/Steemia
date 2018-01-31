@@ -6,26 +6,17 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-buttons>
-      <button ion-button mini item-start (click)="closeModal()">CloseModal</button>
-    </ion-buttons>
+  <ion-navbar color="primary">
     <ion-title>post</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content padding>
-  <h2>Write an article!</h2>
-  <ion-item>
-    <ion-label>Convert to HTML</ion-label>
-    <ion-toggle color="secondary" [(ngModel)]="toggleVal" checked="toggleVal" (ionChange)="convert()"></ion-toggle>
-  </ion-item>
-  <ion-item [hidden]="toggleVal">
-    <ion-textarea rows="6" [(ngModel)]="plainText"  placeholder="Strat writing your markdown below..."></ion-textarea>
-  </ion-item>
-  <ion-content [hidden]="!toggleVal">
-    <div [innerHtml]="content"></div>
-  </ion-content>
+<ion-content>
+    <ion-card>
+      <ion-card-title>
+        
+      </ion-card-title>
+    </ion-card>
 
 </ion-content>

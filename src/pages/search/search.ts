@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { SteemProvider } from '../../providers/steem/steem';
@@ -9,6 +9,8 @@ import { SteemProvider } from '../../providers/steem/steem';
   templateUrl: 'search.html',
 })
 export class SearchPage {
+
+  @ViewChild('autofocus') searchBar ;
 
   results: Object;
   searchTerm$ = new Subject<string>();
@@ -23,5 +25,13 @@ export class SearchPage {
         this.results = results.results;
       });
   }
+
+  ionViewLoaded() {
+
+    setTimeout(() => {
+      this.searchBar.setFocus();
+    },150);
+
+ }
 
 }

@@ -5,19 +5,30 @@
     <ion-title>
         
     </ion-title>
-  
-    <ion-buttons end>
-    </ion-buttons>
-  
   </ion-navbar>
-
+  
   <ion-toolbar color="primary">
-    <ion-searchbar (keyup)="searchTerm$.next($event.target.value)"></ion-searchbar>
+    <ion-searchbar #autofocus  
+                   (keyup)="searchTerm$.next($event.target.value)" 
+                   placeholder="What are you looking for?"></ion-searchbar>
   </ion-toolbar>
   
 </ion-header>
 
 <ion-content>
+  <ion-grid class="noResults" *ngIf="!results || results.length == 0">
+    <ion-row>
+      <ion-col text-center>
+        <ion-card>
+          <ion-card-content>
+            <a href="https://www.asksteem.com"><img src="https://cdn.hoxly.com/asksteem/attribution.png"></a>
+            This search engine is working thanks to https://www.asksteem.com
+          </ion-card-content>
+        </ion-card>        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-list *ngIf="results">
     <ion-item *ngFor="let result of results">
       <ion-thumbnail item-start>
