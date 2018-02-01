@@ -7,7 +7,7 @@
  */
 
 import { Injectable, OnInit } from '@angular/core';
-import { Platform } from 'ionic-angular'
+import { Platform, Events } from 'ionic-angular'
 import { steemConnect } from 'models/models';
 import * as steemconnect from 'sc2-sdk';
 import { Storage } from '@ionic/storage';
@@ -17,15 +17,24 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public loginStatus: boolean;
-  public steemit;
+  public steemData;
   private access_token: string;
+  private profile;
 
-  constructor(public storage: Storage, public platform: Platform) {
+  constructor(public storage: Storage, 
+              public platform: Platform,
+              public events?: Events) {
 
     // Initialize a instance of steemconnect in the whole provider to avoid
     // rewriting the instance each time we need to call the api.
     this.initializeSteem();
+  
+    
    
+  }
+
+  get getToken() {
+    return this.access_token;
   }
 
   /**
@@ -44,7 +53,7 @@ export class SteemConnectProvider {
     }).then(() => {
 
       // Initialize an instance of steemconnect
-      this.steemit = steemconnect.Initialize({
+      this.steemData = steemconnect.Initialize({
         app: 'steemia.app',
         // THIS SHOULD BE CHANGED IN PRODUCTION MODE
         callbackURL: 'http://localhost:8100',
@@ -54,17 +63,39 @@ export class SteemConnectProvider {
                 'claim_reward_balance'],
         accessToken: this.access_token
       });
+      if (this.access_token !== undefined && this.access_token !== null) {
+        this.steemData.me((err, res) => {
+          this.profile = res;
+          //profile.json_metadata = JSON.parse(profile.json_metadata);
+          //this.profile = res;
 
-      this.steemit.me(function (err, res) {
-        console.log(res)
-      });
+          // Hacky way to make this work inside this nested function
+          try {
+            this.events.publish('publish:profile', this.profile)
+          }
+          catch (e) {}
+        });
+
+        
+        
+      }
+      
+      
+      
 
       // save a reference to the login url for later used.
       // This variable is public to scope in any component.
-      this.loginUrl = this.steemit.getLoginURL();
+      this.loginUrl = this.steemData.getLoginURL();
 
     });
   
+  }
+
+  public getMyProfile() {
+    return new Promise(resolve => {
+      resolve(this.profile);
+    })
+    
   }
 
   /**
@@ -84,7 +115,7 @@ export class SteemConnectProvider {
 
       return new Promise(resolve => {
 
-        resolve(this.steemit.loginUrl());
+        resolve(this.steemData.loginUrl());
 
       });
 
@@ -103,7 +134,7 @@ export class SteemConnectProvider {
 
     return new Promise((resolve, reject) => {
 
-      this.steemit.isAuthenticated((err: steemConnect, result: steemConnect) => {
+      this.steemData.isAuthenticated((err: steemConnect, result: steemConnect) => {
 
         // If there is an error fetching the api, lets reject the promise
         if (err) {
@@ -120,7 +151,7 @@ export class SteemConnectProvider {
   }
 
   public setToken(token: string) {
-    this.steemit.setAccessToken(token);
+    this.steemData.setAccessToken(token);
     this.storage.set('access_token', token);
   }
 

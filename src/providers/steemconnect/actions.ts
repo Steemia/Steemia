@@ -31,7 +31,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public vote(vote: Vote): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.steemit.vote(vote, (err, result) => {
+      this.steemData.vote(vote, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -47,7 +47,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public comment(comment: Comment): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.steemit.comment(comment, (err, result) => {
+      this.steemData.comment(comment, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -63,7 +63,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public deleteComment(comment: deleteComment) {
     return new Promise((resolve, reject) => {
-      this.steemit.deleteComment(comment, (err, result) => {
+      this.steemData.deleteComment(comment, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -79,7 +79,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public follow(follow: Follow) {
     return new Promise((resolve, reject) => {
-      this.steemit.follow(follow, (err, result) => {
+      this.steemData.follow(follow, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -95,7 +95,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public ignore(ignore: Ignore) {
     return new Promise((resolve, reject) => {
-      this.steemit.ignore(ignore, (err, result) => {
+      this.steemData.ignore(ignore, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -111,7 +111,7 @@ export class ActionsSteem extends SteemConnectProvider {
    */
   public reblog(reblog: Reblog) {
     return new Promise((resolve, reject) => {
-      this.steemit.reblog(reblog, (err, result) => {
+      this.steemData.reblog(reblog, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });

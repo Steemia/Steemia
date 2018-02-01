@@ -15,17 +15,18 @@ export class LoginPage {
   constructor(public navCtrl: NavController, 
               private platform: Platform,
               public navParams: NavParams,
-              private steeem: SteemConnectProvider,
+              private steemConnect: SteemConnectProvider,
               private iab: InAppBrowser) {
 
-    this.loginUrl = this.steeem.loginUrl;
+    this.loginUrl = this.steemConnect.loginUrl;
+
 
   }
 
   private doLogin() {
     this.login().then(access_token => {
       if (access_token !== undefined && access_token !== null) {
-        this.steeem.setToken(access_token);
+        this.steemConnect.setToken(access_token);
         this.navCtrl.pop();
       }
     });
@@ -40,7 +41,7 @@ export class LoginPage {
   
         const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
           console.error("The Steemconnect sign in flow was canceled");
-          reject(new Error("The Steemconnect sign in flow was canceled"));
+          //reject(new Error("The Steemconnect sign in flow was canceled"));
         });
   
         browserRef.on("loadstart").subscribe((event) => {
