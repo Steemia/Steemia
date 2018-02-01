@@ -14,7 +14,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MyApp,
   ],
   imports: [
-    BrowserAnimationsModule,
     HttpClientModule,
     BrowserModule,
     HttpModule,
