@@ -16,6 +16,7 @@ export class FeedPage implements OnInit, OnDestroy {
   private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private perPage = 10;
+  private result: any;
 
   constructor(private steemProvider: SteemProvider,
               private appCtrl: App) {

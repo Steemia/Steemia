@@ -9,6 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/publishReplay';
+import { forkJoin } from "rxjs/observable/forkJoin";
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
@@ -30,6 +31,7 @@ const GET_COMMENTS = BASE_ENDPOINT + 'get_content_replies?';
 // PROFILE
 const GET_PROFILE = BASE_ENDPOINT + 'get_accounts?names[]='
 const BY_BLOG = BASE_ENDPOINT + 'get_discussions_by_blog?query=';
+const FOLLOWERS = BASE_ENDPOINT + 'get_follow_count?account='
 
 // ENDPOINTS FOR FILTERING
 const BY_VOTES = BASE_ENDPOINT + 'get_discussions_by_votes?query=';
@@ -46,17 +48,24 @@ const youtubeid = /(?:(?:youtube.com\/watch\?v=)|(?:youtu.be\/))([A-Za-z0-9\_\-]
 const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
 const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
+
 @Injectable()
 export class SteemProvider {
-
-  constructor(private http: Http) {}
+  public feed;
+  result: any;
+  constructor(private http: Http) {
+  }
 
   /**
    * Method to get the profile of an user
    * @param account: ['jaysermendez']
    */
   public getProfile(account: Array<String>) {
-    return this.http.get(GET_PROFILE + JSON.stringify(account))
+
+    let profile = this.http.get(GET_PROFILE + JSON.stringify(account));
+    let followers = this.http.get(FOLLOWERS + account[0]);
+
+    return forkJoin([profile, followers])
       .map(this.parseProfile)
       .publishReplay(1)
       .refCount()
@@ -68,25 +77,29 @@ export class SteemProvider {
    * @param {Response} res: Response from HTTP GET
    * @returns returns the parsed response with the correct attributes
    */
-  private parseProfile(res: Response) {
-    let response = res.json()
-    response.map(user => {
-      // Format the current author reputation
-      user.reputation = steem.formatter.reputation(user.reputation);
+  private parseProfile(res: Response[]) {
+    let response = res;
+    (response[0] as any)._body = JSON.parse(((response[0] as any)._body as string));
+    try {
+      (response[0] as any)._body[0].json_metadata = JSON.parse(((response[0] as any)._body[0].json_metadata as string));
+    }
+    catch (e) {
+      // do not parse data
+    }
 
-      // Parse Metadata
-      try {
-        user.json_metadata = JSON.parse((user.json_metadata as string));
-      } catch (e) {
-        // do not parse JSON
-      }
+    // Parse reputation
+    (response[0] as any)._body[0].reputation =  steem.formatter.reputation((response[0] as any)._body[0].reputation);
 
-      // Parse created time
-      user.created = moment.utc(user.created).local().fromNow();
+    // Parse created time
+    (response[0] as any)._body[0].created = moment.utc((response[0] as any)._body[0].created).local().fromNow();
+    
+    // Parse stats
+    (response[1] as any)._body = JSON.parse(((response[1] as any)._body as string));
 
-    });
-
-    return response;
+    return {
+      profile: (response[0] as any)._body[0],
+      stats: (response[1] as any)._body
+    }
   }
 
   /**
@@ -206,7 +219,7 @@ export class SteemProvider {
    * @returns returns the parsed response with the correct attributes
    */
   private parseData(res: Response) {
-    let response = res.json()
+    let response = res.json();
     response.map(post => {
       // Format the current author reputation
       post.author_reputation = steem.formatter.reputation(post.author_reputation);
