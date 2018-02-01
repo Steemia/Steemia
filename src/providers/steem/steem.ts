@@ -51,6 +51,18 @@ export class SteemProvider {
   constructor(private http: Http) {}
 
   /**
+   * Method to get post posted by an user
+   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getProfilePosts(query: Object) {
+    return this.http.get(BY_BLOG + this.encodeQueryData(query))
+      .map(this.parseData)
+      .publishReplay(1)
+      .refCount()
+      .catch(this.catchErrors);
+  }
+
+  /**
    * @method getSearch: Perform the search with observables
    * @param query: Observable object for the search
    */

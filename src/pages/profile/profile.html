@@ -12,50 +12,46 @@
 
 </ion-header>
 
-
 <ion-content>
     <ion-refresher (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-      </ion-refresher>
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <div 
     class="background" 
-    style="background-image: url('https://blockchain.fhcoin.club/img/bg.jpg')"
-  >
-    <img src="https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq" class="picture"/>
-    <div class="subtitle">
-      <h1>Steemia</h1>
-      <h2 >steemia@steemia.io</h2>
+    style="background-image: url('https://blockchain.fhcoin.club/img/bg.jpg')">
+      <img src="https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq" 
+           class="picture"/>
+      <div class="subtitle">
+        <h1>Steemia</h1>
+        <h2 >steemia@steemia.io</h2>
+      </div>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-9 class="info">
+            <ion-card>                
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col col-3>
+                      <ion-icon name="person"></ion-icon> {{ follower_count }}
+                    </ion-col>
+                    <ion-col col-3>
+                      <ion-icon name="person-add"></ion-icon> {{ following_count }}
+                    </ion-col>
+                    <ion-col col-3>
+                      <ion-icon name="document"></ion-icon>  {{ post_count }}
+                    </ion-col>
+                    <ion-col col-3>
+                      <ion-icon name="flash"></ion-icon>  {{ (voting_power/100).toFixed(0) }}
+                    </ion-col>
+                  </ion-row>
+                 </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+       </ion-grid> 
     </div>
-        <ion-grid>
-            <ion-row>
-              <ion-col col-9 class="info">
-                  <ion-card>                
-                      <ion-card-content>
-                          <ion-grid>
-                              <ion-row>
-                                  <ion-col col-3>
-                                        <ion-icon name="person"></ion-icon> {{ follower_count }}
-                                  </ion-col>
-                                  <ion-col col-3>
-                                      <ion-icon name="person-add"></ion-icon> {{ following_count }}
-                                  </ion-col>
-                                  <ion-col col-3>
-                                      <ion-icon name="document"></ion-icon>  {{ post_count }}
-                                  </ion-col>
-                                  <ion-col col-3>
-                                      <ion-icon name="flash"></ion-icon>  {{ (voting_power/100).toFixed(0) }}
-                                  </ion-col>
-                              </ion-row>
-                          </ion-grid>
-                      </ion-card-content>
-                    
-                    </ion-card>
-              </ion-col>
-            </ion-row>
-          </ion-grid> 
-    
-    
-  </div>
 
 
   <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
