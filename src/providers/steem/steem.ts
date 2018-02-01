@@ -28,6 +28,7 @@ const BY_PROMOTED = BASE_ENDPOINT + 'get_discussions_by_promoted?query=';
 const GET_COMMENTS = BASE_ENDPOINT + 'get_content_replies?';
 
 // PROFILE
+const GET_PROFILE = BASE_ENDPOINT + 'get_accounts?names[]='
 const BY_BLOG = BASE_ENDPOINT + 'get_discussions_by_blog?query=';
 
 // ENDPOINTS FOR FILTERING
@@ -51,8 +52,46 @@ export class SteemProvider {
   constructor(private http: Http) {}
 
   /**
+   * Method to get the profile of an user
+   * @param account: ['jaysermendez']
+   */
+  public getProfile(account: Array<String>) {
+    return this.http.get(GET_PROFILE + JSON.stringify(account))
+      .map(this.parseProfile)
+      .publishReplay(1)
+      .refCount()
+      .catch(this.catchErrors);
+  }
+
+  /**
+   * @method parseProfile: Method to parse profile data from the HTTP response
+   * @param {Response} res: Response from HTTP GET
+   * @returns returns the parsed response with the correct attributes
+   */
+  private parseProfile(res: Response) {
+    let response = res.json()
+    response.map(user => {
+      // Format the current author reputation
+      user.reputation = steem.formatter.reputation(user.reputation);
+
+      // Parse Metadata
+      try {
+        user.json_metadata = JSON.parse((user.json_metadata as string));
+      } catch (e) {
+        // do not parse JSON
+      }
+
+      // Parse created time
+      user.created = moment.utc(user.created).local().fromNow();
+
+    });
+
+    return response;
+  }
+
+  /**
    * Method to get post posted by an user
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getProfilePosts(query: Object) {
     return this.http.get(BY_BLOG + this.encodeQueryData(query))
@@ -103,7 +142,7 @@ export class SteemProvider {
 
   /**
    * Method to get Feed from current user.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getFeed(query: Object) {
     return this.http.get(BY_FEED + this.encodeParams(query))
@@ -115,7 +154,7 @@ export class SteemProvider {
 
    /**
    * Method to get posts filtered by hot.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
@@ -127,7 +166,7 @@ export class SteemProvider {
 
   /**
    * Method to get posts filtered by creation date.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
@@ -139,7 +178,7 @@ export class SteemProvider {
 
   /**
    * Method to get posts filtered by trending.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
@@ -151,7 +190,7 @@ export class SteemProvider {
 
   /**
    * Method to get posts filtered by promoted.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByPromoted(query: Object) {
     return this.http.get(BY_PROMOTED + this.encodeParams(query))
@@ -181,7 +220,6 @@ export class SteemProvider {
       } catch (e) {
         // do not parse JSON
       }
-      
 
       // Parse created time
       post.created = moment.utc(post.created).local().fromNow();

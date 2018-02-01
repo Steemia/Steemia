@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, App} from 'ionic-angular';
 import { DataProvider } from 'providers/data/data';
+import { SteemProvider } from 'providers/steem/steem';
 import { Post } from 'models/models';
 import * as moment from 'moment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
@@ -24,6 +25,7 @@ export class ProfilePage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public app: App,
+              private steemProvider: SteemProvider,
               private dataProvider: DataProvider) {
                 
     // Initialize the first load of data with a pager of 10.
@@ -32,7 +34,10 @@ export class ProfilePage {
     });
     
     this.getAccount();
-    this.getFollow();             
+    this.getFollow();        
+    this.steemProvider.getProfile(['jaysermendez']).subscribe(data => {
+      console.log(data)
+    })    
   }
 
   ionViewDidLoad() {
@@ -76,7 +81,7 @@ export class ProfilePage {
     .subscribe((data) => {
       this.post_count = data[0].post_count;
       this.voting_power = data[0].voting_power;
-      console.log(data[0]);
+      //console.log(data[0]);
     }) 
   }
   private getFollow() {
@@ -84,7 +89,7 @@ export class ProfilePage {
     .subscribe((data) => {
       this.follower_count = data.follower_count;
       this.following_count = data.following_count;
-      console.log(data);
+      //console.log(data);
     })
   }
 
@@ -114,14 +119,6 @@ export class ProfilePage {
     this.getBlog().then((content: Array<Post>) => {
       this.contents = content;
       infiniteScroll.complete();
-    });
-  }
-
-  private openPost(event) {
-    console.log(event)
-    this.app.getRootNav().push('PostSinglePage', {
-      permlink: event.Post.permlink,
-      author: event.Post.author
     });
   }
 
