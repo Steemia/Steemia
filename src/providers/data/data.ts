@@ -78,8 +78,7 @@ export class DataProvider {
     return res.json();
   }
     
-  private catchError(error: Response | any){
-    console.log(error);
+  private catchError(error: Response | any) {
     return Observable.throw(error.json().error || "Server Error")
   }
 

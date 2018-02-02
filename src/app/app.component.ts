@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav, MenuController } from 'ionic-angular';
+import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -26,29 +26,65 @@ export class MyApp {
 
   rootPage: string = 'TabsPage';
   user = "jaysermendez";
-  private isLoggedIn: boolean
+  private isLoggedIn: boolean = false;
 
   menuOptions: MaterialMenuOptions;
   private loggedInPages: MaterialMenuOptions;
   private loggedOutPages: MaterialMenuOptions;
+  private profilePicture: string = "./assets/steemlogo.png";
+  private profile;
+  private location: string;
+
 
   constructor(private platform: Platform, 
               private statusBar: StatusBar, 
               private splashScreen: SplashScreen,
-              steemProvider: SteemConnectProvider,
+              private steemConnect: SteemConnectProvider,
               private menuCtrl: MenuController,
-              steemActions: ActionsSteem) {
+              steemActions: ActionsSteem,
+              private events: Events) {
     
     this.initializeApp();
-    this.menuOptions = this.intializeMenu();
+    this.events.subscribe('publish:profile', (data) => {
+      this.profile = JSON.parse(data.account.json_metadata);
+      this.initializeLoggedInMenu();
+    });
 
+    this.events.subscribe('login:correct', () => {
+      this.initializeLoggedInMenu();
+    })
+    
+    this.initializeLoggedOutMenu();
+  }
+
+
+  private initializeLoggedOutMenu(): void {
+    this.loggedOutPages = {
+      header: {
+        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
+        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
+        picture: this.profilePicture,
+        username: 'Steemia',
+        email: 'steemia@steemia.io',
+        onClick: () => { alert('menu header clicked'); }
+      },
+      entries: [
+        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
+        { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
+      ]
+    };
+  }
+
+  private initializeLoggedInMenu(): void {
+    this.isLoggedIn = true;
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
-        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
-        username: 'Steemia',
-        email: 'steemia@steemia.io',
+        picture: this.profile.profile.profile_image,
+        username: this.profile.profile.name,
+        email: this.profile.profile.location,
         onClick: () => { alert('menu header clicked'); }
       },
       entries: [
@@ -56,26 +92,20 @@ export class MyApp {
         { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage") } },
         { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage("NotificationsPage") } },
         { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
+        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage("MessagesPage") } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
-      ]
-    };
-
-    this.loggedOutPages = {
-      header: {
-        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
-        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
-        username: 'Steemia',
-        email: 'steemia@steemia.io',
-        onClick: () => { alert('menu header clicked'); }
-      },
-      entries: [
-        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
-        { title: 'Login', leftIcon: 'settings', onClick: () => { this.openPage("LoginPage") } },
-        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
+        { title: 'Logout', leftIcon: 'log-out', onClick: () => { 
+          this.steemConnect.doLogout().then(data => {
+            if (data === 'done') {
+              this.menuCtrl.close().then(() => {
+                this.profilePicture = "./assets/steemlogo.png"
+                this.isLoggedIn = false;
+              });
+            }
+          })
+         } }
       ]
     };
   }
@@ -85,69 +115,17 @@ export class MyApp {
       this.user = 'hsynterkr';
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.statusBar.overlaysWebView(true);
+      this.statusBar.styleBlackOpaque();
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
     });
   }
 
-  private intializeMenu() {
-    let _t = this;
-    return {
-      header: {
-        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
-        picture: 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq',
-        username: 'Steemia',
-        email: 'steemia@steemia.io',
-        onClick: () => { alert('menu header clicked'); }
-      },
-      entries: [
-        {
-          title: 'Home',
-          leftIcon: 'home',
-          onClick: () => { this.nav.setRoot("FeedPage")}
-        },
-        { 
-          title: 'Wallet', 
-          leftIcon: 'cash', 
-          onClick: () => {  } 
-        },
-        { 
-          title: 'Notifications', 
-          leftIcon: 'notifications', 
-          onClick: () => { this.openPage("WalletPage") } 
-        },
-        { 
-          title: 'My Profile', 
-          leftIcon: 'person', 
-          onClick: () => { this.openPage("ProfilePage") } 
-        },
-        { 
-          title: 'Bookmarks', 
-          leftIcon: 'bookmarks', 
-          onClick: () => { this.openPage("BookmarksPage") } 
-        },
-        { 
-          title: 'Settings', 
-          leftIcon: 'settings', 
-          onClick: () => { this.openPage("SettingsPage") } 
-        },
-        { 
-          title: 'About', 
-          leftIcon: 'information-circle', 
-          onClick: () => { this.openPage("AboutPage") } 
-        }
-      ]
-    };
-  }
 
   private openPage(page: string): void {
     this.menuCtrl.close().then(() => {
       this.nav.push(page);
     });
-    
   }
 }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Events } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Subscription } from 'rxjs/Subscription';
@@ -15,18 +15,21 @@ export class LoginPage {
   constructor(public navCtrl: NavController, 
               private platform: Platform,
               public navParams: NavParams,
-              private steeem: SteemConnectProvider,
-              private iab: InAppBrowser) {
+              private steemConnect: SteemConnectProvider,
+              private iab: InAppBrowser,
+              private events: Events) {
 
-    this.loginUrl = this.steeem.loginUrl;
+    this.loginUrl = this.steemConnect.loginUrl;
+
 
   }
 
   private doLogin() {
     this.login().then(access_token => {
       if (access_token !== undefined && access_token !== null) {
-        this.steeem.setToken(access_token);
+        this.steemConnect.setToken(access_token);
         this.navCtrl.pop();
+        this.events.publish('login:correct');
       }
     });
   }
@@ -40,7 +43,7 @@ export class LoginPage {
   
         const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
           console.error("The Steemconnect sign in flow was canceled");
-          reject(new Error("The Steemconnect sign in flow was canceled"));
+          //reject(new Error("The Steemconnect sign in flow was canceled"));
         });
   
         browserRef.on("loadstart").subscribe((event) => {

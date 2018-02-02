@@ -1,0 +1,30 @@
+page-search {
+
+    .noResults {
+        height: 100% !important;
+        justify-content: center !important;
+    
+        p {
+          font-size: 1.2em !important;
+        }
+    }
+      
+    .notFound {
+        font-size: 7.5em !important;
+    }
+
+    .card {
+        background-color: transparent !important;
+
+        img {
+            width: 50%;
+        }
+    }
+
+    .ask-steem {
+        img {
+            width: 50%;
+        }
+    }
+
+}

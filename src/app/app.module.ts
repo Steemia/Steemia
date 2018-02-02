@@ -12,7 +12,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { ActionsSteem } from 'providers/steemconnect/actions';
 import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
-import { SteemProvider } from '../providers/steem/steem';
+import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -26,6 +26,9 @@ import { HttpClientModule } from '@angular/common/http';
     HttpModule,
     IonicModule.forRoot(MyApp, {
       tabsPlacement: 'top',
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
     }),
     IonicStorageModule.forRoot(),
   ],

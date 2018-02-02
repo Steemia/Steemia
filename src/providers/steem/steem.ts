@@ -4,9 +4,19 @@ import { Observable } from "rxjs/Observable";
 import { Post } from '../../models/models';
 import * as steem from 'steem';
 import * as moment from 'moment';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/publishReplay';
+import { forkJoin } from "rxjs/observable/forkJoin";
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
+
+// SEARCH ENDPOINT
+// https://github.com/Hoxly/asksteem-docs/wiki
+const SEARCH_ENDPOINT = 'https://api.asksteem.com/search?'
 
 // MAIN TABS CONTENT
 const BY_FEED = BASE_ENDPOINT + 'get_discussions_by_feed?query=';
@@ -19,7 +29,9 @@ const BY_PROMOTED = BASE_ENDPOINT + 'get_discussions_by_promoted?query=';
 const GET_COMMENTS = BASE_ENDPOINT + 'get_content_replies?';
 
 // PROFILE
+const GET_PROFILE = BASE_ENDPOINT + 'get_accounts?names[]='
 const BY_BLOG = BASE_ENDPOINT + 'get_discussions_by_blog?query=';
+const FOLLOWERS = BASE_ENDPOINT + 'get_follow_count?account='
 
 // ENDPOINTS FOR FILTERING
 const BY_VOTES = BASE_ENDPOINT + 'get_discussions_by_votes?query=';
@@ -36,10 +48,97 @@ const youtubeid = /(?:(?:youtube.com\/watch\?v=)|(?:youtu.be\/))([A-Za-z0-9\_\-]
 const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
 const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
+
 @Injectable()
 export class SteemProvider {
+  
+  constructor(private http: Http) {
+  }
 
-  constructor(private http: Http) {}
+  /**
+   * Method to get the profile of an user
+   * @param account: ['jaysermendez']
+   */
+  public getProfile(account: Array<String>) {
+
+    let profile = this.http.get(GET_PROFILE + JSON.stringify(account));
+    let followers = this.http.get(FOLLOWERS + account[0]);
+
+    return forkJoin([profile, followers])
+      .map(this.parseProfile)
+      .publishReplay(1)
+      .refCount()
+      .catch(this.catchErrors);
+  }
+
+  /**
+   * @method parseProfile: Method to parse profile data from the HTTP response
+   * @param {Response} res: Response from HTTP GET
+   * @returns returns the parsed response with the correct attributes
+   */
+  private parseProfile(res: Response[]) {
+    let response = res;
+    
+    try {
+      (response[0] as any)._body = JSON.parse(((response[0] as any)._body as string));
+      (response[0] as any)._body[0].json_metadata = JSON.parse(((response[0] as any)._body[0].json_metadata as string));
+      // Parse stats
+      (response[1] as any)._body = JSON.parse(((response[1] as any)._body as string));
+    }
+    catch (e) {
+      // do not parse data
+    }
+
+    // Parse reputation
+    (response[0] as any)._body[0].reputation =  steem.formatter.reputation((response[0] as any)._body[0].reputation);
+
+    // Parse created time
+    (response[0] as any)._body[0].created = moment.utc((response[0] as any)._body[0].created).local().fromNow();
+
+    return {
+      profile: (response[0] as any)._body[0],
+      stats: (response[1] as any)._body
+    }
+  }
+
+  /**
+   * Method to get post posted by an user
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getProfilePosts(query: Object) {
+    return this.http.get(BY_BLOG + this.encodeQueryData(query))
+      .map(this.parseData)
+      .publishReplay(1)
+      .refCount()
+      .catch(this.catchErrors);
+  }
+
+  /**
+   * @method getSearch: Perform the search with observables
+   * @param query: Observable object for the search
+   */
+  public getSearch(query: Observable<string>, sort_by: string, order: string) {
+    return query.debounceTime(400)
+        .distinctUntilChanged()
+        .switchMap(term => this.doSearch(term, sort_by, order));
+  }
+  
+  /**
+   * @method getSearch: Method to perform a search in the blockchain
+   * @param query: {"q": "test", "sort_by": "created", "order": "desc"}
+   */
+  public doSearch(query, sort_by: string, order: string) {
+    let params = {
+      q: query,
+      sort_by: sort_by,
+      order: order,
+      include: "meta"
+    };
+    return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
+      .map(res => res.json())
+      .catch(this.catchErrors);
+    
+  }
 
   /**
    * @method getComments: Method to retrieve comments from a post
@@ -48,46 +147,68 @@ export class SteemProvider {
   public getComments(query: Object) {
     return this.http.get(GET_COMMENTS + this.encodeQueryData(query))
       .map(this.parseData)
+      .publishReplay(1)
+      .refCount()
       .catch(this.catchErrors);
   }
 
   /**
    * Method to get Feed from current user.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getFeed(query: Object) {
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
    /**
    * Method to get posts filtered by hot.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
   /**
    * Method to get posts filtered by creation date.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
   /**
    * Method to get posts filtered by trending.
-   * @param query: {"limit":"10", "tags":"good-karma"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
         .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
+        .catch(this.catchErrors);
+  }
+
+  /**
+   * Method to get posts filtered by promoted.
+   * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
+   */
+  public getByPromoted(query: Object) {
+    return this.http.get(BY_PROMOTED + this.encodeParams(query))
+        .map(this.parseData)
+        .publishReplay(1)
+        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -97,7 +218,7 @@ export class SteemProvider {
    * @returns returns the parsed response with the correct attributes
    */
   private parseData(res: Response) {
-    let response = res.json()
+    let response = res.json();
     response.map(post => {
       // Format the current author reputation
       post.author_reputation = steem.formatter.reputation(post.author_reputation);
@@ -106,7 +227,11 @@ export class SteemProvider {
       post.pending_payout_value = parseFloat(post.pending_payout_value).toFixed(2);
 
       // Parse Metadata
-      post.json_metadata = JSON.parse((post.json_metadata as string));
+      try {
+        post.json_metadata = JSON.parse((post.json_metadata as string));
+      } catch (e) {
+        // do not parse JSON
+      }
 
       // Parse created time
       post.created = moment.utc(post.created).local().fromNow();
@@ -140,7 +265,7 @@ export class SteemProvider {
    * @param {Object} parameters: parameters to add to url
    * @returns url with the parameters added
    */
-  encodeQueryData(parameters: any) {
+  private encodeQueryData(parameters: any) {
     let ret = [];
     for (let d in parameters)
       ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(parameters[d]));

@@ -1,42 +1,50 @@
-import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
   selector: 'page-feed',
   templateUrl: 'feed.html'
 })
-export class FeedPage {
+export class FeedPage implements OnInit, OnDestroy {
 
+  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private perPage = 10;
+  private result: any;
 
-  constructor(private steemProvider: SteemProvider) {
+  constructor(private steemProvider: SteemProvider,
+              private appCtrl: App) {
 
-    // Initialize the first load of data with a pager of 10.
-    this.getFeed().then(data => {
+  }
+
+  public ngOnInit() {
+    this.getFeed()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
       this.contents = data;
-    })
+    });
+  }
 
+  public ngOnDestroy() {
+    this.destroyed$.next(); /* Emit a notification on the subject. */
+    this.destroyed$.complete();
   }
 
   /**
    * 
    * Method to get posts in the user feed
    * 
-   * @returns {Promise<Array<Post>>}: A promise with the requested posts.
+   * @returns Observable with an array of posts
    * @author Jayser Mendez.
    */
-  private getFeed(): Promise<Array<Post>> {
-    return new Promise((resolve) => {
-      this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
-      .subscribe((data: Array<Post>) => {
-        // Resolve the promise
-        resolve(data);
-      });
-    });
+  private getFeed(): Observable<Array<Post>> {
+    return this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
   }
 
   /**
@@ -46,8 +54,10 @@ export class FeedPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.getFeed().then((content: Array<Post>) => {
-      this.contents = content;
+    this.getFeed()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
+      this.contents = data;
       refresher.complete();
     });
   }
@@ -60,10 +70,19 @@ export class FeedPage {
    */
   private doInfinite(infiniteScroll): void {
     this.perPage += 10;
-    this.getFeed();
-    this.getFeed().then((content: Array<Post>) => {
-      this.contents = content;
+    this.getFeed()
+    .takeUntil( this.destroyed$ )
+    .subscribe((data: Array<Post>) => {
+      this.contents = data;
       infiniteScroll.complete();
     });
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.appCtrl.getRootNavs()[0].push(str);
   }
 }

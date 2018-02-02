@@ -8,22 +8,22 @@ import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
-  selector: 'page-trend',
-  templateUrl: 'trend.html',
+  selector: 'page-promoted',
+  templateUrl: 'promoted.html',
 })
-export class TrendPage implements OnInit, OnDestroy {
+export class PromotedPage implements OnInit, OnDestroy {
 
   private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private perPage = 10;
-  
+
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider) {
+              private steemProvider: SteemProvider) { 
 
   }
 
   public ngOnInit() {
-    this.getTrending()
+    this.getPromoted()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = data;
@@ -37,13 +37,13 @@ export class TrendPage implements OnInit, OnDestroy {
   
   /**
    * 
-   * Method to get posts filtered by trending.
+   * Method to get posts filtered by promoted
    * 
    * @returns Observable with an array of posts
    * @author Jayser Mendez.
    */
-  private getTrending(): Observable<Array<Post>> {
-    return this.steemProvider.getByTrending({tag:"", limit: this.perPage})
+  private getPromoted(): Observable<Array<Post>> {
+    return this.steemProvider.getByPromoted({tag:"", limit: this.perPage})
   }
 
   /**
@@ -53,7 +53,7 @@ export class TrendPage implements OnInit, OnDestroy {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.getTrending()
+    this.getPromoted()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = data;
@@ -69,7 +69,7 @@ export class TrendPage implements OnInit, OnDestroy {
    */
   private doInfinite(infiniteScroll): void {
     this.perPage += 10;
-    this.getTrending()
+    this.getPromoted()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = data;
@@ -84,4 +84,5 @@ export class TrendPage implements OnInit, OnDestroy {
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
   }
+
 }

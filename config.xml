@@ -19,6 +19,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -87,5 +88,6 @@
     <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
     <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
     <allow-navigation href="http://192.168.0.11:8100" />
+    <allow-navigation href="http://localhost:8100" />
     <engine name="android" spec="7.0.0" />
 </widget>

@@ -3,17 +3,23 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    
+  
     <ion-title>
-      Steemia
+      New
     </ion-title>
-    
+  
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (tap)="openPage('SearchPage')">
         <ion-icon name="ios-search-outline"></ion-icon>
       </button>
+      <button ion-button icon-only>
+        <ion-icon name="ios-notifications-outline"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="ios-options-outline"></ion-icon>
+      </button>
     </ion-buttons>
-        
+      
   </ion-navbar>
 </ion-header>
     
@@ -30,5 +36,9 @@
   <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (tap)="openPage('PostPage')"><ion-icon ios="md-create" md="md-create"></ion-icon></button>
+  </ion-fab>
     
 </ion-content>

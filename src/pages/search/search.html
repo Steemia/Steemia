@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+
+    <ion-title>
+        
+    </ion-title>
+
+    <ion-searchbar (ionInput)="performSearch($event.target.value)"
+                   placeholder="What are you looking for?">
+      </ion-searchbar>
+    
+  </ion-navbar>
+  
+</ion-header>
+
+<ion-content>
+
+  <ion-spinner *ngIf="isSearching"></ion-spinner>
+
+  <ion-grid class="noResults" *ngIf="!results && !isSearching">
+    <ion-row>
+      <ion-col text-center>
+        <div class="ask-steem" text-center>
+          <a href="https://www.asksteem.com"><img src="https://cdn.hoxly.com/asksteem/attribution.png"></a>
+          <p>This search engine is working thanks to https://www.asksteem.com</p>
+        </div>       
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="results && !isSearching">
+    <ion-item *ngFor="let result of results">
+      <ion-thumbnail item-start>
+        <img *ngIf="result.meta.image" [src]="result.meta.image[0]">
+      </ion-thumbnail>
+      <h2>{{ result.title }}</h2>
+      <p>{{ result.summary }}</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid *ngIf="results && objectKeys(results).length == 0 && !isSearching"class="noResults">
+    <ion-row>
+      <ion-col text-center>
+          <ion-icon name="search" class="notFound"></ion-icon>
+          <p>Sorry, we couldn't find any results matching this search.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
