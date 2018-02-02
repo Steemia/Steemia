@@ -49,9 +49,14 @@ export class MyApp {
       this.profile = JSON.parse(data.account.json_metadata);
       this.initializeLoggedInMenu();
     });
+
+    this.events.subscribe('login:correct', () => {
+      this.initializeLoggedInMenu();
+    })
     
     this.initializeLoggedOutMenu();
   }
+
 
   private initializeLoggedOutMenu(): void {
     this.loggedOutPages = {
@@ -65,9 +70,8 @@ export class MyApp {
       },
       entries: [
         { title: 'Home', leftIcon: 'home', onClick: () => {  } },
-        { title: 'Login', leftIcon: 'settings', onClick: () => { this.openPage("LoginPage") } },
-        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } }
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
+        { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
     };
   }
@@ -88,10 +92,20 @@ export class MyApp {
         { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage") } },
         { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage("NotificationsPage") } },
         { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
+        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage("MessagesPage") } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
-        { title: 'Login', leftIcon: 'information-circle', onClick: () => { this.openPage("LoginPage") } }
+        { title: 'Logout', leftIcon: 'log-out', onClick: () => { 
+          this.steemConnect.doLogout().then(data => {
+            if (data === 'done') {
+              this.menuCtrl.close().then(() => {
+                this.profilePicture = "./assets/steemlogo.png"
+                this.isLoggedIn = false;
+              });
+            }
+          })
+         } }
       ]
     };
   }

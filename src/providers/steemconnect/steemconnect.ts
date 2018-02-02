@@ -75,14 +75,7 @@ export class SteemConnectProvider {
           }
           catch (e) {}
         });
-
-        
-        
       }
-      
-      
-      
-
       // save a reference to the login url for later used.
       // This variable is public to scope in any component.
       this.loginUrl = this.steemData.getLoginURL();
@@ -153,6 +146,15 @@ export class SteemConnectProvider {
   public setToken(token: string) {
     this.steemData.setAccessToken(token);
     this.storage.set('access_token', token);
+  }
+
+  public doLogout() {
+    return new Promise((resolve, reject) => {
+      this.steemData.revokeToken((err, res) => {
+        if (err) reject('error');
+        else resolve('done');
+      });
+    }); 
   }
 
 

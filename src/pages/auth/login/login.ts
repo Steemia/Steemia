@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Events } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,7 +16,8 @@ export class LoginPage {
               private platform: Platform,
               public navParams: NavParams,
               private steemConnect: SteemConnectProvider,
-              private iab: InAppBrowser) {
+              private iab: InAppBrowser,
+              private events: Events) {
 
     this.loginUrl = this.steemConnect.loginUrl;
 
@@ -28,6 +29,7 @@ export class LoginPage {
       if (access_token !== undefined && access_token !== null) {
         this.steemConnect.setToken(access_token);
         this.navCtrl.pop();
+        this.events.publish('login:correct');
       }
     });
   }

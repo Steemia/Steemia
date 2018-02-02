@@ -51,8 +51,7 @@ const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
 @Injectable()
 export class SteemProvider {
-  public feed;
-  result: any;
+  
   constructor(private http: Http) {
   }
 
@@ -79,9 +78,12 @@ export class SteemProvider {
    */
   private parseProfile(res: Response[]) {
     let response = res;
-    (response[0] as any)._body = JSON.parse(((response[0] as any)._body as string));
+    
     try {
+      (response[0] as any)._body = JSON.parse(((response[0] as any)._body as string));
       (response[0] as any)._body[0].json_metadata = JSON.parse(((response[0] as any)._body[0].json_metadata as string));
+      // Parse stats
+      (response[1] as any)._body = JSON.parse(((response[1] as any)._body as string));
     }
     catch (e) {
       // do not parse data
@@ -92,9 +94,6 @@ export class SteemProvider {
 
     // Parse created time
     (response[0] as any)._body[0].created = moment.utc((response[0] as any)._body[0].created).local().fromNow();
-    
-    // Parse stats
-    (response[1] as any)._body = JSON.parse(((response[1] as any)._body as string));
 
     return {
       profile: (response[0] as any)._body[0],
