@@ -18,6 +18,7 @@ import { App } from 'ionic-angular';
 export class PostRenderComponent {
 
   @Input('posts') private contents: Array<Post> = [];
+  private no_image: string = 'http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder2.png';
 
   constructor(public app: App) { }
 
