@@ -13,7 +13,8 @@
               <img src="https://img.busy.org/@{{content.author}}?s=100">
             </ion-avatar>
             <div>
-              {{ content.author }} ({{ content.author_reputation }})
+              <ion-badge color="gray"> {{ content.author }}</ion-badge>
+              <ion-badge color="primary"> {{ content.author_reputation }} </ion-badge>
             </div>
             <div class="mt3">
               <ion-badge color="light">

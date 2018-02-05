@@ -10,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/publishReplay';
 import { forkJoin } from "rxjs/observable/forkJoin";
+import marked from 'marked';
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
@@ -258,6 +259,8 @@ export class SteemProvider {
         }
       });
 
+      comment.body = marked(comment.body);
+
       // Parse created time
       comment.created = moment.utc(comment.created).local().fromNow();
 
@@ -305,6 +308,7 @@ export class SteemProvider {
    * @returns returns an observable with the error
    */
   private catchErrors(error: Response | any) {
+    console.log(error)
     return Observable.throw(error.json().error || "Server Error");
   }
 

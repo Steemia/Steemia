@@ -2,7 +2,9 @@
 
   <ion-navbar color="primary">
     <ion-buttons>
-      <button ion-button (tap)="dismiss()">Close</button>
+      <button ion-button (tap)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+      </button>
     </ion-buttons>
 
     <ion-title>Comments</ion-title>
@@ -18,32 +20,22 @@
     <div>
       <img class="profile-pic left" [src]="comment.profile_image" />
       <!--  wave-->
-      <div class="chat-bubble left slide-left">
+      <div class="chat-bubble left slide-left" (tap)="openReplies(comment)">
 
         <div>
-          <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong>
+          <ion-badge color="gray"> {{ comment.author }}</ion-badge>
+          <ion-badge color="primary"> {{ comment.author_reputation }} </ion-badge>
+          <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
+          &nbsp;&nbsp;<span class="created_date">{{ comment.created }}</span>
           <div class="message" [innerHTML]="comment.body" autolinker></div>
         </div>
 
         <div class="message-detail">
-          <!-- <ion-grid>
-            <ion-row>
-              <ion-col>
-                <button ion-button clear small>
-                  <ion-icon name="ios-thumbs-up"></ion-icon>
-                  &nbsp;
-                  < <div>{{ content.net_votes }}</div>>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-grid> -->
-          <!-- <span (click)="viewProfile(message)" class="bold">{{toUser.username}}</span>, -->
-          <!-- <span>{{message.date | moment:"ago" | lowercase}}</span> -->
         </div>
 
       </div>
       <div class="meta">
-        {{ comment.created }}&nbsp;&nbsp; &nbsp; {{ comment.net_votes }} Votes &nbsp;&nbsp; &nbsp;{{ comment.children }} Replies
+        {{ comment.net_votes }} Votes &nbsp;&nbsp; &nbsp;{{ comment.children }} Replies
         &nbsp;&nbsp; &nbsp; ${{ comment.pending_payout_value }}
       </div>
     </div>
