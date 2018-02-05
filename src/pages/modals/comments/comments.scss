@@ -9,7 +9,18 @@ page-comments {
             display: block;
             margin-left: 55px;
             margin-bottom: 7px;
-            text-transform: capitalize;
+      }
+
+      #rounded {
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 10px;
+        }
+    
+
+      ion-footer {
+            border-top: 1px solid #d8d8d8;
+            background-color: white;
       }
 
       /* allows the bar-footer to be elastic /*
@@ -79,7 +90,7 @@ page-comments {
       }
       
       .chat-bubble {
-            border-radius: 10px;
+            border-radius: 14px;
             display: inline-block;
             padding: 10px 10px;
             position: relative;
@@ -111,7 +122,7 @@ page-comments {
       }
       
       input, textarea, .item-input, .item-input-wrapper {
-            background-color: #f4f4f4 !important;
+            background-color: #ffffff !important;
       }
       
       .bold {

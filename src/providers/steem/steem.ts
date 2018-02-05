@@ -237,11 +237,26 @@ export class SteemProvider {
         // do not parse JSON
       }
 
-      if (!comment.json_metadata.image) {
-        comment.json_metadata.image = [NO_IMAGE];
-      }
-
       comment.profile_image = BUSY_IMAGE + comment.author;
+
+      moment.locale('en', {
+        relativeTime: {
+          future: 'in %s',
+          past: '%s ago',
+          s:  'seconds',
+          ss: '%ss',
+          m:  '%dm',
+          mm: '%dm',
+          h:  '%dh',
+          hh: '%dh',
+          d:  'a day',
+          dd: '%dd',
+          M:  'a month',
+          MM: '%dM',
+          y:  'a year',
+          yy: '%dY'
+        }
+      });
 
       // Parse created time
       comment.created = moment.utc(comment.created).local().fromNow();

@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-buttons>
       <button ion-button (tap)="dismiss()">Close</button>
     </ion-buttons>
@@ -43,14 +43,13 @@
 
       </div>
       <div class="meta">
-        {{ comment.created }}&nbsp; |
-        &nbsp; 0 Votes &nbsp; |
-        &nbsp; Reply
+        {{ comment.created }}&nbsp;&nbsp; &nbsp; {{ comment.net_votes }} Votes &nbsp;&nbsp; &nbsp;{{ comment.children }} Replies
+        &nbsp;&nbsp; &nbsp; ${{ comment.pending_payout_value }}
       </div>
     </div>
-    
+
     <div class="cf"></div>
-    
+
   </div>
 
 </ion-content>
@@ -58,7 +57,7 @@
 <ion-footer>
   <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
     <ion-item>
-      <ion-input formControlName="message" [(ngModel)]="chatBox" placeholder="Bla bla bla bla"></ion-input>
+      <ion-input formControlName="message" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input>
       <button ion-button clear (click)="send(chatBox)" item-end>
         <ion-icon class="footer-btn" name="send"></ion-icon>
       </button>
