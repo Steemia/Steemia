@@ -1,0 +1,67 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons>
+      <button ion-button (tap)="dismiss()">Close</button>
+    </ion-buttons>
+
+    <ion-title>Comments</ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <div *ngFor="let comment of comments" class="message-wrapper">
+    <div>
+      <img class="profile-pic left" [src]="comment.profile_image" />
+      <!--  wave-->
+      <div class="chat-bubble left slide-left">
+
+        <div>
+          <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong>
+          <div class="message" [innerHTML]="comment.body" autolinker></div>
+        </div>
+
+        <div class="message-detail">
+          <!-- <ion-grid>
+            <ion-row>
+              <ion-col>
+                <button ion-button clear small>
+                  <ion-icon name="ios-thumbs-up"></ion-icon>
+                  &nbsp;
+                  < <div>{{ content.net_votes }}</div>>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid> -->
+          <!-- <span (click)="viewProfile(message)" class="bold">{{toUser.username}}</span>, -->
+          <!-- <span>{{message.date | moment:"ago" | lowercase}}</span> -->
+        </div>
+
+      </div>
+      <div class="meta">
+        {{ comment.created }}&nbsp; |
+        &nbsp; 0 Votes &nbsp; |
+        &nbsp; Reply
+      </div>
+    </div>
+    
+    <div class="cf"></div>
+    
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
+    <ion-item>
+      <ion-input formControlName="message" [(ngModel)]="chatBox" placeholder="Bla bla bla bla"></ion-input>
+      <button ion-button clear (click)="send(chatBox)" item-end>
+        <ion-icon class="footer-btn" name="send"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
+</ion-footer>

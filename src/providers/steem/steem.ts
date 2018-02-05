@@ -48,6 +48,10 @@ const youtubeid = /(?:(?:youtube.com\/watch\?v=)|(?:youtu.be\/))([A-Za-z0-9\_\-]
 const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
 const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
+// IMAGES
+const NO_IMAGE = 'http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder2.png';
+const BUSY_IMAGE = 'https://img.busy.org/@'
+
 
 @Injectable()
 export class SteemProvider {
@@ -146,7 +150,7 @@ export class SteemProvider {
    */
   public getComments(query: Object) {
     return this.http.get(GET_COMMENTS + this.encodeQueryData(query))
-      .map(this.parseData)
+      .map(this.parseComment)
       .publishReplay(1)
       .refCount()
       .catch(this.catchErrors);
@@ -217,6 +221,41 @@ export class SteemProvider {
    * @param {Response} res: Response from HTTP GET
    * @returns returns the parsed response with the correct attributes
    */
+  private parseComment(res: Response) {
+    let response = res.json();
+    response.map(comment => {
+      // Format the current author reputation
+      comment.author_reputation = steem.formatter.reputation(comment.author_reputation);
+
+      // Parse pending payout value to float fixed to 2
+      comment.pending_payout_value = parseFloat(comment.pending_payout_value).toFixed(2);
+
+      // Parse Metadata
+      try {
+        comment.json_metadata = JSON.parse((comment.json_metadata as string));
+      } catch (e) {
+        // do not parse JSON
+      }
+
+      if (!comment.json_metadata.image) {
+        comment.json_metadata.image = [NO_IMAGE];
+      }
+
+      comment.profile_image = BUSY_IMAGE + comment.author;
+
+      // Parse created time
+      comment.created = moment.utc(comment.created).local().fromNow();
+
+    });
+
+    return response;
+  }
+
+  /**
+   * @method parseData: Method to parse data from the HTTP response
+   * @param {Response} res: Response from HTTP GET
+   * @returns returns the parsed response with the correct attributes
+   */
   private parseData(res: Response) {
     let response = res.json();
     response.map(post => {
@@ -231,6 +270,10 @@ export class SteemProvider {
         post.json_metadata = JSON.parse((post.json_metadata as string));
       } catch (e) {
         // do not parse JSON
+      }
+
+      if (!post.json_metadata.image) {
+        post.json_metadata.image = [NO_IMAGE];
       }
 
       // Parse created time

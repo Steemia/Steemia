@@ -29,12 +29,9 @@
           <h2 style="overflow: scroll" padding>{{ content.title }}</h2>
 
           <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div>
-          <div *ngIf="!content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + no_image + ')'}"></div>
+          
           <!--img *ngIf="content.json_metadata.image" [src]="content.json_metadata.image[0]"-->
 
-          
-          
-        
         </ion-card-content>
 
         <ion-row>
@@ -47,7 +44,7 @@
           </ion-col>
       
           <ion-col col-4 text-center>
-            <button ion-button clear small left>
+            <button ion-button clear small left (tap)="openComments(content)">
               <ion-icon name="ios-text"></ion-icon>
               &nbsp;
               <div>{{ content.children }}</div>

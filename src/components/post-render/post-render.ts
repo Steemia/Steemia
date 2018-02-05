@@ -8,7 +8,7 @@
 
 import { Component, Input } from '@angular/core';
 import { Post } from 'models/models';
-import { App } from 'ionic-angular';
+import { App, ModalController } from 'ionic-angular';
 
 
 @Component({
@@ -20,7 +20,8 @@ export class PostRenderComponent {
   @Input('posts') private contents: Array<Post> = [];
   private no_image: string = 'http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder2.png';
 
-  constructor(public app: App) { }
+  constructor(public app: App, 
+              public modalCtrl: ModalController) { }
 
   /**
    * Method to emit clicked event of a post to main
@@ -32,6 +33,11 @@ export class PostRenderComponent {
     this.app.getRootNavs()[0].push('PostSinglePage', {
       post: post
     })
+  }
+
+  private openComments(post) {
+    let profileModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
+    profileModal.present();
   }
 
 }
