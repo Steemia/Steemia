@@ -290,15 +290,36 @@ export class SteemProvider {
         // do not parse JSON
       }
 
+      // set default image is there is not one
       if (!post.json_metadata.image) {
         post.json_metadata.image = [NO_IMAGE];
+      }
+
+      // initiliaze an empty array for the voters
+      post.voters = [];
+
+      // grab the voters and join their profile image
+      // limit it to three or less
+      if (post.active_votes.length != 0) {
+        let length = post.active_votes.length
+        for(let i = 0; i < 3; i++) {
+          if (post.active_votes[i]) {
+            let voter = {
+              username: post.active_votes[i].voter,
+              profile_picture: BUSY_IMAGE + post.active_votes[i].voter
+            };
+            post.voters.push(voter)
+
+          }
+          
+        }
       }
 
       // Parse created time
       post.created = moment.utc(post.created).local().fromNow();
 
     });
-
+    console.log(response)
     return response;
   }
 

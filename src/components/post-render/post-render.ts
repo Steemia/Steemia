@@ -36,8 +36,8 @@ export class PostRenderComponent {
   }
 
   private openComments(post) {
-    let profileModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
-    profileModal.present();
+    let commentModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
+    commentModal.present();
   }
 
 }
