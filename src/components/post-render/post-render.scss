@@ -13,6 +13,41 @@ post-render {
         background-position: 50% 50%;
         background-repeat:   no-repeat;
         background-size:     cover;
+        border-bottom: 1.2px solid #e8e7e7;
+    }
+
+    .voters_image {
+        display:inline-block;
+        width: 25px; 
+        height: 25px; 
+        
+        img {
+            border-radius: 50%;
+            border: 1.5px solid white;
+        }
+    }
+
+    .voters_image:not(:first-of-type) {
+        margin-left: -6px;
+    }
+
+    .voters {
+        float: left;
+        padding: 5px;
+    }
+
+    .likes {
+        float: left;
+        padding: 10px 10px 10px 0;
+
+        p {
+            font-weight: 500;
+            font-size: 12px;
+        }
+    }
+
+    .button-clear {
+        color: #565656 !important;
     }
 
 }

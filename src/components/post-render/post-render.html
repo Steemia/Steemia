@@ -23,6 +23,7 @@
               </ion-badge>
               <ion-note end >{{ content.created }}</ion-note>
             </div>
+            <ion-icon name="heart-outline" item-right></ion-icon>
           </ion-item>
         </ion-card-header>
 
@@ -36,15 +37,20 @@
         </ion-card-content>
 
         <ion-row>
-          <ion-col col-4 text-center>
-            <button ion-button clear small>
-              <ion-icon name="ios-thumbs-up"></ion-icon>
-              &nbsp;
-              <div>{{ content.net_votes }}</div>
-            </button>
+          <ion-col col-5 text-center>
+            <div style="float: left;" *ngIf="content.voters">
+              <div class="voters">
+                <span class="voters_image" *ngFor="let voter of content.voters">
+                  <img [src]="voter.profile_picture">
+                </span>
+              </div>
+              <div class="likes">
+                <p>{{ content.net_votes }} likes</p>
+              </div>    
+            </div>
           </ion-col>
       
-          <ion-col col-4 text-center>
+          <ion-col col-3 text-center>
             <button ion-button clear small left (tap)="openComments(content)">
               <ion-icon name="ios-text"></ion-icon>
               &nbsp;
