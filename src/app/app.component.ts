@@ -3,8 +3,9 @@ import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-import { ActionsSteem }  from 'providers/steemconnect/actions';
+//import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
+import { SteemProvider } from 'providers/steem/steem';
 
 export interface PageInterface {
   title: string;
@@ -41,20 +42,27 @@ export class MyApp {
               private splashScreen: SplashScreen,
               private steemConnect: SteemConnectProvider,
               private menuCtrl: MenuController,
-              steemActions: ActionsSteem,
-              private events: Events) {
+              private events: Events,
+              private steemProvider: SteemProvider) {
     
     this.initializeApp();
-    this.events.subscribe('publish:profile', (data) => {
-      this.profile = JSON.parse(data.account.json_metadata);
-      this.initializeLoggedInMenu();
-    });
+    this.steemConnect.loginStatus.subscribe(status => {
+      if (status === true) {
 
-    this.events.subscribe('login:correct', () => {
-      this.initializeLoggedInMenu();
-    })
+        this.steemConnect.instance.me((err, res) => {
+          console.log(err, res)
+          this.steemProvider.getProfile([res.user]).subscribe(data => {
+            this.profile = data.profile.json_metadata.profile;
+            this.initializeLoggedInMenu();
+          })  
+        })
+        
+      } 
+      else {
+        this.initializeLoggedOutMenu()
+      }
+    });
     
-    this.initializeLoggedOutMenu();
   }
 
 
@@ -76,15 +84,23 @@ export class MyApp {
     };
   }
 
+  isBadgeEntry(entry) {
+    return entry.badge && entry.badge.text;
+  }
+
+  isDividerEntry(entry) {
+    return entry.isDivider && entry.isDivider === true;
+  }
+
   private initializeLoggedInMenu(): void {
     this.isLoggedIn = true;
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
-        picture: this.profile.profile.profile_image,
-        username: this.profile.profile.name,
-        email: this.profile.profile.location,
+        picture: this.profile.profile_image,
+        username: this.profile.name,
+        email: this.profile.location || '',
         onClick: () => { alert('menu header clicked'); }
       },
       entries: [

@@ -92,6 +92,7 @@ export class SteemProvider {
     }
     catch (e) {
       // do not parse data
+      console.log("not parsing")
     }
 
     // Parse reputation

@@ -25,13 +25,11 @@ export class LoginPage {
   }
 
   private doLogin() {
-    this.login().then(access_token => {
-      if (access_token !== undefined && access_token !== null) {
-        this.steemConnect.setToken(access_token);
+    this.steemConnect.login().then(res => {
+      if (res === 'success') {
         this.navCtrl.pop();
-        this.events.publish('login:correct');
       }
-    });
+    })
   }
 
   private login(): Promise<any> {

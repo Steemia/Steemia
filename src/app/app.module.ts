@@ -9,11 +9,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { MyApp } from './app.component';
 import { DataProvider } from 'providers/data/data';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-import { ActionsSteem } from 'providers/steemconnect/actions';
+//import { ActionsSteem } from 'providers/steemconnect/actions';
 import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
       autoFocusAssist: false
     }),
     IonicStorageModule.forRoot(),
+    AsyncLocalStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -43,7 +45,7 @@ import { HttpClientModule } from '@angular/common/http';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataProvider,
     SteemProvider,
-    ActionsSteem,
+    //ActionsSteem,
     SteemConnectProvider
   ]
 })

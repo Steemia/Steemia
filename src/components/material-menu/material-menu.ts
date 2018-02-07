@@ -41,7 +41,7 @@ export class MaterialMenuComponent implements OnInit {
 
 export interface MaterialMenuOptions {
   header: {
-    background: string,
+    background?: string,
     picture: string,
     username: string,
     email?: string,
