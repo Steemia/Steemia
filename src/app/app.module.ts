@@ -15,6 +15,7 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
 import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
+import { SteemiaProvider } from '../providers/steemia/steemia';
 
 @NgModule({
   declarations: [
@@ -44,9 +45,9 @@ import { AsyncLocalStorageModule } from 'angular-async-local-storage';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataProvider,
+    SteemConnectProvider,
     SteemProvider,
-    //ActionsSteem,
-    SteemConnectProvider
+    SteemiaProvider,
   ]
 })
 export class AppModule {}

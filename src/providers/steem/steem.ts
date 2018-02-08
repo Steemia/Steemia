@@ -11,6 +11,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/publishReplay';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import marked from 'marked';
+import steemConnect from '../steemconnect/steemConnectAPI';
 
 // BASE ENPOINT
 const BASE_ENDPOINT = 'https://api.steemjs.com/';
@@ -56,8 +57,10 @@ const BUSY_IMAGE = 'https://img.busy.org/@'
 
 @Injectable()
 export class SteemProvider {
-  
+  private username: string = '';
   constructor(private http: Http) {
+
+    
   }
 
   /**
@@ -299,18 +302,37 @@ export class SteemProvider {
       // initiliaze an empty array for the voters
       post.voters = [];
 
+      post.isVoting = false;
+      post.voted = false
+      // Find if the current logged in user has voted for this post
+      steemConnect.me((err, res) => {
+        if (!err) {
+          if (res.user !== undefined || res.user !== null ) {
+            post.active_votes.find((vote) => {
+              if (vote.voter == res.user && vote.weight > 0) {
+                post.voted = true
+              }
+              if (vote.voter == res.user && vote.weight <= 0) {
+                post.voted = false
+              }
+            })
+          }
+        }  
+      });
+
       // grab the voters and join their profile image
       // limit it to three or less
       if (post.active_votes.length != 0) {
         let length = post.active_votes.length
         for(let i = 0; i < 3; i++) {
           if (post.active_votes[i]) {
-            let voter = {
-              username: post.active_votes[i].voter,
-              profile_picture: BUSY_IMAGE + post.active_votes[i].voter
-            };
-            post.voters.push(voter)
-
+            if (post.active_votes[i].weight > 0) {
+              let voter = {
+                username: post.active_votes[i].voter,
+                profile_picture: BUSY_IMAGE + post.active_votes[i].voter
+              };
+              post.voters.push(voter)
+            }
           }
           
         }

@@ -1,14 +1,16 @@
 export interface Post {
     abs_rshares?: number;
     active?: Date;
-    active_votes?: {
+    isVoting?: Boolean;
+    voted?: Boolean;
+    active_votes?: Array<{
         percent?: number;
         reputation?: number;
         rshares?: number;
         time?: Date;
         voter?: string;
         weight?: number;
-    };
+    }>;
     allow_curation_rewards?: boolean;
     allow_replies?: boolean;
     allow_votes?: boolean;
