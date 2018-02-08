@@ -51,14 +51,11 @@ export class SteemConnectProvider {
         SteemConnect.me((err, res) => {
           this.user = res.user
           this.username.next(res.user);
-          console.log(this.user)
-        })
-        //this.testVote()
+        });
       }
     })
 
     this.loginUrl = SteemConnect.getLoginURL();
-    console.log(this.loginUrl)
   }
 
   private getToken() {
@@ -166,7 +163,7 @@ export class SteemConnectProvider {
         headers.append('Accept', 'application/json')
         headers.append('Authorization', this.access_token);
         const options = new RequestOptions({ headers: headers });
-        
+
         this.http.post('https://v2.steemconnect.com/api/broadcast', {
           "operations": [
             ["vote", {
@@ -184,6 +181,23 @@ export class SteemConnectProvider {
 
       }
     })
+  }
+
+  public castComment(author, permlink, comment_permlink, body) {
+    return new Promise((resolve) => {
+      SteemConnect.comment(
+        author, // Author of the post
+        permlink, // Permlink of the post
+        this.user, // Username of the commenter
+        comment_permlink, // permlink of the comment if it is a reply, otherwise, normal permlink
+        '', // empty by default
+        body, // body of the comment
+        { "tags": ["writing"], "app": "steemia/0.1" }, (err, res) => {
+          if (!err) resolve('commented')
+          else resolve('error_ocurred')
+        });
+    })
+
   }
 
 
