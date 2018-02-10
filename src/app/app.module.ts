@@ -30,7 +30,8 @@ import { SteemiaProvider } from '../providers/steemia/steemia';
       tabsPlacement: 'top',
       scrollPadding: false,
       scrollAssist: true,
-      autoFocusAssist: false
+      autoFocusAssist: false,
+      preloadModules: true
     }),
     IonicStorageModule.forRoot(),
     AsyncLocalStorageModule

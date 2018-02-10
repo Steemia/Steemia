@@ -61,7 +61,15 @@ export class SteemProvider {
   private username: string = '';
   private user;
 
-  constructor(private http: Http) {}
+  // Pagination holders
+  // FEED
+
+
+  constructor(private http: Http) {
+
+    // Auto find the current user data
+    
+  }
 
   /**
    * Method to get the profile of an user
@@ -95,7 +103,6 @@ export class SteemProvider {
     }
     catch (e) {
       // do not parse data
-      console.log("not parsing")
     }
 
     // Parse reputation
@@ -166,6 +173,7 @@ export class SteemProvider {
    * @param query: {"limit":"10", "tags":"jaysermendez"} OR {"start_author":"author", "permlink":"permlink"} for pagination
    */
   public getFeed(query: Object) {
+    
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map((res) => this.parseData(res))
         .publishReplay(1)
@@ -316,10 +324,10 @@ export class SteemProvider {
               if (vote.voter == res.user && vote.weight <= 0) {
                 post.voted = false
               }
-            })
+            });
           }
         }
-      })
+      });
 
       // grab the voters and join their profile image
       // limit it to three or less
@@ -345,8 +353,12 @@ export class SteemProvider {
     return response;
   }
 
+  /**
+   * Method to return profile data of the logged in user.
+   * First, it will try to load the data from the variable if available,
+   * if not, it will call the API and return a promise with this data.
+   */
   private fetchMe() {
-
     if (this.user) {
       // already loaded data
       return Promise.resolve(this.user);
@@ -358,6 +370,7 @@ export class SteemProvider {
           this.user = res;
           resolve(res)
         }
+        else resolve(null)
       })
     })
   }

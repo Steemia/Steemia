@@ -1,39 +1,55 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
-@IonicPage()
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-feed',
   templateUrl: 'feed.html'
 })
-export class FeedPage implements OnInit, OnDestroy {
+export class FeedPage {
 
   private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private perPage = 10;
   private result: any;
+  private username: string = 'steemit';
 
   constructor(private steemProvider: SteemProvider,
-              private appCtrl: App) {
+              private appCtrl: App,
+              private steemConnect: SteemConnectProvider) {
+
+    this.steemConnect.username.subscribe(user => {
+      if (user !== null) {
+        this.username = user;
+        this.dispatchFeed();
+      }
+    })
 
   }
 
-  public ngOnInit() {
+  ionViewDidLoad() {
+    this.dispatchFeed();
+  }
+
+  ionViewDidLeave() {
+    this.destroyed$.next(); /* Emit a notification on the subject. */
+    this.destroyed$.complete();
+  }
+
+  private dispatchFeed() {
     this.getFeed()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = data;
     });
-  }
-
-  public ngOnDestroy() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
   }
 
   /**
@@ -44,7 +60,11 @@ export class FeedPage implements OnInit, OnDestroy {
    * @author Jayser Mendez.
    */
   private getFeed(): Observable<Array<Post>> {
-    return this.steemProvider.getFeed({tag:"jaysermendez", limit: this.perPage})
+    console.log("feed", this.username)
+    return this.steemProvider.getFeed({
+      limit: this.perPage,
+      tag: this.username
+    })
   }
 
   /**
