@@ -57,11 +57,11 @@ const BUSY_IMAGE = 'https://img.busy.org/@'
 
 @Injectable()
 export class SteemProvider {
-  private username: string = '';
-  constructor(private http: Http) {
 
-    
-  }
+  private username: string = '';
+  private user;
+
+  constructor(private http: Http) {}
 
   /**
    * Method to get the profile of an user
@@ -167,7 +167,7 @@ export class SteemProvider {
    */
   public getFeed(query: Object) {
     return this.http.get(BY_FEED + this.encodeParams(query))
-        .map(this.parseData)
+        .map((res) => this.parseData(res))
         .publishReplay(1)
         .refCount()
         .catch(this.catchErrors);
@@ -179,7 +179,7 @@ export class SteemProvider {
    */
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
-        .map(this.parseData)
+    .map((res) => this.parseData(res))
         .publishReplay(1)
         .refCount()
         .catch(this.catchErrors);
@@ -191,7 +191,7 @@ export class SteemProvider {
    */
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
-        .map(this.parseData)
+        .map((res) => this.parseData(res))
         .publishReplay(1)
         .refCount()
         .catch(this.catchErrors);
@@ -203,7 +203,7 @@ export class SteemProvider {
    */
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
-        .map(this.parseData)
+        .map((res) => this.parseData(res))
         .publishReplay(1)
         .refCount()
         .catch(this.catchErrors);
@@ -215,7 +215,7 @@ export class SteemProvider {
    */
   public getByPromoted(query: Object) {
     return this.http.get(BY_PROMOTED + this.encodeParams(query))
-        .map(this.parseData)
+        .map((res) => this.parseData(res))
         .publishReplay(1)
         .refCount()
         .catch(this.catchErrors);
@@ -280,7 +280,8 @@ export class SteemProvider {
    */
   private parseData(res: Response) {
     let response = res.json();
-    response.map(post => {
+    let profile = this.fetchMe();
+    response.map((post) => {
       // Format the current author reputation
       post.author_reputation = steem.formatter.reputation(post.author_reputation);
 
@@ -305,8 +306,8 @@ export class SteemProvider {
       post.isVoting = false;
       post.voted = false
       // Find if the current logged in user has voted for this post
-      steemConnect.me((err, res) => {
-        if (!err) {
+      profile.then(res => {
+        if (res) {
           if (res.user !== undefined || res.user !== null ) {
             post.active_votes.find((vote) => {
               if (vote.voter == res.user && vote.weight > 0) {
@@ -317,13 +318,12 @@ export class SteemProvider {
               }
             })
           }
-        }  
-      });
+        }
+      })
 
       // grab the voters and join their profile image
       // limit it to three or less
       if (post.active_votes.length != 0) {
-        let length = post.active_votes.length
         for(let i = 0; i < 3; i++) {
           if (post.active_votes[i]) {
             if (post.active_votes[i].weight > 0) {
@@ -334,7 +334,6 @@ export class SteemProvider {
               post.voters.push(voter)
             }
           }
-          
         }
       }
 
@@ -344,6 +343,23 @@ export class SteemProvider {
     });
     console.log(response)
     return response;
+  }
+
+  private fetchMe() {
+
+    if (this.user) {
+      // already loaded data
+      return Promise.resolve(this.user);
+    }
+
+    return new Promise((resolve, reject) => {
+      steemConnect.me((err, res) => {
+        if (!err) {
+          this.user = res;
+          resolve(res)
+        }
+      })
+    })
   }
 
   /**

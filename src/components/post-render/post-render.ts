@@ -20,24 +20,21 @@ import steemInstance from 'providers/steemconnect/steemConnectAPI';
 export class PostRenderComponent {
 
   @Input('posts') private contents: Array<Post> = [];
-  private no_image: string = 'http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder2.png';
-  private isVoting: boolean = false;
   private username: string = '';
 
-  constructor(public app: App, 
-              public modalCtrl: ModalController,
+  constructor(private app: App, 
+              private modalCtrl: ModalController,
               private steemConnect: SteemConnectProvider) { 
 
+    // Subscribe to the current username logged in
     this.steemConnect.username.subscribe(user => {
       this.username = user;
-    })
+    });
   }
 
   /**
-   * Method to emit clicked event of a post to main
-   * component.
+   * Method to open the single page of a post
    * @param post 
-   * @param meta
    */
   private postOpen(post) {
     this.app.getRootNavs()[0].push('PostSinglePage', {
@@ -45,21 +42,38 @@ export class PostRenderComponent {
     })
   }
 
+  /**
+   * Method to open a modal with the comments of the post
+   * @param post 
+   */
   private openComments(post) {
     let commentModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
     commentModal.present();
   }
 
-  private castVote(i, author, permlink, weight = 1000) {
-    this.contents[i].isVoting = true
-    console.log(this.username)
+  /**
+   * Method to cast a vote or unvote
+   * @param i 
+   * @param author 
+   * @param permlink 
+   * @param weight 
+   */
+  private castVote(i: number, author: string, permlink: string, weight: number = 1000) {
+    // Set the is voting value of the post to true
+    this.contents[i].isVoting = true;
     steemInstance.vote(this.username, author, permlink, weight, (err, res) => {
+
+      // Check for errors
       if (!err) {
+        // remove the is voting flag
         this.contents[i].isVoting = false
 
+        // check if vote is not an unvote
         if (weight > 0) {
           this.contents[i].voted = true;
         }
+
+        // perform the downvote
         else {
           this.contents[i].voted = false;
         }
@@ -67,10 +81,14 @@ export class PostRenderComponent {
     });
   }
 
-  private isVoted(i) {
-    this.contents[i].active_votes.filter(vote => {
-      return vote.voter.indexOf('jaysermendez') !== -1
-    })
+  /**
+   * Method to add pluralization to the likes in the post
+   * @param likes 
+   */
+  private renderLikes(likes: number) {
+    if (likes > 1 || likes == 0) return likes + ' likes';
+    else return likes + ' like';
+
   }
 
 }
