@@ -5,7 +5,7 @@
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
             <ion-icon name="return-right"></ion-icon>
-            Reblogged by {{ content.reblogged_by }}
+            Reblogged by @{{ content.reblogged_by }}
           </ion-note>
 
           <ion-item>
@@ -13,7 +13,7 @@
               <img src="https://img.busy.org/@{{content.author}}?s=100">
             </ion-avatar>
             <div>
-              {{ content.author }} ({{ content.author_reputation }})
+                <ion-badge color="primary">{{ content.author }}</ion-badge> <ion-badge color="gray">{{ content.author_reputation }}</ion-badge>
             </div>
             <div class="mt3">
               <ion-badge color="light">
@@ -26,12 +26,9 @@
         </ion-card-header>
 
         <ion-card-content no-padding (tap)="postOpen(content, i)">
-
+          <h2 style="overflow: scroll" padding>{{ content.title }}</h2>
           <img *ngIf="content.json_metadata.image" [src]="content.json_metadata.image[0]">
 
-          <h2 style="overflow: scroll" padding>{{ content.title }}</h2>
-          
-        
         </ion-card-content>
 
         <ion-row>
@@ -39,7 +36,7 @@
             <button ion-button clear small>
               <ion-icon name="ios-thumbs-up"></ion-icon>
               &nbsp;
-              <div>{{ content.net_votes }}</div>
+              <div class="info">{{ content.net_votes }}</div>
             </button>
           </ion-col>
       
@@ -47,7 +44,7 @@
             <button ion-button clear small left>
               <ion-icon name="ios-text"></ion-icon>
               &nbsp;
-              <div>{{ content.children }}</div>
+              <div class="info">{{ content.children }}</div>
             </button>
           </ion-col>
 
@@ -55,7 +52,7 @@
             <button end ion-button icon-right clear small>
               <ion-icon name="cash"></ion-icon>
               &nbsp;
-              <div>
+              <div class="info">
                 {{ content.pending_payout_value | currency:'USD': 'symbol' }}
               </div>
             </button>

@@ -4,6 +4,7 @@ import { DataProvider } from 'providers/data/data';
 import { SteemProvider } from 'providers/steem/steem';
 import { Post } from 'models/models';
 import * as moment from 'moment';
+import * as steem from 'steem';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 
 @IonicPage()
@@ -17,10 +18,18 @@ export class ProfilePage {
   private meta: Array<any> = [];
   private perPage = 10;
   private account = "hsynterkr";
+  private metadata;
+  private about;
   private post_count;
   private follower_count;
   private following_count;
   private voting_power;
+  private profile_image;
+  private cover_image;
+  private reputation;
+  private location;
+  private website;
+  profile: string = "blog";
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -79,8 +88,15 @@ export class ProfilePage {
   private getAccount() {
     this.dataProvider.getAccount(this.account)
     .subscribe((data) => {
+      this.metadata = JSON.parse(data[0].json_metadata);
       this.post_count = data[0].post_count;
-      this.voting_power = data[0].voting_power;
+      this.voting_power = (data[0].voting_power) / 100;
+      this.profile_image = this.metadata.profile.profile_image;
+      this.cover_image = this.metadata.profile.cover_image;
+      this.about = this.metadata.profile.about;
+      this.location = this.metadata.profile.location;
+      this.website = this.metadata.profile.website;
+      this.reputation = steem.formatter.reputation(data[0].reputation);
       //console.log(data[0]);
     }) 
   }
