@@ -9,86 +9,103 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Platform, Events } from 'ionic-angular'
 import { steemConnect } from 'models/models';
-import * as steemconnect from 'sc2-sdk';
+import SteemConnect from './steemConnectAPI';
 import { Storage } from '@ionic/storage';
+import { AsyncLocalStorage } from 'angular-async-local-storage';
+import { Subscription } from 'rxjs/Subscription';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+
+const STEEM_BROADCAST = 'https://v2.steemconnect.com/api/broadcast';
+
 
 @Injectable()
 export class SteemConnectProvider {
 
   public loginUrl: string;
-  public loginStatus: boolean;
+  public loginStatus = new BehaviorSubject<boolean>(false);
   public steemData;
   private access_token: string;
-  private profile;
+  public user: string = '';
+  public instance;
+  public username = new BehaviorSubject<string>(null);
 
-  constructor(public storage: Storage, 
-              public platform: Platform,
-              public events?: Events) {
+  constructor(public storage: Storage,
+    public platform: Platform,
+    public events: Events,
+    protected astorage: AsyncLocalStorage,
+    private iab: InAppBrowser,
+    private http: Http) {
 
-    // Initialize a instance of steemconnect in the whole provider to avoid
-    // rewriting the instance each time we need to call the api.
-    this.initializeSteem();
-  
-    
-   
-  }
-
-  get getToken() {
-    return this.access_token;
-  }
-
-  /**
-   * 
-   * Method to initialize a instance of steemconnect with the given parameters
-   * 
-   */
-  private initializeSteem() {
-
-    this.storage.get('access_token').then((token) => {
-      
-      if (token !== undefined && token !== null) {
-        this.access_token = token;
+    this.instance = SteemConnect
+    this.getToken().then(token => {
+      if (token === null || token === undefined || token === '') {
+        SteemConnect.setAccessToken(null);
+        this.loginStatus.next(false)
       }
-     
-    }).then(() => {
-
-      // Initialize an instance of steemconnect
-      this.steemData = steemconnect.Initialize({
-        app: 'steemia.app',
-        // THIS SHOULD BE CHANGED IN PRODUCTION MODE
-        callbackURL: 'http://localhost:8100',
-        scope: ['login', 'offline', 'vote', 
-                'comment', 'comment_delete', 
-                'comment_options', 'custom_json',
-                'claim_reward_balance'],
-        accessToken: this.access_token
-      });
-      if (this.access_token !== undefined && this.access_token !== null) {
-        this.steemData.me((err, res) => {
-          this.profile = res;
-          //profile.json_metadata = JSON.parse(profile.json_metadata);
-          //this.profile = res;
-
-          // Hacky way to make this work inside this nested function
-          try {
-            this.events.publish('publish:profile', this.profile)
-          }
-          catch (e) {}
+      else if (token !== null && token !== undefined && token !== '') {
+        this.access_token = token.toString();
+        SteemConnect.setAccessToken(this.access_token);
+        this.loginStatus.next(true)
+        SteemConnect.me((err, res) => {
+          this.user = res.user
+          this.username.next(res.user);
         });
       }
-      // save a reference to the login url for later used.
-      // This variable is public to scope in any component.
-      this.loginUrl = this.steemData.getLoginURL();
+    })
 
-    });
-  
+    this.loginUrl = SteemConnect.getLoginURL();
   }
 
-  public getMyProfile() {
-    return new Promise(resolve => {
-      resolve(this.profile);
+  private getToken() {
+    return new Promise((resolve, reject) => {
+      this.storage.get('access_token').then((token) => {
+        if (token) resolve(token)
+        else resolve(null)
+      })
     })
-    
+  }
+
+  private setToken(token) {
+    this.storage.set('access_token', token).then(() => { });
+  }
+
+  public login() {
+    return new Promise(resolve => {
+      if (this.platform.is('cordova')) {
+        var browserRef = this.iab
+          .create(this.loginUrl, "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
+
+        const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
+          resolve("The Steemconnect sign in flow was canceled")
+          //reject(new Error("The Steemconnect sign in flow was canceled"));
+        });
+
+        browserRef.on("loadstart").subscribe((event) => {
+
+          if ((event.url).indexOf('http://localhost:8100/?access_token=') === 0) {
+            exitSubscription.unsubscribe();
+            browserRef.close();
+            let access_token = event.url.match(/\?(?:access_token)\=([\S\s]*?)\&/)[1];
+
+            if (access_token !== undefined && access_token !== null) {
+              SteemConnect.setAccessToken(access_token);
+              this.loginStatus.next(true);
+              resolve("success");
+            }
+
+            else {
+              resolve("Problem authenticating with SteemConnect");
+            }
+          }
+        });
+      } else {
+        console.error("loadstart events are not being fired in browser.");
+        resolve("loadstart events are not being fired in browser.");
+      }
+    })
+
   }
 
   /**
@@ -115,46 +132,72 @@ export class SteemConnectProvider {
     }
   }
 
-  /**
-   * 
-   * Method to determine whether the current user is logged in or not.
-   * 
-   */
-  public isLoggedIn(): Promise<boolean> {
-    
-    // this value will hold the status of the current client.
-    let status: boolean;
-
+  public doLogout() {
     return new Promise((resolve, reject) => {
-
-      this.steemData.isAuthenticated((err: steemConnect, result: steemConnect) => {
-
-        // If there is an error fetching the api, lets reject the promise
-        if (err) {
-          reject(err)
-        }
-
-        // Otherwise, lets resolve the status of the current user.
+      SteemConnect.revokeToken((err, res) => {
+        if (err) reject('error');
         else {
-
-          resolve(result.isAuthenticated)
+          this.storage.remove('access_token').then(() => { });
+          this.loginStatus.next(false)
+          resolve('done');
         }
       });
     });
   }
 
-  public setToken(token: string) {
-    this.steemData.setAccessToken(token);
-    this.storage.set('access_token', token);
+
+
+  /**
+   * BLOCKCHAIN BROADCASTING
+   */
+
+  public vote_unvote(author, permlink, weight) {
+    let status: boolean;
+    let sub = this.loginStatus.subscribe(res => {
+      status = res
+    });
+    return new Promise((resolve, reject) => {
+      if (status) {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json')
+        headers.append('Authorization', this.access_token);
+        const options = new RequestOptions({ headers: headers });
+
+        this.http.post('https://v2.steemconnect.com/api/broadcast', {
+          "operations": [
+            ["vote", {
+              "voter": this.user,
+              "author": author,
+              "permlink": permlink,
+              "weight": weight
+            }]
+          ]
+        }, options).subscribe(res => {
+          if (res.status === 200) {
+            resolve('done')
+          }
+        });
+
+      }
+    })
   }
 
-  public doLogout() {
-    return new Promise((resolve, reject) => {
-      this.steemData.revokeToken((err, res) => {
-        if (err) reject('error');
-        else resolve('done');
-      });
-    }); 
+  public castComment(author, permlink, comment_permlink, body) {
+    return new Promise((resolve) => {
+      SteemConnect.comment(
+        author, // Author of the post
+        permlink, // Permlink of the post
+        this.user, // Username of the commenter
+        comment_permlink, // permlink of the comment if it is a reply, otherwise, normal permlink
+        '', // empty by default
+        body, // body of the comment
+        { "tags": ["writing"], "app": "steemia/0.1" }, (err, res) => {
+          if (!err) resolve('commented')
+          else resolve('error_ocurred')
+        });
+    })
+
   }
 
 

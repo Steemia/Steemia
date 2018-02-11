@@ -6,7 +6,9 @@ import { SteemProvider } from '../../providers/steem/steem';
 import { DataProvider } from '../../providers/data/data';
 import { EmbedVideoService } from 'ngx-embed-video';
 
-@IonicPage()
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-post-single',
   templateUrl: 'post-single.html',
