@@ -1,8 +1,6 @@
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title></ion-title>
-
     <ion-buttons end>
       <button ion-button icon-only>
         <ion-icon name="ios-bookmark-outline"></ion-icon>
@@ -14,14 +12,11 @@
         <ion-icon name="ios-flag-outline"></ion-icon>
       </button>
     </ion-buttons>
-
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content>
-
   <ion-card no-padding>
     <h2 class="title" padding>{{ post?.title }}</h2>
     <ion-card-header no-padding>
@@ -30,20 +25,22 @@
           <img src="https://img.busy.org/@{{post?.author}}?s=100">
         </ion-avatar>
         <div>
-          {{ post?.author }} ({{ post?.author_reputation }})
+          <ion-badge color="primary">{{ post?.author }}</ion-badge> <ion-badge color="gray">{{ post?.author_reputation }}</ion-badge> <ion-note end >{{ post?.created }}</ion-note>
         </div>
             
         <div>
-          <ion-note end >{{ post?.created }}</ion-note>
+          <div *ngFor="let tag of tags" style="float: left !important; margin: 5px 5px 0px 0px">
+            <ion-badge color="light">
+              <ion-icon name="attach"></ion-icon>
+              {{ tag }}
+            </ion-badge>
+          </div>
         </div>
       </ion-item>
     </ion-card-header>
-
     <hr />
-
     <ion-card-content no-padding>
         <div id="content" [innerHTML]="body | keepHtml"></div>
     </ion-card-content>
   </ion-card>
-  
 </ion-content>

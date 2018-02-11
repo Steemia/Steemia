@@ -5,6 +5,15 @@ post-render {
         width: 100%; 
         overflow: hidden; 
     }
+    .info {
+        color: gray;
+    }
+    ion-icon {
+        color: gray;
+    }
+    .mt3{
+        margin-top: 3px;
+      }
 
     .img {
         position: relative;

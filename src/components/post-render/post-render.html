@@ -5,7 +5,7 @@
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
             <ion-icon name="return-right"></ion-icon>
-            Reblogged by {{ content.reblogged_by }}
+            Reblogged by @{{ content.reblogged_by }}
           </ion-note>
 
           <ion-item>
@@ -37,14 +37,12 @@
 
         <ion-card-content no-padding (tap)="postOpen(content, i)">
           <h2 style="overflow: scroll" padding>{{ content.title }}</h2>
-
           <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div>
-          
-          <!--img *ngIf="content.json_metadata.image" [src]="content.json_metadata.image[0]"-->
 
         </ion-card-content>
 
         <ion-row>
+
           <ion-col col-5 text-center>
             <div style="float: left;" *ngIf="content.voters">
               <div class="voters">
@@ -56,13 +54,12 @@
                 <p>{{ renderLikes(content.net_votes) }}</p>
               </div>    
             </div>
-          </ion-col>
       
           <ion-col col-3 text-center>
             <button ion-button clear small left (tap)="openComments(content)">
               <ion-icon name="ios-text"></ion-icon>
               &nbsp;
-              <div>{{ content.children }}</div>
+              <div class="info">{{ content.children }}</div>
             </button>
           </ion-col>
 
@@ -70,7 +67,7 @@
             <button end ion-button icon-right clear small>
               <ion-icon name="cash"></ion-icon>
               &nbsp;
-              <div>
+              <div class="info">
                 {{ content.pending_payout_value | currency:'USD': 'symbol' }}
               </div>
             </button>
