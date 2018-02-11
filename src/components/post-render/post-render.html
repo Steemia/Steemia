@@ -1,7 +1,7 @@
 <ion-grid no-padding>
   <ion-row no-padding>
     <ion-col *ngFor="let content of contents; let i = index" col-12 no-padding>
-      <ion-card >
+      <ion-card>
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
             <ion-icon name="return-right"></ion-icon>
@@ -21,16 +21,12 @@
                 <ion-icon mini name="attach"></ion-icon>
                 &nbsp; {{ content.category }}
               </ion-badge>
-              <ion-note end >{{ content.created }}</ion-note>
+              <ion-note end>{{ content.created }}</ion-note>
             </div>
-            <ion-icon *ngIf="!content.isVoting && !content.voted" name="ios-thumbs-up-outline" 
-                      item-right 
-                      (tap)="castVote(i, content.author, content.permlink, 10000);"></ion-icon>
-            
-            <ion-icon *ngIf="!content.isVoting && content.voted" name="ios-thumbs-up" 
-                      item-right color="primary"
-                      (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
-            
+            <ion-icon *ngIf="!content.isVoting && !content.voted" name="ios-thumbs-up-outline" item-right (tap)="castVote(i, content.author, content.permlink, 10000);"></ion-icon>
+
+            <ion-icon *ngIf="!content.isVoting && content.voted" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
+
             <ion-spinner *ngIf="content.isVoting" item-right></ion-spinner>
           </ion-item>
         </ion-card-header>
@@ -52,9 +48,10 @@
               </div>
               <div class="likes">
                 <p>{{ renderLikes(content.net_votes) }}</p>
-              </div>    
+              </div>
             </div>
-      
+          </ion-col>
+
           <ion-col col-3 text-center>
             <button ion-button clear small left (tap)="openComments(content)">
               <ion-icon name="ios-text"></ion-icon>
@@ -72,8 +69,8 @@
               </div>
             </button>
           </ion-col>
+
         </ion-row>
-        
       </ion-card>
     </ion-col>
   </ion-row>
