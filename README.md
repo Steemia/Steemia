@@ -1,5 +1,5 @@
 # Steemia
-A mobile app for the platform [Steemit.com](https://steemit.com/). This app is capable of running on iOS and Android sharing the same basecode. Also, this application will include all the features present in the [Steemit.com](https://steemit.com/) website for those who prefer to use a mobile device instead of a desktop computer.
+Steemia is a social network app running over the Steem Blockchain. This app will provide the users an enriched user experience plus features commonly encountered in a casually used social media. The goal of this project is to give the community a mobile app where they can do their daily activity in the blockchain.
  
 ![](https://i.hizliresim.com/NZqzMX.png)
 
