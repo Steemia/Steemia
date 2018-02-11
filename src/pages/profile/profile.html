@@ -1,61 +1,100 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>profile</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="ios-notifications-outline"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name="ios-chatboxes-outline"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>
     <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <div 
-    class="background" 
-    style="background-image: url('https://blockchain.fhcoin.club/img/bg.jpg')">
-      <img src="https://steemit-production-imageproxy-upload.s3.amazonaws.com/DQmQF3m4SRRjycPjQYajpvJvd1v9m9oncBPVpQ1qAHRUBJq" 
-           class="picture"/>
+
+<!-- Voting Power Progress Bar for Reputation -->
+    <div class="background">
+        <div class="progress-outer">
+            <div class="progress-inner" [style.width]="voting_power + '%'">
+                <ion-icon name="flash" ios="ios-flash" md="ios-flash"></ion-icon>
+                {{  voting_power }}%
+            </div>
+        </div>
+
+      <img src="{{profile_image}}" class="picture"/>
       <div class="subtitle">
-        <h1>Steemia</h1>
-        <h2 >steemia@steemia.io</h2>
-      </div>
-      <ion-grid>
-        <ion-row>
-          <ion-col col-9 class="info">
-            <ion-card>                
-              <ion-card-content>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col col-3>
-                      <ion-icon name="person"></ion-icon> {{ follower_count }}
-                    </ion-col>
-                    <ion-col col-3>
-                      <ion-icon name="person-add"></ion-icon> {{ following_count }}
-                    </ion-col>
-                    <ion-col col-3>
-                      <ion-icon name="document"></ion-icon>  {{ post_count }}
-                    </ion-col>
-                    <ion-col col-3>
-                      <ion-icon name="flash"></ion-icon>  {{ (voting_power/100).toFixed(0) }}
-                    </ion-col>
-                  </ion-row>
-                 </ion-grid>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-       </ion-grid> 
+        <h1> <ion-badge color="gray">{{account}}</ion-badge> <ion-badge color="light">{{ reputation }}</ion-badge> </h1>
+        <h2 >{{ about }}</h2>
+      </div> 
     </div>
 
+<ion-segment [(ngModel)]="profile">
+  <ion-segment-button icon-top value="blog">
+    <ion-icon name="paper"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button icon-top value="activity">
+    <ion-icon name="analytics"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button icon-top value="about">
+    <ion-icon name="person"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button icon-top value="wallet">
+    <ion-icon name="card"></ion-icon>
+  </ion-segment-button>  
+</ion-segment>
 
-  <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
+<div [ngSwitch]="profile">
+    <div *ngSwitchCase="'blog'">
+        <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
+        <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
+
+        <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+    <div *ngSwitchCase="'activity'">
+      Activity
+    </div>
+    <div *ngSwitchCase="'about'">
+      <ion-list>
+        <ion-item>
+          <ion-icon name="people" item-start></ion-icon>
+            Followers
+          <ion-badge color="light" item-end >{{ follower_count }}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="person-add" item-start></ion-icon>
+            Following
+          <ion-badge color="light" item-end >{{ following_count }}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="paper" item-start></ion-icon>
+            Posts
+          <ion-badge color="light" item-end >{{ post_count }}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="pin" item-start></ion-icon>
+            Location
+          <ion-badge color="light" item-end >{{ location }}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="globe" item-start></ion-icon>
+            Website
+          <ion-badge color="light" item-end >{{ website }}</ion-badge>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'wallet'">
+      Wallet
+    </div>
+</div>
       
-  <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
-    
-  <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-
   <ion-fab right bottom>
     <button ion-fab color="primary"><ion-icon ios="md-create" md="md-create"></ion-icon></button>
   </ion-fab>
