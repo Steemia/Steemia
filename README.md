@@ -1,7 +1,7 @@
 # Steemia
 Steemia is a social network app running over the Steem Blockchain. This app will provide the users an enriched user experience plus features commonly encountered in a casually used social media. The goal of this project is to give the community a mobile app where they can do their daily activity in the blockchain.
  
-![](https://i.hizliresim.com/NZqzMX.png)
+![](https://i.hizliresim.com/G9B0EN.png)
 
 You can download and try the application.  (NodeJS and NPM must be installed.)
 ## How to install
