@@ -3,13 +3,15 @@ import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Observable } from 'rxjs/Observable';
+import { hotTemplate } from './hot.template';
+
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-hot',
-  templateUrl: 'hot.html',
+  template: hotTemplate
 })
 
 export class HotPage {

@@ -16,11 +16,13 @@ import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
 import { SteemiaProvider } from '../providers/steemia/steemia';
 import { IonicImageLoader } from 'ionic-image-loader';
+import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
   declarations: [
     MaterialMenuComponent,
-    MyApp
+    MyApp,
+    TabsPage
   ],
   imports: [
     HttpClientModule,
@@ -39,6 +41,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    TabsPage
   ],
   providers: [
     StatusBar,

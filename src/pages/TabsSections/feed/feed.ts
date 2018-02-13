@@ -4,13 +4,14 @@ import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
+import { feedTemplate } from './feed.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-feed',
-  templateUrl: 'feed.html'
+  template: feedTemplate
 })
 export class FeedPage {
 

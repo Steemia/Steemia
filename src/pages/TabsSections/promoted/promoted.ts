@@ -3,13 +3,14 @@ import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Observable } from 'rxjs/Observable';
+import { promotedTemplate } from './promoted.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-promoted',
-  templateUrl: 'promoted.html',
+  template: promotedTemplate
 })
 
 export class PromotedPage {

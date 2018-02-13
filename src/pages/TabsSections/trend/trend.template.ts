@@ -1,3 +1,5 @@
+export const trendTemplate = `
+
 <ion-content>
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
@@ -27,3 +29,5 @@
   </ion-fab>
 
 </ion-content>
+
+`;

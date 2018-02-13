@@ -3,13 +3,14 @@ import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Observable } from 'rxjs/Observable';
+import { newTemplate } from './new.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-new',
-  templateUrl: 'new.html',
+  template: newTemplate
 })
 
 export class NewPage {
