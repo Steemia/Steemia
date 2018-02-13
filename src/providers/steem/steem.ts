@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 import { Post } from '../../models/models';
 import * as steem from 'steem';
 import * as moment from 'moment';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/publishReplay';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import marked from 'marked';
 import steemConnect from '../steemconnect/steemConnectAPI';
@@ -61,15 +59,8 @@ export class SteemProvider {
   private username: string = '';
   private user;
 
-  // Pagination holders
-  // FEED
 
-
-  constructor(private http: Http) {
-
-    // Auto find the current user data
-    
-  }
+  constructor(private http: HttpClient) { }
 
   /**
    * Method to get the profile of an user
@@ -82,8 +73,6 @@ export class SteemProvider {
 
     return forkJoin([profile, followers])
       .map(this.parseProfile)
-      .publishReplay(1)
-      .refCount()
       .catch(this.catchErrors);
   }
 
@@ -94,10 +83,12 @@ export class SteemProvider {
    */
   private parseProfile(res: Response[]) {
     let response = res;
+
+    console.log(response)
     
     try {
-      (response[0] as any)._body = JSON.parse(((response[0] as any)._body as string));
-      (response[0] as any)._body[0].json_metadata = JSON.parse(((response[0] as any)._body[0].json_metadata as string));
+      //(response[0[0]] as any) = JSON.parse(((response[0] as any)._body as string));
+      (response[0][0] as any).json_metadata = JSON.parse(((response[0][0] as any).json_metadata as string));
       // Parse stats
       (response[1] as any)._body = JSON.parse(((response[1] as any)._body as string));
     }
@@ -106,14 +97,14 @@ export class SteemProvider {
     }
 
     // Parse reputation
-    (response[0] as any)._body[0].reputation =  steem.formatter.reputation((response[0] as any)._body[0].reputation);
+    (response[0][0] as any).reputation =  steem.formatter.reputation((response[0][0] as any).reputation);
 
     // Parse created time
-    (response[0] as any)._body[0].created = moment.utc((response[0] as any)._body[0].created).local().fromNow();
+    (response[0][0] as any).created = moment.utc((response[0][0] as any).created).local().fromNow();
 
     return {
-      profile: (response[0] as any)._body[0],
-      stats: (response[1] as any)._body
+      profile: response[0][0],
+      stats: response[1][0]
     }
   }
 
@@ -124,8 +115,6 @@ export class SteemProvider {
   public getProfilePosts(query: Object) {
     return this.http.get(BY_BLOG + this.encodeQueryData(query))
       .map(this.parseData)
-      .publishReplay(1)
-      .refCount()
       .catch(this.catchErrors);
   }
 
@@ -135,7 +124,6 @@ export class SteemProvider {
    */
   public getSearch(query: Observable<string>, sort_by: string, order: string) {
     return query.debounceTime(400)
-        .distinctUntilChanged()
         .switchMap(term => this.doSearch(term, sort_by, order));
   }
   
@@ -151,7 +139,6 @@ export class SteemProvider {
       include: "meta"
     };
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
-      .map(res => res.json())
       .catch(this.catchErrors);
     
   }
@@ -163,8 +150,6 @@ export class SteemProvider {
   public getComments(query: Object) {
     return this.http.get(GET_COMMENTS + this.encodeQueryData(query))
       .map(this.parseComment)
-      .publishReplay(1)
-      .refCount()
       .catch(this.catchErrors);
   }
 
@@ -176,8 +161,6 @@ export class SteemProvider {
     
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map((res) => this.parseData(res))
-        .publishReplay(1)
-        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -188,8 +171,6 @@ export class SteemProvider {
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
     .map((res) => this.parseData(res))
-        .publishReplay(1)
-        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -200,8 +181,6 @@ export class SteemProvider {
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
         .map((res) => this.parseData(res))
-        .publishReplay(1)
-        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -212,8 +191,6 @@ export class SteemProvider {
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
         .map((res) => this.parseData(res))
-        .publishReplay(1)
-        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -224,8 +201,6 @@ export class SteemProvider {
   public getByPromoted(query: Object) {
     return this.http.get(BY_PROMOTED + this.encodeParams(query))
         .map((res) => this.parseData(res))
-        .publishReplay(1)
-        .refCount()
         .catch(this.catchErrors);
   }
 
@@ -234,8 +209,8 @@ export class SteemProvider {
    * @param {Response} res: Response from HTTP GET
    * @returns returns the parsed response with the correct attributes
    */
-  private parseComment(res: Response) {
-    let response = res.json();
+  private parseComment(res) {
+    let response = res;
     response.map(comment => {
       // Format the current author reputation
       comment.author_reputation = steem.formatter.reputation(comment.author_reputation);
@@ -286,8 +261,8 @@ export class SteemProvider {
    * @param {Response} res: Response from HTTP GET
    * @returns returns the parsed response with the correct attributes
    */
-  private parseData(res: Response) {
-    let response = res.json();
+  private parseData(res) {
+    let response = res;
     let profile = this.fetchMe();
     response.map((post) => {
       // Format the current author reputation
@@ -382,7 +357,7 @@ export class SteemProvider {
    */
   private catchErrors(error: Response | any) {
     console.log(error)
-    return Observable.throw(error.json().error || "Server Error");
+    return Observable.throw(error.error || "Server Error");
   }
 
   /**

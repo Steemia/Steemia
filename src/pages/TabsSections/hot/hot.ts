@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
@@ -16,7 +14,6 @@ import { Observable } from 'rxjs/Observable';
 
 export class HotPage {
   
-  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private is_first_loaded: boolean = false;
   
@@ -29,17 +26,12 @@ export class HotPage {
     this.dispatchHot();
   }
 
-  ionViewDidLeave() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
-  }
 
   /**
    * Method to dispatch feed and avoid repetition of code
    */
   private dispatchHot() {
     this.getHot()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       data.map(post => {
         this.contents.push(post);
@@ -90,7 +82,6 @@ export class HotPage {
   private doRefresh(refresher): void {
     this.is_first_loaded = false;
     this.getHot()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = [];
       data.map(post => {
@@ -108,7 +99,6 @@ export class HotPage {
    */
   private doInfinite(infiniteScroll): void {
     this.getHot()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       data.slice(1).map(post => {
         this.contents.push(post);

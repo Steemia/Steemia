@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import { Observable } from 'rxjs/Observable';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
   priority: 'high'
@@ -16,7 +14,6 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 })
 export class FeedPage {
 
-  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private username: string = 'steemit';
   private is_first_loaded: boolean = false;
@@ -42,17 +39,11 @@ export class FeedPage {
     this.dispatchFeed();
   }
 
-  ionViewDidLeave() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
-  }
-
   /**
    * Method to dispatch feed and avoid repetition of code
    */
   private dispatchFeed() {
     this.getFeed()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       data.map(post => {
         this.contents.push(post);
@@ -104,7 +95,6 @@ export class FeedPage {
   private doRefresh(refresher): void {
     this.is_first_loaded = false;
     this.getFeed()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = [];
       data.map(post => {
@@ -122,7 +112,6 @@ export class FeedPage {
    */
   private doInfinite(infiniteScroll): void {
     this.getFeed()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       data.slice(1).map(post => {
         this.contents.push(post);
