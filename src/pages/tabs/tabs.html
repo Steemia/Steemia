@@ -1,7 +1,44 @@
-<ion-tabs>
-    <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
-    <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
-    <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
-    <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
-    <ion-tab [root]="promotedRoot" tabIcon="pricetag"></ion-tab>
-</ion-tabs>
+<ion-header class="hello">
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+
+        <ion-title>
+            Steemia
+        </ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (tap)="openPage('SearchPage')">
+                <ion-icon name="ios-search-outline"></ion-icon>
+            </button>
+            <button ion-button icon-only>
+                <ion-icon name="ios-notifications-outline"></ion-icon>
+            </button>
+        </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+<ion-content no-bounce auto-hide>
+    <super-tabs>
+        <super-tab [root]="feedRoot" icon="list"></super-tab>
+        <super-tab [root]="trendRoot" icon="pulse"></super-tab>
+        <super-tab [root]="hotRoot" icon="flame"></super-tab>
+        <super-tab [root]="newRoot" icon="flash"></super-tab>
+        <super-tab [root]="promotedRoot" icon="pricetag"></super-tab>
+    </super-tabs>
+
+    <ion-fab right bottom #fab>
+        <button ion-fab color="primary">
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <button ion-fab>
+                <ion-icon name="options"></ion-icon>
+            </button>
+            <button ion-fab>
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-fab-list>
+    </ion-fab>
+</ion-content>

@@ -16,7 +16,7 @@ import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { SteemiaProvider } from '../providers/steemia/steemia';
-
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { SteemiaProvider } from '../providers/steemia/steemia';
     MyApp
   ],
   imports: [
+    SuperTabsModule.forRoot(),
     HttpClientModule,
     BrowserModule,
     HttpModule,

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
+import { SuperTabsController } from 'ionic2-super-tabs';
 
 @IonicPage()
 @Component({
@@ -14,7 +15,9 @@ export class TabsPage {
   private hotRoot: string = 'HotPage';
   private newRoot: string = 'NewPage';
 
-  constructor() {
+  constructor(private superTabsCtrl: SuperTabsController) {
+    this.superTabsCtrl.showToolbar(true);
+    this.superTabsCtrl.enableTabsSwipe(true)
     
   }
 
