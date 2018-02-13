@@ -17,7 +17,7 @@ export class ProfilePage {
   private contents: Array<Post> = [];
   private meta: Array<any> = [];
   private perPage = 10;
-  private account = "hsynterkr";
+  private account = "steemia-io";
   private metadata;
   private about;
   private post_count;
