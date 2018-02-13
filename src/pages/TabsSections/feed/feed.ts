@@ -18,21 +18,24 @@ export class FeedPage {
 
   private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
-  private perPage = 10;
-  private result: any;
   private username: string = 'steemit';
+  private is_first_loaded: boolean = false;
 
   constructor(private steemProvider: SteemProvider,
               private appCtrl: App,
               private steemConnect: SteemConnectProvider) {
 
-    this.steemConnect.username.subscribe(user => {
-      if (user !== null) {
-        this.username = user;
-        this.dispatchFeed();
-      }
-    })
-
+    /**
+     * Subscribe to the user object in the auth provider
+     */
+    // this.steemConnect.username.subscribe(user => {
+    //   if (user !== null || user !== undefined || user !== '') {
+    //     // Redeclare it as false to start the pagination from 0
+    //     this.is_first_loaded = false;
+    //     this.username = user;
+    //     this.dispatchFeed();
+    //   }
+    // })
   }
 
   ionViewDidLoad() {
@@ -44,12 +47,22 @@ export class FeedPage {
     this.destroyed$.complete();
   }
 
+  /**
+   * Method to dispatch feed and avoid repetition of code
+   */
   private dispatchFeed() {
     this.getFeed()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      this.contents = data;
+      data.map(post => {
+        this.contents.push(post);
+      });
     });
+    // Check if it is false to avoid assigning the variable in each iteration
+    if (this.is_first_loaded == false) {
+      this.is_first_loaded = true;
+    }
+    
   }
 
   /**
@@ -60,11 +73,26 @@ export class FeedPage {
    * @author Jayser Mendez.
    */
   private getFeed(): Observable<Array<Post>> {
-    console.log("feed", this.username)
-    return this.steemProvider.getFeed({
-      limit: this.perPage,
-      tag: this.username
-    })
+
+    let query;
+
+    if (this.is_first_loaded == false) {
+      query = {
+        limit: 25,
+        tag: 'jaysermendez'
+      };  
+    }
+    
+    else {
+      query = {
+        tag: 'jaysermendez',
+        limit: 25,
+        start_author: this.contents[this.contents.length - 1].author,
+        start_permlink: this.contents[this.contents.length - 1].permlink,
+      };
+    }
+
+    return this.steemProvider.getFeed(query);
   }
 
   /**
@@ -74,10 +102,14 @@ export class FeedPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
+    this.is_first_loaded = false;
     this.getFeed()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      this.contents = data;
+      this.contents = [];
+      data.map(post => {
+        this.contents.push(post);
+      });
       refresher.complete();
     });
   }
@@ -89,11 +121,12 @@ export class FeedPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.perPage += 10;
     this.getFeed()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      this.contents = data;
+      data.slice(1).map(post => {
+        this.contents.push(post);
+      });
       infiniteScroll.complete();
     });
   }
@@ -104,5 +137,9 @@ export class FeedPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  public identify(index, item) {
+    return item.title;
   }
 }
