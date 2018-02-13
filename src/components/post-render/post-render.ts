@@ -86,7 +86,7 @@ export class PostRenderComponent {
    * @param likes 
    */
   private renderLikes(likes: number) {
-    if (likes > 1 || likes == 0) return likes + ' likes';
+    if (likes > 1 || likes == 0) return likes.toLocaleString() + ' likes';
     else return likes + ' like';
 
   }

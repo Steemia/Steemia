@@ -29,7 +29,6 @@
     "angular2-moment": "^1.7.1",
     "cordova-android": "7.0.0",
     "cordova-ios": "4.5.4",
-    "cordova-plugin-crosswalk-webview": "^2.4.0",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -69,14 +68,7 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-statusbar": {},
-      "cordova-sqlite-storage": {},
-      "cordova-plugin-crosswalk-webview": {
-        "XWALK_VERSION": "23+",
-        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
-        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
-        "XWALK_MODE": "embedded",
-        "XWALK_MULTIPLEAPK": "true"
-      }
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "android",
