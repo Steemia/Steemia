@@ -1,4 +1,4 @@
-<ion-header class="hello">
+<ion-header>
     <ion-navbar color="primary">
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
@@ -19,7 +19,7 @@
 
     </ion-navbar>
 </ion-header>
-<ion-content no-bounce auto-hide>
+<ion-content>
     <ion-tabs>
         <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
         <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
@@ -28,7 +28,7 @@
         <ion-tab [root]="promotedRoot" tabIcon="pricetag"></ion-tab>
     </ion-tabs>
 
-    <ion-fab right bottom #fab>
+    <ion-fab right bottom class="hide-this">
         <button ion-fab color="primary">
             <ion-icon name="add"></ion-icon>
         </button>
