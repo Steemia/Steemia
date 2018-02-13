@@ -23,6 +23,7 @@ export class HotPage {
   }
 
   ionViewDidLoad() {
+    console.log('fired')
     this.dispatchHot();
   }
 
