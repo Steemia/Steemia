@@ -20,13 +20,13 @@
     </ion-navbar>
 </ion-header>
 <ion-content no-bounce auto-hide>
-    <super-tabs>
-        <super-tab [root]="feedRoot" icon="list"></super-tab>
-        <super-tab [root]="trendRoot" icon="pulse"></super-tab>
-        <super-tab [root]="hotRoot" icon="flame"></super-tab>
-        <super-tab [root]="newRoot" icon="flash"></super-tab>
-        <super-tab [root]="promotedRoot" icon="pricetag"></super-tab>
-    </super-tabs>
+    <ion-tabs>
+        <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
+        <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
+        <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
+        <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
+        <ion-tab [root]="promotedRoot" tabIcon="pricetag"></ion-tab>
+    </ion-tabs>
 
     <ion-fab right bottom #fab>
         <button ion-fab color="primary">

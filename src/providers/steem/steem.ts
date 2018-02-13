@@ -51,7 +51,7 @@ const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channe
 const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
 // IMAGES
-const NO_IMAGE = 'http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder2.png';
+const NO_IMAGE = 'assets/placeholder2.png';
 const BUSY_IMAGE = 'https://img.busy.org/@'
 
 

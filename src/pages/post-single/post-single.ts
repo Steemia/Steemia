@@ -4,7 +4,6 @@ import { Post } from 'models/models';
 import marked from 'marked';
 import { SteemProvider } from '../../providers/steem/steem';
 import { DataProvider } from '../../providers/data/data';
-import { EmbedVideoService } from 'ngx-embed-video';
 
 @IonicPage({
   priority: 'high'

@@ -14,9 +14,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
-import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { SteemiaProvider } from '../providers/steemia/steemia';
-import { SuperTabsModule } from 'ionic2-super-tabs';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
     MyApp
   ],
   imports: [
-    SuperTabsModule.forRoot(),
     HttpClientModule,
     BrowserModule,
     HttpModule,
@@ -36,7 +34,7 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
       preloadModules: true
     }),
     IonicStorageModule.forRoot(),
-    AsyncLocalStorageModule
+    IonicImageLoader.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

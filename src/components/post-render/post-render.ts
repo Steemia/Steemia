@@ -11,6 +11,7 @@ import { Post } from 'models/models';
 import { App, ModalController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import steemInstance from 'providers/steemconnect/steemConnectAPI';
+import { ImageLoaderConfig } from 'ionic-image-loader';
 
 
 @Component({
@@ -24,7 +25,14 @@ export class PostRenderComponent {
 
   constructor(private app: App, 
               private modalCtrl: ModalController,
-              private steemConnect: SteemConnectProvider) { 
+              private steemConnect: SteemConnectProvider,
+              private imageLoaderConfig: ImageLoaderConfig) { 
+
+    this.imageLoaderConfig.setBackgroundSize('cover');
+    this.imageLoaderConfig.setHeight('200px');
+    this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
+    this.imageLoaderConfig.setImageReturnType('base64');
+    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
 
     // Subscribe to the current username logged in
     this.steemConnect.username.subscribe(user => {
