@@ -20,7 +20,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content auto-hide>
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -34,8 +34,17 @@
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab right bottom>
-    <button ion-fab color="primary" (tap)="openPage('PostPage')"><ion-icon ios="md-create" md="md-create"></ion-icon></button>
+  <ion-fab right bottom #fab>
+    <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab><ion-icon name="options"></ion-icon></button>
+      <button ion-fab><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
+  <!-- <ion-fab right bottom>
+    <button ion-fab color="primary" (tap)="openPage('PostPage')"><ion-icon ios="md-create" md="md-create"></ion-icon></button>
+  </ion-fab> -->
+
 </ion-content>
+

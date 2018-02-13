@@ -17,10 +17,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { SteemiaProvider } from '../providers/steemia/steemia';
 
+
 @NgModule({
   declarations: [
     MaterialMenuComponent,
-    MyApp,
+    MyApp
   ],
   imports: [
     HttpClientModule,
