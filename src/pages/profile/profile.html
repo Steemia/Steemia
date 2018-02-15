@@ -51,8 +51,8 @@
 
 <div [ngSwitch]="profile">
     <div *ngSwitchCase="'blog'">
-        <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
-        <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
+        <!-- <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading> -->
+        <!-- <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render> -->
 
         <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>

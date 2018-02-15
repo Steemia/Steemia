@@ -14,9 +14,10 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@import "../pages/TabsSections/sections.scss";
 
 ion-content {
-  background-color: #dedede !important;
+  background-color: #fcfcff !important;
 }
 
 ion-menu {
@@ -25,7 +26,14 @@ ion-menu {
   }
 }
 
+.tabbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e9e7e7;
+}
+
 .card {
+  border-top: 1px solid #e9e7e7;
+  border-bottom: 1px solid #e9e7e7;
   width: 100% !important;
   margin: 0 0 10px 0;
   -webkit-box-shadow: none !important;
@@ -97,27 +105,6 @@ div::-webkit-scrollbar-thumb {
   border:none;
   width:0;
   background: rgba(0,0,0,0);
-}
-
-// Resolve width for general tablets
-@media only screen and (device-width: 768px) {
-  .scroll-content {
-      width: 75% !important;
-      margin-left: auto;
-      margin-right: auto;;
-  }
-}
-
-// Resolve width for Ipad Pro
-@media only screen 
-and (min-device-width : 1024px) 
-and (max-device-width : 1366px) { 
-
-  .scroll-content {
-      width: 75% !important;
-      margin-left: auto;
-      margin-right: auto;;
-  }
 }
 
 .mt3{

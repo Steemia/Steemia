@@ -1,40 +1,52 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
+import { hotTemplate } from './hot.template';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
-  selector: 'page-hot',
-  templateUrl: 'hot.html',
+  selector: 'section-scss',
+  template: hotTemplate
 })
-export class HotPage implements OnInit, OnDestroy {
+
+export class HotPage {
   
-  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
-  private perPage = 15;
+  private is_first_loaded: boolean = false;
+  private is_loading = true;
   
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider) {
+              private steemProvider: SteemProvider,
+              private zone: NgZone,
+              private cdr: ChangeDetectorRef) {
 
   }
 
-  public ngOnInit() {
-    this.getHot()
-    .takeUntil( this.destroyed$ )
-    .subscribe((data: Array<Post>) => {
-      this.contents = data;
+  ionViewDidLoad() {
+    this.zone.runOutsideAngular(() => {
+      this.dispatchHot();
     });
   }
 
-  public ngOnDestroy() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
+
+  /**
+   * Method to dispatch feed and avoid repetition of code
+   */
+  private dispatchHot() {
+    this.getHot()
+    .subscribe((data: Array<Post>) => {
+      data.map(post => {
+        this.contents.push(post);
+      });
+      this.is_loading = false;
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
+    });
+    // Check if it is false to avoid assigning the variable in each iteration
+    if (this.is_first_loaded == false) {
+      this.is_first_loaded = true;
+    }
+    
   }
 
   /**
@@ -45,7 +57,25 @@ export class HotPage implements OnInit, OnDestroy {
    * @author Jayser Mendez.
    */
   private getHot(): Observable<Array<Post>> {
-    return this.steemProvider.getByHot({tag:"", limit: this.perPage})
+    let query;
+
+    if (!this.is_first_loaded) {
+      query = {
+        limit: 25,
+        tag: ''
+      };  
+    }
+    
+    else {
+      query = {
+        tag: '',
+        limit: 25,
+        start_author: this.contents[this.contents.length - 1].author,
+        start_permlink: this.contents[this.contents.length - 1].permlink,
+      };
+    }
+
+    return this.steemProvider.getByHot(query)
   }
 
   /**
@@ -55,10 +85,13 @@ export class HotPage implements OnInit, OnDestroy {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
+    this.is_first_loaded = false;
     this.getHot()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      this.contents = data;
+      this.contents = [];
+      data.map(post => {
+        this.contents.push(post);
+      });
       refresher.complete();
     });
   }
@@ -70,11 +103,11 @@ export class HotPage implements OnInit, OnDestroy {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.perPage += 10;
     this.getHot()
-    .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      this.contents = data;
+      data.slice(1).map(post => {
+        this.contents.push(post);
+      });
       infiniteScroll.complete();
     });
   }
@@ -85,5 +118,9 @@ export class HotPage implements OnInit, OnDestroy {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  public identify(index, item) {
+    return item.title;
   }
 }

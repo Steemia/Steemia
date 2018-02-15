@@ -11,7 +11,6 @@ import { Platform, Events } from 'ionic-angular'
 import { steemConnect } from 'models/models';
 import SteemConnect from './steemConnectAPI';
 import { Storage } from '@ionic/storage';
-import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Subscription } from 'rxjs/Subscription';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -34,7 +33,6 @@ export class SteemConnectProvider {
   constructor(public storage: Storage,
     public platform: Platform,
     public events: Events,
-    protected astorage: AsyncLocalStorage,
     private iab: InAppBrowser,
     private http: Http) {
 
@@ -90,6 +88,7 @@ export class SteemConnectProvider {
             let access_token = event.url.match(/\?(?:access_token)\=([\S\s]*?)\&/)[1];
 
             if (access_token !== undefined && access_token !== null) {
+              this.setToken(access_token);
               SteemConnect.setAccessToken(access_token);
               this.loginStatus.next(true);
               resolve("success");

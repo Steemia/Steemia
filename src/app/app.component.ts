@@ -6,6 +6,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 //import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
+import { TabsPage } from '../pages/tabs/tabs';
 
 export interface PageInterface {
   title: string;
@@ -25,7 +26,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: string = 'TabsPage';
+  rootPage = TabsPage;
   user = "jaysermendez";
   private isLoggedIn: boolean = false;
 
