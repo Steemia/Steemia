@@ -4,6 +4,7 @@ import { HotPage } from '../TabsSections/hot/hot';
 import { NewPage } from '../TabsSections/new/new';
 import { PromotedPage } from '../TabsSections/promoted/promoted';
 import { TrendPage } from '../TabsSections/trend/trend';
+import { App } from 'ionic-angular';
 
 @Component({
   selector: 'page-tabs',
@@ -47,9 +48,17 @@ export class TabsPage {
   private hotRoot = HotPage;
   private newRoot = NewPage;
 
-  constructor() {
+  constructor(private appCtrl: App) {
 
 
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.appCtrl.getRootNavs()[0].push(str);
   }
 
 }

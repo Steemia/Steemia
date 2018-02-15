@@ -29,7 +29,6 @@ export class PostCardComponent {
     this.imageLoaderConfig.setHeight('200px');
     this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
     this.imageLoaderConfig.setImageReturnType('base64');
-    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
 
     // Subscribe to the current username logged in
     this.steemConnect.username.subscribe(user => {
