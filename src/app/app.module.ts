@@ -25,6 +25,7 @@ import { TrendPage } from '../pages/TabsSections/trend/trend';
 import { PostRenderComponent } from '../components/post-render/post-render';
 import { SkeletonLoadingComponent } from '../components/skeleton-loading/skeleton-loading';
 import { MomentModule } from 'angular2-moment';
+import { PostCardComponent } from '../components/post-card/post-card';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MomentModule } from 'angular2-moment';
     PromotedPage,
     TrendPage,
     PostRenderComponent,
-    SkeletonLoadingComponent
+    SkeletonLoadingComponent,
+    PostCardComponent
   ],
   imports: [
     HttpClientModule,

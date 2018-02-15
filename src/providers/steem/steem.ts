@@ -280,15 +280,20 @@ export class SteemProvider {
       }
 
       if (post.json_metadata.image) {
-        post.json_metadata.image[0] = IMAGES_CDN + post.json_metadata.image[0]
+        try {
+          post.json_metadata.image[0] = IMAGES_CDN + post.json_metadata.image[0];
+        }
+
+        catch (e) {
+          post.json_metadata.image = IMAGES_CDN + post.json_metadata.image;
+        }
+        
       }
 
       // set default image is there is not one
       if (!post.json_metadata.image) {
         post.json_metadata.image = [NO_IMAGE];
       }
-
-      
 
       // initiliaze an empty array for the voters
       post.voters = [];

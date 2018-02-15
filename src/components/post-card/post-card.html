@@ -1,0 +1,73 @@
+<ion-card>
+  <ion-card-header no-padding>
+    <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
+      <ion-icon name="ios-redo"></ion-icon>
+      Reblogged by @{{ content.reblogged_by }}
+    </ion-note>
+
+    <ion-item>
+      <ion-avatar item-start>
+        <!-- <img src="https://img.busy.org/@{{content.author}}?s=100"> -->
+        <img-loader src="https://img.busy.org/@{{content.author}}?s=100" useImg></img-loader>
+      </ion-avatar>
+      <div>
+        <ion-badge color="primary"> {{ content.author }}</ion-badge>
+        <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
+      </div>
+      <div class="mt3">
+        <ion-badge color="light">
+          <ion-icon mini name="attach"></ion-icon>
+          &nbsp; {{ content.category }}
+        </ion-badge>
+        <ion-note end>{{ content.created }}</ion-note>
+      </div>
+      <ion-icon *ngIf="!content.isVoting && !content.voted" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.permlink, 10000);"></ion-icon>
+
+      <ion-icon *ngIf="!content.isVoting && content.voted" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
+
+      <ion-spinner *ngIf="content.isVoting" item-right></ion-spinner>
+    </ion-item>
+  </ion-card-header>
+
+  <ion-card-content no-padding (tap)="postOpen(content)">
+    <h2 padding>{{ content.title }}</h2>
+    <!-- <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div> -->
+    <img-loader class="img" [src]="content.json_metadata.image[0]"></img-loader>
+
+  </ion-card-content>
+
+  <ion-row>
+
+    <ion-col col-5 text-center>
+      <div style="float: left;" *ngIf="content.voters">
+        <div class="voters">
+          <span class="voters_image" *ngFor="let voter of content.voters">
+            <img-loader [src]="voter.profile_picture" useImg></img-loader>
+          </span>
+        </div>
+        <div class="likes">
+          <p>{{ renderLikes(content.net_votes) }}</p>
+        </div>
+      </div>
+    </ion-col>
+
+    <ion-col col-3 text-center>
+      <button ion-button clear small left (tap)="openComments(content)">
+        <ion-icon name="ios-text"></ion-icon>
+        &nbsp;
+        <div class="info">{{ content.children }}</div>
+      </button>
+    </ion-col>
+
+    <ion-col col-4 text-center>
+      <button end ion-button icon-right clear small>
+        <ion-icon name="cash"></ion-icon>
+        &nbsp;
+        <div class="info">
+          {{ content.pending_payout_value | currency:'USD': 'symbol' }}
+        </div>
+      </button>
+    </ion-col>
+
+  </ion-row>
+</ion-card>
