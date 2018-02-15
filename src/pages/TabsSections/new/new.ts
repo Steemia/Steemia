@@ -1,15 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Observable } from 'rxjs/Observable';
 import { newTemplate } from './new.template';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
-  selector: 'page-new',
+  selector: 'section-scss',
   template: newTemplate
 })
 
@@ -17,13 +14,18 @@ export class NewPage {
 
   private contents: Array<Post> = [];
   private is_first_loaded: boolean = false;
+  private is_loading: boolean = true;
 
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider) {
+              private steemProvider: SteemProvider,
+              private zone: NgZone,
+              private cdr: ChangeDetectorRef) {
   }
 
   ionViewDidLoad() {
-    this.dispatchNew();
+    this.zone.runOutsideAngular(() => {
+      this.dispatchNew();
+    });
   }
 
 
@@ -36,6 +38,8 @@ export class NewPage {
       data.map(post => {
         this.contents.push(post);
       });
+      this.is_loading = false;
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
     });
     // Check if it is false to avoid assigning the variable in each iteration
     if (this.is_first_loaded == false) {
@@ -85,7 +89,7 @@ export class NewPage {
     .subscribe((data: Array<Post>) => {
       this.contents = [];
       data.map(post => {
-        this.contents.push(post);
+        this.contents.push(post); 
       });
       refresher.complete();
     });

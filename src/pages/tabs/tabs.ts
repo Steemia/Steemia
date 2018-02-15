@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { FeedPage } from '../TabsSections/feed/feed';
+import { HotPage } from '../TabsSections/hot/hot';
+import { NewPage } from '../TabsSections/new/new';
+import { PromotedPage } from '../TabsSections/promoted/promoted';
+import { TrendPage } from '../TabsSections/trend/trend';
 
 @Component({
   selector: 'page-tabs',
@@ -36,11 +41,11 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  private feedRoot: string = 'FeedPage';
-  private trendRoot: string = 'TrendPage';
-  private promotedRoot: string = 'PromotedPage';
-  private hotRoot: string = 'HotPage';
-  private newRoot: string = 'NewPage';
+  private feedRoot = FeedPage;
+  private trendRoot = TrendPage;
+  private promotedRoot = PromotedPage;
+  private hotRoot = HotPage;
+  private newRoot = NewPage;
 
   constructor() {
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
@@ -6,11 +6,9 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
 import { feedTemplate } from './feed.template';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
-  selector: 'page-feed',
+  selector: 'section-scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: feedTemplate
 })
 export class FeedPage {
@@ -18,10 +16,13 @@ export class FeedPage {
   private contents: Array<Post> = [];
   private username: string = 'steemit';
   private is_first_loaded: boolean = false;
+  private is_loading = true;
 
   constructor(private steemProvider: SteemProvider,
               private appCtrl: App,
-              private steemConnect: SteemConnectProvider) {
+              private steemConnect: SteemConnectProvider,
+              private zone: NgZone,
+              private cdr: ChangeDetectorRef) {
 
     /**
      * Subscribe to the user object in the auth provider
@@ -37,23 +38,29 @@ export class FeedPage {
   }
 
   ionViewDidLoad() {
-    this.dispatchFeed();
+    this.zone.runOutsideAngular(() => {
+      this.dispatchFeed();
+    });
   }
 
   /**
    * Method to dispatch feed and avoid repetition of code
    */
   private dispatchFeed() {
+    
     this.getFeed()
     .subscribe((data: Array<Post>) => {
       data.map(post => {
         this.contents.push(post);
       });
+      this.is_loading = false;
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
     });
     // Check if it is false to avoid assigning the variable in each iteration
     if (this.is_first_loaded == false) {
       this.is_first_loaded = true;
     }
+    
     
   }
 
@@ -67,6 +74,7 @@ export class FeedPage {
   private getFeed(): Observable<Array<Post>> {
 
     let query;
+    console.log(this.is_first_loaded)
 
     if (this.is_first_loaded == false) {
       query = {
@@ -101,6 +109,8 @@ export class FeedPage {
       data.map(post => {
         this.contents.push(post);
       });
+      this.is_loading = false;
+      this.cdr.detectChanges();
       refresher.complete();
     });
   }
@@ -117,6 +127,7 @@ export class FeedPage {
       data.slice(1).map(post => {
         this.contents.push(post);
       });
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
       infiniteScroll.complete();
     });
   }

@@ -50,7 +50,8 @@ const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
 // IMAGES
 const NO_IMAGE = 'assets/placeholder2.png';
-const BUSY_IMAGE = 'https://img.busy.org/@'
+const BUSY_IMAGE = 'https://img.busy.org/@';
+const IMAGES_CDN = 'https://steemitimages.com/375x200/';
 
 
 @Injectable()
@@ -278,10 +279,16 @@ export class SteemProvider {
         // do not parse JSON
       }
 
+      if (post.json_metadata.image) {
+        post.json_metadata.image[0] = IMAGES_CDN + post.json_metadata.image[0]
+      }
+
       // set default image is there is not one
       if (!post.json_metadata.image) {
         post.json_metadata.image = [NO_IMAGE];
       }
+
+      
 
       // initiliaze an empty array for the voters
       post.voters = [];

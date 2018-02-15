@@ -4,13 +4,14 @@
       <ion-card>
         <ion-card-header no-padding>
           <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
-            <ion-icon name="return-right"></ion-icon>
+            <ion-icon name="ios-redo"></ion-icon>
             Reblogged by @{{ content.reblogged_by }}
           </ion-note>
 
           <ion-item>
             <ion-avatar item-start>
-              <img src="https://img.busy.org/@{{content.author}}?s=100">
+              <!-- <img src="https://img.busy.org/@{{content.author}}?s=100"> -->
+              <img-loader src="https://img.busy.org/@{{content.author}}?s=100" useImg></img-loader>
             </ion-avatar>
             <div>
               <ion-badge color="primary"> {{ content.author }}</ion-badge>
@@ -44,7 +45,7 @@
             <div style="float: left;" *ngIf="content.voters">
               <div class="voters">
                 <span class="voters_image" *ngFor="let voter of content.voters">
-                  <img [src]="voter.profile_picture">
+                  <img-loader [src]="voter.profile_picture" useImg></img-loader>
                 </span>
               </div>
               <div class="likes">

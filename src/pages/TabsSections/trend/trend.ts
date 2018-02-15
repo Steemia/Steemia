@@ -1,28 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Observable } from 'rxjs/Observable';
 import { trendTemplate } from './trend.template';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
-  selector: 'page-trend',
+  selector: 'section-scss',
   template: trendTemplate
 })
 
-export class TrendPage{
+export class TrendPage {
 
   private contents: Array<Post> = [];
   private is_first_loaded: boolean = false;
+  private is_loading: boolean = true;
   
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider) { }
+              private steemProvider: SteemProvider,
+              private zone: NgZone,
+              private cdr: ChangeDetectorRef) { }
 
   ionViewDidLoad() {
-    this.dispatchTrending();
+    this.zone.runOutsideAngular(() => {
+      this.dispatchTrending();
+    });
   }
 
   /**
@@ -34,6 +36,8 @@ export class TrendPage{
       data.map(post => {
         this.contents.push(post);
       });
+      this.is_loading = false;
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
     });
     // Check if it is false to avoid assigning the variable in each iteration
     if (this.is_first_loaded == false) {

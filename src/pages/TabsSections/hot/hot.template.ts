@@ -6,9 +6,9 @@ export const hotTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
+  <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-  <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
+  <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 
   <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
