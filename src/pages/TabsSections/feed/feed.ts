@@ -20,18 +20,22 @@ export class FeedPage {
   private is_loading = true;
 
   constructor(private steemProvider: SteemProvider,
-              private appCtrl: App,
-              private steemConnect: SteemConnectProvider,
-              private zone: NgZone,
-              private cdr: ChangeDetectorRef,
-              private imageLoaderConfig: ImageLoaderConfig) {
+    private appCtrl: App,
+    private steemConnect: SteemConnectProvider,
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private imageLoaderConfig: ImageLoaderConfig) {
 
-                this.imageLoaderConfig.setBackgroundSize('cover');
+    this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
     this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
     this.imageLoaderConfig.setImageReturnType('base64');
     this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
 
+
+  }
+
+  ionViewDidLoad() {
     /**
      * Subscribe to the user object in the auth provider
      */
@@ -40,36 +44,38 @@ export class FeedPage {
     //     // Redeclare it as false to start the pagination from 0
     //     this.is_first_loaded = false;
     //     this.username = user;
-    //     this.dispatchFeed();
+    //     this.zone.runOutsideAngular(() => {
+    //       this.dispatchFeed();
+    //     });
     //   }
-    // })
-  }
+    // });
 
-  ionViewDidLoad() {
     this.zone.runOutsideAngular(() => {
       this.dispatchFeed();
     });
+
+
   }
 
   /**
    * Method to dispatch feed and avoid repetition of code
    */
   private dispatchFeed() {
-    
+
     this.getFeed()
-    .subscribe((data: Array<Post>) => {
-      data.map(post => {
-        this.contents.push(post);
+      .subscribe((data: Array<Post>) => {
+        data.map(post => {
+          this.contents.push(post);
+        });
+        this.is_loading = false;
+        this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
       });
-      this.is_loading = false;
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
-    });
     // Check if it is false to avoid assigning the variable in each iteration
     if (this.is_first_loaded == false) {
       this.is_first_loaded = true;
     }
-    
-    
+
+
   }
 
   /**
@@ -82,15 +88,14 @@ export class FeedPage {
   private getFeed(): Observable<Array<Post>> {
 
     let query;
-    console.log(this.is_first_loaded)
 
     if (this.is_first_loaded == false) {
       query = {
         limit: 25,
         tag: 'jaysermendez'
-      };  
+      };
     }
-    
+
     else {
       query = {
         tag: 'jaysermendez',
@@ -99,6 +104,8 @@ export class FeedPage {
         start_permlink: this.contents[this.contents.length - 1].permlink,
       };
     }
+
+
 
     return this.steemProvider.getFeed(query);
   }
@@ -112,15 +119,15 @@ export class FeedPage {
   private doRefresh(refresher): void {
     this.is_first_loaded = false;
     this.getFeed()
-    .subscribe((data: Array<Post>) => {
-      this.contents = [];
-      data.map(post => {
-        this.contents.push(post);
+      .subscribe((data: Array<Post>) => {
+        this.contents = [];
+        data.map(post => {
+          this.contents.push(post);
+        });
+        this.is_loading = false;
+        this.cdr.detectChanges();
+        refresher.complete();
       });
-      this.is_loading = false;
-      this.cdr.detectChanges();
-      refresher.complete();
-    });
   }
 
   /**
@@ -131,13 +138,13 @@ export class FeedPage {
    */
   private doInfinite(infiniteScroll): void {
     this.getFeed()
-    .subscribe((data: Array<Post>) => {
-      data.slice(1).map(post => {
-        this.contents.push(post);
+      .subscribe((data: Array<Post>) => {
+        data.slice(1).map(post => {
+          this.contents.push(post);
+        });
+        this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
+        infiniteScroll.complete();
       });
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
-      infiniteScroll.complete();
-    });
   }
 
   /**

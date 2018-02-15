@@ -68,6 +68,7 @@ export class PostCardComponent {
     // Set the is voting value of the post to true
     this.content.isVoting = true;
     steemInstance.vote(this.username, author, permlink, weight, (err, res) => {
+      console.log(err, res)
 
       // Check for errors
       if (!err) {
@@ -76,6 +77,7 @@ export class PostCardComponent {
 
         // check if vote is not an unvote
         if (weight > 0) {
+          this.content.isVoting = false
           this.content.voted = true;
         }
 

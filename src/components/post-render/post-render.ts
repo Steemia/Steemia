@@ -8,7 +8,6 @@
 
 import { Component, Input } from '@angular/core';
 import { Post } from 'models/models';
-import { App } from 'ionic-angular';
 
 
 @Component({
@@ -18,13 +17,9 @@ import { App } from 'ionic-angular';
 export class PostRenderComponent {
 
   @Input('posts') private contents: Array<Post> = [];
-  
 
-  constructor(private app: App) { 
-
-   
+  constructor() { 
   }
 
-  
 
 }

@@ -299,14 +299,14 @@ export class SteemProvider {
       post.voters = [];
 
       post.isVoting = false;
-      post.voted = false
+      post.voted = false;
       // Find if the current logged in user has voted for this post
       profile.then(res => {
         if (res) {
           if (res.user !== undefined || res.user !== null ) {
             post.active_votes.find((vote) => {
               if (vote.voter == res.user && vote.weight > 0) {
-                post.voted = true
+                post.voted = true;
               }
               if (vote.voter == res.user && vote.weight <= 0) {
                 post.voted = false

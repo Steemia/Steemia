@@ -11,7 +11,7 @@
         <img-loader src="https://img.busy.org/@{{content.author}}?s=100" useImg></img-loader>
       </ion-avatar>
       <div>
-        <ion-badge color="primary"> {{ content.author }}</ion-badge>
+        <ion-badge color="primary"> {{ content?.author }}</ion-badge>
         <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
       </div>
       <div class="mt3">
@@ -21,9 +21,9 @@
         </ion-badge>
         <ion-note end>{{ content.created }}</ion-note>
       </div>
-      <ion-icon *ngIf="!content.isVoting && !content.voted" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.permlink, 10000);"></ion-icon>
+      <ion-icon *ngIf="!content?.isVoting && !content.voted" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.permlink, 10000);"></ion-icon>
 
-      <ion-icon *ngIf="!content.isVoting && content.voted" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
+      <ion-icon *ngIf="content?.voted == true" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
 
       <ion-spinner *ngIf="content.isVoting" item-right></ion-spinner>
     </ion-item>

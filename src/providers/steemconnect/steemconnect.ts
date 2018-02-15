@@ -88,6 +88,7 @@ export class SteemConnectProvider {
             let access_token = event.url.match(/\?(?:access_token)\=([\S\s]*?)\&/)[1];
 
             if (access_token !== undefined && access_token !== null) {
+              this.setToken(access_token);
               SteemConnect.setAccessToken(access_token);
               this.loginStatus.next(true);
               resolve("success");
