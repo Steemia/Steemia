@@ -11,7 +11,7 @@
         <img-loader src="https://img.busy.org/@{{content.author}}?s=100" useImg></img-loader>
       </ion-avatar>
       <div>
-        <ion-badge color="primary"> {{ content?.author }}</ion-badge>
+        <ion-badge color="primary"> {{ content.author }}</ion-badge>
         <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
       </div>
       <div class="mt3">
@@ -42,7 +42,7 @@
       <div style="float: left;" *ngIf="content.voters">
         <div class="voters">
           <span class="voters_image" *ngFor="let voter of content.voters">
-            <img-loader [src]="voter.profile_picture" useImg></img-loader>
+            <img [src]="voter.profile_picture"/>
           </span>
         </div>
         <div class="likes">

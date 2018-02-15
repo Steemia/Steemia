@@ -52,7 +52,7 @@ import { PostCardComponent } from '../components/post-card/post-card';
       autoFocusAssist: false,
       preloadModules: true
     }),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({ name: '__mydb', driverOrder: ['sqlite', 'websql', 'indexeddb'] }),
     IonicImageLoader.forRoot()
   ],
   bootstrap: [IonicApp],
