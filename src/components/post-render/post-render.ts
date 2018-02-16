@@ -21,5 +21,9 @@ export class PostRenderComponent {
   constructor() { 
   }
 
+  trackById(index, post) {
+    return post.id;
+  }
+
 
 }

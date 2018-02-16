@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/share';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import marked from 'marked';
 import steemConnect from '../steemconnect/steemConnectAPI';
@@ -74,6 +75,7 @@ export class SteemProvider {
 
     return forkJoin([profile, followers])
       .map(this.parseProfile)
+      .share()
       .catch(this.catchErrors);
   }
 
@@ -116,6 +118,7 @@ export class SteemProvider {
   public getProfilePosts(query: Object) {
     return this.http.get(BY_BLOG + this.encodeQueryData(query))
       .map(this.parseData)
+      .share()
       .catch(this.catchErrors);
   }
 
@@ -140,6 +143,7 @@ export class SteemProvider {
       include: "meta"
     };
     return this.http.get(SEARCH_ENDPOINT + this.encodeQueryData(params))
+      .share()
       .catch(this.catchErrors);
     
   }
@@ -151,6 +155,7 @@ export class SteemProvider {
   public getComments(query: Object) {
     return this.http.get(GET_COMMENTS + this.encodeQueryData(query))
       .map(this.parseComment)
+      .share()
       .catch(this.catchErrors);
   }
 
@@ -162,6 +167,7 @@ export class SteemProvider {
     
     return this.http.get(BY_FEED + this.encodeParams(query))
         .map((res) => this.parseData(res))
+        .share()
         .catch(this.catchErrors);
   }
 
@@ -171,7 +177,8 @@ export class SteemProvider {
    */
   public getByHot(query: Object) {
     return this.http.get(BY_HOT + this.encodeParams(query))
-    .map((res) => this.parseData(res))
+        .map((res) => this.parseData(res))
+        .share()
         .catch(this.catchErrors);
   }
 
@@ -182,6 +189,7 @@ export class SteemProvider {
   public getByNew(query: Object) {
     return this.http.get(BY_CREATED + this.encodeParams(query))
         .map((res) => this.parseData(res))
+        .share()
         .catch(this.catchErrors);
   }
 
@@ -192,6 +200,7 @@ export class SteemProvider {
   public getByTrending(query: Object) {
     return this.http.get(BY_TRENDING + this.encodeParams(query))
         .map((res) => this.parseData(res))
+        .share()
         .catch(this.catchErrors);
   }
 
@@ -202,6 +211,7 @@ export class SteemProvider {
   public getByPromoted(query: Object) {
     return this.http.get(BY_PROMOTED + this.encodeParams(query))
         .map((res) => this.parseData(res))
+        .share()
         .catch(this.catchErrors);
   }
 

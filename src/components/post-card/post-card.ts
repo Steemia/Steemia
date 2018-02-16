@@ -33,6 +33,9 @@ export class PostCardComponent implements AfterViewInit {
     this.imageLoaderConfig.setImageReturnType('base64');
     this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
     this.imageLoaderConfig.setConcurrency(10);
+    this.imageLoaderConfig.enableDebugMode();
+    this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
+    this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
     // Subscribe to the current username logged in
     this.steemConnect.username.subscribe(user => {

@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
@@ -8,7 +8,6 @@ import { feedTemplate } from './feed.template';
 
 @Component({
   selector: 'section-scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: feedTemplate
 })
 export class FeedPage {
