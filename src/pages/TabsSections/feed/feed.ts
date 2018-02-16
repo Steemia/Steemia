@@ -5,6 +5,7 @@ import { SteemProvider } from '../../../providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
 import { feedTemplate } from './feed.template';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
   selector: 'section-scss',
@@ -21,7 +22,8 @@ export class FeedPage {
     private appCtrl: App,
     private steemConnect: SteemConnectProvider,
     private zone: NgZone,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef,
+    private steemia: SteemiaProvider) {
 
 
   }
