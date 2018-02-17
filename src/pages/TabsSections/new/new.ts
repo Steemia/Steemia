@@ -1,9 +1,10 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
-import { Post } from 'models/models';
-import { SteemProvider } from '../../../providers/steem/steem';
+import { PostsRes, Query } from 'models/models';
 import { Observable } from 'rxjs/Observable';
 import { newTemplate } from './new.template';
+
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
   selector: 'section-scss',
@@ -12,69 +13,53 @@ import { newTemplate } from './new.template';
 
 export class NewPage {
 
-  private contents: Array<Post> = [];
+  private contents: Array<any> = [];
+  private offset: string;
+  private username: string = 'steemit';
   private is_first_loaded: boolean = false;
-  private is_loading: boolean = true;
+  private is_loading = true;
+  private limit: number = 16;
+  private total_posts: number = 0;
+  private is_more_post: boolean = true;
 
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider,
-              private zone: NgZone,
-              private cdr: ChangeDetectorRef) {
+    private steemia: SteemiaProvider,
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef) {
   }
 
   ionViewDidLoad() {
     this.zone.runOutsideAngular(() => {
-      this.dispatchNew();
-    });
-  }
-
-
-  /**
-   * Method to dispatch feed and avoid repetition of code
-   */
-  private dispatchNew() {
-    this.getNew()
-    .subscribe((data: Array<Post>) => {
-      data.map(post => {
-        this.contents.push(post);
+      this.dispatchNew({
+        type: "new",
+        username: "jaysermendez",
+        limit: 15,
+        first_load: this.is_first_loaded
       });
-      this.is_loading = false;
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
     });
-    // Check if it is false to avoid assigning the variable in each iteration
-    if (this.is_first_loaded == false) {
-      this.is_first_loaded = true;
-    }
-    
   }
 
+
   /**
-   * 
-   * Method to get posts filtered by new
-   * 
-   * @returns Observable with an array of posts
-   * @author Jayser Mendez.
+   * Method to dispatch hot and avoid repetition of code
    */
-  private getNew(): Observable<Array<Post>> {
-    let query;
+  private dispatchNew(query: Query, action?: string, event?: any) {
 
-    if (!this.is_first_loaded) {
-      query = {
-        limit: 25,
-        tag: ''
-      };  
-    }
-    
-    else {
-      query = {
-        tag: '',
-        limit: 25,
-        start_author: this.contents[this.contents.length - 1].author,
-        start_permlink: this.contents[this.contents.length - 1].permlink,
-      };
-    }
+    this.steemia.dispatch_posts(query).then((res: PostsRes) => {
+      if (action == "refresh") {
+        this.reinitialize();
+      }
+      this.contents = this.contents.concat(res.results);
 
-    return this.steemProvider.getByNew(query)
+      this.is_first_loaded = true;
+      this.offset = res.offset;
+      this.is_loading = false
+
+      if (event) {
+        event.complete()
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   /**
@@ -84,15 +69,13 @@ export class NewPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.is_first_loaded = false;
-    this.getNew()
-    .subscribe((data: Array<Post>) => {
-      this.contents = [];
-      data.map(post => {
-        this.contents.push(post); 
-      });
-      refresher.complete();
-    });
+    this.is_first_loaded = false
+    this.dispatchNew({
+      type: "new",
+      username: "jaysermendez",
+      limit: 15,
+      first_load: this.is_first_loaded
+    }, "refresh", refresher);
   }
 
   /**
@@ -102,13 +85,7 @@ export class NewPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.getNew()
-    .subscribe((data: Array<Post>) => {
-      data.slice(1).map(post => {
-        this.contents.push(post);
-      });
-      infiniteScroll.complete();
-    });
+    
   }
 
   /**
@@ -119,8 +96,11 @@ export class NewPage {
     this.appCtrl.getRootNavs()[0].push(str);
   }
 
-  public identify(index, item) {
-    return item.title;
+  private reinitialize() {
+    this.contents = [];
+    this.is_more_post = true;
+    this.total_posts = 0;
+    this.is_first_loaded = false;
   }
 
 }

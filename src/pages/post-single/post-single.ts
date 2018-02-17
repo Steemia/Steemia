@@ -13,7 +13,7 @@ import { SteemProvider } from '../../providers/steem/steem';
 })
 export class PostSinglePage {
   
-  private post: Post;
+  private post: any;
   private body: string;
   private meta;
   private tags;
@@ -24,7 +24,7 @@ export class PostSinglePage {
 
     this.post = this.navParams.get('post');
     
-    this.body = marked(this.post.body, {
+    this.body = marked(this.post.full_body, {
       gfm: true,
       tables: true,
       smartLists: true,

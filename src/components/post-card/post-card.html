@@ -1,9 +1,9 @@
 <ion-card>
   <ion-card-header no-padding>
-    <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
+    <!-- <ion-note class="reblog" *ngIf="content.reblogged_by.length>0">
       <ion-icon name="ios-redo"></ion-icon>
       Reblogged by @{{ content.reblogged_by }}
-    </ion-note>
+    </ion-note> -->
 
     <ion-item>
       <ion-avatar item-start>
@@ -19,34 +19,34 @@
           <ion-icon mini name="attach"></ion-icon>
           &nbsp; {{ content.category }}
         </ion-badge>
-        <ion-note end>{{ content.created }}</ion-note>
+        <ion-note end>{{ content.created | amTimeAgo }}</ion-note>
       </div>
-      <ion-icon *ngIf="!content?.isVoting && !content.voted" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.permlink, 10000);"></ion-icon>
+      <ion-icon *ngIf="!content.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.url, 10000);"></ion-icon>
 
-      <ion-icon *ngIf="content?.voted == true" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(i, content.author, content.permlink, 0);"></ion-icon>
+      <ion-icon *ngIf="content?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(content.author, content.url, 0);"></ion-icon>
 
-      <ion-spinner *ngIf="content.isVoting" item-right></ion-spinner>
+      <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
     </ion-item>
   </ion-card-header>
 
   <ion-card-content no-padding (tap)="postOpen(content)">
     <h2 padding>{{ content.title }}</h2>
     <!-- <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div> -->
-    <img-loader class="img" [src]="content.json_metadata.image[0]"></img-loader>
+    <img-loader class="img" [src]="renderImage(content.body)"></img-loader>
 
   </ion-card-content>
 
   <ion-row>
 
     <ion-col col-5 text-center>
-      <div style="float: left;" *ngIf="content.voters">
+      <div style="float: left;" *ngIf="content.top_likers_avatars">
         <div class="voters">
-          <span class="voters_image" *ngFor="let voter of content.voters">
-            <img [src]="voter.profile_picture"/>
+          <span class="voters_image" *ngFor="let voter of content.top_likers_avatars">
+            <img [src]="voter" (error)="imgError($event)"/>
           </span>
         </div>
         <div class="likes">
-          <p>{{ renderLikes(content.net_votes) }}</p>
+          <p>{{ renderLikes(content.net_likes) }}</p>
         </div>
       </div>
     </ion-col>

@@ -5,6 +5,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import steemInstance from 'providers/steemconnect/steemConnectAPI';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 
+const IMAGES_CDN = 'https://steemitimages.com/850x500/';
+
 /**
  * Generated class for the PostCardComponent component.
  *
@@ -13,13 +15,13 @@ import { ImageLoaderConfig } from 'ionic-image-loader';
  */
 @Component({
   selector: 'post-card',
-  templateUrl: 'post-card.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'post-card.html'
 })
 export class PostCardComponent implements AfterViewInit {
 
-  @Input('post') content: Post;
+  @Input('post') content: any;
   private username: string = '';
+  private is_voting: boolean = false;
 
   constructor(private app: App,
     private modalCtrl: ModalController,
@@ -30,10 +32,8 @@ export class PostCardComponent implements AfterViewInit {
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
     this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
-    this.imageLoaderConfig.setImageReturnType('base64');
     this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
     this.imageLoaderConfig.setConcurrency(10);
-    this.imageLoaderConfig.enableDebugMode();
     this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
     this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
@@ -41,14 +41,6 @@ export class PostCardComponent implements AfterViewInit {
     this.steemConnect.username.subscribe(user => {
       this.username = user;
     });
-
-  }
-
-  // Wait until the view inits before disconnecting
-  ngAfterViewInit() {
-    // Since we know the list is not going to change
-    // let's request that this component not undergo change detection at all
-    this.cdr.detach();
   }
 
   /**
@@ -79,24 +71,23 @@ export class PostCardComponent implements AfterViewInit {
    */
   private castVote(author: string, permlink: string, weight: number = 1000) {
     // Set the is voting value of the post to true
-    this.content.isVoting = true;
-    steemInstance.vote(this.username, author, permlink, weight, (err, res) => {
-      console.log(err, res)
-
+    this.is_voting = true;
+    let url = permlink.split('/')[3];
+    this.steemConnect.instance.vote(this.username, author, url, weight, (err, res) => {
       // Check for errors
       if (!err) {
         // remove the is voting flag
-        this.content.isVoting = false
+        this.is_voting = false
 
         // check if vote is not an unvote
         if (weight > 0) {
-          this.content.isVoting = false
-          this.content.voted = true;
+          this.is_voting = false
+          this.content.vote = true;
         }
 
         // perform the downvote
         else {
-          this.content.voted = false;
+          this.content.vote = false;
         }
       }
     });
@@ -110,6 +101,14 @@ export class PostCardComponent implements AfterViewInit {
     if (likes > 1 || likes == 0) return likes.toLocaleString() + ' likes';
     else return likes + ' like';
 
+  }
+
+  private renderImage(img: string) {
+    return IMAGES_CDN + img;
+  }
+
+  private imgError(event) {
+    event.target.src = 'assets/placeholder2.png';
   }
 
 }

@@ -10,7 +10,11 @@ export const feedTemplate = `
 
   <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 
-  <ion-infinite-scroll *ngIf="contents?.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
+  <div *ngIf="contents?.length > 1 && !is_more_post">
+    <p text-center>There is not more post</p>
+  </div>
+
+  <ion-infinite-scroll *ngIf="contents?.length > 1 && is_more_post" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

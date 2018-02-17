@@ -5,6 +5,15 @@ export interface Query {
     show_low_rated?: number; // 0 for false, 1 for true
     username?: string; // Used to check votes, follows, or feed
     with_body?: number; // To show json metadata, 0 for false, 1 for true
+    first_load?: boolean;
+    type?: string;
+    category?: string;
+}
+
+export interface PostsRes {
+    offset?: string;
+    count?: number;
+    results?: Array<any>;
 }
 
 

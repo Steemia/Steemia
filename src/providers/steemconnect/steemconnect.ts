@@ -39,21 +39,22 @@ export class SteemConnectProvider {
     this.instance = SteemConnect
     this.getToken().then(token => {
       if (token === null || token === undefined || token === '') {
-        SteemConnect.setAccessToken(null);
-        this.loginStatus.next(false)
+        this.instance.setAccessToken(null);
+        this.loginStatus.next(false);
       }
       else if (token !== null && token !== undefined && token !== '') {
-        this.access_token = token.toString();
-        SteemConnect.setAccessToken(this.access_token);
+        //this.access_token = token.toString();
+        this.instance.setAccessToken(this.access_token);
         this.loginStatus.next(true)
-        SteemConnect.me((err, res) => {
+        this.instance.me((err, res) => {
           this.user = res.user
           this.username.next(res.user);
         });
       }
     })
 
-    this.loginUrl = SteemConnect.getLoginURL();
+    this.loginUrl = this.instance.getLoginURL();
+    console.log(this.loginUrl)
   }
 
   private getToken() {
@@ -142,44 +143,6 @@ export class SteemConnectProvider {
         }
       });
     });
-  }
-
-
-
-  /**
-   * BLOCKCHAIN BROADCASTING
-   */
-
-  public vote_unvote(author, permlink, weight) {
-    let status: boolean;
-    let sub = this.loginStatus.subscribe(res => {
-      status = res
-    });
-    return new Promise((resolve, reject) => {
-      if (status) {
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json')
-        headers.append('Authorization', this.access_token);
-        const options = new RequestOptions({ headers: headers });
-
-        this.http.post('https://v2.steemconnect.com/api/broadcast', {
-          "operations": [
-            ["vote", {
-              "voter": this.user,
-              "author": author,
-              "permlink": permlink,
-              "weight": weight
-            }]
-          ]
-        }, options).subscribe(res => {
-          if (res.status === 200) {
-            resolve('done')
-          }
-        });
-
-      }
-    })
   }
 
   public castComment(author, permlink, comment_permlink, body) {

@@ -16,7 +16,7 @@ import { Post } from 'models/models';
 })
 export class PostRenderComponent {
 
-  @Input('posts') private contents: Array<Post> = [];
+  @Input('posts') private contents: Array<any> = [];
 
   constructor() { 
   }

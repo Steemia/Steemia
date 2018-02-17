@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FeedPage } from '../TabsSections/feed/feed';
 import { HotPage } from '../TabsSections/hot/hot';
 import { NewPage } from '../TabsSections/new/new';
-import { PromotedPage } from '../TabsSections/promoted/promoted';
 import { TrendPage } from '../TabsSections/trend/trend';
 import { App } from 'ionic-angular';
 
@@ -35,7 +34,6 @@ import { App } from 'ionic-angular';
           <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
           <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
           <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
-          <ion-tab [root]="promotedRoot" tabIcon="pricetag"></ion-tab>
       </ion-tabs>
     </ion-content>
   `
@@ -44,7 +42,6 @@ export class TabsPage {
 
   private feedRoot = FeedPage;
   private trendRoot = TrendPage;
-  private promotedRoot = PromotedPage;
   private hotRoot = HotPage;
   private newRoot = NewPage;
 

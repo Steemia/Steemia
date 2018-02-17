@@ -1,9 +1,9 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
-import { Post } from 'models/models';
-import { SteemProvider } from '../../../providers/steem/steem';
+import { PostsRes, Query } from 'models/models';
 import { Observable } from 'rxjs/Observable';
 import { hotTemplate } from './hot.template';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
   selector: 'section-scss',
@@ -11,21 +11,31 @@ import { hotTemplate } from './hot.template';
 })
 
 export class HotPage {
-  
-  private contents: Array<Post> = [];
+
+  private contents: Array<any> = [];
+  private offset: string;
+  private username: string = 'steemit';
   private is_first_loaded: boolean = false;
   private is_loading = true;
-  
+  private limit: number = 16;
+  private total_posts: number = 0;
+  private is_more_post: boolean = true;
+
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider,
-              private zone: NgZone,
-              private cdr: ChangeDetectorRef) {
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private steemia: SteemiaProvider) {
 
   }
 
   ionViewDidLoad() {
     this.zone.runOutsideAngular(() => {
-      this.dispatchHot();
+      this.dispatchHot({
+        type: "hot",
+        username: "jaysermendez",
+        limit: 15,
+        first_load: this.is_first_loaded
+      });
     });
   }
 
@@ -33,49 +43,23 @@ export class HotPage {
   /**
    * Method to dispatch feed and avoid repetition of code
    */
-  private dispatchHot() {
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      data.map(post => {
-        this.contents.push(post);
-      });
-      this.is_loading = false;
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
-    });
-    // Check if it is false to avoid assigning the variable in each iteration
-    if (this.is_first_loaded == false) {
+  private dispatchHot(query: Query, action?: string, event?: any) {
+
+    this.steemia.dispatch_posts(query).then((res: PostsRes) => {
+      if (action == "refresh") {
+        this.reinitialize();
+      }
+      this.contents = this.contents.concat(res.results);
+
       this.is_first_loaded = true;
-    }
-    
-  }
+      this.offset = res.offset;
+      this.is_loading = false
 
-  /**
-   * 
-   * Method to get posts filtered by hot
-   * 
-   * @returns Observable with an array of posts
-   * @author Jayser Mendez.
-   */
-  private getHot(): Observable<Array<Post>> {
-    let query;
-
-    if (!this.is_first_loaded) {
-      query = {
-        limit: 25,
-        tag: ''
-      };  
-    }
-    
-    else {
-      query = {
-        tag: '',
-        limit: 25,
-        start_author: this.contents[this.contents.length - 1].author,
-        start_permlink: this.contents[this.contents.length - 1].permlink,
-      };
-    }
-
-    return this.steemProvider.getByHot(query)
+      if (event) {
+        event.complete()
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   /**
@@ -85,15 +69,13 @@ export class HotPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.is_first_loaded = false;
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      this.contents = [];
-      data.map(post => {
-        this.contents.push(post);
-      });
-      refresher.complete();
-    });
+    this.is_first_loaded = false
+    this.dispatchHot({
+      type: "hot",
+      username: "jaysermendez",
+      limit: 15,
+      first_load: this.is_first_loaded
+    }, "refresh", refresher);
   }
 
   /**
@@ -103,13 +85,12 @@ export class HotPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      data.slice(1).map(post => {
-        this.contents.push(post);
-      });
+    if (this.total_posts <= this.limit) {
+      console.log("there is not more")
+      this.is_more_post = false;
+      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
       infiniteScroll.complete();
-    });
+    }
   }
 
   /**
@@ -120,7 +101,10 @@ export class HotPage {
     this.appCtrl.getRootNavs()[0].push(str);
   }
 
-  public identify(index, item) {
-    return item.title;
+  private reinitialize() {
+    this.contents = [];
+    this.is_more_post = true;
+    this.total_posts = 0;
+    this.is_first_loaded = false;
   }
 }

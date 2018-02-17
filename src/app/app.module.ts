@@ -20,7 +20,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { FeedPage } from '../pages/TabsSections/feed/feed';
 import { HotPage } from '../pages/TabsSections/hot/hot';
 import { NewPage } from '../pages/TabsSections/new/new';
-import { PromotedPage } from '../pages/TabsSections/promoted/promoted';
 import { TrendPage } from '../pages/TabsSections/trend/trend';
 import { PostRenderComponent } from '../components/post-render/post-render';
 import { SkeletonLoadingComponent } from '../components/skeleton-loading/skeleton-loading';
@@ -35,13 +34,13 @@ import { PostCardComponent } from '../components/post-card/post-card';
     FeedPage,
     HotPage,
     NewPage,
-    PromotedPage,
     TrendPage,
     PostRenderComponent,
     SkeletonLoadingComponent,
     PostCardComponent
   ],
   imports: [
+    MomentModule,
     HttpClientModule,
     BrowserModule,
     HttpModule,
@@ -50,7 +49,9 @@ import { PostCardComponent } from '../components/post-card/post-card';
       scrollPadding: false,
       scrollAssist: true,
       autoFocusAssist: false,
-      preloadModules: true
+      preloadModules: true,
+      pageTransition: 'wp-transition',
+      modalLeave: 'modal-slide-out',
     }),
     IonicStorageModule.forRoot({ name: '__mydb', driverOrder: ['sqlite', 'websql', 'indexeddb'] }),
     IonicImageLoader.forRoot()
@@ -62,7 +63,6 @@ import { PostCardComponent } from '../components/post-card/post-card';
     FeedPage,
     HotPage,
     NewPage,
-    PromotedPage,
     TrendPage
   ],
   providers: [
