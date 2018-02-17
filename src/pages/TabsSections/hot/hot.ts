@@ -41,7 +41,7 @@ export class HotPage {
 
 
   /**
-   * Method to dispatch feed and avoid repetition of code
+   * Method to dispatch hot and avoid repetition of code
    */
   private dispatchHot(query: Query, action?: string, event?: any) {
 

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { Post } from 'models/models';
 import { App, ModalController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -17,7 +17,7 @@ const IMAGES_CDN = 'https://steemitimages.com/850x500/';
   selector: 'post-card',
   templateUrl: 'post-card.html'
 })
-export class PostCardComponent implements AfterViewInit {
+export class PostCardComponent{
 
   @Input('post') content: any;
   private username: string = '';
@@ -26,8 +26,7 @@ export class PostCardComponent implements AfterViewInit {
   constructor(private app: App,
     private modalCtrl: ModalController,
     private steemConnect: SteemConnectProvider,
-    private imageLoaderConfig: ImageLoaderConfig,
-    private cdr: ChangeDetectorRef) {
+    private imageLoaderConfig: ImageLoaderConfig) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
