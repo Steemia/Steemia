@@ -10,7 +10,11 @@ export const trendTemplate = `
 
   <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 
-  <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
+  <div *ngIf="is_more_post == false">
+    <p text-center>There are not more posts to load</p>
+  </div>
+  
+  <ion-infinite-scroll *ngIf="contents.length > 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

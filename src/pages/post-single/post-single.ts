@@ -3,13 +3,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Post } from 'models/models';
 import marked from 'marked';
 import { SteemProvider } from '../../providers/steem/steem';
+import { postSinglePage } from './post-single.template'; 
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-post-single',
-  templateUrl: 'post-single.html',
+  template: postSinglePage
 })
 export class PostSinglePage {
   

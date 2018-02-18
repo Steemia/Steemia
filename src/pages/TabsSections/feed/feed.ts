@@ -14,15 +14,14 @@ import { Subscription } from 'rxjs/Subscription';
 export class FeedPage {
 
   private contents: Array<any> = [];
-  private offset: string;
+  private offset: string = null;
   private username: string = 'steemit';
   private is_first_loaded: boolean = false;
   private is_loading = true;
-  private limit: number = 16;
+  private first_limit: number = 15;
+  private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
-
-  private sub: Subscription;
 
   constructor(private appCtrl: App,
     private steemConnect: SteemConnectProvider,
@@ -41,23 +40,56 @@ export class FeedPage {
    */
   private dispatchFeed(action?: string, event?: any) {
 
+    // Call the API
     this.steemia.dispatch_feed({
       username: "jaysermendez",
-      limit: 15,
-      first_load: this.is_first_loaded
+      limit: this.limit,
+      first_load: this.is_first_loaded,
+      offset: this.offset
     }).then((res: PostsRes) => {
-      if (action == "refresh") {
+
+      // Check if the action is to refresh. If so, we need to 
+      // reinitialize all the data after initializing the query
+      // to avoid the data to dissapear
+      if (action === "refresh") {
         this.reinitialize();
       }
-      this.contents = this.contents.concat(res.results);
 
-      this.is_first_loaded = true;
+      // By default, the offset is null, so we want the whole data
+      if (this.offset === null) {
+        
+        this.contents = this.contents.concat(res.results);
+      }
+
+      // Otherwise, we want the data execpt for the first index
+      else {
+        this.contents = this.contents.concat(res.results.splice(1));
+      }
+
+      // Check if there are more post to load
+      if (this.contents[this.contents.length - 1].title === res.results[res.results.length - 1].title
+        && this.is_first_loaded == true) {
+        this.is_more_post = false;
+      }
+
+      // If first load is set to false, set it to true so next query
+      // is able to use the offset
+      if (this.is_first_loaded == false) {
+        this.is_first_loaded = true;
+      }
+      
+      // Declare the new offset
       this.offset = res.offset;
+
+      // Set the loading spinner to false
       this.is_loading = false
 
+      // If this was called from an event, complete it
       if (event) {
-        event.complete()
+        event.complete();
       }
+
+      // Tell Angular that changes were made since we detach the auto check
       this.cdr.detectChanges();
     });
   }
@@ -69,8 +101,10 @@ export class FeedPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.is_first_loaded = false
-    this.dispatchFeed("refresh", refresher);
+    this.is_first_loaded = false;
+    this.zone.runOutsideAngular(() => {
+      this.dispatchFeed("refresh", refresher);
+    });
   }
 
   /**
@@ -80,12 +114,12 @@ export class FeedPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    if (this.total_posts <= this.limit) {
-      console.log("there is not more")
-      this.is_more_post = false;
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
-      infiniteScroll.complete();
+    if (this.first_limit === this.limit && this.is_first_loaded == true) {
+      this.limit += 1;
     }
+    this.zone.runOutsideAngular(() => {
+      this.dispatchFeed("inifinite", infiniteScroll);
+    });
   }
 
   /**
@@ -97,6 +131,9 @@ export class FeedPage {
   }
 
   private reinitialize() {
+    this.offset = null;
+    this.limit = 15;
+    this.first_limit = 15;
     this.contents = [];
     this.is_more_post = true;
     this.total_posts = 0;

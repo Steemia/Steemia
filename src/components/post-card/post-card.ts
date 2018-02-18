@@ -46,6 +46,11 @@ export class PostCardComponent{
     })
   }
 
+  private openProfile(author: string) {
+    this.app.getActiveNav()[0].push('AuthorProfilePage')
+
+  }
+
   /**
    * Method to open a modal with the comments of the post
    * @param post 

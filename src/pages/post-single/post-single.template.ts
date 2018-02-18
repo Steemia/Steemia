@@ -1,3 +1,5 @@
+export const postSinglePage = `
+
 <ion-header>
   <ion-navbar color="primary">
     <ion-title></ion-title>
@@ -14,7 +16,6 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content>
   <ion-card no-padding>
@@ -46,3 +47,5 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+`;
