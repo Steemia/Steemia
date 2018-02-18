@@ -6,7 +6,6 @@ import { Post } from 'models/models';
 import { PostsRes, Query } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
-@IonicPage()
 @Component({
   selector: 'page-author-profile',
   templateUrl: 'author-profile.html',

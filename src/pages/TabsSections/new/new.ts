@@ -5,9 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { newTemplate } from './new.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
   selector: 'section-scss',
   template: newTemplate

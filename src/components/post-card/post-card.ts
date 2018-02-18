@@ -4,6 +4,7 @@ import { App, ModalController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import steemInstance from 'providers/steemconnect/steemConnectAPI';
 import { ImageLoaderConfig } from 'ionic-image-loader';
+import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
 
 const IMG_SERVER = 'https://steemitimages.com/';
 
@@ -51,7 +52,7 @@ export class PostCardComponent {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.app.getRootNavs()[0].push('AuthorProfilePage')
+    this.app.getRootNavs()[0].push(AuthorProfilePage)
   }
 
   /**
