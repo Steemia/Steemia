@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http'
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { BrowserTab } from '@ionic-native/browser-tab';
 
 import { MyApp } from './app.component';
 import { DataProvider } from 'providers/data/data';
@@ -68,6 +69,7 @@ import { PostCardComponent } from '../components/post-card/post-card';
   providers: [
     StatusBar,
     InAppBrowser,
+    BrowserTab,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataProvider,

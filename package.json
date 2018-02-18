@@ -20,6 +20,7 @@
     "@angular/http": "^5.2.4",
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
+    "@ionic-native/browser-tab": "^4.5.3",
     "@ionic-native/core": "^4.5.3",
     "@ionic-native/file": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
@@ -30,6 +31,7 @@
     "closure-webpack-plugin": "0.0.23",
     "cordova-android": "7.0.0",
     "cordova-ios": "4.5.4",
+    "cordova-plugin-browsertab": "^0.2.0",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
@@ -71,7 +73,8 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-statusbar": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-file": {}
+      "cordova-plugin-file": {},
+      "cordova-plugin-browsertab": {}
     },
     "platforms": [
       "android",
