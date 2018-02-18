@@ -94,10 +94,30 @@ export class SteemiaProvider {
    * 
    * @param {Query} query: Object with data for query
    */
-  public get_profile_posts(query: Query) {
+  private get_profile_posts(query: Query) {
     return this.http.get(OWN_POSTS + query.username + '/posts?' + this.encodeQueryData(query))
       .share()
 
+  }
+
+  /**
+   * Public method to dispatch the data to the corresponding page
+   * @param {Query} query: Object with data for query
+   */
+  public dispatch_profile_posts(query: Query): Promise<any> {
+    let que: Query = {
+      limit: query.limit,
+      show_nsfw: 0,
+      show_low_rated: 0,
+      with_body: 1,
+      username: query.username
+    }
+
+    if (query.first_load == true) {
+      que.offset = query.offset
+    }
+
+    return this.get_profile_posts(que).toPromise();
   }
   
   /**

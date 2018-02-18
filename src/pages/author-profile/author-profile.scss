@@ -1,3 +1,99 @@
 page-author-profile {
 
+      ion-segment {
+            background-color: white;
+            height: 60px;
+      }
+
+      .segment-md .segment-button {
+            height: 60px;
+      }
+
+      .background{
+            height: 165px;
+            background-color: #488aff;
+            padding:5px 10px 0px 10px;
+            text-align: center;
+        }
+         
+        .picture {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+           // border: 2px solid white;
+            box-shadow: 0px 0px 20px -3px rgba(0,0,0,0.75);
+            margin-top: 10px;
+        }
+            
+        .subtitle {
+            margin-top: 6px;
+            height: 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+            
+        div.subtitle h1, h2 {
+            margin: 4px 0 0 0;
+            width: 100%;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: white;
+        }
+            
+        div.subtitle h2 {
+            font-weight: 400;
+        }
+        .toolbar-ios {
+            padding: 0px !important;
+        }
+        .toolbar-md {
+            padding: 0px !important;
+        }
+        .profile {
+            min-height: 40px !important
+        }
+        .info {
+            bottom: 150px !important;
+            left: 26% !important;
+        }
+        .card-content {
+            padding: 0 0 5% 0;
+            h1, h2, h3, h4, h5 {
+                color: #000;
+            }
+        }
+    
+        .progress-outer {
+            width: 100%;
+            padding: 0px;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #fff;
+            border-radius: 20px !important;
+        }
+     
+        .progress-inner {
+            min-width: 15%;
+            white-space: nowrap;
+            overflow: hidden;
+            border-radius: 20px;
+            background-color: firebrick;
+        }
+        
+        .segment-md .segment-button {
+            color: #000000;
+        }
+        .segment-ios .segment-button {
+            color: #488aff; 
+        }
+        .segment-ios .segment-button:last-of-type {
+            border-radius: 0px !important;
+        }
+        .segment-ios .segment-button:first-of-type {
+            border-radius: 0px !important; 
+        }    
+
 }

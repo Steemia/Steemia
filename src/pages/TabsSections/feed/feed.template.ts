@@ -6,7 +6,7 @@ export const feedTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-spinner *ngIf="is_loading"></ion-spinner>
+  <skeleton-loading *ngIf="is_loading"></skeleton-loading>
 
   <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 

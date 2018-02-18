@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
 })
 export class SkeletonLoadingComponent {
 
-  private mockArray: Array<string> = new Array(2);
+  private mockArray: Array<string> = new Array(1);
 
   constructor() {}
 

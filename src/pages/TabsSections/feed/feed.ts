@@ -7,6 +7,9 @@ import { feedTemplate } from './feed.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Subscription } from 'rxjs/Subscription';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'section-scss',
   template: feedTemplate

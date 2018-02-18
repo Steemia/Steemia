@@ -5,6 +5,9 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Observable } from 'rxjs/Observable';
 import { trendTemplate } from './trend.template';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'section-scss',
   template: trendTemplate

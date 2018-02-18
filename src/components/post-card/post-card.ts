@@ -11,7 +11,7 @@ const IMG_SERVER = 'https://steemitimages.com/';
   selector: 'post-card',
   templateUrl: 'post-card.html'
 })
-export class PostCardComponent{
+export class PostCardComponent {
 
   @Input('post') content: any;
   private username: string = '';

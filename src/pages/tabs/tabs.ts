@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { FeedPage } from '../TabsSections/feed/feed';
-import { HotPage } from '../TabsSections/hot/hot';
-import { NewPage } from '../TabsSections/new/new';
-import { TrendPage } from '../TabsSections/trend/trend';
 import { App } from 'ionic-angular';
 
 @Component({
@@ -40,10 +36,10 @@ import { App } from 'ionic-angular';
 })
 export class TabsPage {
 
-  private feedRoot = FeedPage;
-  private trendRoot = TrendPage;
-  private hotRoot = HotPage;
-  private newRoot = NewPage;
+  private feedRoot: string = "FeedPage";
+  private trendRoot: string= "TrendPage";
+  private hotRoot: string = "HotPage";
+  private newRoot: string = "NewPage";
 
   constructor(private appCtrl: App) {}
 
