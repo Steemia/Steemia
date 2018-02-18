@@ -1,5 +1,19 @@
 page-author-profile {
 
+    .profile-img {
+        .item-avatar  {     
+            width:100% !important;  
+            height : 100% !important;  
+            max-width: 100px !important;  //any size
+            max-height: 100px !important; //any size 
+        }
+        
+    }
+
+    .item {
+        background-color: transparent;
+    }
+
       ion-segment {
             background-color: white;
             height: 60px;
@@ -9,7 +23,7 @@ page-author-profile {
             height: 60px;
       }
 
-      .background{
+      .background {
             height: 165px;
             background-color: #488aff;
             padding:5px 10px 0px 10px;
@@ -17,11 +31,10 @@ page-author-profile {
         }
          
         .picture {
-            width: 65px;
-            height: 65px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
-           // border: 2px solid white;
-            box-shadow: 0px 0px 20px -3px rgba(0,0,0,0.75);
+            border: 2px solid white;
             margin-top: 10px;
         }
             

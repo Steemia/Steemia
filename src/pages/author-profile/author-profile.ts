@@ -162,7 +162,7 @@ export class AuthorProfilePage {
         this.about = this.metadata.profile.about;
         this.location = this.metadata.profile.location;
         this.website = this.metadata.profile.website;
-        //this.reputation = steem.formatter.reputation(data[0].reputation);
+        this.reputation = data[0].reputation
         //console.log(data[0]);
       })
   }

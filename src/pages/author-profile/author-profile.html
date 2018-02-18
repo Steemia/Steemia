@@ -14,27 +14,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
   <!-- Voting Power Progress Bar for Reputation -->
   <div class="background">
-    <div class="progress-outer">
-      <div class="progress-inner" [style.width]="voting_power + '%'">
-        <ion-icon name="flash" ios="ios-flash" md="ios-flash"></ion-icon>
-        {{ voting_power }}%
+
+    <!-- <ion-item no-lines class="profile-image">
+      <ion-avatar item-start (tap)="openProfile(content.author)">
+        <img [src]="profile_image" />
+      </ion-avatar>
+      <div>
+        <ion-badge color="primary"> {{ account }}</ion-badge>
+        <ion-badge color="gray"> {{ reputation }} </ion-badge>
       </div>
-    </div>
+    </ion-item> -->
+
 
     <img src="{{profile_image}}" class="picture" />
     <div class="subtitle">
       <h1>
-        <ion-badge color="gray">{{account}}</ion-badge>
-        <ion-badge color="light">{{ reputation }}</ion-badge>
+        <ion-badge color="light">{{account}}</ion-badge>
+        <ion-badge color="gray">{{ reputation }}</ion-badge>
       </h1>
       <h2>{{ about }}</h2>
     </div>
+
+    <!-- <div class="progress-outer">
+      <div class="progress-inner" [style.width]="voting_power + '%'">
+        <ion-icon name="flash" ios="ios-flash" md="ios-flash"></ion-icon>
+        {{ voting_power }}%
+      </div>
+    </div> -->
   </div>
 
   <ion-segment [(ngModel)]="profile" mode="md">
