@@ -40,22 +40,25 @@ export class PostCardComponent{
    * Method to open the single page of a post
    * @param post 
    */
-  private postOpen(post) {
+  private postOpen(post): void {
     this.app.getRootNavs()[0].push('PostSinglePage', {
       post: post
     })
   }
 
-  private openProfile(author: string) {
-    this.app.getActiveNav()[0].push('AuthorProfilePage')
-
+  /**
+   * Method to open author profile page
+   * @param {String} author: author of the post
+   */
+  private openProfile(author: string): void {
+    this.app.getRootNavs()[0].push('AuthorProfilePage')
   }
 
   /**
    * Method to open a modal with the comments of the post
    * @param post 
    */
-  private openComments(post) {
+  private openComments(post): void {
     let commentModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
     commentModal.present();
   }
@@ -67,7 +70,7 @@ export class PostCardComponent{
    * @param permlink 
    * @param weight 
    */
-  private castVote(author: string, permlink: string, weight: number = 1000) {
+  private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
     let url = permlink.split('/')[3];
@@ -95,13 +98,13 @@ export class PostCardComponent{
    * Method to add pluralization to the likes in the post
    * @param likes 
    */
-  private renderLikes(likes: number) {
+  private renderLikes(likes: number): string {
     if (likes > 1 || likes == 0) return likes.toLocaleString() + ' likes';
     else return likes + ' like';
 
   }
 
-  private renderImage(type: string, img: string) {
+  private renderImage(type: string, img: string): string {
     if (type === 'profile') {
       return IMG_SERVER + '80x80/' + img;
     }
@@ -115,7 +118,7 @@ export class PostCardComponent{
     }
   }
 
-  private imgError(event) {
+  private imgError(event): void {
     event.target.src = 'assets/placeholder2.png';
   }
 

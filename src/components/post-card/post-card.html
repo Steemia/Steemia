@@ -6,7 +6,7 @@
     </ion-note> -->
 
     <ion-item>
-      <ion-avatar item-start>
+      <ion-avatar item-start (tap)="openProfile(content.author)">
         <img-loader [src]="renderImage('profile', content.avatar)" useImg></img-loader>
       </ion-avatar>
       <div>
