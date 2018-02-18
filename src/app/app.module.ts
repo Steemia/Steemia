@@ -29,6 +29,7 @@ import { SkeletonLoadingComponent } from '../components/skeleton-loading/skeleto
 import { MomentModule } from 'angular2-moment';
 import { PostRenderComponent } from '../components/post-render/post-render';
 import { PostCardComponent } from '../components/post-card/post-card';
+import {RoundProgressModule} from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PostCardComponent } from '../components/post-card/post-card';
     AuthorProfilePage
   ],
   imports: [
+    RoundProgressModule,
     MomentModule,
     HttpClientModule,
     BrowserModule,

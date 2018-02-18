@@ -16,6 +16,18 @@
 // automatically applied to the <body> element in the app.
 @import "../pages/TabsSections/sections.scss";
 
+@font-face {
+  font-family: "ProximaNova-Regular";
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.eot");
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.eot?#iefix") format("embedded-opentype"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.woff") format("woff"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.ttf") format("truetype"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.svg#rocketdesign-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'ProximaNova-Regular', Helvetica neue, sans-serif;
+}
+
 ion-content {
   background-color: #fcfcff !important;
 }

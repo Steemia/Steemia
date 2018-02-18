@@ -37,6 +37,7 @@ export class AuthorProfilePage {
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
+  showToolbar:boolean = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -211,5 +212,11 @@ export class AuthorProfilePage {
     this.is_more_post = true;
     this.total_posts = 0;
     this.is_first_loaded = false;
+  }
+
+  onScroll($event: any){
+    let scrollTop = $event.scrollTop;
+    this.showToolbar = scrollTop >= 160;
+    this.cdr.detectChanges();
   }
 }
