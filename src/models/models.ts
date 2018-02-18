@@ -3,6 +3,7 @@ export interface Query {
     offset?: string; // Used for pagination
     show_nsfw?: number; // 0 for false, 1 for true
     show_low_rated?: number; // 0 for false, 1 for true
+    current_user?: string; // When you are querying user info, you need current user
     username?: string; // Used to check votes, follows, or feed
     with_body?: number; // To show json metadata, 0 for false, 1 for true
     first_load?: boolean;

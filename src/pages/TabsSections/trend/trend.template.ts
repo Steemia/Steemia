@@ -6,7 +6,7 @@ export const trendTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <skeleton-loading *ngIf="is_loading"></skeleton-loading>
+  <ion-spinner *ngIf="is_loading"></ion-spinner>
 
   <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 

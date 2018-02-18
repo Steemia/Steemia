@@ -1,131 +1,7 @@
-<!-- <ion-header>
-  <ion-navbar transparent>
-    <ion-title>
-    </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only>
-        <ion-icon name="ios-notifications-outline"></ion-icon>
-      </button>
-      <button ion-button icon-only>
-        <ion-icon name="ios-chatboxes-outline"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content fullscreen>
-
-
-    <round-progress class="round-progress" text-center
-      [style.backgroundImage]="'url('+ profile_image +')'"
-      [current]="voting_power"
-      [max]="100"
-      [color]="'#45ccce'"
-      [background]="'#eaeaea'"
-      [radius]="75"
-      [stroke]="6"
-      [semicircle]="false"
-      [rounded]="true"
-      [clockwise]="true"
-      [responsive]="false"
-      [duration]="800"
-      [animation]="'easeInOutQuart'"
-      [animationDelay]="0">
-    </round-progress>
-
-    <div class="subtitle">
-      <h1>
-        <ion-badge color="light">{{account}}</ion-badge>
-        <ion-badge color="gray">{{ reputation }}</ion-badge>
-      </h1>
-      <h2>{{ about }}</h2>
-    </div>
-
-  </div>
-
-  <ion-segment [(ngModel)]="profile" mode="md">
-    <ion-segment-button icon-top value="blog">
-      <ion-icon name="paper"></ion-icon>
-      <div style="margin-top: -35px;">
-        <p>Posts</p>
-      </div>
-    </ion-segment-button>
-    <ion-segment-button icon-top value="activity">
-      <ion-icon name="analytics"></ion-icon>
-      <div style="margin-top: -35px;">
-        <p>Analytics</p>
-      </div>
-    </ion-segment-button>
-    <ion-segment-button icon-top value="about">
-      <ion-icon name="person"></ion-icon>
-      <div style="margin-top: -35px;">
-        <p>Info</p>
-      </div>
-    </ion-segment-button>
-    <ion-segment-button icon-top value="wallet">
-      <ion-icon name="card"></ion-icon>
-      <div style="margin-top: -35px;">
-        <p>Wallet</p>
-      </div>
-    </ion-segment-button>
-  </ion-segment>
-
-  <div [ngSwitch]="profile">
-    <div *ngSwitchCase="'blog'">
-      <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
-      <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
-
-      <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">
-        <ion-infinite-scroll-content></ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-    </div>
-    <div *ngSwitchCase="'activity'">
-      Activity
-    </div>
-    <div *ngSwitchCase="'about'">
-      <ion-list>
-        <ion-item>
-          <ion-icon name="people" item-start></ion-icon>
-          Followers
-          <ion-badge color="light" item-end>{{ follower_count }}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="person-add" item-start></ion-icon>
-          Following
-          <ion-badge color="light" item-end>{{ following_count }}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="paper" item-start></ion-icon>
-          Posts
-          <ion-badge color="light" item-end>{{ post_count }}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="pin" item-start></ion-icon>
-          Location
-          <ion-badge color="light" item-end>{{ location }}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="globe" item-start></ion-icon>
-          Website
-          <ion-badge color="light" item-end>{{ website }}</ion-badge>
-        </ion-item>
-      </ion-list>
-    </div>
-    <div *ngSwitchCase="'wallet'">
-      Wallet
-    </div>
-  </div>
-
-  <ion-fab right bottom>
-    <button ion-fab color="primary">
-      <ion-icon ios="md-create" md="md-create"></ion-icon>
-    </button>
-  </ion-fab>
-</ion-content> -->
 <ion-header [class.opaque]="showToolbar">
   <ion-navbar>
     <ion-title>
-      Profile
+      {{ account }}
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only>
@@ -153,7 +29,7 @@
       <span class="infos_nick">
         {{ about }}
       </span>
-      
+
     </div>
 
 
@@ -188,7 +64,8 @@
     </div>
     <div [ngSwitch]="profile">
       <div *ngSwitchCase="'blog'">
-        <skeleton-loading *ngIf="contents.length < 1"></skeleton-loading>
+        <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
+        
         <post-render *ngIf="contents.length > 1" [posts]="contents"></post-render>
 
         <ion-infinite-scroll *ngIf="contents.length > 1" (ionInfinite)="doInfinite($event)" distance="1%">

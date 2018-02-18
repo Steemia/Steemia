@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Query,PostsRes } from 'models/models';
 
 const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
+const STEEPSHOT_BASE = 'http://steepshot.org/api/v1/'
 const FEED = BASE_API + 'recent?';
 const POSTS = BASE_API + 'posts/';
 const OWN_POSTS = BASE_API + 'user/';
@@ -118,6 +119,18 @@ export class SteemiaProvider {
     }
 
     return this.get_profile_posts(que).toPromise();
+  }
+
+  /**
+   * Public method to dispatch the data to the corresponding page
+   * @param {Query} query: Object with data for query
+   */
+  private dispatch_profile_info(query: Query): Promise<any> {
+    return this.http.get(STEEPSHOT_BASE + query.current_user + '/user/' + query.username + '/info' + this.encodeQueryData({
+      limit: query.limit,
+      show_nsfw: 0,
+      show_low_rated: 0
+    })).share().toPromise();
   }
   
   /**
