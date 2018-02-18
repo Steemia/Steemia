@@ -5,14 +5,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import steemInstance from 'providers/steemconnect/steemConnectAPI';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 
-const IMAGES_CDN = 'https://steemitimages.com/850x500/';
+const IMG_SERVER = 'https://steemitimages.com/';
 
-/**
- * Generated class for the PostCardComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'post-card',
   templateUrl: 'post-card.html'
@@ -102,8 +96,18 @@ export class PostCardComponent{
 
   }
 
-  private renderImage(img: string) {
-    return IMAGES_CDN + img;
+  private renderImage(type: string, img: string) {
+    if (type === 'profile') {
+      return IMG_SERVER + '80x80/' + img;
+    }
+
+    else if (type === 'cover') {
+      return IMG_SERVER + '850x500/' + img;
+    }
+
+    else if (type === 'votes') {
+      return IMG_SERVER + '50x50/' + img
+    }
   }
 
   private imgError(event) {

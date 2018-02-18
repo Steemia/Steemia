@@ -7,8 +7,7 @@
 
     <ion-item>
       <ion-avatar item-start>
-        <!-- <img src="https://img.busy.org/@{{content.author}}?s=100"> -->
-        <img-loader src="https://img.busy.org/@{{content.author}}?s=100" useImg></img-loader>
+        <img-loader [src]="renderImage('profile', content.avatar)" useImg></img-loader>
       </ion-avatar>
       <div>
         <ion-badge color="primary"> {{ content.author }}</ion-badge>
@@ -32,7 +31,7 @@
   <ion-card-content no-padding (tap)="postOpen(content)">
     <h2 padding>{{ content.title }}</h2>
     <!-- <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div> -->
-    <img-loader class="img" [src]="renderImage(content.body)"></img-loader>
+    <img-loader class="img" [src]="renderImage('cover', content.body)"></img-loader>
 
   </ion-card-content>
 
@@ -42,7 +41,7 @@
       <div style="float: left;" *ngIf="content.top_likers_avatars">
         <div class="voters">
           <span class="voters_image" *ngFor="let voter of content.top_likers_avatars">
-            <img [src]="voter" (error)="imgError($event)"/>
+            <img [src]="renderImage('votes', voter)" (error)="imgError($event)"/>
           </span>
         </div>
         <div class="likes">
