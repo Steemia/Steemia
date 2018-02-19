@@ -7,6 +7,7 @@ const STEEPSHOT_BASE = 'https://steepshot.org/api/v1/'
 const FEED = BASE_API + 'recent?';
 const POSTS = BASE_API + 'posts/';
 const OWN_POSTS = BASE_API + 'user/';
+const STEEMIT = 'https://steemit.com';
 
 @Injectable()
 export class SteemiaProvider {
@@ -130,6 +131,26 @@ export class SteemiaProvider {
       show_nsfw: 0,
       show_low_rated: 0
     })).share().toPromise();
+  }
+
+  /**
+   * Public method to dispatch the data to the corresponding page
+   * @param {Query} query: Object with data for query
+   */
+  public dispatch_comments(query: Query) {
+    let url = STEEMIT + query.url;
+    let que: Query = {
+      show_nsfw: 0,
+      show_low_rated: 0,
+      limit: query.limit,
+      username: query.current_user
+    };
+
+    if (query.first_load == true) {
+      que.offset = query.offset;
+    }
+    return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/comments?' + this.encodeQueryData(que))
+            .share().toPromise();
   }
   
   /**

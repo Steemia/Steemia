@@ -9,6 +9,7 @@ export interface Query {
     first_load?: boolean;
     type?: string;
     category?: string;
+    url?: string;
 }
 
 export interface PostsRes {

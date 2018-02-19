@@ -61,8 +61,8 @@ export class PostCardComponent {
    * Method to open a modal with the comments of the post
    * @param post 
    */
-  private openComments(post): void {
-    let commentModal = this.modalCtrl.create("CommentsPage", { author: post.author, permlink: post.permlink });
+  private openComments(url: string): void {
+    let commentModal = this.modalCtrl.create("CommentsPage", { permlink: url });
     commentModal.present();
   }
 
