@@ -38,6 +38,10 @@ ion-menu {
   }
 }
 
+.header-ios .toolbar-ios:last-child .toolbar-background-ios {
+  border-width: 0 !important;
+}
+
 .tabbar {
   background: #ffffff !important;
   border-bottom: 1px solid #e9e7e7;

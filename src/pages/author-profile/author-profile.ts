@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController } from 'ionic-angular';
 import { DataProvider } from 'providers/data/data';
 import { SteemProvider } from 'providers/steem/steem';
 import { Post } from 'models/models';
@@ -28,9 +28,12 @@ export class AuthorProfilePage {
   private website;
   profile: string = "blog";
 
+  private account_data: Object;
+  private username: string;
+  
+
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
@@ -46,17 +49,18 @@ export class AuthorProfilePage {
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     private steemProvider: SteemProvider,
-    private dataProvider: DataProvider) {
+    private dataProvider: DataProvider,
+    public loadingCtrl: LoadingController) {
 
-    this.steemProvider.getProfile(['jaysermendez']).subscribe(data => {
-      console.log(data)
-    })
+    this.username = this.navParams.get('author');
   }
 
   ionViewDidLoad() {
     this.zone.runOutsideAngular(() => {
       this.dispatchPosts();
     });
+
+    this.get_account();
     this.getFollow();
     this.getAccount();
   }
@@ -68,7 +72,7 @@ export class AuthorProfilePage {
 
     // Call the API
     this.steemia.dispatch_profile_posts({
-      username: "steemia-io",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset
@@ -80,7 +84,7 @@ export class AuthorProfilePage {
       if (action === "refresh") {
         this.reinitialize();
       }
-
+      
       // By default, the offset is null, so we want the whole data
       if (this.offset === null) {
         
@@ -120,38 +124,21 @@ export class AuthorProfilePage {
     });
   }
 
-  /**
-   * 
-   * Method to get post in the current topic and transform its data.
-   * 
-   * @returns {Promise<Array<Post>>}: A promise with the requested posts.
-   * @author Jayser Mendez.
-   */
-  // private getBlog(): Promise<Array<Post>> {
-  //   return new Promise((resolve) => {
-  //     this.dataProvider.getData('by_blog', this.perPage)
-  //     .subscribe((data: Array<Post>) => {
+  private get_account() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+  
+    loading.present();
+    this.steemia.dispatch_profile_info({
+      username: this.username,
+      current_user: "jaysermendez",
+    }).then(data => {
+      this.account_data = data;
+      loading.dismiss();
+    })
+  }
 
-  //       for (var i = 0; i < data.length; i++) {
-  //         // Parse metadata
-  //         data[i].json_metadata = JSON.parse((data[i].json_metadata as string));
-  //         // make meta value
-  //         this.meta[i] = data[i].json_metadata;
-  //         //payout fixed to 2
-  //         data[i].pending_payout_value = parseFloat(data[i].pending_payout_value).toFixed(2);
-
-  //         // HERE IS THE BUG
-  //         this.meta[i].created = moment(data[i].created).fromNow();
-
-  //         data[i].author_reputation = parseInt(Math.floor((((Math.log10(parseInt(data[i].author_reputation.toString()))) - 9) * 9) + 25).toFixed(2));
-  //       }
-
-  //       // Resolve the promise
-  //       resolve(data)
-
-  //     })
-  //   })
-  // }
   private getAccount() {
     this.dataProvider.getAccount(this.account)
       .subscribe((data) => {

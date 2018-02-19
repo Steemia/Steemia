@@ -18,20 +18,6 @@ export const hotTemplate = `
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab right bottom>
-    <button ion-fab color="primary">
-      <ion-icon name="add"></ion-icon>
-    </button>
-    <ion-fab-list side="top">
-      <button ion-fab>
-        <ion-icon name="options"></ion-icon>
-      </button>
-      <button ion-fab>
-        <ion-icon name="create"></ion-icon>
-      </button>
-    </ion-fab-list>
-  </ion-fab>
-
 </ion-content>
 
 `;

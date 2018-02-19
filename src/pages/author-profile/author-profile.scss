@@ -24,6 +24,11 @@ page-author-profile {
     color: white;
   }
 
+  .joined-date {
+    font-size: 13px;
+    margin-left: 2px;
+  }
+
   .opaque {
     background-color: color($colors, primary) !important;
 
@@ -40,7 +45,7 @@ page-author-profile {
     float: left;
     position: absolute;
     width: 100%;
-    height: 220px;
+    height: 240px;
     background: #fff;
     z-index: 1;
     box-shadow: 0 0 5px rgba(black, 0.1);
@@ -81,7 +86,7 @@ page-author-profile {
       left: 0;
       right: 0;
       margin: auto;
-      top: calc(100% - 71px);
+      top: calc(100% - 90px);
       color: #fff;
       text-align: center;
    

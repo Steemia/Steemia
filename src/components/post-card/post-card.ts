@@ -52,7 +52,9 @@ export class PostCardComponent {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.app.getRootNavs()[0].push(AuthorProfilePage)
+    this.app.getRootNavs()[0].push(AuthorProfilePage, {
+      author: author
+    })
   }
 
   /**

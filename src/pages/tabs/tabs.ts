@@ -19,7 +19,7 @@ import { App } from 'ionic-angular';
         </ion-title>
 
         <ion-buttons end>
-          <button ion-button icon-only (tap)="openPage('SearchPage')">
+          <button ion-button icon-only (click)="openPage('SearchPage')">
             <ion-icon name="ios-search-outline"></ion-icon>
           </button>
           <button ion-button icon-only>
@@ -32,9 +32,24 @@ import { App } from 'ionic-angular';
       <ion-tabs>
           <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
           <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
+          <ion-tab></ion-tab>
           <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
           <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
       </ion-tabs>
+
+      <ion-fab center bottom>
+        <button ion-fab color="primary">
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+          <button ion-fab>
+            <ion-icon name="options"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="create"></ion-icon>
+          </button>
+        </ion-fab-list>
+      </ion-fab>
     </ion-content>
   `
 })
@@ -45,7 +60,7 @@ export class TabsPage {
   private hotRoot = HotPage;
   private newRoot = NewPage;
 
-  constructor(private appCtrl: App) {}
+  constructor(private appCtrl: App) { }
 
   /**
    * @method openPage: Method to push a page to the nav controller

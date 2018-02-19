@@ -6,7 +6,7 @@
     </ion-note> -->
 
     <ion-item>
-      <ion-avatar item-start (tap)="openProfile(content.author)">
+      <ion-avatar item-start tappable (click)="openProfile(content.author)">
         <img-loader [src]="renderImage('profile', content.avatar)" useImg></img-loader>
       </ion-avatar>
       <div>
@@ -28,7 +28,7 @@
     </ion-item>
   </ion-card-header>
 
-  <ion-card-content no-padding (tap)="postOpen(content)">
+  <ion-card-content no-padding tappable (click)="postOpen(content)">
     <h2 padding>{{ content.title }}</h2>
     <!-- <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div> -->
     <img-loader class="img" [src]="renderImage('cover', content.body)" (error)="imgError($event)"></img-loader>
@@ -51,7 +51,7 @@
     </ion-col>
 
     <ion-col col-3 text-center>
-      <button ion-button clear small left (tap)="openComments(content)">
+      <button ion-button clear small left (click)="openComments(content)">
         <ion-icon name="ios-text"></ion-icon>
         &nbsp;
         <div class="info">{{ content.children }}</div>

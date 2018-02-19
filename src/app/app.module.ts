@@ -52,7 +52,7 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
-      tabsPlacement: 'top',
+      tabsPlacement: 'bottom',
       scrollPadding: false,
       scrollAssist: true,
       autoFocusAssist: false,
