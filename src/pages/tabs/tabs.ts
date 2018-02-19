@@ -41,14 +41,6 @@ import { App } from 'ionic-angular';
         <button ion-fab color="primary">
           <ion-icon name="create"></ion-icon>
         </button>
-        <ion-fab-list side="top">
-          <button ion-fab>
-            <ion-icon name="options"></ion-icon>
-          </button>
-          <button ion-fab>
-            <ion-icon name="create"></ion-icon>
-          </button>
-        </ion-fab-list>
       </ion-fab>
     </ion-content>
   `
