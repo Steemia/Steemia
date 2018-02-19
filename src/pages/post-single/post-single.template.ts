@@ -1,3 +1,5 @@
+export const postSinglePage = `
+
 <ion-header>
   <ion-navbar color="primary">
     <ion-title></ion-title>
@@ -15,7 +17,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
   <ion-card no-padding>
     <h2 class="title" padding>{{ post?.title }}</h2>
@@ -25,7 +26,9 @@
           <img src="https://img.busy.org/@{{post?.author}}?s=100">
         </ion-avatar>
         <div>
-          <ion-badge color="primary">{{ post?.author }}</ion-badge> <ion-badge color="gray">{{ post?.author_reputation }}</ion-badge> <ion-note end >{{ post?.created }}</ion-note>
+          <ion-badge color="primary">{{ post?.author }}</ion-badge>
+          <ion-badge color="gray">{{ post?.author_reputation }}</ion-badge>
+          <ion-note end >{{ post?.created | amTimeAgo }}</ion-note>
         </div>
             
         <div>
@@ -44,3 +47,5 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+`;

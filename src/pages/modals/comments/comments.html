@@ -18,15 +18,15 @@
 
   <div *ngFor="let comment of comments" class="message-wrapper">
     <div>
-      <img class="profile-pic left" [src]="comment.profile_image" />
+      <img class="profile-pic left" [src]="renderImage('profile', comment.avatar)" />
       <!--  wave-->
-      <div class="chat-bubble left slide-left" (tap)="openReplies(comment)">
+      <div class="chat-bubble left slide-left" tappable (click)="openReplies(comment)">
 
         <div>
           <ion-badge color="gray"> {{ comment.author }}</ion-badge>
           <ion-badge color="primary"> {{ comment.author_reputation }} </ion-badge>
           <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
-          &nbsp;&nbsp;<span class="created_date">{{ comment.created }}</span>
+          &nbsp;&nbsp;<span class="created_date">{{ comment.created | amTimeAgo }}</span>
           <div class="message" [innerHTML]="comment.body" autolinker></div>
         </div>
 
@@ -35,7 +35,7 @@
 
       </div>
       <div class="meta">
-        {{ comment.net_votes }} Votes &nbsp;&nbsp; &nbsp;{{ comment.children }} Replies
+        {{ comment.net_votes }} likes
         &nbsp;&nbsp; &nbsp; ${{ comment.pending_payout_value }}
       </div>
     </div>

@@ -20,19 +20,20 @@ post-card {
     
       .img {
             position: relative;
-            width:  100% !important;
             background-position: 50% 50%;
             background-repeat:   no-repeat;
       }
     
       .voters_image {
             display:inline-block;
-            width: 25px; 
-            height: 25px; 
             
             img {
-                border-radius: 50%;
-                border: 1.5px solid white;
+                  height: 25px;
+                  width: 25px;
+                  border-radius: 50%;
+                  background-position: 50% 50%;
+                  border-radius: 50%;
+                  border: 1.5px solid white;
             }
       }
     

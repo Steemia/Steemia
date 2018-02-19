@@ -3,17 +3,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Post } from 'models/models';
 import marked from 'marked';
 import { SteemProvider } from '../../providers/steem/steem';
+import { postSinglePage } from './post-single.template'; 
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-post-single',
-  templateUrl: 'post-single.html',
+  template: postSinglePage
 })
 export class PostSinglePage {
   
-  private post: Post;
+  private post: any;
   private body: string;
   private meta;
   private tags;
@@ -24,7 +25,7 @@ export class PostSinglePage {
 
     this.post = this.navParams.get('post');
     
-    this.body = marked(this.post.body, {
+    this.body = marked(this.post.full_body, {
       gfm: true,
       tables: true,
       smartLists: true,

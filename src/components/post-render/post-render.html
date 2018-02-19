@@ -1,6 +1,6 @@
 <ion-grid no-padding>
   <ion-row no-padding>
-    <ion-col *ngFor="let content of contents; let i = index" col-12 no-padding>
+    <ion-col *ngFor="let content of contents; trackBy: trackById" col-12 no-padding>
       <post-card [post]="content"></post-card>
     </ion-col>
   </ion-row>

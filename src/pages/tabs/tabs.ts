@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FeedPage } from '../TabsSections/feed/feed';
 import { HotPage } from '../TabsSections/hot/hot';
 import { NewPage } from '../TabsSections/new/new';
-import { PromotedPage } from '../TabsSections/promoted/promoted';
 import { TrendPage } from '../TabsSections/trend/trend';
 import { App } from 'ionic-angular';
 
@@ -20,7 +19,7 @@ import { App } from 'ionic-angular';
         </ion-title>
 
         <ion-buttons end>
-          <button ion-button icon-only (tap)="openPage('SearchPage')">
+          <button ion-button icon-only (click)="openPage('SearchPage')">
             <ion-icon name="ios-search-outline"></ion-icon>
           </button>
           <button ion-button icon-only>
@@ -33,10 +32,16 @@ import { App } from 'ionic-angular';
       <ion-tabs>
           <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
           <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
+          <ion-tab></ion-tab>
           <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
           <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
-          <ion-tab [root]="promotedRoot" tabIcon="pricetag"></ion-tab>
       </ion-tabs>
+
+      <ion-fab center bottom>
+        <button ion-fab color="primary">
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </ion-fab>
     </ion-content>
   `
 })
@@ -44,14 +49,10 @@ export class TabsPage {
 
   private feedRoot = FeedPage;
   private trendRoot = TrendPage;
-  private promotedRoot = PromotedPage;
   private hotRoot = HotPage;
   private newRoot = NewPage;
 
-  constructor(private appCtrl: App) {
-
-
-  }
+  constructor(private appCtrl: App) { }
 
   /**
    * @method openPage: Method to push a page to the nav controller

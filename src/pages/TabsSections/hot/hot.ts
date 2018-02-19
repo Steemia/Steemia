@@ -1,9 +1,9 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
-import { Post } from 'models/models';
-import { SteemProvider } from '../../../providers/steem/steem';
+import { PostsRes, Query } from 'models/models';
 import { Observable } from 'rxjs/Observable';
 import { hotTemplate } from './hot.template';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
   selector: 'section-scss',
@@ -11,15 +11,21 @@ import { hotTemplate } from './hot.template';
 })
 
 export class HotPage {
-  
-  private contents: Array<Post> = [];
+
+  private contents: Array<any> = [];
+  private offset: string = null;
+  private username: string = 'steemit';
   private is_first_loaded: boolean = false;
   private is_loading = true;
-  
+  private first_limit: number = 15;
+  private limit: number = 15;
+  private total_posts: number = 0;
+  private is_more_post: boolean = true;
+
   constructor(public appCtrl: App,
-              private steemProvider: SteemProvider,
-              private zone: NgZone,
-              private cdr: ChangeDetectorRef) {
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private steemia: SteemiaProvider) {
 
   }
 
@@ -29,53 +35,64 @@ export class HotPage {
     });
   }
 
-
   /**
-   * Method to dispatch feed and avoid repetition of code
+   * Method to dispatch hot and avoid repetition of code
    */
-  private dispatchHot() {
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      data.map(post => {
-        this.contents.push(post);
-      });
-      this.is_loading = false;
-      this.cdr.detectChanges(); // Force angular to detect the changes but not constantly
+  private dispatchHot(action?: string, event?: any) {
+
+    // Call the API
+    this.steemia.dispatch_posts({
+      type: "hot",
+      username: "jaysermendez",
+      limit: this.limit,
+      first_load: this.is_first_loaded,
+      offset: this.offset
+    }).then((res: PostsRes) => {
+
+      // Check if the action is to refresh. If so, we need to 
+      // reinitialize all the data after initializing the query
+      // to avoid the data to dissapear
+      if (action === "refresh") {
+        this.reinitialize();
+      }
+
+      // By default, the offset is null, so we want the whole data
+      if (this.offset === null) {
+        
+        this.contents = this.contents.concat(res.results);
+      }
+
+      // Otherwise, we want the data execpt for the first index
+      else {
+        this.contents = this.contents.concat(res.results.splice(1));
+      }
+
+      // Check if there are more post to load
+      if (this.contents[this.contents.length - 1].title === res.results[res.results.length - 1].title
+        && this.is_first_loaded == true) {
+        this.is_more_post = false;
+      }
+
+      // If first load is set to false, set it to true so next query
+      // is able to use the offset
+      if (this.is_first_loaded == false) {
+        this.is_first_loaded = true;
+      }
+      
+      // Declare the new offset
+      this.offset = res.offset;
+
+      // Set the loading spinner to false
+      this.is_loading = false
+
+      // If this was called from an event, complete it
+      if (event) {
+        event.complete();
+      }
+
+      // Tell Angular that changes were made since we detach the auto check
+      this.cdr.detectChanges();
     });
-    // Check if it is false to avoid assigning the variable in each iteration
-    if (this.is_first_loaded == false) {
-      this.is_first_loaded = true;
-    }
-    
-  }
-
-  /**
-   * 
-   * Method to get posts filtered by hot
-   * 
-   * @returns Observable with an array of posts
-   * @author Jayser Mendez.
-   */
-  private getHot(): Observable<Array<Post>> {
-    let query;
-
-    if (!this.is_first_loaded) {
-      query = {
-        limit: 25,
-        tag: ''
-      };  
-    }
-    
-    else {
-      query = {
-        tag: '',
-        limit: 25,
-        start_author: this.contents[this.contents.length - 1].author,
-        start_permlink: this.contents[this.contents.length - 1].permlink,
-      };
-    }
-
-    return this.steemProvider.getByHot(query)
   }
 
   /**
@@ -86,13 +103,8 @@ export class HotPage {
    */
   private doRefresh(refresher): void {
     this.is_first_loaded = false;
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      this.contents = [];
-      data.map(post => {
-        this.contents.push(post);
-      });
-      refresher.complete();
+    this.zone.runOutsideAngular(() => {
+      this.dispatchHot("refresh", refresher);
     });
   }
 
@@ -103,12 +115,11 @@ export class HotPage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.getHot()
-    .subscribe((data: Array<Post>) => {
-      data.slice(1).map(post => {
-        this.contents.push(post);
-      });
-      infiniteScroll.complete();
+    if (this.first_limit === this.limit && this.is_first_loaded == true) {
+      this.limit += 1;
+    }
+    this.zone.runOutsideAngular(() => {
+      this.dispatchHot("inifinite", infiniteScroll);
     });
   }
 
@@ -120,7 +131,13 @@ export class HotPage {
     this.appCtrl.getRootNavs()[0].push(str);
   }
 
-  public identify(index, item) {
-    return item.title;
+  private reinitialize() {
+    this.offset = null;
+    this.limit = 15;
+    this.first_limit = 15;
+    this.contents = [];
+    this.is_more_post = true;
+    this.total_posts = 0;
+    this.is_first_loaded = false;
   }
 }
