@@ -35,6 +35,7 @@ export class MyApp {
   private profilePicture: string = "./assets/steemlogo.png";
   private profile;
   private location: string;
+  private username: string;
 
 
   constructor(private platform: Platform,
@@ -52,13 +53,11 @@ export class MyApp {
 
       // If the status is true, set the correct menu
       if (status == true) {
-
+        // this.steemConnect.
         // Query the current data of the logged in user to populate the menu
-        this.steemConnect.instance.me((err, res) => {
-          this.steemProvider.getProfile([res.user]).subscribe(data => {
-            this.profile = data.profile.json_metadata.profile;
-            this.initializeLoggedInMenu();
-          });
+        this.steemProvider.getProfile([this.steemConnect.user]).subscribe(data => {
+          this.profile = data.profile.json_metadata.profile;
+          this.initializeLoggedInMenu();
         });
       }
 

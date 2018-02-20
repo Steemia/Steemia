@@ -4,6 +4,7 @@ import { PostsRes, Query } from 'models/models';
 import { Observable } from 'rxjs/Observable';
 import { hotTemplate } from './hot.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @Component({
   selector: 'section-scss',
@@ -14,7 +15,7 @@ export class HotPage {
 
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
+  private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
@@ -25,14 +26,43 @@ export class HotPage {
   constructor(public appCtrl: App,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private steemia: SteemiaProvider) {
+    private steemia: SteemiaProvider,
+    private steemConnect: SteemConnectProvider) {
 
   }
 
   ionViewDidLoad() {
+   
+    this.steemConnect.did_logged_out.subscribe(status => {
+      if (status === true) {
+        this.zone.runOutsideAngular(() => {
+          this.username = '';
+          this.limit = 15;
+          this.first_limit = 15;
+          this.is_first_loaded = false;
+          this.dispatchHot('refresh');
+        });
+      }
+    })
+
+    // Get the current logged in user
+    if (this.steemConnect.user === '' || this.steemConnect.user === null
+        || this.steemConnect.user == undefined) {
+      
+      this.steemConnect.get_current_user().then(user => {
+        this.username = user.toString();
+      });
+    }
+
+    else {
+      this.username = this.steemConnect.user;
+    }
+
     this.zone.runOutsideAngular(() => {
       this.dispatchHot();
     });
+
+    
   }
 
   /**
@@ -43,7 +73,7 @@ export class HotPage {
     // Call the API
     this.steemia.dispatch_posts({
       type: "hot",
-      username: "jaysermendez",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset
@@ -102,6 +132,18 @@ export class HotPage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
+    // Get the current logged in user
+    if (this.steemConnect.user === '' || this.steemConnect.user === null
+        || this.steemConnect.user == undefined) {
+      
+      this.steemConnect.get_current_user().then(user => {
+        this.username = user.toString();
+      });
+    }
+
+    else {
+      this.username = this.steemConnect.user;
+    }
     this.is_first_loaded = false;
     this.zone.runOutsideAngular(() => {
       this.dispatchHot("refresh", refresher);

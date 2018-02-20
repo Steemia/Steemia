@@ -24,10 +24,11 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public loginStatus = new BehaviorSubject<boolean>(false);
+  public did_logged_out = new BehaviorSubject<boolean>(false);
   public steemData;
   private access_token: string;
   public instance;
-  public username = new BehaviorSubject<string>(null);
+  public user: string;
 
   constructor(public storage: Storage,
     public platform: Platform,
@@ -58,13 +59,37 @@ export class SteemConnectProvider {
         this.access_token = token.toString();
         // set the access token to the instance
         this.instance.setAccessToken(this.access_token);
-        // Dispatch the login status to true to the subscribers
-        this.loginStatus.next(true);
+
+        this.dispatch_data();
       }
     })
 
     // Save a reference of the login url for later use
     this.loginUrl = this.instance.getLoginURL();
+  }
+
+  private dispatch_data() {
+    // Now, we should retrieve the username of the logged in user before-hands
+    this.get_current_user().then(user => {
+      this.user = user.toString();
+    }).then(() => {
+      // Dispatch the login status to true to the subscribers
+      this.loginStatus.next(true);
+    })
+  }
+
+  public get_current_user() {
+    return new Promise((resolve, reject) => {
+      this.instance.me((err, res) => {
+        if (res) {
+          resolve(res.user);
+        }
+        else {
+          resolve('')
+        }
+        
+      });
+    });
   }
 
   private getToken() {
@@ -103,7 +128,7 @@ export class SteemConnectProvider {
             if (access_token !== undefined && access_token !== null) {
               this.setToken(access_token);
               this.instance.setAccessToken(access_token);
-              this.loginStatus.next(true);
+              this.dispatch_data();
               resolve("success");
             }
 
@@ -125,6 +150,7 @@ export class SteemConnectProvider {
         if (err) reject('error');
         else {
           this.storage.remove('access_token').then(() => { });
+          this.did_logged_out.next(true);
           this.loginStatus.next(false)
           resolve('done');
         }

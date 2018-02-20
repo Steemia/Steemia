@@ -52,7 +52,8 @@ export class TabsPage {
   private hotRoot = HotPage;
   private newRoot = NewPage;
 
-  constructor(private appCtrl: App) { }
+  constructor(private appCtrl: App) {
+   }
 
   /**
    * @method openPage: Method to push a page to the nav controller
