@@ -4,6 +4,7 @@ import { PostsRes, Query } from 'models/models';
 import { Observable } from 'rxjs/Observable';
 import { newTemplate } from './new.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @Component({
   selector: 'section-scss',
@@ -14,7 +15,7 @@ export class NewPage {
 
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
+  private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
@@ -25,13 +26,26 @@ export class NewPage {
   constructor(public appCtrl: App,
     private steemia: SteemiaProvider,
     private zone: NgZone,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef,
+    private steemConnect: SteemConnectProvider) {
   }
 
   ionViewDidLoad() {
-    this.zone.runOutsideAngular(() => {
-      this.dispatchNew();
-    });
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.username = res.userObject.user;
+        this.zone.runOutsideAngular(() => {
+          this.dispatchNew();
+        });
+      }
+
+      else {
+        this.zone.runOutsideAngular(() => {
+          this.dispatchNew();
+        });
+      }
+    })
+    
   }
 
 
@@ -43,7 +57,7 @@ export class NewPage {
     // Call the API
     this.steemia.dispatch_posts({
       type: "new",
-      username: "jaysermendez",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset

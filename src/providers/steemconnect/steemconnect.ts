@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Platform, Events } from 'ionic-angular'
+import { Platform } from 'ionic-angular'
 import { steemConnect } from 'models/models';
 import SteemConnect from './steemConnectAPI';
 import { Storage } from '@ionic/storage';
@@ -23,32 +23,40 @@ const STEEM_BROADCAST = 'https://v2.steemconnect.com/api/broadcast';
 export class SteemConnectProvider {
 
   public loginUrl: string;
-  public loginStatus = new BehaviorSubject<boolean>(false);
-  public did_logged_out = new BehaviorSubject<boolean>(false);
   public steemData;
   private access_token: string;
   public instance;
   public user: string;
+  private login_status: boolean;
+  private user_object: Object;
+
+  public status: BehaviorSubject<{
+    status: boolean,
+    userObject?: any,
+    logged_out?: boolean
+  }> = new BehaviorSubject({ status: false });
 
   constructor(public storage: Storage,
     public platform: Platform,
-    public events: Events,
     private iab: InAppBrowser,
     private http: Http) {
 
     // Save a reference of the steemconnect instance for later use
     this.instance = SteemConnect;
 
-
     this.getToken().then(token => {
-      
       // If the token is null, undefined or empty string, the user is not logged in
       if (token === null || token === undefined || token === '') {
 
         // Set a null access token to the instance
         this.instance.setAccessToken(null);
-        // Dispatch the login status to false to the subscribers
-        this.loginStatus.next(false);
+
+        // Set login status to false
+        this.login_status = false;
+        this.status.next({
+          status: this.login_status,
+          logged_out: false
+        });
       }
 
       // Otherwise if the token is not null, undefined nor an empty string, the user
@@ -60,7 +68,11 @@ export class SteemConnectProvider {
         // set the access token to the instance
         this.instance.setAccessToken(this.access_token);
 
+        // Set the login status to true
+        this.login_status = true;
         this.dispatch_data();
+
+
       }
     })
 
@@ -69,26 +81,35 @@ export class SteemConnectProvider {
   }
 
   private dispatch_data() {
-    // Now, we should retrieve the username of the logged in user before-hands
-    this.get_current_user().then(user => {
-      this.user = user.toString();
+    this.get_current_user().then((user: object) => {
+      this.user_object = user;
     }).then(() => {
-      // Dispatch the login status to true to the subscribers
-      this.loginStatus.next(true);
-    })
+
+      this.status.next({
+        status: this.login_status,
+        userObject: this.user_object
+      });
+    });
   }
 
   public get_current_user() {
     return new Promise((resolve, reject) => {
-      this.instance.me((err, res) => {
-        if (res) {
-          resolve(res.user);
-        }
-        else {
-          resolve('')
-        }
-        
-      });
+
+      // Check if we have the token, if not, avoid the http call
+      if (this.access_token === null || this.access_token === undefined || this.access_token === '') {
+        resolve('Not Logged In')
+      }
+
+      // Do the API call
+      else {
+        this.instance.me((err, res) => {
+
+          if (res) resolve(res);
+
+          else resolve('');
+
+        });
+      }
     });
   }
 
@@ -128,6 +149,7 @@ export class SteemConnectProvider {
             if (access_token !== undefined && access_token !== null) {
               this.setToken(access_token);
               this.instance.setAccessToken(access_token);
+              this.login_status = true;
               this.dispatch_data();
               resolve("success");
             }
@@ -150,8 +172,10 @@ export class SteemConnectProvider {
         if (err) reject('error');
         else {
           this.storage.remove('access_token').then(() => { });
-          this.did_logged_out.next(true);
-          this.loginStatus.next(false)
+          this.status.next({
+            status: this.login_status,
+            logged_out: true
+          });
           resolve('done');
         }
       });

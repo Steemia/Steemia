@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,7 +27,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage = TabsPage;
-  private isLoggedIn: boolean = false;
+  private isLoggedIn: boolean;
 
   menuOptions: MaterialMenuOptions;
   private loggedInPages: MaterialMenuOptions;
@@ -36,6 +36,7 @@ export class MyApp {
   private profile;
   private location: string;
   private username: string;
+  private dispatch_menu: boolean = false;
 
 
   constructor(private platform: Platform,
@@ -44,28 +45,27 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     private events: Events,
-    private steemProvider: SteemProvider) {
+    private steemProvider: SteemProvider,
+    private zone: NgZone) {
 
     this.initializeApp();
 
-    // Subscribe to the logged in status of the user
-    this.steemConnect.loginStatus.subscribe(status => {
+    this.steemConnect.status.subscribe(res => {
+      if (res.status == false) {
+        this.initializeLoggedOutMenu();
+        this.isLoggedIn = false;
+      }
 
-      // If the status is true, set the correct menu
-      if (status == true) {
-        // this.steemConnect.
-        // Query the current data of the logged in user to populate the menu
-        this.steemProvider.getProfile([this.steemConnect.user]).subscribe(data => {
+      else {
+        this.steemProvider.getProfile([res.userObject.user]).subscribe(data => {
           this.profile = data.profile.json_metadata.profile;
           this.initializeLoggedInMenu();
+          this.isLoggedIn = true;
+
         });
       }
-
-      // Otherwise, set the default menu
-      else {
-        this.initializeLoggedOutMenu()
-      }
     });
+
   }
 
   private initializeLoggedOutMenu(): void {
@@ -84,6 +84,7 @@ export class MyApp {
         { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
     };
+
   }
 
   isBadgeEntry(entry) {
@@ -95,7 +96,6 @@ export class MyApp {
   }
 
   private initializeLoggedInMenu(): void {
-    this.isLoggedIn = true;
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',

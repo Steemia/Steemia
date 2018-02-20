@@ -32,34 +32,20 @@ export class HotPage {
   }
 
   ionViewDidLoad() {
-   
-    this.steemConnect.did_logged_out.subscribe(status => {
-      if (status === true) {
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
-          this.username = '';
-          this.limit = 15;
-          this.first_limit = 15;
-          this.is_first_loaded = false;
-          this.dispatchHot('refresh');
+          this.dispatchHot();
         });
       }
-    })
 
-    // Get the current logged in user
-    if (this.steemConnect.user === '' || this.steemConnect.user === null
-        || this.steemConnect.user == undefined) {
-      
-      this.steemConnect.get_current_user().then(user => {
-        this.username = user.toString();
-      });
-    }
-
-    else {
-      this.username = this.steemConnect.user;
-    }
-
-    this.zone.runOutsideAngular(() => {
-      this.dispatchHot();
+      else {
+        this.zone.runOutsideAngular(() => {
+          this.dispatchHot();
+        });
+      }
     });
 
     
@@ -88,7 +74,7 @@ export class HotPage {
 
       // By default, the offset is null, so we want the whole data
       if (this.offset === null) {
-        
+
         this.contents = this.contents.concat(res.results);
       }
 
@@ -108,7 +94,7 @@ export class HotPage {
       if (this.is_first_loaded == false) {
         this.is_first_loaded = true;
       }
-      
+
       // Declare the new offset
       this.offset = res.offset;
 
@@ -134,8 +120,8 @@ export class HotPage {
   private doRefresh(refresher): void {
     // Get the current logged in user
     if (this.steemConnect.user === '' || this.steemConnect.user === null
-        || this.steemConnect.user == undefined) {
-      
+      || this.steemConnect.user == undefined) {
+
       this.steemConnect.get_current_user().then(user => {
         this.username = user.toString();
       });

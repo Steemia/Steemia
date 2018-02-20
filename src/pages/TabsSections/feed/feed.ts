@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App } from 'ionic-angular';
+import { IonicPage, App, Events } from 'ionic-angular';
 import { PostsRes, Query } from 'models/models';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
@@ -15,24 +15,34 @@ export class FeedPage {
 
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
+  private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
+  private logged_in: boolean = false;
 
   constructor(private appCtrl: App,
     private steemConnect: SteemConnectProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private steemia: SteemiaProvider) { }
+    private steemia: SteemiaProvider,
+    private events: Events) { }
 
   ionViewDidLoad() {
-    this.zone.runOutsideAngular(() => {
-      this.dispatchFeed();
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status == true) {
+        this.logged_in = true;
+        this.username = res.userObject.user;
+        this.zone.runOutsideAngular(() => {
+          this.dispatchFeed();
+        });
+      }
     });
+    
   }
 
   /**
@@ -42,7 +52,7 @@ export class FeedPage {
 
     // Call the API
     this.steemia.dispatch_feed({
-      username: "jaysermendez",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset

@@ -4,6 +4,7 @@ import { PostsRes, Query } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Observable } from 'rxjs/Observable';
 import { trendTemplate } from './trend.template';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @Component({
   selector: 'section-scss',
@@ -25,13 +26,27 @@ export class TrendPage {
   constructor(public appCtrl: App,
     private steemia: SteemiaProvider,
     private zone: NgZone,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private steemConnect: SteemConnectProvider) { }
 
 
   ionViewDidLoad() {
-    this.zone.runOutsideAngular(() => {
-      this.dispatchTrending();
-    });
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.username = res.userObject.user;
+        this.zone.runOutsideAngular(() => {
+          this.dispatchTrending();
+        });
+      }
+
+      else {
+        this.zone.runOutsideAngular(() => {
+          this.dispatchTrending();
+        });
+      }
+    })
+
   }
 
 
@@ -43,7 +58,7 @@ export class TrendPage {
     // Call the API
     this.steemia.dispatch_posts({
       type: "top",
-      username: "jaysermendez",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset
@@ -58,7 +73,7 @@ export class TrendPage {
 
       // By default, the offset is null, so we want the whole data
       if (this.offset === null) {
-        
+
         this.contents = this.contents.concat(res.results);
       }
 
@@ -78,7 +93,7 @@ export class TrendPage {
       if (this.is_first_loaded == false) {
         this.is_first_loaded = true;
       }
-      
+
       // Declare the new offset
       this.offset = res.offset;
 
