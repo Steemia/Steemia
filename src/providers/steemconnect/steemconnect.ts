@@ -6,7 +6,7 @@
  * 
  */
 
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Platform, Events } from 'ionic-angular'
 import { steemConnect } from 'models/models';
 import SteemConnect from './steemConnectAPI';
@@ -26,7 +26,6 @@ export class SteemConnectProvider {
   public loginStatus = new BehaviorSubject<boolean>(false);
   public steemData;
   private access_token: string;
-  public user: string = '';
   public instance;
   public username = new BehaviorSubject<string>(null);
 
@@ -36,25 +35,36 @@ export class SteemConnectProvider {
     private iab: InAppBrowser,
     private http: Http) {
 
-    this.instance = SteemConnect
+    // Save a reference of the steemconnect instance for later use
+    this.instance = SteemConnect;
+
+
     this.getToken().then(token => {
+      
+      // If the token is null, undefined or empty string, the user is not logged in
       if (token === null || token === undefined || token === '') {
+
+        // Set a null access token to the instance
         this.instance.setAccessToken(null);
+        // Dispatch the login status to false to the subscribers
         this.loginStatus.next(false);
       }
+
+      // Otherwise if the token is not null, undefined nor an empty string, the user
+      // is logged in
       else if (token !== null && token !== undefined && token !== '') {
-        //this.access_token = token.toString();
+
+        // Save the access token for a later reference
+        this.access_token = token.toString();
+        // set the access token to the instance
         this.instance.setAccessToken(this.access_token);
-        this.loginStatus.next(true)
-        this.instance.me((err, res) => {
-          this.user = res.user
-          this.username.next(res.user);
-        });
+        // Dispatch the login status to true to the subscribers
+        this.loginStatus.next(true);
       }
     })
 
+    // Save a reference of the login url for later use
     this.loginUrl = this.instance.getLoginURL();
-    console.log(this.loginUrl)
   }
 
   private getToken() {
@@ -70,6 +80,9 @@ export class SteemConnectProvider {
     this.storage.set('access_token', token).then(() => { });
   }
 
+  /**
+   * Method to open an IAB to do the oauth login using SteemConnect
+   */
   public login() {
     return new Promise(resolve => {
       if (this.platform.is('cordova')) {
@@ -78,7 +91,6 @@ export class SteemConnectProvider {
 
         const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
           resolve("The Steemconnect sign in flow was canceled")
-          //reject(new Error("The Steemconnect sign in flow was canceled"));
         });
 
         browserRef.on("loadstart").subscribe((event) => {
@@ -90,7 +102,7 @@ export class SteemConnectProvider {
 
             if (access_token !== undefined && access_token !== null) {
               this.setToken(access_token);
-              SteemConnect.setAccessToken(access_token);
+              this.instance.setAccessToken(access_token);
               this.loginStatus.next(true);
               resolve("success");
             }
@@ -101,35 +113,10 @@ export class SteemConnectProvider {
           }
         });
       } else {
-        console.error("loadstart events are not being fired in browser.");
         resolve("loadstart events are not being fired in browser.");
       }
     })
 
-  }
-
-  /**
-   * 
-   * Method to get the login url to the auth.
-   * 
-   */
-  public getLoginUrl(): Promise<string> {
-
-    // Check if the login url is already saved
-    if (this.loginUrl) {
-      return Promise.resolve(this.loginUrl);
-    }
-
-    // Otherwise, get the url
-    else {
-
-      return new Promise(resolve => {
-
-        resolve(this.steemData.loginUrl());
-
-      });
-
-    }
   }
 
   public doLogout() {
@@ -143,23 +130,6 @@ export class SteemConnectProvider {
         }
       });
     });
-  }
-
-  public castComment(author, permlink, comment_permlink, body) {
-    return new Promise((resolve) => {
-      SteemConnect.comment(
-        author, // Author of the post
-        permlink, // Permlink of the post
-        this.user, // Username of the commenter
-        comment_permlink, // permlink of the comment if it is a reply, otherwise, normal permlink
-        '', // empty by default
-        body, // body of the comment
-        { "tags": ["writing"], "app": "steemia/0.1" }, (err, res) => {
-          if (!err) resolve('commented')
-          else resolve('error_ocurred')
-        });
-    })
-
   }
 
 
