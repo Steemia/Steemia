@@ -1,122 +1,115 @@
 <ion-header [class.opaque]="showToolbar" no-lines>
-  <ion-navbar>
-    <ion-title>
-      {{ username }}
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content (ionScroll)="onScroll($event)">
-
-  <div class="card-profile">
-    <div class="card-profile_visual"></div>
-    <div class="card-profile_user-infos">
-      <span class="info_picture">
-        <img *ngIf="account_data?.profile_image" [src]="account_data?.profile_image" class="picture" />
-        <img *ngIf="!account_data?.profile_image" src="assets/placeholder2.png" class="picture" />
-      </span>
-      <span class="infos_name">
-        <ion-badge color="primary">{{ account_data?.username }}</ion-badge>
-        <ion-badge color="light">{{ account_data?.reputation }}</ion-badge>
-      </span>
-      <span class="infos_nick">
-        <span class="joined-date">
-          Joined: {{ account_data?.created | amTimeAgo }}
-        </span> | 
-        <span class="joined-date">
-            Account Value: $ {{ account_data?.estimated_balance}}
+    <ion-navbar>
+      <ion-title>
+          <ion-badge color="gray">{{ account_data?.username }}</ion-badge>
+          <ion-badge color="light">{{ account_data?.reputation }}</ion-badge>
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content (ionScroll)="onScroll($event)">
+  
+    <div class="card-profile">
+      <div class="card-profile_visual"></div>
+      <div class="card-profile_user-infos">
+        <span class="info_picture">
+          <img *ngIf="account_data?.profile_image" [src]="account_data?.profile_image" class="picture" />
+          <img *ngIf="!account_data?.profile_image" src="assets/placeholder2.png" class="picture" />
         </span>
-        
-        <!-- {{ account_data?.about }} -->
-      </span>
-
+        <span class="infos_name">
+          <ion-badge><ion-icon name="person-add"></ion-icon>  Follow</ion-badge>
+          <ion-badge><ion-icon name="volume-off"></ion-icon>  Block</ion-badge>
+          <ion-badge><ion-icon name="chatbubbles"></ion-icon> Chat</ion-badge>
+        </span>
+        <span class="infos_nick">
+          <span class="joined-date">
+            Joined: {{ account_data?.created | amTimeAgo }}
+          </span> | 
+          <span class="joined-date">
+              Account Value: $ {{ account_data?.estimated_balance}}
+          </span>
+          
+          <!-- {{ account_data?.about }} -->
+        </span>
+  
+      </div>
+  
+  
+      <div class="card-profile_user-stats">
+        <ion-segment [(ngModel)]="profile" mode="md">
+          <ion-segment-button icon-top value="blog">
+            <ion-icon name="paper"></ion-icon>
+            <div style="margin-top: -35px;">
+              <p>Posts</p>
+            </div>
+          </ion-segment-button>
+          <ion-segment-button icon-top value="activity">
+            <ion-icon name="analytics"></ion-icon>
+            <div style="margin-top: -35px;">
+              <p>Activity</p>
+            </div>
+          </ion-segment-button>
+          <ion-segment-button icon-top value="about">
+            <ion-icon name="person"></ion-icon>
+            <div style="margin-top: -35px;">
+              <p>Info</p>
+            </div>
+          </ion-segment-button>
+          <ion-segment-button icon-top value="wallet">
+            <ion-icon name="card"></ion-icon>
+            <div style="margin-top: -35px;">
+              <p>Wallet</p>
+            </div>
+          </ion-segment-button>
+        </ion-segment>
+  
+      </div>
+      <div [ngSwitch]="profile">
+        <div *ngSwitchCase="'blog'">
+          
+          <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
+          
+          <post-render *ngIf="contents.length >= 1" [posts]="contents"></post-render>
+  
+          <ion-infinite-scroll *ngIf="contents.length >= 1" (ionInfinite)="doInfinite($event)" distance="1%">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </div>
+        <div *ngSwitchCase="'activity'">
+          Activity
+        </div>
+        <div *ngSwitchCase="'about'">
+          <ion-list>
+            <ion-item>
+              <ion-icon name="people" item-start></ion-icon>
+              Followers
+              <ion-badge color="light" item-end>{{ follower_count }}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="person-add" item-start></ion-icon>
+              Following
+              <ion-badge color="light" item-end>{{ following_count }}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="paper" item-start></ion-icon>
+              Posts
+              <ion-badge color="light" item-end>{{ post_count }}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="pin" item-start></ion-icon>
+              Location
+              <ion-badge color="light" item-end>{{ location }}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="globe" item-start></ion-icon>
+              Website
+              <ion-badge color="light" item-end>{{ website }}</ion-badge>
+            </ion-item>
+          </ion-list>
+        </div>
+        <div *ngSwitchCase="'wallet'">
+          Wallet
+        </div>
+      </div>
     </div>
-
-
-    <div class="card-profile_user-stats">
-      <ion-segment [(ngModel)]="profile" mode="md">
-        <ion-segment-button icon-top value="blog">
-          <ion-icon name="paper"></ion-icon>
-          <div style="margin-top: -35px;">
-            <p>Posts</p>
-          </div>
-        </ion-segment-button>
-        <ion-segment-button icon-top value="activity">
-          <ion-icon name="analytics"></ion-icon>
-          <div style="margin-top: -35px;">
-            <p>Activity</p>
-          </div>
-        </ion-segment-button>
-        <ion-segment-button icon-top value="about">
-          <ion-icon name="person"></ion-icon>
-          <div style="margin-top: -35px;">
-            <p>Info</p>
-          </div>
-        </ion-segment-button>
-        <ion-segment-button icon-top value="wallet">
-          <ion-icon name="card"></ion-icon>
-          <div style="margin-top: -35px;">
-            <p>Wallet</p>
-          </div>
-        </ion-segment-button>
-      </ion-segment>
-
-    </div>
-    <div [ngSwitch]="profile">
-      <div *ngSwitchCase="'blog'">
-        
-        <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
-        
-        <post-render *ngIf="contents.length >= 1" [posts]="contents"></post-render>
-
-        <ion-infinite-scroll *ngIf="contents.length >= 1" (ionInfinite)="doInfinite($event)" distance="1%">
-          <ion-infinite-scroll-content></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </div>
-      <div *ngSwitchCase="'activity'">
-        Activity
-      </div>
-      <div *ngSwitchCase="'about'">
-        <ion-list>
-          <ion-item>
-            <ion-icon name="people" item-start></ion-icon>
-            Followers
-            <ion-badge color="light" item-end>{{ follower_count }}</ion-badge>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="person-add" item-start></ion-icon>
-            Following
-            <ion-badge color="light" item-end>{{ following_count }}</ion-badge>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="paper" item-start></ion-icon>
-            Posts
-            <ion-badge color="light" item-end>{{ post_count }}</ion-badge>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="pin" item-start></ion-icon>
-            Location
-            <ion-badge color="light" item-end>{{ location }}</ion-badge>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="globe" item-start></ion-icon>
-            Website
-            <ion-badge color="light" item-end>{{ website }}</ion-badge>
-          </ion-item>
-        </ion-list>
-      </div>
-      <div *ngSwitchCase="'wallet'">
-        Wallet
-      </div>
-    </div>
-  </div>
-
-  <ion-fab top right edge>
-      <button ion-fab color="light"><ion-icon name="more"></ion-icon></button>
-      <ion-fab-list>
-        <button ion-fab><ion-icon name="person-add"></ion-icon></button>
-        <button ion-fab><ion-icon name="volume-off"></ion-icon></button>
-        <button ion-fab><ion-icon name="chatbubbles"></ion-icon></button>
-      </ion-fab-list>
-    </ion-fab>
-</ion-content>
+  </ion-content>
