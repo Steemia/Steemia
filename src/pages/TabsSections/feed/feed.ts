@@ -15,13 +15,14 @@ export class FeedPage {
 
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
+  private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
+  private logged_in: boolean = false;
 
   constructor(private appCtrl: App,
     private steemConnect: SteemConnectProvider,
@@ -30,8 +31,22 @@ export class FeedPage {
     private steemia: SteemiaProvider) { }
 
   ionViewDidLoad() {
-    this.zone.runOutsideAngular(() => {
-      this.dispatchFeed();
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.logged_in = true;
+        this.username = res.userObject.user;
+        this.zone.runOutsideAngular(() => {
+          this.dispatchFeed();
+        });
+      }
+
+      else if (res.logged_out === true) {
+        this.logged_in = false;
+        this.username = '';
+        this.is_loading = true;
+        this.reinitialize();
+      }
     });
   }
 
@@ -42,7 +57,7 @@ export class FeedPage {
 
     // Call the API
     this.steemia.dispatch_feed({
-      username: "jaysermendez",
+      username: this.username,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset

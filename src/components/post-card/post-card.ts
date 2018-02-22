@@ -31,10 +31,18 @@ export class PostCardComponent {
     this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
     this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
-    // Subscribe to the current username logged in
-    this.steemConnect.username.subscribe(user => {
-      this.username = user;
-    });
+    // Get the current logged in user
+    if (this.steemConnect.user === '' || this.steemConnect.user === null
+        || this.steemConnect.user == undefined) {
+      
+      this.steemConnect.get_current_user().then(user => {
+        this.username = user.toString();
+      });
+    }
+
+    else {
+      this.username = this.steemConnect.user;
+    }
   }
 
   /**

@@ -1,11 +1,11 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" id="side-menu">
   <ion-content>
     <!-- Menu For Logged In User -->
-    <material-menu *ngIf="isLoggedIn" [options]="loggedInPages"></material-menu>
+    <material-menu *ngIf="isLoggedIn == true" [options]="loggedInPages"></material-menu>
 
      <!-- Menu For not logged in user -->
      <!-- TODO: Handle the login in state -->
-     <material-menu *ngIf="!isLoggedIn" [options]="loggedOutPages"></material-menu>
+     <material-menu *ngIf="isLoggedIn == false" [options]="loggedOutPages"></material-menu>
   </ion-content>
 </ion-menu>
 

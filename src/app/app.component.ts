@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -7,6 +7,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 export interface PageInterface {
   title: string;
@@ -27,8 +28,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage = TabsPage;
-  user = "jaysermendez";
-  private isLoggedIn: boolean = false;
+  private isLoggedIn: boolean;
 
   menuOptions: MaterialMenuOptions;
   private loggedInPages: MaterialMenuOptions;
@@ -36,36 +36,39 @@ export class MyApp {
   private profilePicture: string = "./assets/steemlogo.png";
   private profile;
   private location: string;
+  private username: string;
+  private dispatch_menu: boolean = false;
 
 
-  constructor(private platform: Platform, 
-              private statusBar: StatusBar, 
-              private splashScreen: SplashScreen,
-              private steemConnect: SteemConnectProvider,
-              private menuCtrl: MenuController,
-              private events: Events,
-              private steemProvider: SteemProvider) {
-    
+  constructor(private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private steemConnect: SteemConnectProvider,
+    private menuCtrl: MenuController,
+    private events: Events,
+    private steemProvider: SteemProvider,
+    private zone: NgZone,
+    private steemiaProvider: SteemiaProvider) {
+
     this.initializeApp();
-    this.steemConnect.loginStatus.subscribe(status => {
-      if (status === true) {
 
-        this.steemConnect.instance.me((err, res) => {
-          console.log(err, res)
-          this.steemProvider.getProfile([res.user]).subscribe(data => {
-            this.profile = data.profile.json_metadata.profile;
-            this.initializeLoggedInMenu();
-          })  
-        })
-        
-      } 
+    this.steemConnect.status.subscribe(res => {
+      if (res.status == false) {
+        this.isLoggedIn = false;
+        this.initializeLoggedOutMenu();
+      }
+
       else {
-        this.initializeLoggedOutMenu()
+        console.log(res)
+        this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
+          this.profile = data;
+          this.initializeLoggedInMenu();
+          this.isLoggedIn = true;
+        });
       }
     });
-    
-  }
 
+  }
 
   private initializeLoggedOutMenu(): void {
     this.loggedOutPages = {
@@ -78,11 +81,12 @@ export class MyApp {
         onClick: () => { alert('menu header clicked'); }
       },
       entries: [
-        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
+        { title: 'Home', leftIcon: 'home', onClick: () => { } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
         { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
     };
+
   }
 
   isBadgeEntry(entry) {
@@ -94,18 +98,17 @@ export class MyApp {
   }
 
   private initializeLoggedInMenu(): void {
-    this.isLoggedIn = true;
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: this.profile.profile_image,
-        username: this.profile.name,
+        username: this.profile.username,
         email: this.profile.location || '',
         onClick: () => { alert('menu header clicked'); }
       },
       entries: [
-        { title: 'Home', leftIcon: 'home', onClick: () => {  } },
+        { title: 'Home', leftIcon: 'home', onClick: () => { } },
         { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage") } },
         { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage("NotificationsPage") } },
         { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
@@ -113,23 +116,24 @@ export class MyApp {
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
-        { title: 'Logout', leftIcon: 'log-out', onClick: () => { 
-          this.steemConnect.doLogout().then(data => {
-            if (data === 'done') {
-              this.menuCtrl.close().then(() => {
-                this.profilePicture = "./assets/steemlogo.png"
-                this.isLoggedIn = false;
-              });
-            }
-          })
-         } }
+        {
+          title: 'Logout', leftIcon: 'log-out', onClick: () => {
+            this.steemConnect.doLogout().then(data => {
+              if (data === 'done') {
+                this.menuCtrl.close().then(() => {
+                  this.profilePicture = "./assets/steemlogo.png"
+                  this.isLoggedIn = false;
+                });
+              }
+            })
+          }
+        }
       ]
     };
   }
 
   private initializeApp() {
     this.platform.ready().then(() => {
-      this.user = 'hsynterkr';
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleBlackOpaque();

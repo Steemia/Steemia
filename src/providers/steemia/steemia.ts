@@ -153,6 +153,10 @@ export class SteemiaProvider {
             .share().toPromise();
   }
 
+
+  public dispatch_menu_profile(username: string): Promise<any> {
+    return this.http.get(BASE_API + 'user/' + username + '/info').share().toPromise();
+  }
    /**
    * Public method to dispatch the data to the corresponding page
    * @param {Query} query: Object with data for query
@@ -168,6 +172,7 @@ export class SteemiaProvider {
     }
     return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/voters?')
             .share().toPromise();
+
   }
   
   /**

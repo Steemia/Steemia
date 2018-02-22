@@ -6,9 +6,13 @@ export const feedTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-spinner *ngIf="is_loading"></ion-spinner>
+  <ion-spinner *ngIf="is_loading && logged_in == true"></ion-spinner>
 
-  <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
+  <div *ngIf="logged_in == false">
+    You need to log in to see this page
+  </div>
+
+  <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents"></post-render>
 
   <div *ngIf="is_more_post == false">
     <p text-center>There are not more posts to load</p>

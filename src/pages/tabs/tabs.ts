@@ -30,11 +30,11 @@ import { App } from 'ionic-angular';
     </ion-header>
     <ion-content>
       <ion-tabs>
-          <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
           <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
-          <ion-tab></ion-tab>
           <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
+          <ion-tab></ion-tab>
           <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
+          <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
       </ion-tabs>
 
       <ion-fab center bottom>
@@ -52,7 +52,8 @@ export class TabsPage {
   private hotRoot = HotPage;
   private newRoot = NewPage;
 
-  constructor(private appCtrl: App) { }
+  constructor(private appCtrl: App) {
+   }
 
   /**
    * @method openPage: Method to push a page to the nav controller
