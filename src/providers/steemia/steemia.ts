@@ -152,6 +152,23 @@ export class SteemiaProvider {
     return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/comments?' + this.encodeQueryData(que))
             .share().toPromise();
   }
+
+   /**
+   * Public method to dispatch the data to the corresponding page
+   * @param {Query} query: Object with data for query
+   */
+  public dispatch_votes(query: Query) {
+    let url = STEEMIT + query.url;
+    let que: Query = {
+      username: query.current_user
+    };
+
+    if (query.first_load == true) {
+      que.offset = query.offset;
+    }
+    return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/voters?')
+            .share().toPromise();
+  }
   
   /**
    * @method encodeQueryData: add parameters to an url

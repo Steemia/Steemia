@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { DataProvider } from 'providers/data/data';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -46,7 +46,9 @@ export class WalletPage {
   private reward_steem_balance
   private reward_vesting_steem
 
-  constructor(public navCtrl: NavController, 
+  constructor(private app: App,
+              private modalCtrl: ModalController,
+              public navCtrl: NavController, 
               public navParams: NavParams,
               public alertCtrl: AlertController, 
               private steemConnect: SteemConnectProvider,
@@ -67,6 +69,30 @@ export class WalletPage {
         console.log('ionViewDidLoad WalletPage');
         this.getAccount();
         this.getCoins();
+      }
+      
+      /**
+       * Method to open a modal with the Bitcoin Wallet
+       */
+      private openBTCWallet(): void {
+        let bitcoinModal = this.modalCtrl.create("BitcoinPage");
+        bitcoinModal.present();
+      }
+
+      /**
+       * Method to open a modal with the Litecoin Wallet
+       */
+      private openLTCWallet(): void {
+        let litecoinModal = this.modalCtrl.create("LitecoinPage");
+        litecoinModal.present();
+      }
+
+      /**
+       * Method to open a modal with the Bitcoin Wallet
+       */
+      private openETHWallet(): void {
+        let ethereumModal = this.modalCtrl.create("EthereumPage");
+        ethereumModal.present();
       }
 
       showPrompt(coin) {
