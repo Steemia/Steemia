@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavParams, ModalController } from 'ionic-angular';
+import { App, IonicPage, ViewController, NavParams, ModalController } from 'ionic-angular';
 import { PostsRes, Query } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+
+import { AuthorProfilePage } from '../../../pages/author-profile/author-profile';
 
 const IMG_SERVER = 'https://steemitimages.com/';
 
@@ -17,11 +19,13 @@ export class CommentsPage {
   private author: string;
   private permlink: string;
   private comments: any;
+  private is_loading = true;
 
   public messageForm: any;
   chatBox: any;
 
-  constructor(public viewCtrl: ViewController,
+  constructor(private app: App,
+    public viewCtrl: ViewController,
     public navParams: NavParams,
     public steemData: SteemProvider,
     public formBuilder: FormBuilder,
@@ -48,6 +52,9 @@ export class CommentsPage {
     }).then((comments: PostsRes) => {
       console.log(comments.results)
       this.comments = comments.results;
+
+      // Set the loading spinner to false
+      this.is_loading = false
     });
   }
 
@@ -70,6 +77,17 @@ export class CommentsPage {
   private openReplies(comment) {
     let repliesModal = this.modalCtrl.create("RepliesPage", {});
     repliesModal.present();
+  }
+
+   /**
+   * Method to open author profile page
+   * @param {String} author: author of the post
+   */
+  private openProfile(author: string): void {
+    this.dismiss();
+    this.app.getRootNavs()[0].push(AuthorProfilePage, {
+      author: author
+    })
   }
 
 }
