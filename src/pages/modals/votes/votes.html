@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-buttons>
+      <button ion-button (tap)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>Likers</ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-spinner *ngIf="is_loading"></ion-spinner>
+    <ion-list>
+        <ion-item *ngFor="let voter of votes">
+          <ion-avatar item-start tappable (click)="openProfile(voter.username)">
+            <img [src]="renderImage('profile', voter.profile_image)" (error)="imgError($event)">
+          </ion-avatar>
+          <h2>{{ voter.username }}</h2>
+          <p>{{ voter.name }}</p>
+          <ion-note item-end>%{{ voter.percent }}</ion-note>
+        </ion-item>
+      </ion-list>
+</ion-content>

@@ -74,6 +74,17 @@ export class PostCardComponent {
     commentModal.present();
   }
 
+
+  /**
+   * Method to open a modal with the votes of the post
+   * @param post 
+   */
+  private openVotes(url: string): void {
+    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url });
+    votesModal.present();
+  }
+
+
   /**
    * Method to cast a vote or unvote
    * @param i 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, IonicPage, ViewController, NavParams, ModalController } from 'ionic-angular';
+import { App, IonicPage, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
 import { PostsRes, Query } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { FormControl, FormBuilder } from '@angular/forms';
@@ -9,49 +9,43 @@ import { AuthorProfilePage } from '../../../pages/author-profile/author-profile'
 
 const IMG_SERVER = 'https://steemitimages.com/';
 
+/**
+ * Generated class for the VotesPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
 @IonicPage()
 @Component({
-  selector: 'page-comments',
-  templateUrl: 'comments.html',
+  selector: 'page-votes',
+  templateUrl: 'votes.html',
 })
-export class CommentsPage {
+export class VotesPage {
 
   private author: string;
   private permlink: string;
-  private comments: any;
+  private votes: any;
   private is_loading = true;
-
-  public messageForm: any;
-  chatBox: any;
-
-  constructor(private app: App,
-    public viewCtrl: ViewController,
+  
+  constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    public viewCtrl: ViewController,
+    private app: App,
     public steemData: SteemProvider,
     public formBuilder: FormBuilder,
     public modalCtrl: ModalController,
     private steemia: SteemiaProvider) {
-
-    
-
-    
-
-
-    this.messageForm = formBuilder.group({
-      message: new FormControl('')
-    });
-    this.chatBox = '';
   }
 
   ionViewDidLoad() {
+    console.log('ionViewDidLoad VotesPage');
     this.permlink = this.navParams.get('permlink');
-    this.steemia.dispatch_comments({
+    this.steemia.dispatch_votes({
       url: this.permlink,
-      limit: 15,
-      current_user: "steemia-io"
-    }).then((comments: PostsRes) => {
-      console.log(comments.results)
-      this.comments = comments.results;
+    }).then((votes: PostsRes) => {
+      console.log(votes.results)
+      this.votes = votes.results;
 
       // Set the loading spinner to false
       this.is_loading = false
@@ -67,23 +61,16 @@ export class CommentsPage {
     }
   }
 
-
-
   private dismiss() {
     let data = { 'foo': 'bar' };
     this.viewCtrl.dismiss(data);
   }
-
-  private openReplies(comment) {
-    let repliesModal = this.modalCtrl.create("RepliesPage", {});
-    repliesModal.present();
-  }
-
+  
   private imgError(event): void {
     event.target.src = 'assets/user.png';
   }
 
-   /**
+  /**
    * Method to open author profile page
    * @param {String} author: author of the post
    */

@@ -20,7 +20,7 @@
       
     <div *ngFor="let comment of comments" class="message-wrapper">
       <div>
-        <img class="profile-pic left" [src]="renderImage('profile', comment.avatar)" tappable (click)="openProfile(comment.author)"/>
+        <img class="profile-pic left" [src]="renderImage('profile', comment.avatar)" tappable (click)="openProfile(comment.author)" (error)="imgError($event)"/>
         <!--  wave-->
         <div class="chat-bubble left slide-left">
   
