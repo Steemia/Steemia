@@ -1,0 +1,44 @@
+
+<ion-header>
+
+    <ion-navbar>
+        <ion-buttons>
+            <button ion-button (tap)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-buttons>
+      <ion-title>bitcoin</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content>
+      <ion-card>
+          <ion-card-header>
+            Bar Chart
+          </ion-card-header>
+          <ion-card-content>
+            <canvas #barCanvas></canvas>
+          </ion-card-content>
+        </ion-card>
+     
+        <ion-card>
+          <ion-card-header>
+            Doughnut Chart
+          </ion-card-header>
+          <ion-card-content>
+            <canvas #doughnutCanvas></canvas>
+          </ion-card-content>
+        </ion-card>
+     
+        <ion-card>
+          <ion-card-header>
+            Line Chart
+          </ion-card-header>
+          <ion-card-content>
+            <canvas #lineCanvas></canvas>
+          </ion-card-content>
+        </ion-card>
+  </ion-content>
+  

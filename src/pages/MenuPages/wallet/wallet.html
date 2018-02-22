@@ -1,279 +1,280 @@
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>Wallet</ion-title>
-
-    <ion-buttons end item-end>
-      <button class="ion-button" ion-button icon-only>
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
-
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
-  <ion-card *ngIf="reward_sbd_balance>0 || reward_vesting_steem>0 || reward_steem_balance>0">
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/steem.png">
-      </ion-avatar>
-      <h2>Unclaimed Rewards</h2>
-      <ion-note></ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start *ngIf="reward_sbd_balance>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_sbd_balance }} SBD</ion-label>
-      </ion-chip>
-      <ion-chip item-start *ngIf="reward_vesting_steem>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_vesting_steem }} SP</ion-label>
-      </ion-chip>
-      <ion-chip item-start *ngIf="reward_steem_balance>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_steem_balance }} STEEM</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-
-      </ion-col>
-      <ion-col col-4 center text-center>
-
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="showPrompt('STEEM')">
-          <ion-icon name="ribbon"></ion-icon>
-          Claim
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/steem.png">
-      </ion-avatar>
-      <h2>STEEM</h2>
-      <ion-note>Current Price: ${{ steem_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ balance }}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buySteem('steem')">
+    <ion-navbar color="primary">
+      <ion-title>Wallet</ion-title>
+  
+      <ion-buttons end item-end>
+        <button class="ion-button" ion-button icon-only>
           <ion-icon name="add"></ion-icon>
-          Buy
         </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small (click)="sellSteem()">
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="showPrompt('STEEM')">
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/steem.png">
-      </ion-avatar>
-      <h2>SBD</h2>
-      <ion-note>Current Price: ${{ sbd_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ sbd_balance }}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buySteem('sbd')">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small (click)="sellSBD()">
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="showPrompt('SBD')">
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
-  <!--
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/steem.png">
-      </ion-avatar>
-      <h2>Vesting Shares</h2>
-      <p> </p>
-    </ion-item>
-    <ion-card-content>
+      </ion-buttons>
+  
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content>
+    <ion-card *ngIf="reward_sbd_balance>0 || reward_vesting_steem>0 || reward_steem_balance>0">
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/25.png">
+        </ion-avatar>
+        <h2>Unclaimed Rewards</h2>
+        <ion-note></ion-note>
+      </ion-item>
+      <ion-card-content>
+        <ion-chip item-start *ngIf="reward_sbd_balance>0">
+          <ion-icon name="cash" color="dark"></ion-icon>
+          <ion-label>{{ reward_sbd_balance }} SBD</ion-label>
+        </ion-chip>
+        <ion-chip item-start *ngIf="reward_vesting_steem>0">
+          <ion-icon name="cash" color="dark"></ion-icon>
+          <ion-label>{{ reward_vesting_steem }} SP</ion-label>
+        </ion-chip>
+        <ion-chip item-start *ngIf="reward_steem_balance>0">
+          <ion-icon name="cash" color="dark"></ion-icon>
+          <ion-label>{{ reward_steem_balance }} STEEM</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+  
+        </ion-col>
+        <ion-col col-4 center text-center>
+  
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="showPrompt('STEEM')">
+            <ion-icon name="ribbon"></ion-icon>
+            Claim
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  
+    <br>
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/25.png">
+        </ion-avatar>
+        <h2>STEEM</h2>
+        <ion-note>Current Price: ${{ steem_price }}</ion-note>
+      </ion-item>
+      <ion-card-content>
         <ion-chip item-start>
-            <ion-icon name="cash" color="dark"></ion-icon>
-            <ion-label>{{ vesting_shares }}</ion-label>
-          </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="add"></ion-icon>
-          Power Up
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Power Down
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="send"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
--->
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/bitcoin.png">
-      </ion-avatar>
-      <h2>Bitcoin</h2>
-      <ion-note>Current Price: ${{ btc_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>0.05 BTC</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyBTC()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/ethereum.png">
-      </ion-avatar>
-      <h2>Ethereum</h2>
-      <ion-note>Current Price: ${{ eth_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>0.05 ETH</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyETH()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
-
-
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="http://files.coinmarketcap.com.s3-website-us-east-1.amazonaws.com/static/img/coins/200x200/litecoin.png">
-      </ion-avatar>
-      <h2>Litecoin</h2>
-      <ion-note>Current Price: ${{ ltc_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>0.05 LTC</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyLTC()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="dark" icon-left ion-button small>
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-
-</ion-content>
+          <ion-icon name="cash" color="light"></ion-icon>
+          <ion-label>{{ balance }}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="buySteem('steem')">
+            <ion-icon name="add"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small (click)="sellSteem()">
+            <ion-icon name="remove"></ion-icon>
+            Sell
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="showPrompt('STEEM')">
+            <ion-icon name="send"></ion-icon>
+            Transfer
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  
+    <br>
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/25.png">
+        </ion-avatar>
+        <h2>SBD</h2>
+        <ion-note>Current Price: ${{ sbd_price }}</ion-note>
+      </ion-item>
+      <ion-card-content>
+        <ion-chip item-start>
+          <ion-icon name="cash" color="light"></ion-icon>
+          <ion-label>{{ sbd_balance }}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="buySteem('sbd')">
+            <ion-icon name="add"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small (click)="sellSBD()">
+            <ion-icon name="remove"></ion-icon>
+            Sell
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="showPrompt('SBD')">
+            <ion-icon name="send"></ion-icon>
+            Transfer
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <br>
+    <!--
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/25.png">
+        </ion-avatar>
+        <h2>Vesting Shares</h2>
+        <p> </p>
+      </ion-item>
+      <ion-card-content>
+          <ion-chip item-start>
+              <ion-icon name="cash" color="dark"></ion-icon>
+              <ion-label>{{ vesting_shares }}</ion-label>
+            </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="add"></ion-icon>
+            Power Up
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="remove"></ion-icon>
+            Power Down
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="send"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <br>
+  -->
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/1.png">
+        </ion-avatar>
+        <h2>Bitcoin</h2>
+        <ion-note>Current Price: ${{ btc_price }}</ion-note>
+      </ion-item>
+      <ion-card-content>
+        <ion-chip item-start>
+          <ion-icon name="cash" color="light"></ion-icon>
+          <ion-label>0.05 BTC</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="buyBTC()">
+            <ion-icon name="add"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="remove"></ion-icon>
+            Sell
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="openBTCWallet()">
+            <ion-icon name="card"></ion-icon>
+            Wallet
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <br>
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/2.png">
+        </ion-avatar>
+        <h2>Ethereum</h2>
+        <ion-note>Current Price: ${{ eth_price }}</ion-note>
+      </ion-item>
+      <ion-card-content>
+        <ion-chip item-start>
+          <ion-icon name="cash" color="light"></ion-icon>
+          <ion-label>0.05 ETH</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="buyETH()">
+            <ion-icon name="add"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="remove"></ion-icon>
+            Sell
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="openETHWallet()">
+            <ion-icon name="card"></ion-icon>
+            Wallet
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <br>
+  
+  
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="https://files.coinmarketcap.com/static/img/coins/200x200/2.png">
+        </ion-avatar>
+        <h2>Litecoin</h2>
+        <ion-note>Current Price: ${{ ltc_price }}</ion-note>
+      </ion-item>
+      <ion-card-content>
+        <ion-chip item-start>
+          <ion-icon name="cash" color="light"></ion-icon>
+          <ion-label>0.05 LTC</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-row>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="buyLTC()">
+            <ion-icon name="add"></ion-icon>
+            Buy
+          </button>
+        </ion-col>
+        <ion-col col-4 center text-center>
+          <button block round color="light" icon-left ion-button small>
+            <ion-icon name="remove"></ion-icon>
+            Sell
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button block round color="light" icon-left ion-button small (click)="openLTCWallet()">
+            <ion-icon name="card"></ion-icon>
+            Wallet
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  
+  
+  </ion-content>
+  
