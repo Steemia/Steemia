@@ -29,6 +29,7 @@ export class SteemConnectProvider {
   public user: string;
   private login_status: boolean;
   public user_object: Object;
+  private user_temp: Object = {};
 
   public status: BehaviorSubject<{
     status: boolean,
@@ -48,7 +49,7 @@ export class SteemConnectProvider {
       // If the token is null, undefined or empty string, the user is not logged in
       if (token === null || token === undefined || token === '') {
 
-        // Set a null access token to the instance
+        //Set a null access token to the instance
         this.instance.setAccessToken(null);
 
         // Set login status to false
@@ -78,9 +79,11 @@ export class SteemConnectProvider {
 
     // Save a reference of the login url for later use
     this.loginUrl = this.instance.getLoginURL();
+    console.log(this.loginUrl)
   }
 
   private dispatch_data() {
+
     this.get_current_user().then((user: object) => {
       this.user_object = user;
     }).then(() => {
@@ -93,8 +96,12 @@ export class SteemConnectProvider {
   }
 
   public get_current_user() {
-    return new Promise((resolve, reject) => {
 
+    if (Object.keys(this.user_temp).length != 0) {
+      return Promise.resolve(this.user_temp);
+    }
+
+    return new Promise((resolve, reject) => {
       // Check if we have the token, if not, avoid the http call
       if (this.access_token === null || this.access_token === undefined || this.access_token === '') {
         resolve('Not Logged In')
@@ -103,8 +110,10 @@ export class SteemConnectProvider {
       // Do the API call
       else {
         this.instance.me((err, res) => {
-
-          if (res) resolve(res);
+          if (res) {
+            this.user_temp = res;
+            resolve(res);
+          }
 
           else resolve('');
 
@@ -174,6 +183,7 @@ export class SteemConnectProvider {
         else {
           this.storage.remove('access_token').then(() => { });
           this.login_status = false;
+          this.user_temp = {};
           this.status.next({
             status: this.login_status,
             logged_out: true
@@ -183,6 +193,5 @@ export class SteemConnectProvider {
       });
     });
   }
-
 
 }
