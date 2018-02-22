@@ -55,7 +55,7 @@ export class WalletPage {
     private _http: HttpClient) {
     // Subscribe to the current username logged in 
 
-    this.account = this.steemConnect.user;
+    this.account = (this.steemConnect.user_object as {user: string}).user;
   }
 
   ionViewDidLoad() {

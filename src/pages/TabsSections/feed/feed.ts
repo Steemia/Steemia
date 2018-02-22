@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App, Events } from 'ionic-angular';
+import { IonicPage, App } from 'ionic-angular';
 import { PostsRes, Query } from 'models/models';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
@@ -28,21 +28,26 @@ export class FeedPage {
     private steemConnect: SteemConnectProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private steemia: SteemiaProvider,
-    private events: Events) { }
+    private steemia: SteemiaProvider) { }
 
   ionViewDidLoad() {
 
     this.steemConnect.status.subscribe(res => {
-      if (res.status == true) {
+      if (res.status === true) {
         this.logged_in = true;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
           this.dispatchFeed();
         });
       }
+
+      else if (res.logged_out === true) {
+        this.logged_in = false;
+        this.username = '';
+        this.is_loading = true;
+        this.reinitialize();
+      }
     });
-    
   }
 
   /**

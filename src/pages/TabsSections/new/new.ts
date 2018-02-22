@@ -33,9 +33,18 @@ export class NewPage {
   ionViewDidLoad() {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
+        this.is_first_loaded = false;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
-          this.dispatchNew();
+          this.dispatchNew('refresh');
+        });
+      }
+
+      else if (res.logged_out === true) {
+        this.is_first_loaded = false;
+        this.username = '';
+        this.zone.runOutsideAngular(() => {
+          this.dispatchNew('refresh');
         });
       }
 
@@ -44,10 +53,8 @@ export class NewPage {
           this.dispatchNew();
         });
       }
-    })
-    
+    });
   }
-
 
   /**
    * Method to dispatch hot and avoid repetition of code

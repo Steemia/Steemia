@@ -28,7 +28,7 @@ export class SteemConnectProvider {
   public instance;
   public user: string;
   private login_status: boolean;
-  private user_object: Object;
+  public user_object: Object;
 
   public status: BehaviorSubject<{
     status: boolean,
@@ -147,8 +147,9 @@ export class SteemConnectProvider {
             let access_token = event.url.match(/\?(?:access_token)\=([\S\s]*?)\&/)[1];
 
             if (access_token !== undefined && access_token !== null) {
-              this.setToken(access_token);
-              this.instance.setAccessToken(access_token);
+              this.setToken(access_token.toString());
+              this.instance.setAccessToken(access_token.toString());
+              this.access_token = access_token.toString();
               this.login_status = true;
               this.dispatch_data();
               resolve("success");
@@ -169,9 +170,10 @@ export class SteemConnectProvider {
   public doLogout() {
     return new Promise((resolve, reject) => {
       SteemConnect.revokeToken((err, res) => {
-        if (err) reject('error');
+        if (err) reject(err);
         else {
           this.storage.remove('access_token').then(() => { });
+          this.login_status = false;
           this.status.next({
             status: this.login_status,
             logged_out: true

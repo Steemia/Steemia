@@ -7,6 +7,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 export interface PageInterface {
   title: string;
@@ -46,22 +47,23 @@ export class MyApp {
     private menuCtrl: MenuController,
     private events: Events,
     private steemProvider: SteemProvider,
-    private zone: NgZone) {
+    private zone: NgZone,
+    private steemiaProvider: SteemiaProvider) {
 
     this.initializeApp();
 
     this.steemConnect.status.subscribe(res => {
       if (res.status == false) {
-        this.initializeLoggedOutMenu();
         this.isLoggedIn = false;
+        this.initializeLoggedOutMenu();
       }
 
       else {
-        this.steemProvider.getProfile([res.userObject.user]).subscribe(data => {
-          this.profile = data.profile.json_metadata.profile;
+        console.log(res)
+        this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
+          this.profile = data;
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
-
         });
       }
     });
@@ -101,7 +103,7 @@ export class MyApp {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: this.profile.profile_image,
-        username: this.profile.name,
+        username: this.profile.username,
         email: this.profile.location || '',
         onClick: () => { alert('menu header clicked'); }
       },

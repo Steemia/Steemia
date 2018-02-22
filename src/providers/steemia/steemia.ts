@@ -152,6 +152,10 @@ export class SteemiaProvider {
     return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/comments?' + this.encodeQueryData(que))
             .share().toPromise();
   }
+
+  public dispatch_menu_profile(username: string): Promise<any> {
+    return this.http.get(BASE_API + 'user/' + username + '/info').share().toPromise();
+  }
   
   /**
    * @method encodeQueryData: add parameters to an url

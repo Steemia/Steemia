@@ -32,12 +32,20 @@ export class HotPage {
   }
 
   ionViewDidLoad() {
-
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
+        this.is_first_loaded = false;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
-          this.dispatchHot();
+          this.dispatchHot('refresh');
+        });
+      }
+
+      else if (res.logged_out === true) {
+        this.is_first_loaded = false;
+        this.username = '';
+        this.zone.runOutsideAngular(() => {
+          this.dispatchHot('refresh');
         });
       }
 
@@ -47,8 +55,6 @@ export class HotPage {
         });
       }
     });
-
-    
   }
 
   /**

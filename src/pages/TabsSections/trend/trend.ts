@@ -15,7 +15,7 @@ export class TrendPage {
 
   private contents: Array<any> = [];
   private offset: string = null;
-  private username: string = 'steemit';
+  private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
   private first_limit: number = 15;
@@ -30,25 +30,31 @@ export class TrendPage {
     private steemConnect: SteemConnectProvider) { }
 
 
-  ionViewDidLoad() {
-
-    this.steemConnect.status.subscribe(res => {
-      if (res.status === true) {
-        this.username = res.userObject.user;
-        this.zone.runOutsideAngular(() => {
-          this.dispatchTrending();
-        });
-      }
-
-      else {
-        this.zone.runOutsideAngular(() => {
-          this.dispatchTrending();
-        });
-      }
-    })
-
-  }
-
+    ionViewDidLoad() {
+      this.steemConnect.status.subscribe(res => {
+        if (res.status === true) {
+          this.is_first_loaded = false;
+          this.username = res.userObject.user;
+          this.zone.runOutsideAngular(() => {
+            this.dispatchTrending('refresh');
+          });
+        }
+  
+        else if (res.logged_out === true) {
+          this.is_first_loaded = false;
+          this.username = '';
+          this.zone.runOutsideAngular(() => {
+            this.dispatchTrending('refresh');
+          });
+        }
+  
+        else {
+          this.zone.runOutsideAngular(() => {
+            this.dispatchTrending();
+          });
+        }
+      });
+    }
 
   /**
    * Method to dispatch hot and avoid repetition of code
