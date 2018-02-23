@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavParams, ViewController, Content, Events } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
 import { Slides } from 'ionic-angular';
 import marked from 'marked';
 

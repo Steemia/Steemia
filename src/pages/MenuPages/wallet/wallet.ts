@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
-import { DataProvider } from 'providers/data/data';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { HttpClient } from '@angular/common/http';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 /**
  * Generated class for the WalletPage page.
@@ -50,16 +50,15 @@ export class WalletPage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     private steemConnect: SteemConnectProvider,
-    private dataProvider: DataProvider,
     private browserTab: BrowserTab,
-    private _http: HttpClient) {
+    private _http: HttpClient,
+    private steemiaProvider: SteemiaProvider) {
     // Subscribe to the current username logged in 
 
-    this.account = (this.steemConnect.user_object as {user: string}).user;
+    this.account = (this.steemConnect.user_object as { user: string }).user;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletPage');
     this.getAccount();
     this.getCoins();
   }
@@ -112,9 +111,8 @@ export class WalletPage {
     prompt.present();
   }
   private getAccount() {
-    this.dataProvider.getAccount(this.account)
-      .subscribe((data) => {
-        this.metadata = JSON.parse(data[0].json_metadata);
+    this.steemiaProvider.dispatch_account(this.account).then(data => {
+      this.metadata = JSON.parse(data[0].json_metadata);
         this.btc_address = this.metadata.profile.bitcoin;
         this.ltc_address = this.metadata.profile.litecoin;
         this.eth_address = this.metadata.profile.ethereum;
@@ -126,11 +124,9 @@ export class WalletPage {
         this.reward_sbd_balance = parseFloat(data[0].reward_sbd_balance);
         this.reward_steem_balance = parseFloat(data[0].reward_steem_balance);
         this.reward_vesting_steem = parseFloat(data[0].reward_vesting_steem);
-        //  console.log(data);
-        //  console.log('---------');
-        //  console.log(this.metadata);
-      })
+    });
   }
+
   private getCoins() {
     return this._http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
       .subscribe(data => {

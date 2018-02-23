@@ -1,7 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App } from 'ionic-angular';
-import { PostsRes, Query } from 'models/models';
-import { Observable } from 'rxjs/Observable';
+import { IonicPage } from 'ionic-angular';
+import { PostsRes } from 'models/models';
 import { hotTemplate } from './hot.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -24,8 +23,7 @@ export class HotPage {
   private is_more_post: boolean = true;
   private triggered: boolean = false;
 
-  constructor(public appCtrl: App,
-    private zone: NgZone,
+  constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     private steemConnect: SteemConnectProvider) {
@@ -157,14 +155,6 @@ export class HotPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchHot("inifinite", infiniteScroll);
     });
-  }
-
-  /**
-   * @method openPage: Method to push a page to the nav controller
-   * @param {string} str: the name of the page to push
-   */
-  private openPage(str: string): void {
-    this.appCtrl.getRootNavs()[0].push(str);
   }
 
   private reinitialize() {

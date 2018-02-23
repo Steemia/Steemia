@@ -1,6 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App } from 'ionic-angular';
-import { PostsRes, Query } from 'models/models';
+import { IonicPage } from 'ionic-angular';
+import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Observable } from 'rxjs/Observable';
 import { trendTemplate } from './trend.template';
@@ -24,8 +24,7 @@ export class TrendPage {
   private is_more_post: boolean = true;
   private triggered: boolean = false;
 
-  constructor(public appCtrl: App,
-    private steemia: SteemiaProvider,
+  constructor(private steemia: SteemiaProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemConnect: SteemConnectProvider) { }
@@ -144,14 +143,6 @@ export class TrendPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchTrending("inifinite", infiniteScroll);
     });
-  }
-
-  /**
-   * @method openPage: Method to push a page to the nav controller
-   * @param {string} str: the name of the page to push
-   */
-  private openPage(str: string): void {
-    this.appCtrl.getRootNavs()[0].push(str);
   }
 
   private reinitialize() {

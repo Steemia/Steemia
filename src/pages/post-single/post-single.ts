@@ -34,11 +34,6 @@ export class PostSinglePage {
       sanitize: false,
       smartypants: false
     });
-    //this.body = md.render(this.post.body)
-    //this.body = this.post.body.replace(image_url,this.embedService.embed('$1'))
-    this.steemData.getComments({author: this.post.author, permlink: this.post.permlink}).subscribe(data => {
-      //console.log(data)
-    })
 
   }
   

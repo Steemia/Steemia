@@ -8,6 +8,7 @@ const FEED = BASE_API + 'recent?';
 const POSTS = BASE_API + 'posts/';
 const OWN_POSTS = BASE_API + 'user/';
 const STEEMIT = 'https://steemit.com';
+const STEEM_API = 'https://api.steemjs.com';
 
 @Injectable()
 export class SteemiaProvider {
@@ -173,6 +174,15 @@ export class SteemiaProvider {
     return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/voters?')
             .share().toPromise();
 
+  }
+
+  /**
+   * Public method to dispatch the data to the corresponding page
+   * @param {string} account: Username of the user
+   */
+  public dispatch_account(account) {
+    return this.http.get(STEEM_API + '/get_accounts?names[]=%5B%22'+account+'%22%5D')
+      .share().toPromise();
   }
   
   /**

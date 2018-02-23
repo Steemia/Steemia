@@ -26,13 +26,13 @@ export class SearchPage implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.steemProvider
-      .getSearch(this.searchTerm$, "created", "desc")
-      .takeUntil(this.destroyed$)
-      .subscribe(results => {
-        this.isSearching = false;
-        this.results = results.results;
-      });
+    // this.steemProvider
+    //   .getSearch(this.searchTerm$, "created", "desc")
+    //   .takeUntil(this.destroyed$)
+    //   .subscribe(results => {
+    //     this.isSearching = false;
+    //     this.results = results.results;
+    //   });
   }
 
   public ngOnDestroy() {

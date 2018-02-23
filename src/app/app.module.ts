@@ -8,7 +8,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BrowserTab } from '@ionic-native/browser-tab';
 
 import { MyApp } from './app.component';
-import { DataProvider } from 'providers/data/data';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { IonicStorageModule } from '@ionic/storage';
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -79,7 +78,6 @@ import { SteeemActionsProvider } from '../providers/steeem-actions/steeem-action
     BrowserTab,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DataProvider,
     SteemConnectProvider,
     SteemProvider,
     SteemiaProvider,

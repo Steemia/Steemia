@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { App, IonicPage, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
-import { PostsRes, Query } from 'models/models';
-import { SteemProvider } from '../../../providers/steem/steem';
+import { PostsRes } from 'models/models';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
@@ -32,19 +31,16 @@ export class VotesPage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     private app: App,
-    public steemData: SteemProvider,
     public formBuilder: FormBuilder,
     public modalCtrl: ModalController,
     private steemia: SteemiaProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad VotesPage');
     this.permlink = this.navParams.get('permlink');
     this.steemia.dispatch_votes({
       url: this.permlink,
     }).then((votes: PostsRes) => {
-      console.log(votes.results)
       this.votes = votes.results;
 
       // Set the loading spinner to false
@@ -57,7 +53,7 @@ export class VotesPage {
       return IMG_SERVER + '80x80/' + img;
     }
     else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
+      return IMG_SERVER + '50x50/' + img;
     }
   }
 

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { App, IonicPage, ViewController, NavParams, ModalController } from 'ionic-angular';
-import { PostsRes, Query } from 'models/models';
-import { SteemProvider } from '../../../providers/steem/steem';
+import { PostsRes } from 'models/models';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
@@ -27,7 +26,6 @@ export class CommentsPage {
   constructor(private app: App,
     public viewCtrl: ViewController,
     public navParams: NavParams,
-    public steemData: SteemProvider,
     public formBuilder: FormBuilder,
     public modalCtrl: ModalController,
     private steemia: SteemiaProvider) {
@@ -45,7 +43,6 @@ export class CommentsPage {
       limit: 15,
       current_user: "steemia-io"
     }).then((comments: PostsRes) => {
-      console.log(comments.results)
       this.comments = comments.results;
 
       // Set the loading spinner to false

@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Content } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
 import marked from 'marked';
 /**
  * Generated class for the AddPage page.
@@ -17,7 +16,7 @@ import marked from 'marked';
 export class AddPage {
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public DataProvider: DataProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController) {
 
   }
 
