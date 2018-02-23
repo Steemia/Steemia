@@ -1,9 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, LoadingController } from 'ionic-angular';
-import { DataProvider } from 'providers/data/data';
-import { SteemProvider } from 'providers/steem/steem';
-import { Post } from 'models/models';
-import { PostsRes, Query } from 'models/models';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
@@ -12,25 +9,9 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 })
 export class AuthorProfilePage {
 
-  private meta: Array<any> = [];
-  private perPage = 10;
-  private account = "steemia-io";
-  private metadata;
-  private about;
-  private post_count;
-  private follower_count;
-  private following_count;
-  private voting_power;
-  private profile_image;
-  private cover_image;
-  private reputation;
-  private location;
-  private website;
-  profile: string = "blog";
-
+  private sections: string = "blog";
   private account_data: Object;
   private username: string;
-  
 
   private contents: Array<any> = [];
   private offset: string = null;
@@ -44,25 +25,21 @@ export class AuthorProfilePage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public app: App,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
-    private steemProvider: SteemProvider,
-    private dataProvider: DataProvider,
     public loadingCtrl: LoadingController) {
 
     this.username = this.navParams.get('author');
   }
 
   ionViewDidLoad() {
+
     this.zone.runOutsideAngular(() => {
       this.dispatchPosts();
     });
 
     this.get_account();
-    this.getFollow();
-    this.getAccount();
   }
 
   /**
@@ -124,6 +101,9 @@ export class AuthorProfilePage {
     });
   }
 
+  /**
+   * Method to get account data from API
+   */
   private get_account() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -137,30 +117,6 @@ export class AuthorProfilePage {
       this.account_data = data;
       loading.dismiss();
     })
-  }
-
-  private getAccount() {
-    this.dataProvider.getAccount(this.account)
-      .subscribe((data) => {
-        this.metadata = JSON.parse(data[0].json_metadata);
-        this.post_count = data[0].post_count;
-        this.voting_power = (data[0].voting_power) / 100;
-        this.profile_image = this.metadata.profile.profile_image;
-        this.cover_image = this.metadata.profile.cover_image;
-        this.about = this.metadata.profile.about;
-        this.location = this.metadata.profile.location;
-        this.website = this.metadata.profile.website;
-        this.reputation = data[0].reputation
-        //console.log(data[0]);
-      })
-  }
-  private getFollow() {
-    this.dataProvider.getFollow(this.account)
-      .subscribe((data) => {
-        this.follower_count = data.follower_count;
-        this.following_count = data.following_count;
-        //console.log(data);
-      })
   }
 
   /**
@@ -191,7 +147,11 @@ export class AuthorProfilePage {
     });
   }
 
-  private reinitialize() {
+  /**
+   * Method to reinitialize the state.
+   * Used for pull to refresh the posts
+   */
+  private reinitialize(): void {
     this.offset = null;
     this.limit = 15;
     this.first_limit = 15;
@@ -201,9 +161,22 @@ export class AuthorProfilePage {
     this.is_first_loaded = false;
   }
 
-  onScroll($event: any){
+  /**
+   * Method to listen the scroll event and adjust the tabbar
+   * transparency
+   */
+  private onScroll($event): void {
     let scrollTop = $event.scrollTop;
     this.showToolbar = scrollTop >= 160;
+    this.cdr.detectChanges();
+  }
+
+
+  /**
+   * Private method to make Angular detect changes when
+   * segments are changed.
+   */
+  private segmentChanged(): void {
     this.cdr.detectChanges();
   }
 }
