@@ -2,7 +2,6 @@ import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-import { Observable } from 'rxjs/Observable';
 import { trendTemplate } from './trend.template';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
