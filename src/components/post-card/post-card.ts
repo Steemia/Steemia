@@ -1,10 +1,11 @@
 import { Component, Input} from '@angular/core';
 import { Post } from 'models/models';
-import { App, ModalController } from 'ionic-angular';
+import { App, ModalController, AlertController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import steemInstance from 'providers/steemconnect/steemConnectAPI';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 
 const IMG_SERVER = 'https://steemitimages.com/';
 
@@ -21,7 +22,9 @@ export class PostCardComponent {
   constructor(private app: App,
     private modalCtrl: ModalController,
     private steemConnect: SteemConnectProvider,
-    private imageLoaderConfig: ImageLoaderConfig) {
+    private imageLoaderConfig: ImageLoaderConfig,
+    private steemActions: SteeemActionsProvider,
+    private alertCtrl: AlertController) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
@@ -95,25 +98,53 @@ export class PostCardComponent {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-    let url = permlink.split('/')[3];
-    this.steemConnect.instance.vote(this.username, author, url, weight, (err, res) => {
-      // Check for errors
-      if (!err) {
-        // remove the is voting flag
-        this.is_voting = false
 
-        // check if vote is not an unvote
+    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+      if (data) {
+
+        // Catch if the user is not logged in and display an alert
+        if (data == 'not-logged') {
+          let alert = this.alertCtrl.create({
+            title: 'Alert',
+            subTitle: 'This action requires you to be logged in. Please, login and try again.',
+            buttons: ['Dismiss']
+          });
+          alert.present();
+
+          this.is_voting = false; // remove the spinner
+          return;
+        }
+
+        this.is_voting = false;
+
         if (weight > 0) {
-          this.is_voting = false
           this.content.vote = true;
         }
 
-        // perform the downvote
         else {
           this.content.vote = false;
         }
       }
-    });
+    }).catch(err => {console.log(err); this.is_voting = false})
+    // let url = permlink.split('/')[3];
+    // this.steemConnect.instance.vote(this.username, author, url, weight, (err, res) => {
+    //   // Check for errors
+    //   if (!err) {
+    //     // remove the is voting flag
+    //     this.is_voting = false
+
+    //     // check if vote is not an unvote
+    //     if (weight > 0) {
+    //       this.is_voting = false
+    //       this.content.vote = true;
+    //     }
+
+    //     // perform the downvote
+    //     else {
+    //       this.content.vote = false;
+    //     }
+    //   }
+    // });
   }
 
   /**

@@ -16,9 +16,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-const STEEM_BROADCAST = 'https://v2.steemconnect.com/api/broadcast';
-
-
 @Injectable()
 export class SteemConnectProvider {
 
@@ -36,6 +33,8 @@ export class SteemConnectProvider {
     userObject?: any,
     logged_out?: boolean
   }> = new BehaviorSubject({ status: false });
+
+  public token: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(public storage: Storage,
     public platform: Platform,
@@ -68,7 +67,7 @@ export class SteemConnectProvider {
         this.access_token = token.toString();
         // set the access token to the instance
         this.instance.setAccessToken(this.access_token);
-
+        this.token.next(this.access_token);
         // Set the login status to true
         this.login_status = true;
         this.dispatch_data();
@@ -158,6 +157,7 @@ export class SteemConnectProvider {
               this.setToken(access_token.toString());
               this.instance.setAccessToken(access_token.toString());
               this.access_token = access_token.toString();
+              this.token.next(this.access_token);
               this.login_status = true;
               this.dispatch_data();
               resolve("success");
