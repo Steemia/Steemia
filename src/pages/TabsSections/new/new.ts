@@ -22,6 +22,7 @@ export class NewPage {
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
+  private triggered: boolean = false;
 
   constructor(public appCtrl: App,
     private steemia: SteemiaProvider,
@@ -48,7 +49,8 @@ export class NewPage {
         });
       }
 
-      else {
+      else if (this.triggered == false) {
+        this.triggered = true; // Ensure to only trigger here once and not twice
         this.zone.runOutsideAngular(() => {
           this.dispatchNew();
         });

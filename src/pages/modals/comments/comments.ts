@@ -32,11 +32,6 @@ export class CommentsPage {
     public modalCtrl: ModalController,
     private steemia: SteemiaProvider) {
 
-    
-
-    
-
-
     this.messageForm = formBuilder.group({
       message: new FormControl('')
     });
