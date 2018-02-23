@@ -30,6 +30,7 @@ import { SkeletonLoadingComponent } from '../components/skeleton-loading/skeleto
 import { MomentModule } from 'angular2-moment';
 import { PostRenderComponent } from '../components/post-render/post-render';
 import { PostCardComponent } from '../components/post-card/post-card';
+import { SteeemActionsProvider } from '../providers/steeem-actions/steeem-actions';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { PostCardComponent } from '../components/post-card/post-card';
     SteemConnectProvider,
     SteemProvider,
     SteemiaProvider,
+    SteeemActionsProvider,
   ]
 })
 export class AppModule {}
