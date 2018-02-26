@@ -5,6 +5,9 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { trendTemplate } from './trend.template';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'section-scss',
   template: trendTemplate

@@ -7,7 +7,7 @@
   
       <ion-item>
         <ion-avatar item-start tappable (click)="openProfile(content.author)">
-          <img-loader [src]="renderImage('profile', content.avatar)" useImg></img-loader>
+          <img-loader [src]="util.renderImage('profile', content.avatar)" useImg></img-loader>
         </ion-avatar>
         <div>
           <ion-badge color="primary"> {{ content.author }}</ion-badge>
@@ -30,8 +30,7 @@
   
     <ion-card-content no-padding tappable (click)="postOpen(content)">
       <h2 padding>{{ content.title }}</h2>
-      <!-- <div *ngIf="content.json_metadata.image" class="img" [ngStyle]="{'background-image': 'url(' + content.json_metadata.image[0] + ')'}"></div> -->
-      <img-loader class="img" [src]="renderImage('cover', content.body)" (error)="imgError($event)"></img-loader>
+      <img-loader class="img" [src]="util.renderImage('cover', content.body)" (error)="util.imgError('post', $event)"></img-loader>
   
     </ion-card-content>
   
@@ -41,17 +40,17 @@
         <div style="float: left;" *ngIf="content.top_likers_avatars" (click)="openVotes(content.url)">
           <div class="voters">
             <span class="voters_image" *ngFor="let voter of content.top_likers_avatars">
-              <img [src]="renderImage('votes', voter)" (error)="imgError($event)"/>
+              <img [src]="util.renderImage('votes', voter)" (error)="util.imgError('comment',$event)"/>
             </span>
           </div>
           <div class="likes">
-            <p>{{ renderLikes(content.net_likes) }}</p>
+            <p>{{ util.renderLikes(content.net_likes) }}</p>
           </div>
         </div>
       </ion-col>
   
       <ion-col col-3 text-center>
-        <button ion-button clear small left (click)="openComments(content.url)">
+        <button ion-button clear small left (click)="openComments(content.url, content.author)">
           <ion-icon name="ios-text"></ion-icon>
           &nbsp;
           <div class="info">{{ content.children }}</div>

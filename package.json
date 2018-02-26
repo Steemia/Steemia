@@ -1,8 +1,20 @@
 {
   "name": "Steemia",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Steemia",
+  "contributors": [
+    {
+      "name": "Hüseyin TERKİR",
+      "email": "hsynterkr@gmail.com",
+      "url": "https://github.com/hsynterkr"
+    },
+    {
+      "name": "Jayser Mendez",
+      "email": "jayser.mendez@stu.bcc.cuny.edu",
+      "url": "https://github.com/jayserdny"
+    }
+  ],
+  "homepage": "http://steemia.io/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -12,14 +24,14 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
-    "@angular/common": "^5.2.4",
-    "@angular/compiler": "^5.2.4",
-    "@angular/compiler-cli": "^5.2.4",
-    "@angular/core": "^5.2.4",
-    "@angular/forms": "^5.2.4",
-    "@angular/http": "^5.2.4",
-    "@angular/platform-browser": "^5.2.4",
-    "@angular/platform-browser-dynamic": "^5.2.4",
+    "@angular/common": "^5.2.6",
+    "@angular/compiler": "^5.2.6",
+    "@angular/compiler-cli": "^5.2.6",
+    "@angular/core": "^5.2.6",
+    "@angular/forms": "^5.2.6",
+    "@angular/http": "^5.2.6",
+    "@angular/platform-browser": "^5.2.6",
+    "@angular/platform-browser-dynamic": "^5.2.6",
     "@ionic-native/browser-tab": "^4.5.3",
     "@ionic-native/core": "^4.5.3",
     "@ionic-native/file": "^4.5.3",
@@ -29,7 +41,7 @@
     "@ionic/storage": "^2.1.3",
     "angular2-moment": "^1.8.0",
     "chart.js": "^2.7.1",
-    "cordova-android": "7.0.0",
+    "cordova-android": "^7.1.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-app-preferences": "^0.99.3",
     "cordova-plugin-browsertab": "^0.2.0",
@@ -46,7 +58,7 @@
     "ionic-image-loader": "^5.0.0",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
-    "marked": "^0.3.12",
+    "marked": "^0.3.16",
     "moment": "^2.20.1",
     "peerjs": "^0.3.14",
     "rxjs": "^5.5.6",
@@ -59,9 +71,9 @@
   "devDependencies": {
     "@ionic/app-scripts": "^3.1.8",
     "@types/moment": "^2.13.0",
-    "typescript": "^2.7.1"
+    "typescript": "^2.7.2"
   },
-  "description": "An Ionic project",
+  "description": "Steemia is a social media application based on the Steem blockchain where users and curators are rewarding for their content.",
   "config": {
     "ionic_webpack": "./webpack.config.js"
   },

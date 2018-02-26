@@ -5,6 +5,9 @@ import { newTemplate } from './new.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'section-scss',
   template: newTemplate

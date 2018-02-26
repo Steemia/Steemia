@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { METADATA } from '../../constants/constants';
 
 @Injectable()
 export class SteeemActionsProvider {
@@ -29,7 +30,7 @@ export class SteeemActionsProvider {
       if (res.status === true) {
         this.username = res.userObject.user;
       }
-    })
+    });
   }
 
   /**
@@ -78,8 +79,8 @@ export class SteeemActionsProvider {
         else {
           resolve(res);
         }
-      });    
-    }); 
+      });
+    });
   }
 
   /**
@@ -103,6 +104,10 @@ export class SteeemActionsProvider {
         }
       });
     });
+  }
+
+  public dispatch_mute() {
+
   }
 
   /**
@@ -154,12 +159,103 @@ export class SteeemActionsProvider {
     });
   }
 
-  public dispatch_comment() {
+  /**
+   * 
+   * @param author 
+   * @param permlink 
+   * @param body 
+   */
+  public dispatch_comment(author, permlink, body) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
+
+    let url = permlink.split('/')[3];
+    let permUrl = this.commentPermlink('', url);
+
+    return new Promise((resolve) => {
+      this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA, (err, res) => {
+        if (err) resolve(err);
+        else resolve(res);
+      });
+    });
+
+  }
+
+  public dispatch_post(title: string, description: string, tags: Array<string>) {
+
+    let permlink = title.replace(/\s/g, "-");
+    let tags_d = tags;
+    tags_d.push('steemia');
+    let jsonMetadata = { tags: tags_d, app: `steemia/0.1`, format: 'markdown', image: 'https://camo.githubusercontent.com/cd7f5a98b8f6db310ce7dee9afe0dc9179a9e061/68747470733a2f2f692e68697a6c69726573696d2e636f6d2f47394230454e2e706e67' };
+
+    const operations = [];
+    const commentOp = [
+      'comment',
+      {
+        parent_author: '',
+        parent_permlink: tags_d[0],
+        author: this.username,
+        permlink: permlink,
+        title: title,
+        body: description,
+        json_metadata: JSON.stringify(jsonMetadata),
+      },
+    ];
+    operations.push(commentOp);
+
+    const commentOptionsConfig = {
+      author: this.username,
+      permlink: permlink,
+      allow_votes: true,
+      allow_curation_rewards: true,
+      max_accepted_payout: '1000000.000 SBD',
+      percent_steem_dollars: 10000,
+    };
+
+    (commentOptionsConfig as any).extensions = [
+      [
+        0,
+        {
+          beneficiaries: [{ account: 'steepshot', weight: 1000 }, { account: 'steemia-io', weight: 1000}],
+        },
+      ],
+    ];
+
+    operations.push(['comment_options', commentOptionsConfig]);
+    operations.push([
+      'vote',
+      {
+        voter: this.username,
+        author: this.username,
+        permlink,
+        weight: 10000,
+      },
+    ]);
+
+    return new Promise(resolve => {
+      this.steemConnect.instance.broadcast(operations, (err, res) => {
+        if (err) resolve(err);
+        else resolve(res);
+      });
+    })
 
   }
 
   public dispatch_flag() {
 
+  }
+
+  /**
+   * 
+   * @param parentAuthor 
+   * @param parentPermlink 
+   */
+  private commentPermlink(parentAuthor, parentPermlink) {
+    const timeStr = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, "").toLocaleLowerCase();
+    parentPermlink = parentPermlink.replace(/(-\d{8}t\d{9}z)/g, "");
+    return "re" + parentAuthor + "-" + parentPermlink + "-" + timeStr;
   }
 
 }

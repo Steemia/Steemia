@@ -1,21 +1,14 @@
 import { Component } from '@angular/core';
-import { App, IonicPage, ViewController, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
 import { PostsRes } from 'models/models';
-import { FormControl, FormBuilder } from '@angular/forms';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-
 import { AuthorProfilePage } from '../../../pages/author-profile/author-profile';
 
 const IMG_SERVER = 'https://steemitimages.com/';
 
-/**
- * Generated class for the VotesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
+@IonicPage({
+  priority: 'medium'
+})
 @Component({
   selector: 'page-votes',
   templateUrl: 'votes.html',
@@ -30,9 +23,6 @@ export class VotesPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private app: App,
-    public formBuilder: FormBuilder,
-    public modalCtrl: ModalController,
     private steemia: SteemiaProvider) {
   }
 
@@ -48,20 +38,25 @@ export class VotesPage {
     });
   }
 
-  private renderImage(type: string, img: string): string {
-    if (type === 'profile') {
-      return IMG_SERVER + '80x80/' + img;
-    }
-    else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img;
-    }
+  /**
+   * Method to render images in the correct size
+   * @param {String} img: Url of the image to render
+   */
+  private renderImage(img: string): string {
+    return IMG_SERVER + '80x80/' + img;
   }
 
-  private dismiss() {
-    let data = { 'foo': 'bar' };
-    this.viewCtrl.dismiss(data);
+  /**
+   * Method to close the current modal
+   */
+  private dismiss(): void {
+    this.viewCtrl.dismiss();
   }
   
+  /**
+   * Method to replace 404 images with placeholder
+   * @param event 
+   */
   private imgError(event): void {
     event.target.src = 'assets/user.png';
   }
@@ -71,8 +66,7 @@ export class VotesPage {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.dismiss();
-    this.app.getRootNavs()[0].push(AuthorProfilePage, {
+    this.navCtrl.push(AuthorProfilePage, {
       author: author
     })
   }

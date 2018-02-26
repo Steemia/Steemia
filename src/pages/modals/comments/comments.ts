@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { App, IonicPage, ViewController, NavParams, ModalController } from 'ionic-angular';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { IonicPage, App, ViewController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
-import { FormControl, FormBuilder } from '@angular/forms';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { Subject } from 'rxjs/Subject';
 
-import { AuthorProfilePage } from '../../../pages/author-profile/author-profile';
-
-const IMG_SERVER = 'https://steemitimages.com/';
-
-@IonicPage()
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-comments',
   templateUrl: 'comments.html',
@@ -17,73 +17,100 @@ export class CommentsPage {
 
   private author: string;
   private permlink: string;
-  private comments: any;
+  private comments: Array<any> = [];
   private is_loading = true;
+  private is_voting: boolean = false;
+  private logged_in: boolean = false;
+  private username: string = '';
+  private no_content: boolean = false;
 
-  public messageForm: any;
-  chatBox: any;
+  private chatBox: string = '';
 
-  constructor(private app: App,
+  private ngUnsubscribe: Subject<any> = new Subject();
+
+  constructor(private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private app: App,
     public viewCtrl: ViewController,
     public navParams: NavParams,
-    public formBuilder: FormBuilder,
     public modalCtrl: ModalController,
-    private steemia: SteemiaProvider) {
-
-    this.messageForm = formBuilder.group({
-      message: new FormControl('')
-    });
-    this.chatBox = '';
+    private steemia: SteemiaProvider,
+    private steemActions: SteeemActionsProvider,
+    public loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private steemConnect: SteemConnectProvider) {
   }
 
   ionViewDidLoad() {
     this.permlink = this.navParams.get('permlink');
+    this.author = this.navParams.get('author');
+
+    try {
+      this.username = (this.steemConnect.user_object as any).user;
+    }
+    catch (e) {}
+    
+
+    this.zone.runOutsideAngular(() => {
+      this.load_comments();
+    });
+    
+  }
+
+  private load_comments(action?: string) {
     this.steemia.dispatch_comments({
       url: this.permlink,
       limit: 15,
-      current_user: "steemia-io"
+      current_user: this.username
     }).then((comments: PostsRes) => {
-      this.comments = comments.results;
+
+      // Check if the action is to refresh. If so, we need to 
+      // reinitialize all the data after initializing the query
+      // to avoid the data to dissapear
+      if (action === "refresh") {
+        this.reinitialize();
+      }
+
+      if (comments.results.length < 1) {
+        this.no_content = true;
+      }
+      else {
+        this.comments = comments.results.reverse();
+      }
 
       // Set the loading spinner to false
-      this.is_loading = false
+      this.is_loading = false;
+
+      // Tell Angular that changes were made since we detach the auto check
+      this.cdr.detectChanges();
     });
   }
 
-  private renderImage(type: string, img: string): string {
-    if (type === 'profile') {
-      return IMG_SERVER + '80x80/' + img;
-    }
-    else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
-    }
+  private reinitialize() {
+    this.no_content = false;
+    this.comments = [];
   }
 
-
+  private comment() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+    this.steemActions.dispatch_comment(this.author, this.permlink, this.chatBox).then(res => {
+      
+      if (res) {
+        this.chatBox = '';
+        this.zone.runOutsideAngular(() => {
+          this.load_comments('refresh');
+        });
+      }
+    }).then(() => {
+      loading.dismiss();
+    });
+  }
 
   private dismiss() {
-    let data = { 'foo': 'bar' };
-    this.viewCtrl.dismiss(data);
-  }
-
-  private openReplies(comment) {
-    let repliesModal = this.modalCtrl.create("RepliesPage", {});
-    repliesModal.present();
-  }
-
-  private imgError(event): void {
-    event.target.src = 'assets/user.png';
-  }
-
-   /**
-   * Method to open author profile page
-   * @param {String} author: author of the post
-   */
-  private openProfile(author: string): void {
-    this.dismiss();
-    this.app.getRootNavs()[0].push(AuthorProfilePage, {
-      author: author
-    })
+    this.viewCtrl.dismiss();
   }
 
 }

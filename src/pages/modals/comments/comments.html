@@ -1,60 +1,44 @@
 <ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons>
+      <button ion-button (tap)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Comments</ion-title>
+  </ion-navbar>
+</ion-header>
 
-    <ion-navbar color="primary">
-      <ion-buttons>
-        <button ion-button (tap)="dismiss()">
-            <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
-  
-      <ion-title>Comments</ion-title>
-  
-    </ion-navbar>
-  
-  </ion-header>
-  
-  
-  <ion-content>
-  
-      <ion-spinner *ngIf="is_loading"></ion-spinner>
-      
-    <div *ngFor="let comment of comments" class="message-wrapper">
-      <div>
-        <img class="profile-pic left" [src]="renderImage('profile', comment.avatar)" tappable (click)="openProfile(comment.author)" (error)="imgError($event)"/>
-        <!--  wave-->
-        <div class="chat-bubble left slide-left">
-  
-          <div>
-            <ion-badge color="light" style="border: 1px solid #dbdbdb" tappable (click)="openProfile(comment.author)"> {{ comment.author }}</ion-badge>
-            <ion-badge color="light2" style="color:black"> {{ comment.author_reputation }} </ion-badge>
-            <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
-            &nbsp;&nbsp;<span class="created_date">{{ comment.created | amTimeAgo }}</span>
-            <div class="message" [innerHTML]="comment.body" autolinker tappable (click)="openReplies(comment)"></div>
-          </div>
-  
-          <div class="message-detail">
-          </div>
-  
-        </div>
-        <div class="meta">
-          <ion-note>{{ comment.net_votes }} likes</ion-note>
-          &nbsp;&nbsp; &nbsp; <ion-note>${{ comment.pending_payout_value }}</ion-note>  
-        </div>
-      </div>
-  
-      <div class="cf"></div>
-  
-    </div>
-  
-  </ion-content>
-  
-  <ion-footer>
-    <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
-      <ion-item>
-        <ion-input formControlName="message" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input>
-        <button ion-button clear (click)="send(chatBox)" item-end>
-          <ion-icon class="footer-btn" name="send"></ion-icon>
-        </button>
-      </ion-item>
-    </form>
-  </ion-footer>
+<ion-content>
+
+  <ion-spinner *ngIf="is_loading"></ion-spinner>
+
+  <div *ngFor="let comment of comments; let i = index" class="message-wrapper">
+    <render-comment [comment]="comment"></render-comment>
+  </div>
+
+  <ion-grid *ngIf="no_content == true" class="noResults">
+    <ion-row>
+      <ion-col text-center>
+        <ion-card>
+          <ion-card-content>
+            <ion-icon name="search" class="notFound"></ion-icon>
+            <p>This post does not have any comments, YET!</p>
+            <br />
+            <!-- <button *ngIf="hasButton" ion-button round (tap)="onClickEvent()">{{ buttonText }}</button> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input>
+    <button ion-button clear (click)="comment()" item-end>
+      <ion-icon class="footer-btn" name="send"></ion-icon>
+    </button>
+  </ion-item>
+</ion-footer>

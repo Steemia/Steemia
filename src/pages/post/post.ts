@@ -10,6 +10,9 @@ import marked from 'marked';
 export class PostPage {
 
   constructor() {
+  }
+
+  ngAfterViewInit() {
    
   }
 

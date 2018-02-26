@@ -9,17 +9,6 @@ import { SteemProvider } from 'providers/steem/steem';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
-export interface PageInterface {
-  title: string;
-  name: string;
-  component: any;
-  icon: string;
-  logsOut?: boolean;
-  index?: number;
-  tabName?: string;
-  tabComponent?: any;
-}
-
 @Component({
   templateUrl: 'app.html'
 })
@@ -59,7 +48,6 @@ export class MyApp {
       }
 
       else {
-        console.log(res)
         this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
           this.profile = data;
           this.initializeLoggedInMenu();
@@ -77,8 +65,7 @@ export class MyApp {
         //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: this.profilePicture,
         username: 'Steemia',
-        email: 'steemia@steemia.io',
-        onClick: () => { alert('menu header clicked'); }
+        email: 'steemia@steemia.io'
       },
       entries: [
         { title: 'Home', leftIcon: 'home', onClick: () => { } },
@@ -105,23 +92,23 @@ export class MyApp {
         picture: this.profile.profile_image,
         username: this.profile.username,
         email: this.profile.location || '',
-        onClick: () => { alert('menu header clicked'); }
+        //onClick: () => { alert('menu header clicked'); }
       },
       entries: [
         { title: 'Home', leftIcon: 'home', onClick: () => { } },
-        { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage") } },
-        { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage("NotificationsPage") } },
-        { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage("ProfilePage") } },
-        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage("MessagesPage") } },
-        { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage("BookmarksPage") } },
-        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage("SettingsPage") } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
+        { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
+        { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage('NotificationsPage') } },
+        { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage('ProfilePage', 'profile') } },
+        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage') } },
+        { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
+        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
+        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
           title: 'Logout', leftIcon: 'log-out', onClick: () => {
             this.steemConnect.doLogout().then(data => {
               if (data === 'done') {
                 this.menuCtrl.close().then(() => {
-                  this.profilePicture = "./assets/steemlogo.png"
+                  this.profilePicture = './assets/steemlogo.png'
                   this.isLoggedIn = false;
                 });
               }
@@ -143,9 +130,16 @@ export class MyApp {
   }
 
 
-  private openPage(page: string): void {
+  private openPage(page: any, type?: string): void {
     this.menuCtrl.close().then(() => {
-      this.nav.push(page);
+      if (type === 'profile' || type === 'wallet') {
+        this.nav.push(page, {
+          author: this.profile.username
+        });
+      }
+      else {
+        this.nav.push(page);
+      }
     });
   }
 }
