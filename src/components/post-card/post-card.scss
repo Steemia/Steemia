@@ -34,6 +34,7 @@ post-card {
                   background-position: 50% 50%;
                   border-radius: 50%;
                   border: 1.5px solid white;
+                  object-fit: cover;
             }
       }
     
@@ -62,6 +63,10 @@ post-card {
     
       ion-spinner {
             top: 0 !important;
+      }
+
+      ion-avatar img {
+            object-fit: cover;
       }
 
 }

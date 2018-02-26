@@ -1,0 +1,115 @@
+render-comment {
+
+      ion-spinner {
+            width: 20px !important;
+            height: 20px !important;
+            display: -webkit-inline-box !important;
+            position: absolute !important;
+            top: 40% !important;
+      }
+
+      .meta {
+            margin-top: -6px;
+            display: block;
+            margin-left: 55px;
+            margin-bottom: 7px;
+      }
+
+      .created_date {
+            margin-left: -4px;
+            font-size: 12px;
+      }
+
+      .message {
+            font-size: 14px;
+            margin-top: 14px;
+      }
+
+      .like-button {
+            font-size: 1.8em !important;
+            position: absolute;
+            top: 40%;
+      }
+      
+      img.profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: absolute;
+            top: 11px;
+            bottom: auto;
+            object-fit: cover;
+      }
+      
+      img.profile-pic.left {
+            left: 10px;
+      }
+      
+      img.profile-pic.right {
+            right: 10px;
+      }
+      
+      .ion-email {
+            float: right;
+            font-size: 32px;
+            vertical-align: middle;
+      }
+      
+      
+      .message-detail {
+            white-space: nowrap;
+            font-size: 14px;
+      }
+      
+      .bar.item-input-inset .item-input-wrapper input {
+            width: 100% !important;
+      }
+      
+      .chat-bubble {
+            border-radius: 14px;
+            display: inline-block;
+            padding: 10px 10px;
+            position: relative;
+            margin: 10px;
+            max-width: 75%;
+      }
+      
+      .chat-bubble.left {
+            background-color: #f5f5f5;
+            margin-left: 55px;
+      }
+   
+      .user-messages-top-icon {
+            font-size: 28px;
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            top: -3px;
+            right: 5px;
+      }
+      
+      .msg-header-username {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            top: -3px;
+      }
+      
+      input, textarea, .item-input, .item-input-wrapper {
+            background-color: #ffffff !important;
+      }
+      
+      .bold {
+            font-weight: bold;
+      }
+      
+      .cf {
+            clear: both !important;
+      }
+      
+      a.autolinker {
+            color: #3b88c3;
+            text-decoration: none;
+      }
+
+}

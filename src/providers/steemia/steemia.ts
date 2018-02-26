@@ -1,19 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Query,PostsRes } from 'models/models';
-
-const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
-const STEEPSHOT_BASE = 'https://steepshot.org/api/v1/'
-const FEED = BASE_API + 'recent?';
-const POSTS = BASE_API + 'posts/';
-const OWN_POSTS = BASE_API + 'user/';
-const STEEMIT = 'https://steemit.com';
-const STEEM_API = 'https://api.steemjs.com';
+import { Query, PostsRes } from 'models/models';
+import { POSTS,
+         OWN_POSTS, 
+         BASE_API, 
+         BASE_API_V1, 
+         STEEPSHOT_BASE, 
+         STEEM_API,
+         FEED,
+         STEEPSHOT_BASE_V1_1 } from '../../constants/constants';
+import { UtilProvider } from '../util/util';
+import { SteemConnectProvider } from '../steemconnect/steemconnect';
 
 @Injectable()
 export class SteemiaProvider {
 
-  constructor(public http: HttpClient) { }
+  private username: string;
+
+  constructor(public http: HttpClient, 
+  public util: UtilProvider,
+  private steemConnect: SteemConnectProvider) {
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.username = res.userObject.user;
+      }
+    });
+  }
 
   /**
    * Method to retrieve the feed from a certain user
@@ -22,7 +35,7 @@ export class SteemiaProvider {
    * @returns A subscriptable observable with the response
    */
   private get_feed(query: Query) {
-    return this.http.get(FEED + this.encodeQueryData(query))
+    return this.http.get(FEED + this.util.encodeQueryData(query))
       .share()
   }
 
@@ -57,12 +70,12 @@ export class SteemiaProvider {
   public get_posts(type: string, query: Query, category?: string) {
     // Check if a category is given
     if (category) {
-      return this.http.get(POSTS + category + '/' + type + '?' + this.encodeQueryData(query))
+      return this.http.get(POSTS + category + '/' + type + '?' + this.util.encodeQueryData(query))
         .share()
     }
 
     else {
-      return this.http.get(POSTS + type + '?' + this.encodeQueryData(query))
+      return this.http.get(POSTS + type + '?' + this.util.encodeQueryData(query))
         .share()
     }
   }
@@ -97,8 +110,8 @@ export class SteemiaProvider {
    * 
    * @param {Query} query: Object with data for query
    */
-  private get_profile_posts(query: Query) {
-    return this.http.get(OWN_POSTS + query.username + '/posts?' + this.encodeQueryData(query))
+  private get_profile_posts(username: string, query: Query) {
+    return this.http.get(OWN_POSTS + username + '/posts?' + this.util.encodeQueryData(query))
       .share()
 
   }
@@ -113,14 +126,14 @@ export class SteemiaProvider {
       show_nsfw: 0,
       show_low_rated: 0,
       with_body: 1,
-      username: query.username
+      username: query.current_user
     }
 
     if (query.first_load == true) {
       que.offset = query.offset
     }
 
-    return this.get_profile_posts(que).toPromise();
+    return this.get_profile_posts(query.username,que).toPromise();
   }
 
   /**
@@ -128,10 +141,21 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_info(query: Query): Promise<any> {
-    return this.http.get(STEEPSHOT_BASE + query.current_user + '/user/' + query.username + '/info?' + this.encodeQueryData({
-      show_nsfw: 0,
-      show_low_rated: 0
-    })).share().toPromise();
+
+    if (query.current_user !== 'not logged') {
+      return this.http.get(BASE_API_V1 + query.current_user + '/user/' + query.username + '/info?' + this.util.encodeQueryData({
+        show_nsfw: 0,
+        show_low_rated: 0
+      })).share().toPromise();
+    }
+
+    else {
+      return this.http.get(BASE_API + '/user/' + query.username + '/info?' + this.util.encodeQueryData({
+        show_nsfw: 0,
+        show_low_rated: 0
+      })).share().toPromise();
+    }
+    
   }
 
   /**
@@ -139,7 +163,6 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
-    let url = STEEMIT + query.url;
     let que: Query = {
       show_nsfw: 0,
       show_low_rated: 0,
@@ -150,7 +173,7 @@ export class SteemiaProvider {
     if (query.first_load == true) {
       que.offset = query.offset;
     }
-    return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/comments?' + this.encodeQueryData(que))
+    return this.http.get(STEEPSHOT_BASE + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
             .share().toPromise();
   }
 
@@ -163,7 +186,6 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_votes(query: Query) {
-    let url = STEEMIT + query.url;
     let que: Query = {
       username: query.current_user
     };
@@ -171,7 +193,7 @@ export class SteemiaProvider {
     if (query.first_load == true) {
       que.offset = query.offset;
     }
-    return this.http.get(STEEPSHOT_BASE + 'post/' + url + '/voters?')
+    return this.http.get(STEEPSHOT_BASE + 'post/' + query.url + '/voters?')
             .share().toPromise();
 
   }
@@ -184,17 +206,19 @@ export class SteemiaProvider {
     return this.http.get(STEEM_API + '/get_accounts?names[]=%5B%22'+account+'%22%5D')
       .share().toPromise();
   }
-  
-  /**
-   * @method encodeQueryData: add parameters to an url
-   * @param {Object} parameters: parameters to add to url
-   * @returns url with the parameters added
-   */
-  private encodeQueryData(parameters: any) {
-    let ret = [];
-    for (let d in parameters)
-      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(parameters[d]));
-    return ret.join('&');
+
+  public dispatch_post_single(query: Query) {
+
+    let url = query.url;
+
+    let que: Query = {
+      show_nsfw: 0,
+      show_low_rated: 0,
+      with_body: 1,
+      username: this.username
+    };
+    return this.http.get(STEEPSHOT_BASE_V1_1 + 'post/' + url + '/info?' + this.util.encodeQueryData(que))
+      .share().toPromise();
   }
 
 }

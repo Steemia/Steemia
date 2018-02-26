@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { PostSinglePage } from './post-single';
+import { AuthorProfilePage } from './author-profile';
 import { ComponentsModule } from '../../components/components.module';
 import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
-      PostSinglePage,
+      AuthorProfilePage,
   ],
   imports: [
       MomentModule,
       ComponentsModule,
-      IonicPageModule.forChild(PostSinglePage),
+      IonicPageModule.forChild(AuthorProfilePage),
   ],
 })
-export class PostSinglePageModule {}
+export class AuthorProfilePageModule {}

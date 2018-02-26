@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { FeedPage } from '../TabsSections/feed/feed';
-import { HotPage } from '../TabsSections/hot/hot';
-import { NewPage } from '../TabsSections/new/new';
-import { TrendPage } from '../TabsSections/trend/trend';
 import { App } from 'ionic-angular';
 
 @Component({
@@ -30,15 +26,15 @@ import { App } from 'ionic-angular';
     </ion-header>
     <ion-content>
       <ion-tabs>
-          <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
+          <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
           <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
           <ion-tab></ion-tab>
-          <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
+          <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
           <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
       </ion-tabs>
 
       <ion-fab center bottom>
-        <button ion-fab color="primary">
+        <button ion-fab color="primary" (click)="openPage('PostPage')">
           <ion-icon name="create"></ion-icon>
         </button>
       </ion-fab>
@@ -47,10 +43,10 @@ import { App } from 'ionic-angular';
 })
 export class TabsPage {
 
-  private feedRoot = FeedPage;
-  private trendRoot = TrendPage;
-  private hotRoot = HotPage;
-  private newRoot = NewPage;
+  private feedRoot = 'FeedPage';
+  private trendRoot = 'TrendPage';
+  private hotRoot = 'HotPage';
+  private newRoot = 'NewPage';
 
   constructor(private appCtrl: App) {
    }

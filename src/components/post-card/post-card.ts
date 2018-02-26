@@ -1,12 +1,9 @@
 import { Component, Input} from '@angular/core';
-import { Post } from 'models/models';
-import { App, ModalController } from 'ionic-angular';
-import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-import steemInstance from 'providers/steemconnect/steemConnectAPI';
+import { App, ModalController, AlertController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
-import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
-
-const IMG_SERVER = 'https://steemitimages.com/';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
+import { SteemiaProvider } from 'providers/steemia/steemia';
+import { UtilProvider } from 'providers/util/util';
 
 @Component({
   selector: 'post-card',
@@ -15,13 +12,15 @@ const IMG_SERVER = 'https://steemitimages.com/';
 export class PostCardComponent {
 
   @Input('post') content: any;
-  private username: string = '';
   private is_voting: boolean = false;
 
   constructor(private app: App,
     private modalCtrl: ModalController,
-    private steemConnect: SteemConnectProvider,
-    private imageLoaderConfig: ImageLoaderConfig) {
+    private imageLoaderConfig: ImageLoaderConfig,
+    private steemActions: SteeemActionsProvider,
+    private alertCtrl: AlertController,
+    public util: UtilProvider,
+    private steemiaProvider: SteemiaProvider) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
@@ -31,18 +30,6 @@ export class PostCardComponent {
     this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
     this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
-    // Get the current logged in user
-    if (this.steemConnect.user === '' || this.steemConnect.user === null
-        || this.steemConnect.user == undefined) {
-      
-      this.steemConnect.get_current_user().then(user => {
-        this.username = user.toString();
-      });
-    }
-
-    else {
-      this.username = this.steemConnect.user;
-    }
   }
 
   /**
@@ -60,7 +47,7 @@ export class PostCardComponent {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.app.getRootNavs()[0].push(AuthorProfilePage, {
+    this.app.getRootNavs()[0].push('AuthorProfilePage', {
       author: author
     })
   }
@@ -69,8 +56,8 @@ export class PostCardComponent {
    * Method to open a modal with the comments of the post
    * @param post 
    */
-  private openComments(url: string): void {
-    let commentModal = this.modalCtrl.create("CommentsPage", { permlink: url });
+  private openComments(url: string, author: string): void {
+    let commentModal = this.modalCtrl.create('CommentsPage', { permlink: url, author:  author});
     commentModal.present();
   }
 
@@ -95,53 +82,49 @@ export class PostCardComponent {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-    let url = permlink.split('/')[3];
-    this.steemConnect.instance.vote(this.username, author, url, weight, (err, res) => {
-      // Check for errors
-      if (!err) {
-        // remove the is voting flag
-        this.is_voting = false
 
-        // check if vote is not an unvote
+    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+      if (data) {
+
+        // Catch if the user is not logged in and display an alert
+        if (data == 'not-logged') {
+          let alert = this.alertCtrl.create({
+            title: 'Alert',
+            subTitle: 'This action requires you to be logged in. Please, login and try again.',
+            buttons: ['Dismiss']
+          });
+          alert.present();
+
+          this.is_voting = false; // remove the spinner
+          return;
+        }
+
+        this.is_voting = false;
+
         if (weight > 0) {
-          this.is_voting = false
           this.content.vote = true;
         }
 
-        // perform the downvote
         else {
           this.content.vote = false;
         }
+
+        this.refreshPost();
+
       }
+    }).catch(err => {console.log(err); this.is_voting = false});
+  }
+
+  private refreshPost() {
+    this.steemiaProvider.dispatch_post_single({
+      url: this.content.url
+    }).then(data => {
+      this.content.net_likes = (data as any).net_likes;
+      this.content.net_votes = (data as any).net_votes;
+      this.content.top_likers_avatars = (data as any).top_likers_avatars;
+      this.content.pending_payout_value = (data as any).pending_payout_value;
+      this.content.children = (data as any).children;
     });
-  }
-
-  /**
-   * Method to add pluralization to the likes in the post
-   * @param likes 
-   */
-  private renderLikes(likes: number): string {
-    if (likes > 1 || likes == 0) return likes.toLocaleString() + ' likes';
-    else return likes + ' like';
-
-  }
-
-  private renderImage(type: string, img: string): string {
-    if (type === 'profile') {
-      return IMG_SERVER + '80x80/' + img;
-    }
-
-    else if (type === 'cover') {
-      return IMG_SERVER + '850x500/' + img;
-    }
-
-    else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
-    }
-  }
-
-  private imgError(event): void {
-    event.target.src = 'assets/placeholder2.png';
   }
 
 }

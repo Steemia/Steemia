@@ -2,7 +2,11 @@ import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-author-profile',
   templateUrl: 'author-profile.html',
@@ -12,6 +16,7 @@ export class AuthorProfilePage {
   private sections: string = "blog";
   private account_data: Object;
   private username: string;
+  private current_user: string;
 
   private contents: Array<any> = [];
   private offset: string = null;
@@ -22,15 +27,27 @@ export class AuthorProfilePage {
   private total_posts: number = 0;
   private is_more_post: boolean = true;
   showToolbar:boolean = false;
+  private no_post: boolean = false;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    private steemConnect: SteemConnectProvider) {
 
     this.username = this.navParams.get('author');
+
+    this.steemConnect.status.subscribe(res => {
+      if (res.status === true) {
+        this.current_user = res.userObject.user;
+      }
+      else {
+        this.current_user = 'not logged';
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -50,6 +67,7 @@ export class AuthorProfilePage {
     // Call the API
     this.steemia.dispatch_profile_posts({
       username: this.username,
+      current_user: this.current_user,
       limit: this.limit,
       first_load: this.is_first_loaded,
       offset: this.offset
@@ -73,11 +91,18 @@ export class AuthorProfilePage {
         this.contents = this.contents.concat(res.results.splice(1));
       }
 
-      // Check if there are more post to load
-      if (this.contents[this.contents.length - 1].title === res.results[res.results.length - 1].title
-        && this.is_first_loaded == true) {
-        this.is_more_post = false;
+      if (res.count >= 1) {
+        // Check if there are more post to load
+        if (this.contents[this.contents.length - 1].title === res.results[res.results.length - 1].title
+          && this.is_first_loaded == true) {
+          this.is_more_post = false;
+        }
       }
+
+      else {
+        this.no_post = true;
+      }
+      
 
       // If first load is set to false, set it to true so next query
       // is able to use the offset
@@ -112,7 +137,7 @@ export class AuthorProfilePage {
     loading.present();
     this.steemia.dispatch_profile_info({
       username: this.username,
-      current_user: "jaysermendez",
+      current_user: this.current_user,
     }).then(data => {
       this.account_data = data;
       loading.dismiss();

@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavParams, ViewController, Content, Events } from 'ionic-angular';
-import { Slides } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 import marked from 'marked';
 
 @IonicPage()
@@ -10,7 +9,10 @@ import marked from 'marked';
 })
 export class PostPage {
 
-  constructor(private viewCtrl: ViewController, public navParams: NavParams) {
+  constructor() {
+  }
+
+  ngAfterViewInit() {
    
   }
 

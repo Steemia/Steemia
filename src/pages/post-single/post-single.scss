@@ -47,23 +47,43 @@ page-post-single {
     }
 
     #content {
-        p {
-            img {
-                width: 100vw;
-                position: relative;
-                left: 50%;
-                right: 50%;
-                margin-left: -50vw;
-                margin-right: -50vw;
-                max-width: 100vw;
-            }
-             
+        p {   
             padding: 5px 16px 5px 16px;
         }
-        h1, h2, h3, h4, h5 {
+        h1, h2, h3, h4, h5, h6, em {
             padding: 5px 16px 5px 16px;
         }
         
     }
 
+    button[ion-fab] {
+        overflow: visible;
+        position: relative;
+        contain: layout;
+
+        ion-label {
+            position: absolute;
+            top: -8px;
+            right: 40px;
+
+            color: white;
+            background-color: rgba(0,0,0,0.7);
+            line-height: 24px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    }
+
+    .message-wrapper {
+        position: relative;
+    }
+  
+    .message-wrapper:last-child {
+        margin-bottom: 10px;
+    }
+
+    ion-card img {
+        display: -webkit-inline-box !important;
+        width: auto !important;
+    } 
 }

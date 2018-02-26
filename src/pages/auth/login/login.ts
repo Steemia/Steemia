@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController} from 'ionic-angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { IonicPage, NavController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -11,10 +9,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class LoginPage {
 
-  private loginUrl;
-  constructor(public navCtrl: NavController, 
-              private steemConnect: SteemConnectProvider,) {
-    this.loginUrl = this.steemConnect.loginUrl;
+  constructor(public navCtrl: NavController,
+    private steemConnect: SteemConnectProvider) {
 
   }
 
@@ -23,7 +19,7 @@ export class LoginPage {
       if (res === 'success') {
         this.navCtrl.pop();
       }
-    })
+    });
   }
 
 }

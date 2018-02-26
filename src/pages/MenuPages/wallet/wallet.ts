@@ -54,9 +54,8 @@ export class WalletPage {
     private browserTab: BrowserTab,
     private _http: HttpClient,
     private steemiaProvider: SteemiaProvider) {
-    // Subscribe to the current username logged in 
 
-    this.account = (this.steemConnect.user_object as { user: string }).user;
+    this.account = this.navParams.get("author");
   }
 
   ionViewDidLoad() {

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { CommentsPage } from './comments';
+import { FeedPage } from './feed';
 import { ComponentsModule } from '../../../components/components.module';
 
 @NgModule({
   declarations: [
-      CommentsPage,
+      FeedPage,
   ],
   imports: [
       ComponentsModule,
-      IonicPageModule.forChild(CommentsPage),
+      IonicPageModule.forChild(FeedPage),
   ],
 })
-export class CommentsPageModule {}
+export class FeedPageModule {}

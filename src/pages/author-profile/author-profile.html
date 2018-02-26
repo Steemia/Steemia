@@ -70,9 +70,14 @@
 
     <div [ngSwitch]="sections">
       <div *ngSwitchCase="'blog'">
-        <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
 
-        <post-render *ngIf="contents.length >= 1" [posts]="contents"></post-render>
+        <ion-spinner *ngIf="is_loading"></ion-spinner>
+
+        <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
+
+        <div *ngIf="no_post == true">
+          There are no post
+        </div>
 
         <ion-infinite-scroll *ngIf="contents.length >= 1" (ionInfinite)="doInfinite($event)" distance="1%">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
