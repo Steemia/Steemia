@@ -150,7 +150,7 @@ export class SteemiaProvider {
     }
 
     else {
-      return this.http.get(BASE_API + '/user/' + query.username + '/info?' + this.util.encodeQueryData({
+      return this.http.get(BASE_API + 'user/' + query.username + '/info?' + this.util.encodeQueryData({
         show_nsfw: 0,
         show_low_rated: 0
       })).share().toPromise();
