@@ -7,12 +7,6 @@ export const postSinglePage = `
       <button ion-button icon-only>
         <ion-icon name="ios-bookmark-outline"></ion-icon>
       </button>
-      <button ion-button icon-only>
-        <ion-icon name="ios-share-outline"></ion-icon>
-      </button>
-      <button ion-button icon-only>
-        <ion-icon name="ios-flag-outline"></ion-icon>
-      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -40,9 +34,9 @@ export const postSinglePage = `
           </div>
         </div>
 
-        <ion-icon *ngIf="!post?.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.url, 10000);"></ion-icon>
+        <ion-icon *ngIf="!post?.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(post?.author, post?.url, 10000);"></ion-icon>
 
-        <ion-icon *ngIf="post?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(content.author, content.url, 0);"></ion-icon>
+        <ion-icon *ngIf="post?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(post?.author, post?.url, 0);"></ion-icon>
 
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
 
@@ -66,21 +60,21 @@ export const postSinglePage = `
 
 
   <ion-fab right bottom>
-    <button ion-fab color="dark">
-      <ion-icon name="arrow-dropup"></ion-icon>
+    <button ion-fab color="primary">
+      <ion-icon name="ios-more"></ion-icon>
     </button>
     <ion-fab-list side="top">
       <button ion-fab>
-        <ion-icon name="logo-facebook"></ion-icon>
+        <ion-icon name="share"></ion-icon>
         <ion-label>Share</ion-label>
       </button>
       <button ion-fab>
-        <ion-icon name="logo-twitter"></ion-icon>
+        <ion-icon name="share-alt"></ion-icon>
         <ion-label>Reblog</ion-label>
       </button>
       <button ion-fab>
-        <ion-icon name="logo-vimeo"></ion-icon>
-        <ion-label>Vote</ion-label>
+        <ion-icon name="flag"></ion-icon>
+        <ion-label>Flag Post</ion-label>
       </button>
     </ion-fab-list>
   </ion-fab>

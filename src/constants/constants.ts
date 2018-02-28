@@ -1,3 +1,4 @@
+// ENDPOINTS
 export const IMG_SERVER = 'https://steemitimages.com/';
 export const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
 export const BASE_API_V1 = 'https://steepshot.org/api/steemia/v1/';
@@ -10,6 +11,9 @@ export const STEEMIT = 'https://steemit.com';
 export const STEEM_API = 'https://api.steemjs.com';
 export const NO_IMAGE_COMMENT = 'assets/user.png';
 export const NO_IMAGE_POST = 'assets/placeholder2.png';
+
+// MESSAGES
+export const NOT_LOGGED_IN = 'This action requires you to be logged in. Please, login and try again.';
 
 export const METADATA = {
       community: 'steemia', 

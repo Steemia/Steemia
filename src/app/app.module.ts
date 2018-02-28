@@ -28,6 +28,7 @@ import { SteemiaProvider } from '../providers/steemia/steemia';
 import { SteemProvider } from 'providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { UtilProvider } from '../providers/util/util';
+import { AlertsProvider } from '../providers/alerts/alerts';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { UtilProvider } from '../providers/util/util';
     SteemiaProvider,
     SteeemActionsProvider,
     UtilProvider,
+    AlertsProvider,
   ]
 })
 export class AppModule {}

@@ -173,7 +173,7 @@ export class SteemiaProvider {
     if (query.first_load == true) {
       que.offset = query.offset;
     }
-    return this.http.get(STEEPSHOT_BASE + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
+    return this.http.get(STEEPSHOT_BASE_V1_1 + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
             .share().toPromise();
   }
 

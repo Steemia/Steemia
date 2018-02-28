@@ -6,9 +6,9 @@ import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { Subject } from 'rxjs/Subject';
-
-const IMG_SERVER = 'https://steemitimages.com/';
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage({
   priority: 'high'
@@ -33,7 +33,9 @@ export class PostSinglePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private steemia: SteemiaProvider,
-    private steemConnect: SteemConnectProvider) {}
+    private alerts: AlertsProvider,
+    private steemConnect: SteemConnectProvider,
+    private steemActions: SteeemActionsProvider) {}
 
   ionViewDidLoad() {
 
@@ -97,19 +99,6 @@ export class PostSinglePage {
     this.comments = [];
   }
 
-  private renderImage(type: string, img: string): string {
-    if (type === 'profile') {
-      return IMG_SERVER + '80x80/' + img;
-    }
-    else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
-    }
-  }
-
-  private imgError(event): void {
-    event.target.src = 'assets/user.png';
-  }
-
   /**
    * Method to open author profile page
    */
@@ -119,7 +108,41 @@ export class PostSinglePage {
     });
   }
 
+  /**
+   * Method to cast a vote or unvote
+   * @param i 
+   * @param author 
+   * @param permlink 
+   * @param weight 
+   */
+  private castVote(author: string, permlink: string, weight: number = 1000): void {
+    // Set the is voting value of the post to true
+    this.is_voting = true;
 
+    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+      if (data) {
 
+        // Catch if the user is not logged in and display an alert
+        if (data == 'not-logged') {
+          
+          this.alerts.display_alert('NOT_LOGGED_IN');
+          this.is_voting = false; // remove the spinner
+          return;
+        }
+
+        this.is_voting = false;
+
+        if (weight > 0) {
+          this.post.vote = true;
+        }
+
+        else {
+          this.post.vote = false;
+        }
+
+        //this.refreshPost();
+      }
+    }).catch(err => {console.log(err); this.is_voting = false});
+  }
 
 }
