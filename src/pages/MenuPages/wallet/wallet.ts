@@ -127,7 +127,73 @@ export class WalletPage {
     prompt.present();
   }
 
+  addAddress() {
+    let prompt = this.alertCtrl.create({
+      title: 'Add an Adresss',
+      message: 'Save Your Cryptocurrency Addresses ',
+      inputs: [{
+        type: 'radio',
+        label: 'Bitcoin',
+        value: 'bitcoin'
+      }, {
+        type: 'radio',
+        label: 'Ethereum',
+        value: 'ethereum'
+      }, {
+        type: 'radio',
+        label: 'Litecoin',
+        value: 'litecoin'
+      }],
+      buttons: [{
+        text: "Cancel",
+        handler: data => {
+          console.log("cancel clicked");
+        }
+      }, {
+        text: "Continue",
+        handler: data => {
+          console.log("Continue clicked");
+          console.log(data);
+          this.SaveAdress(data);
+        }
+      }]
+    });
+    prompt.present();
+    }
 
+  SaveAdress(coin) {
+    let alert = this.alertCtrl.create({
+      title: `Save Your ${coin} Address`,
+      inputs: [{
+        name: 'address',
+        placeholder: `${coin} Address`
+      }],
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log(data);
+            this.browserTab.isAvailable()
+              .then((isAvailable: boolean) => {
+                if (isAvailable) {
+
+                  this.browserTab.openUrl(`https://steemconnect.com/sign/profile-update?${coin}=${data.address}`);
+                } else {
+                  // if custom tabs are not available you may  use InAppBrowser
+                }
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
   private getAccount() {
     this.steemiaProvider.dispatch_account(this.account).then(data => {
