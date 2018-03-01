@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, NavController } from 'ionic-angular';
 import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 
 @Component({
@@ -15,9 +16,8 @@ export class CommentComponent {
   constructor(private alertCtrl: AlertController,
   private steemActions: SteeemActionsProvider,
   private navCtrl: NavController,
-  public util: UtilProvider) {
-   
-  }
+  private steemiaProvider: SteemiaProvider,
+  public util: UtilProvider) {}
 
   /**
    * Method to cast a vote or unvote
@@ -30,7 +30,7 @@ export class CommentComponent {
     // Set the is voting value of the post to true
     this.is_voting = true;
 
-    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('comment', author, permlink, weight).then(data => {
       if (data) {
 
         // Catch if the user is not logged in and display an alert
@@ -55,8 +55,17 @@ export class CommentComponent {
         else {
           this.comment.vote = false;
         }
+
+        this.refresh_comment();
       }
     }).catch(err => {console.log(err); this.is_voting = false});
+  }
+
+  private refresh_comment() {
+    this.steemiaProvider.dispatch_comment_single(this.comment.author, this.comment.url).then(data => {
+      this.comment.net_votes = (data as any).net_votes;
+      this.comment.pending_payout_value = parseFloat((data as any).pending_payout_value);
+    });
   }
 
   /**

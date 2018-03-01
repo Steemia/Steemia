@@ -64,11 +64,11 @@ export const postSinglePage = `
       <ion-icon name="ios-more"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button ion-fab>
+      <button ion-fab (click)="share()">
         <ion-icon name="share"></ion-icon>
         <ion-label>Share</ion-label>
       </button>
-      <button ion-fab>
+      <button ion-fab (click)="reblog()">
         <ion-icon name="share-alt"></ion-icon>
         <ion-label>Reblog</ion-label>
       </button>

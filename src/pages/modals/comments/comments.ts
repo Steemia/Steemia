@@ -1,10 +1,12 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App, ViewController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, App, ViewController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Subject } from 'rxjs/Subject';
+import { AlertsProvider } from 'providers/alerts/alerts';
+import { ERRORS } from '../../../constants/constants';
 
 @IonicPage({
   priority: 'high'
@@ -34,10 +36,10 @@ export class CommentsPage {
     public viewCtrl: ViewController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
+    private alerts: AlertsProvider,
     private steemia: SteemiaProvider,
     private steemActions: SteeemActionsProvider,
     public loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
     private steemConnect: SteemConnectProvider) {
   }
 
@@ -57,10 +59,14 @@ export class CommentsPage {
     
   }
 
-  private load_comments(action?: string) {
+  /**
+   * Method to load the comments of the post
+   * @param action 
+   */
+  private load_comments(action?: string): void {
     this.steemia.dispatch_comments({
       url: this.permlink,
-      limit: 15,
+      limit: 50,
       current_user: this.username
     }).then((comments: PostsRes) => {
 
@@ -105,7 +111,18 @@ export class CommentsPage {
         });
       }
     }).then(() => {
+
       loading.dismiss();
+
+    }).catch(e => {
+
+      let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
+      if (include) {
+        loading.dismiss();
+        setTimeout(() => {
+          this.alerts.display_alert('COMMENT_INTERVAL');
+        }, 500);
+      }
     });
   }
 

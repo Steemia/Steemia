@@ -84,7 +84,7 @@ export class PostCardComponent {
     // Set the is voting value of the post to true
     this.is_voting = true;
 
-    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
       if (data) {
 
         // Catch if the user is not logged in and display an alert

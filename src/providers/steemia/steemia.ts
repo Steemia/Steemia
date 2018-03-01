@@ -117,7 +117,7 @@ export class SteemiaProvider {
   }
 
   /**
-   * Public method to dispatch the data to the corresponding page
+   * Public method to dispatch profile posts
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_posts(query: Query): Promise<any> {
@@ -137,7 +137,7 @@ export class SteemiaProvider {
   }
 
   /**
-   * Public method to dispatch the data to the corresponding page
+   * Public method to dispatch profile info data
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_info(query: Query): Promise<any> {
@@ -159,7 +159,7 @@ export class SteemiaProvider {
   }
 
   /**
-   * Public method to dispatch the data to the corresponding page
+   * Public method to dispatch comments data
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
@@ -178,11 +178,16 @@ export class SteemiaProvider {
   }
 
 
+  /**
+   * Public method to dispatch menu profile data
+   * @param {string} account: Username of the user
+   */
   public dispatch_menu_profile(username: string): Promise<any> {
     return this.http.get(BASE_API + 'user/' + username + '/info').share().toPromise();
   }
+
    /**
-   * Public method to dispatch the data to the corresponding page
+   * Public method to dispatch votes data
    * @param {Query} query: Object with data for query
    */
   public dispatch_votes(query: Query) {
@@ -199,7 +204,7 @@ export class SteemiaProvider {
   }
 
   /**
-   * Public method to dispatch the data to the corresponding page
+   * Public method to dispatch account data
    * @param {string} account: Username of the user
    */
   public dispatch_account(account) {
@@ -207,10 +212,12 @@ export class SteemiaProvider {
       .share().toPromise();
   }
 
+  /**
+   * Public method to dispatch post single data
+   * @param {Query} query: Object with data for query
+   */
   public dispatch_post_single(query: Query) {
-
     let url = query.url;
-
     let que: Query = {
       show_nsfw: 0,
       show_low_rated: 0,
@@ -218,6 +225,19 @@ export class SteemiaProvider {
       username: this.username
     };
     return this.http.get(STEEPSHOT_BASE_V1_1 + 'post/' + url + '/info?' + this.util.encodeQueryData(que))
+      .share().toPromise();
+  }
+
+  /**
+   * Method to dispatch comment single data
+   * @param {String} author 
+   * @param {String} permlink 
+   */
+  public dispatch_comment_single(author: string, permlink: string) {
+
+    let url = permlink.split('/')[4];
+
+    return this.http.get(STEEM_API + 'get_content?' +  this.util.encodeQueryData({author: author, permlink: url}))
       .share().toPromise();
   }
 

@@ -1,5 +1,6 @@
 // ENTRY COMPONENT
 import { MyApp } from './app.component';
+import { Config } from 'ionic-angular';
 
 // MODULES
 import { HttpModule } from '@angular/http'
@@ -15,6 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BrowserTab } from '@ionic-native/browser-tab';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 // PAGES
 import { TabsPage } from '../pages/tabs/tabs';
@@ -29,6 +31,7 @@ import { SteemProvider } from 'providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { UtilProvider } from '../providers/util/util';
 import { AlertsProvider } from '../providers/alerts/alerts';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { AlertsProvider } from '../providers/alerts/alerts';
     TabsPage
   ],
   providers: [
+    SocialSharing,
     StatusBar,
     InAppBrowser,
     BrowserTab,
