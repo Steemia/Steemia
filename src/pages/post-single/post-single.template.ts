@@ -26,7 +26,7 @@ export const postSinglePage = `
           <img src="https://img.busy.org/@{{post?.author}}?s=100">
         </ion-avatar>
         <div>
-          <ion-badge color="primary">{{ post?.author }}</ion-badge>
+          <ion-badge color="primary" tappable (click)="openProfile()">{{ post?.author }}</ion-badge>
           <ion-badge color="gray">{{ post?.author_reputation }}</ion-badge>
           <ion-note end>{{ post?.created | amTimeAgo }}</ion-note>
         </div>
