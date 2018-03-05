@@ -16,7 +16,7 @@
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">
         <img [src]="renderImage(voter.profile_image)" (error)="imgError($event)">
       </ion-avatar>
-      <h2>{{ voter.username }}</h2>
+      <h2 tappable (click)="openProfile(voter.username)">{{ voter.username }}</h2>
       <p>{{ voter.name }}</p>
       <ion-note item-end>%{{ voter.percent }}</ion-note>
     </ion-item>

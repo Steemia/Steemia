@@ -26,11 +26,11 @@ import { App } from 'ionic-angular';
     </ion-header>
     <ion-content>
       <ion-tabs>
-          <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
-          <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
-          <ion-tab></ion-tab>
-          <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
-          <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
+      <ion-tab [root]="newRoot" tabTitle="New" tabIcon="flash"></ion-tab>
+      <ion-tab [root]="hotRoot" tabTitle="Hot" tabIcon="flame"></ion-tab>
+      <ion-tab></ion-tab>
+      <ion-tab [root]="trendRoot" tabTitle="Trending" tabIcon="pulse"></ion-tab>
+      <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="list"></ion-tab>
       </ion-tabs>
 
       <ion-fab center bottom>
