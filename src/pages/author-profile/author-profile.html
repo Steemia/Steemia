@@ -14,7 +14,7 @@
     <div class="card-profile_user-infos">
       <span class="info_picture">
         <img *ngIf="account_data?.profile_image" [src]="account_data?.profile_image" class="picture" />
-        <img *ngIf="!account_data?.profile_image" src="assets/placeholder2.png" class="picture" />
+        <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
       </span>
       <span class="infos_name">
         <ion-badge>
@@ -116,7 +116,50 @@
         </ion-list>
       </div>
       <div *ngSwitchCase="'wallet'">
-        Wallet
+        <ion-list>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/steem.png">
+            </ion-avatar>
+            <h2>STEEM</h2>
+            <p>2.250 STEEM</p>
+          </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/steem.png">
+            </ion-avatar>
+            <h2>SBD</h2>
+            <p>30.250 SBD</p>
+          </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/steem.png">
+            </ion-avatar>
+            <h2>STEEM POWER</h2>
+            <p>2.250 SP</p>
+          </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/bitcoin.png">
+            </ion-avatar>
+            <h2>Bitcoin</h2>
+            <p>0.050 BTC</p>
+          </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/ethereum.png">
+            </ion-avatar>
+            <h2>Ethereum</h2>
+            <p>1.250 ETH</p>
+          </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="assets/litecoin.png">
+            </ion-avatar>
+            <h2>Litecoin</h2>
+            <p>2.000 LTC</p>
+          </ion-item>
+        </ion-list>
       </div>
     </div>
   </div>
