@@ -29,13 +29,17 @@
 }
 
 ion-content {
-  background-color: #fcfcff !important;
+  background-color: #f1f2f3 !important;
 }
 
 ion-menu {
   ion-content {
     background-color: #ffffff !important;
   }
+}
+
+.ios ion-tab > .ion-page > ion-content.statusbar-padding:first-child .scroll-content {
+  padding-top: 0 !important;
 }
 
 .header-ios .toolbar-ios:last-child .toolbar-background-ios {
@@ -47,18 +51,24 @@ ion-menu {
   border-top: 1px solid #e9e7e7;
 }
 
-.card {
-  border-top: 1px solid #e9e7e7;
-  border-bottom: 1px solid #e9e7e7;
-  width: 100% !important;
-  margin: 0 0 10px 0;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
+.tabbar::before {
+  top: none !important;
+  bottom: none !important;
+  background-position: none !important;
+  height: none !important;
 }
 
-.card:first-child {
-  margin: 10px 0 0 0;
+.footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+  display: none !important;
 }
+
+.footer-ios::before, .tabs-ios[tabsPlacement="bottom"] > .tabbar::before {
+  display: none !important;
+}
+
+// .card:first-child {
+//   margin: 10px 0 0 0;
+// }
 
 .has-refresher > .scroll-content {
   border: none !important;
@@ -93,15 +103,9 @@ ion-spinner {
   text-align: center !important;
 }
 
-[tabsPlacement=top] > .tabbar {
-  top: 0;
-  bottom: auto;
-  height: 42px !important;
-}
-
-.header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
-  display: none !important;
-}
+// .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+//   display: none !important;
+// }
 
 // Hide scrollbars
 
@@ -123,6 +127,11 @@ div::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0);
 }
 
+
+.scroll-content{
+  overflow-y: visible; // or "overflow: auto;"
+}
+
 .mt3{
   margin-top: 3px;
 }
@@ -132,4 +141,126 @@ div::-webkit-scrollbar-thumb {
 }
 .noborder {
   border: none !important;
+}
+
+.header-md::after, .header-ios::after {
+  display: none;
+}
+
+.bar-button-menutoggle-md, 
+.back-button-md, 
+.bar-button-menutoggle-ios, 
+.back-button-ios {
+  margin: 0 -5px !important;
+}
+
+
+// MATERIAL DESIGN ICONS
+
+.mdi-icons-general {
+  display: inline-block;
+  font: normal normal normal 24px/1 "Material Design Icons";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+// HOT ICON
+.ion-ios-mdi-flame::before,
+.ion-ios-mdi-flame-outline::before,
+.ion-md-mdi-flame::before {
+  @extend .mdi-icons-general;
+  content: "\F238";
+}
+
+// NEW ICON
+.ion-ios-mdi-flash-circle::before,
+.ion-ios-mdi-flash-circle-outline::before,
+.ion-md-mdi-flash-circle::before {
+  @extend .mdi-icons-general;
+  content: "\F81F";
+}
+
+// FEED ICON
+.ion-ios-mdi-file-document-box::before,
+.ion-ios-mdi-file-document-box-outline::before,
+.ion-md-mdi-file-document-box::before {
+  @extend .mdi-icons-general;
+  content: "\F21A";
+}
+
+// TRENDING ICON
+.ion-ios-mdi-elevation-rise::before,
+.ion-ios-mdi-elevation-rise-outline::before,
+.ion-md-mdi-elevation-rise::before {
+  @extend .mdi-icons-general;
+  content: "\F1EC";
+}
+
+// UPVOTED ICON
+.ion-ios-mdi-thumb-up::before,
+.ion-ios-mdi-thumb-up-outline::before,
+.ion-md-mdi-thumb-up::before {
+  @extend .mdi-icons-general;
+  content: "\F513";
+}
+
+// VOTE ICON
+.ion-ios-mdi-thumb-up-outline::before,
+.ion-ios-mdi-thumb-up-outline::before,
+.ion-md-mdi-thumb-up-outline::before {
+  @extend .mdi-icons-general;
+  content: "\F514";
+}
+
+// ADD ICON
+.ion-ios-mdi-plus-circle::before,
+.ion-ios-mdi-plus-circle-outline::before,
+.ion-md-mdi-plus-circle::before {
+  @extend .mdi-icons-general;
+  content: "\F417";
+}
+
+// SEARCH ICON
+.ion-ios-mdi-magnify::before,
+.ion-ios-mdi-magnify-outline::before,
+.ion-md-mdi-magnify::before {
+  @extend .mdi-icons-general;
+  content: "\F349";
+}
+
+// NOTIFICATIONS ICON
+.ion-ios-mdi-bell::before,
+.ion-ios-mdi-bell-outline::before,
+.ion-md-mdi-bell::before {
+  @extend .mdi-icons-general;
+  content: "\F09A";
+}
+
+// MENU ICON
+.ion-ios-mdi-menu::before,
+.ion-ios-mdi-menu-outline::before,
+.ion-md-mdi-menu::before {
+  @extend .mdi-icons-general;
+  content: "\F35C";
+}
+
+// MENU ICONS
+
+// HOME ICON
+.ion-ios-mdi-home::before,
+.ion-ios-mdi-home-outline::before,
+.ion-md-mdi-home::before {
+  @extend .mdi-icons-general;
+  content: "\F2DC";
+}
+
+// PROFILE ICON
+.ion-ios-mdi-account::before,
+.ion-ios-mdi-account-outline::before,
+.ion-md-mdi-account::before {
+  @extend .mdi-icons-general;
+  content: "\F004";
 }

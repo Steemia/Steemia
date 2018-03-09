@@ -1,14 +1,15 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import marked from 'marked';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { Subject } from 'rxjs/Subject';
-
-const IMG_SERVER = 'https://steemitimages.com/';
+import { AlertsProvider } from 'providers/alerts/alerts';
+import { ERRORS } from '../../constants/constants';
 
 @IonicPage({
   priority: 'high'
@@ -26,20 +27,24 @@ export class PostSinglePage {
   private is_logged_in: boolean = false;
   private profile: any;
 
+
   private ngUnsubscribe: Subject<any> = new Subject();
 
-  constructor(private zone: NgZone, 
+  constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
     private steemia: SteemiaProvider,
-    private steemConnect: SteemConnectProvider) {}
+    private alerts: AlertsProvider,
+    public loadingCtrl: LoadingController,
+    private steemConnect: SteemConnectProvider,
+    private steemActions: SteeemActionsProvider) { }
 
   ionViewDidLoad() {
 
     this.steemConnect.status.takeUntil(this.ngUnsubscribe).subscribe(res => {
       if (res.status === true) {
-        
+
         this.steemia.dispatch_menu_profile(res.userObject.user).then(data => {
           this.profile = data;
           this.is_logged_in = true;
@@ -62,7 +67,7 @@ export class PostSinglePage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
-    
+
   }
 
   ionViewDidLeave() {
@@ -97,19 +102,6 @@ export class PostSinglePage {
     this.comments = [];
   }
 
-  private renderImage(type: string, img: string): string {
-    if (type === 'profile') {
-      return IMG_SERVER + '80x80/' + img;
-    }
-    else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
-    }
-  }
-
-  private imgError(event): void {
-    event.target.src = 'assets/user.png';
-  }
-
   /**
    * Method to open author profile page
    */
@@ -119,7 +111,88 @@ export class PostSinglePage {
     });
   }
 
+  /**
+   * Method to cast a vote or unvote
+   * @param i 
+   * @param author 
+   * @param permlink 
+   * @param weight 
+   */
+  private castVote(author: string, permlink: string, weight: number = 1000): void {
+    // Set the is voting value of the post to true
+    this.is_voting = true;
 
+    this.steemActions.dispatch_vote('post', author, permlink, weight).then(data => {
+      if (data) {
 
+        // Catch if the user is not logged in and display an alert
+        if (data === 'not-logged') {
+          this.alerts.display_alert('NOT_LOGGED_IN');
+          this.is_voting = false; // remove the spinner
+          return;
+        }
+
+        this.is_voting = false;
+
+        if (weight > 0) {
+          this.post.vote = true;
+        }
+
+        else {
+          this.post.vote = false;
+        }
+
+        //this.refreshPost();
+      }
+    }).catch(err => { console.log(err); this.is_voting = false });
+  }
+
+  private reblog() {
+
+    let loading = this.loadingCtrl.create({
+      content: 'Hang on while we reblog this post 😎'
+    });
+    loading.present();
+    this.steemActions.dispatch_reblog(this.post.author, this.post.url).then(data => {
+      let msg = data;
+      console.log(data)
+
+      msg = msg.toString();
+      if (data) {
+
+        // Catch if the user is not logged in and display an alert
+        if (data === 'not-logged') {
+          loading.dismiss();
+          setTimeout(() => {
+            this.alerts.display_alert('NOT_LOGGED_IN');
+          }, 500);
+          return;
+        }
+
+        // Otherwise, it was reblogged correctly
+        else {
+          loading.dismiss();
+          setTimeout(() => {
+            this.alerts.display_alert('REBLOGGED_CORRECTLY');
+          }, 500);
+        }
+      }
+    }).catch(e => {
+
+      let include = e.error_description.includes(ERRORS.DUPLICATE_REBLOG.error);
+      if (include) {
+        loading.dismiss();
+        setTimeout(() => {
+          this.alerts.display_alert('ALREADY_REBLOGGED');
+        }, 500);
+      }
+    });
+  }
+
+  private share() {
+    this.steemActions.dispatch_share(this.post.url).then(res => {
+      console.log(res)
+    })
+  }
 
 }

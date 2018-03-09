@@ -1,18 +1,119 @@
-<!--
-  Generated template for the PostPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
+<ion-header no-border>
   <ion-navbar color="primary">
-    <ion-title>post</ion-title>
+    <ion-title>
+      Submit a story
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="post()">
+        Submit
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content>
-    <textarea id="demo1" style="display: none;"></textarea>
+<ion-content no-bounce padding>
+    <ion-item>
+        <p>{{imageURI}}</p>
+        <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+      </ion-item>
+      <ion-item>
+        <h4>Image Preview</h4>
+        <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
+      </ion-item>
+      <ion-item>
+        <button ion-button (click)="uploadFile()">Upload</button>
+      </ion-item>
+  <form [formGroup]="storyForm">
+    <ion-item no-lines>
+      <ion-label class="label-title" color="primary" stacked>
+        <ion-badge color="primary">Title</ion-badge> 
+      </ion-label>
+      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="Type here the title of your post"
+        maxlength="100" [formControl]="storyForm.controls['title']"></ion-textarea>
+    </ion-item>
+    <hr />
+    <ion-item no-lines>
+      <ion-label class="label-title" color="primary" stacked>
+        <ion-badge color="primary">Description</ion-badge>
+      </ion-label>
+      <ion-textarea type="text" rows="15" placeholder="Write your story in here." [formControl]="storyForm.controls['description']"></ion-textarea>
+    </ion-item>
+    <hr />
+    <ion-item no-lines>
+      <ion-label class="label-title" color="primary" stacked>
+        <ion-badge color="primary">Tags</ion-badge>
+        <ion-badge color="gray">separated by comma</ion-badge>  
+      </ion-label>
+      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)"  (input)="adjustTextarea($event);" placeholder="You can choose up to 5 tags." 
+        [formControl]="storyForm.controls['tags']"></ion-textarea>
+    </ion-item>
+    <hr />
+  </form>
+
+  <ion-item no-lines>
+    <ion-label color="primary">Upvote</ion-label>
+    <ion-toggle [(ngModel)]="upvote"></ion-toggle>
+  </ion-item>
+  <hr />
+  <ion-item no-lines>
+    <ion-label color="primary">Rewards</ion-label>
+    <ion-select text-wrap [(ngModel)]="rewards">
+      <ion-option text-wrap value="50%">Default 50% / 50%</ion-option>
+      <ion-option text-wrap value="100%">Power Up 100%</ion-option>
+      <ion-option text-wrap value="0%">Decline Payout</ion-option>
+    </ion-select>
+  </ion-item>
 
 </ion-content>
+
+<ion-footer>
+  <ion-grid class="top-four">
+    <ion-row>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class="fa fa-bold"></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class="fa fa-italic"></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class="fa fa-header"></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class="fa fa-quote-right"></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class='fa fa-list'></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class='fa fa-list-ol'></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)">
+        <a class="button button-small">
+          <i class='fa fa-link'></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)" tappable (click)="presentActionSheet()">
+        <a class="button button-small">
+          <i class='fa fa-picture-o'></i>
+        </a>
+      </ion-col>
+      <ion-col (mousedown)="preventFocusChange($event)" tappable (click)="presentActionSheet()">
+        <a class="button button-small">
+          <i class='fa fa-eye'></i>
+        </a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

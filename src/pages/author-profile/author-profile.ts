@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage({
   priority: 'high'
@@ -36,7 +38,9 @@ export class AuthorProfilePage {
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,
-    private steemConnect: SteemConnectProvider) {
+    private steemConnect: SteemConnectProvider,
+    private alerts: AlertsProvider,
+    private steemActions: SteeemActionsProvider) {
 
     this.username = this.navParams.get('author');
 
@@ -114,7 +118,7 @@ export class AuthorProfilePage {
       this.offset = res.offset;
 
       // Set the loading spinner to false
-      this.is_loading = false
+      this.is_loading = false;
 
       // If this was called from an event, complete it
       if (event) {
@@ -141,7 +145,7 @@ export class AuthorProfilePage {
     }).then(data => {
       this.account_data = data;
       loading.dismiss();
-    })
+    });
   }
 
   /**
@@ -203,5 +207,53 @@ export class AuthorProfilePage {
    */
   private segmentChanged(): void {
     this.cdr.detectChanges();
+  }
+
+  private follow() {
+    let loading = this.loadingCtrl.create({
+      content: "Please wait until the user is followed"
+    });
+
+    loading.present();
+    this.steemActions.dispatch_follow(this.username).then(res => {
+
+      if (res === 'not-logged') {
+        loading.dismiss();
+        setTimeout(() => {
+          this.alerts.display_alert('NOT_LOGGED_IN');
+        }, 500);
+      }
+
+      else {
+        loading.dismiss();
+        this.alerts.display_toast('FOLLOW');
+        (this.account_data as any).has_followed = 1; // Update the button instead of calling the API again
+        (this.account_data as any).followers_count += 1;
+      }
+    });
+  }
+
+  private unfollow() {
+    let loading = this.loadingCtrl.create({
+      content: "Please wait until the user is unfollowed"
+    });
+
+    loading.present();
+    this.steemActions.dispatch_unfollow(this.username).then(res => {
+
+      if (res === 'not-logged') {
+        loading.dismiss();
+        setTimeout(() => {
+          this.alerts.display_alert('NOT_LOGGED_IN');
+        }, 500);
+      }
+
+      else {
+        loading.dismiss();
+        this.alerts.display_toast('UNFOLLOW');
+        (this.account_data as any).has_followed = 0; // Update the button instead of calling the API again
+        (this.account_data as any).followers_count -= 1;
+      }
+    });
   }
 }

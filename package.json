@@ -24,41 +24,54 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
-    "@angular/common": "^5.2.6",
-    "@angular/compiler": "^5.2.6",
-    "@angular/compiler-cli": "^5.2.6",
-    "@angular/core": "^5.2.6",
-    "@angular/forms": "^5.2.6",
-    "@angular/http": "^5.2.6",
-    "@angular/platform-browser": "^5.2.6",
-    "@angular/platform-browser-dynamic": "^5.2.6",
+    "@angular/common": "^5.2.7",
+    "@angular/compiler": "^5.2.7",
+    "@angular/compiler-cli": "^5.2.7",
+    "@angular/core": "^5.2.7",
+    "@angular/forms": "^5.2.7",
+    "@angular/http": "^5.2.7",
+    "@angular/platform-browser": "^5.2.7",
+    "@angular/platform-browser-dynamic": "^5.2.7",
+    "@covalent/text-editor": "^1.0.0",
     "@ionic-native/browser-tab": "^4.5.3",
+    "@ionic-native/camera": "^4.5.3",
     "@ionic-native/core": "^4.5.3",
     "@ionic-native/file": "^4.5.3",
+    "@ionic-native/file-transfer": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
+    "@ionic-native/social-sharing": "^4.5.3",
     "@ionic-native/splash-screen": "^4.5.3",
     "@ionic-native/status-bar": "^4.5.3",
     "@ionic/storage": "^2.1.3",
     "angular2-moment": "^1.8.0",
+    "chart.js": "^2.7.2",
+    "cordova-android": "7.1.0",
+    "cordova-browser": "5.0.3",
     "cordova-android": "^7.1.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-app-preferences": "^0.99.3",
     "cordova-plugin-browsertab": "^0.2.0",
+    "cordova-plugin-camera": "^4.0.2",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-file": "^6.0.1",
+    "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.1",
     "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-x-socialsharing": "^5.3.1",
     "cordova-sqlite-storage": "^2.2.1",
+    "es6-promise-plugin": "^4.2.2",
+    "font-awesome": "^4.7.0",
     "ionic-angular": "^3.9.2",
     "ionic-image-loader": "^5.0.0",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
-    "marked": "^0.3.16",
-    "moment": "^2.20.1",
+    "marked": "^0.3.17",
+    "mdi": "^2.1.99",
+    "moment": "^2.21.0",
     "peerjs": "^0.3.14",
     "rxjs": "^5.5.6",
     "sc2-sdk": "^1.0.2",
@@ -70,11 +83,14 @@
   "devDependencies": {
     "@ionic/app-scripts": "^3.1.8",
     "@types/moment": "^2.13.0",
+    "css-loader": "^0.28.10",
+    "style-loader": "^0.20.2",
     "typescript": "^2.7.2"
   },
   "description": "Steemia is a social media application based on the Steem blockchain where users and curators are rewarding for their content.",
   "config": {
-    "ionic_webpack": "./webpack.config.js"
+    "ionic_webpack": "./webpack.config.js",
+    "ionic_copy": "./scripts/copy-custom-libs.js"
   },
   "cordova": {
     "plugins": {
@@ -87,11 +103,15 @@
       "cordova-plugin-statusbar": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-browsertab": {}
+      "cordova-plugin-browsertab": {},
+      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-file-transfer": {}
     },
     "platforms": [
       "android",
-      "ios"
+      "ios",
+      "browser"
     ]
   }
 }

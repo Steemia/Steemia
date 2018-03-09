@@ -1,5 +1,14 @@
 page-post-single {
 
+    .card {
+        border-top: 1px solid #e9e7e7;
+        border-bottom: 1px solid #e9e7e7;
+        width: 100% !important;
+        margin: 0 0 10px 0;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+
     // Resolve width for general tablets
     @media only screen and (device-width: 768px) {
         .scroll-content {

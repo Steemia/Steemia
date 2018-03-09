@@ -20,6 +20,10 @@ page-author-profile {
     margin-top:0px !important;
   }
 
+  .card:first-child {
+    margin-top: 5px;
+  }
+
   .back-button, .bar-button, .toolbar-title {
     color: white;
   }
@@ -122,6 +126,7 @@ page-author-profile {
     }
         
     &_user-stats {
+      margin-bottom: 10px;
       background: transparent;
       float: left;
       width: 100%;

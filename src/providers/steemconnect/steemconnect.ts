@@ -14,7 +14,7 @@ import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs/Subscription';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class SteemConnectProvider {
@@ -26,7 +26,7 @@ export class SteemConnectProvider {
   public user: string;
   private login_status: boolean;
   public user_object: Object;
-  private user_temp: Object = {};
+  public user_temp: Object = {};
 
   public status: BehaviorSubject<{
     status: boolean,
@@ -57,6 +57,7 @@ export class SteemConnectProvider {
           status: this.login_status,
           logged_out: false
         });
+
       }
 
       // Otherwise if the token is not null, undefined nor an empty string, the user
@@ -72,12 +73,12 @@ export class SteemConnectProvider {
         this.login_status = true;
         this.dispatch_data();
 
-
       }
-    })
+    });
 
     // Save a reference of the login url for later use
     this.loginUrl = this.instance.getLoginURL();
+    console.log(this.loginUrl);
   }
 
   private dispatch_data() {

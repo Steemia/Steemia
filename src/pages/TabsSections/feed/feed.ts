@@ -24,6 +24,8 @@ export class FeedPage {
   private total_posts: number = 0;
   private is_more_post: boolean = true;
   private logged_in: boolean = false;
+  private user: Object;
+  private profile_pc: string = 'assets/user.png';
 
   constructor(private steemConnect: SteemConnectProvider,
     private zone: NgZone,
@@ -35,6 +37,11 @@ export class FeedPage {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
         this.logged_in = true;
+        this.user = this.steemConnect.user_object;
+        this.is_first_loaded = false;
+        let json = JSON.parse((this.user as any).account.json_metadata);
+        this.profile_pc = json.profile.profile_image;
+        this.is_first_loaded = false;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
           this.dispatchFeed();
@@ -72,7 +79,7 @@ export class FeedPage {
 
       // By default, the offset is null, so we want the whole data
       if (this.offset === null) {
-        
+
         this.contents = this.contents.concat(res.results);
       }
 
@@ -92,7 +99,7 @@ export class FeedPage {
       if (this.is_first_loaded == false) {
         this.is_first_loaded = true;
       }
-      
+
       // Declare the new offset
       this.offset = res.offset;
 

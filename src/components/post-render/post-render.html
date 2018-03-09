@@ -1,7 +1,5 @@
-<ion-grid no-padding>
-  <ion-row no-padding>
-    <ion-col *ngFor="let content of contents; trackBy: trackById" col-12 no-padding>
-      <post-card [post]="content"></post-card>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+<ion-list scrollY="true">
+  <div *ngFor="let content of contents; trackBy: trackById">
+    <post-card [post]="content"></post-card>
+  </div>
+</ion-list>

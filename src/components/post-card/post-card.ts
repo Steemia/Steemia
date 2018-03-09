@@ -1,9 +1,10 @@
 import { Component, Input} from '@angular/core';
-import { App, ModalController, AlertController } from 'ionic-angular';
+import { App, ModalController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 @Component({
   selector: 'post-card',
@@ -18,8 +19,8 @@ export class PostCardComponent {
     private modalCtrl: ModalController,
     private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
-    private alertCtrl: AlertController,
     public util: UtilProvider,
+    private alerts: AlertsProvider,
     private steemiaProvider: SteemiaProvider) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
@@ -83,18 +84,13 @@ export class PostCardComponent {
     // Set the is voting value of the post to true
     this.is_voting = true;
 
-    this.steemActions.dispatch_vote(author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
       if (data) {
 
         // Catch if the user is not logged in and display an alert
         if (data == 'not-logged') {
-          let alert = this.alertCtrl.create({
-            title: 'Alert',
-            subTitle: 'This action requires you to be logged in. Please, login and try again.',
-            buttons: ['Dismiss']
-          });
-          alert.present();
-
+          
+          this.alerts.display_alert('NOT_LOGGED_IN');
           this.is_voting = false; // remove the spinner
           return;
         }

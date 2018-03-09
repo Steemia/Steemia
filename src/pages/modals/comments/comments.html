@@ -12,25 +12,14 @@
 <ion-content>
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
+  <ion-list>
+    <div *ngFor="let comment of comments; let i = index" class="message-wrapper">
+      <render-comment [comment]="comment"></render-comment>
+    </div>
+  </ion-list>
 
-  <div *ngFor="let comment of comments; let i = index" class="message-wrapper">
-    <render-comment [comment]="comment"></render-comment>
-  </div>
-
-  <ion-grid *ngIf="no_content == true" class="noResults">
-    <ion-row>
-      <ion-col text-center>
-        <ion-card>
-          <ion-card-content>
-            <ion-icon name="search" class="notFound"></ion-icon>
-            <p>This post does not have any comments, YET!</p>
-            <br />
-            <!-- <button *ngIf="hasButton" ion-button round (tap)="onClickEvent()">{{ buttonText }}</button> -->
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <no-data *ngIf="no_content == true" icon="chatbubbles" title="This post does not have any comments, YET!">
+  </no-data>
 
 </ion-content>
 

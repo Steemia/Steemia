@@ -35,6 +35,13 @@ var optimizedProdLoaders = [
     ]
   },
   {
+    test: /\.css$/,
+    use: [
+      { loader: "style-loader" },
+      { loader: "css-loader" }
+    ]
+  },
+  {
     test: /\.ts$/,
     loader: [
       {
@@ -90,6 +97,13 @@ var devConfig = {
       {
         test: /\.ts$/,
         loader: process.env.IONIC_WEBPACK_LOADER
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
       }
     ]
   },

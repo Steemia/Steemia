@@ -69,4 +69,11 @@ post-card {
             object-fit: cover;
       }
 
+      .card {
+            -webkit-box-shadow:  none !important;
+            -moz-box-shadow:  none !important;
+            box-shadow: none !important;
+            border-radius: 8px;
+            border: 1px solid #e9e7e7;
+      }
 }

@@ -20,11 +20,14 @@ export class HotPage {
   private username: string = '';
   private is_first_loaded: boolean = false;
   private is_loading = true;
+  private is_logged: boolean = false;
   private first_limit: number = 15;
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
   private triggered: boolean = false;
+  private user: Object;
+  private profile_pc: string = 'assets/user.png';
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
@@ -36,7 +39,11 @@ export class HotPage {
   ionViewDidLoad() {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
+        this.user = this.steemConnect.user_object;
         this.is_first_loaded = false;
+        let json = JSON.parse((this.user as any).account.json_metadata);
+        this.profile_pc = json.profile.profile_image;
+        this.is_logged = true;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
           this.dispatchHot('refresh');
@@ -45,6 +52,7 @@ export class HotPage {
 
       else if (res.logged_out === true) {
         this.is_first_loaded = false;
+        this.is_logged = false;
         this.username = '';
         this.zone.runOutsideAngular(() => {
           this.dispatchHot('refresh');

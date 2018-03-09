@@ -20,9 +20,9 @@
           </ion-badge>
           <ion-note end>{{ content.created | amTimeAgo }}</ion-note>
         </div>
-        <ion-icon *ngIf="!content.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(content.author, content.url, 10000);"></ion-icon>
+        <ion-icon *ngIf="!content.vote && is_voting == false" name="mdi-thumb-up-outline" item-right (tap)="castVote(content.author, content.url, 10000);"></ion-icon>
   
-        <ion-icon *ngIf="content?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(content.author, content.url, 0);"></ion-icon>
+        <ion-icon *ngIf="content?.vote && is_voting == false" name="mdi-thumb-up" item-right color="primary" (tap)="castVote(content.author, content.url, 0);"></ion-icon>
   
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
       </ion-item>
@@ -62,7 +62,8 @@
           <ion-icon name="cash"></ion-icon>
           &nbsp;
           <div class="info">
-            {{ content.pending_payout_value | currency:'USD': 'symbol' }}
+              <del *ngIf="content.max_accepted_payout == 0">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</del>
+              <p *ngIf="content.max_accepted_payout == 1000000">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</p>
           </div>
         </button>
       </ion-col>

@@ -5,12 +5,12 @@
   <div class="chat-bubble left slide-left">
 
     <div>
-      <ion-badge color="light" style="border: 1px solid #dbdbdb" tappable (click)="util.openProfile(comment.author)"> {{ comment.author }}</ion-badge>
+      <ion-badge color="light" style="border: 1px solid #dbdbdb" tappable (click)="openProfile(comment.author)"> {{ comment.author }}</ion-badge>
       <ion-badge color="light2" style="color:black"> {{ comment.author_reputation }} </ion-badge>
       <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
       &nbsp;&nbsp;
       <span class="created_date">{{ comment.created | amTimeAgo }}</span>
-      <div class="message" [innerHTML]="comment.body" autolinker tappable (click)="openReplies(comment)"></div>
+      <div class="message" [innerHTML]="comment.body" autolinker></div>
     </div>
 
 
@@ -18,10 +18,15 @@
     </div>
 
   </div>
-  <ion-icon *ngIf="!comment.vote && is_voting == false" name="ios-thumbs-up-outline" class="like-button" item-right (tap)="castVote(i, comment.author, comment.url, 10000);">
+  <ion-icon *ngIf="!comment.vote && is_voting == false" 
+            name="ios-thumbs-up-outline" class="like-button" 
+            item-right (tap)="castVote(i, comment.author, comment.url, 10000);">
   </ion-icon>
 
-  <ion-icon *ngIf="comment.vote && is_voting == false" name="ios-thumbs-up" class="like-button" item-right (tap)="castVote(i, comment.author, comment.url, 10000);">
+  <ion-icon *ngIf="comment.vote && is_voting == false" 
+            name="ios-thumbs-up" class="like-button" 
+            color="primary" item-right 
+            (tap)="castVote(i, comment.author, comment.url, 10000);">
   </ion-icon>
 
   <ion-spinner *ngIf="is_voting == true"></ion-spinner>

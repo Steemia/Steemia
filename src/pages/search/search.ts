@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { SteemProvider } from '../../providers/steem/steem';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 import 'rxjs/add/operator/takeUntil';
 
 @IonicPage()
@@ -18,14 +19,22 @@ export class SearchPage implements OnInit, OnDestroy {
   isSearching: boolean = false;
   gender: string = 'Post';
 
-  constructor(public navCtrl: NavController, 
-              public navParams: NavParams,
-              private steemProvider: SteemProvider) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private steemProvider: SteemProvider,
+    private steemiaProvider: SteemiaProvider) {
 
-      
+
   }
 
   public ngOnInit() {
+    this.steemiaProvider.dispatch_tag_search(this.searchTerm$, 10)
+      .takeUntil(this.destroyed$)
+      .subscribe(results => {
+        this.isSearching = false;
+        this.results = (results as any).results;
+        console.log(results)
+      });
     // this.steemProvider
     //   .getSearch(this.searchTerm$, "created", "desc")
     //   .takeUntil(this.destroyed$)
@@ -52,7 +61,7 @@ export class SearchPage implements OnInit, OnDestroy {
     } else {
       this.searchTerm$.next(event);
     }
-    
+
   }
 
 }

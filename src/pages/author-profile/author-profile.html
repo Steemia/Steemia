@@ -17,12 +17,28 @@
         <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
       </span>
       <span class="infos_name">
+
+        <!-- Mock placeholder until data is loaded -->
+        <ion-badge *ngIf="!account_data">
+          <ion-icon name="person-add"></ion-icon> Follow
+        </ion-badge>
+
+        <!-- If you have not follow this user -->
+        <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
+          <ion-icon name="person-add"></ion-icon> Follow
+        </ion-badge>
+
+        <!-- If you have follow this user -->
+        <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
+          <ion-icon name="person-add"></ion-icon> Unfollow
+        </ion-badge>
+
         <ion-badge>
-          <ion-icon name="person-add"></ion-icon> Follow</ion-badge>
+          <ion-icon name="volume-off"></ion-icon> Block
+        </ion-badge>
         <ion-badge>
-          <ion-icon name="volume-off"></ion-icon> Block</ion-badge>
-        <ion-badge>
-          <ion-icon name="chatbubbles"></ion-icon> Chat</ion-badge>
+          <ion-icon name="chatbubbles"></ion-icon> Chat
+        </ion-badge>
       </span>
       <span class="infos_nick">
         <span class="joined-date">
@@ -75,11 +91,14 @@
 
         <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
 
-        <div *ngIf="no_post == true">
-          There are no post
+        <no-data *ngIf="no_post == true" icon="chatbubbles" title="This user has not posts, YET!">
+        </no-data>
+
+        <div *ngIf="is_more_post == false">
+          <p text-center>There are not more posts to load</p>
         </div>
 
-        <ion-infinite-scroll *ngIf="contents.length >= 1" (ionInfinite)="doInfinite($event)" distance="1%">
+        <ion-infinite-scroll *ngIf="contents.length >= 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>

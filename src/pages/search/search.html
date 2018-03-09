@@ -29,15 +29,15 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="results && !isSearching">
+  <post-render *ngIf="results && !isSearching" [posts]="results"></post-render>
+  <!-- <ion-list *ngIf="results && !isSearching">
     <ion-item *ngFor="let result of results">
       <ion-thumbnail item-start>
-        <img *ngIf="result.meta.image" [src]="result.meta.image[0]">
+        <img *ngIf="result.photos" [src]="result.photos[0]">
       </ion-thumbnail>
       <h2>{{ result.title }}</h2>
-      <p>{{ result.summary }}</p>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
   <ion-grid *ngIf="results && objectKeys(results).length == 0 && !isSearching"class="noResults">
     <ion-row>
