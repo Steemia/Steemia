@@ -6,12 +6,14 @@ import { PostRenderComponent } from './post-render/post-render';
 import { MomentModule } from 'angular2-moment';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { IonicModule } from 'ionic-angular';
+import { NoDataComponent } from './no-data/no-data';
 
 @NgModule({
 	declarations: [
 		CommentComponent, 
 		PostCardComponent, 
-		PostRenderComponent
+		PostRenderComponent,
+    NoDataComponent
 	],
 
 	imports: [
@@ -23,7 +25,8 @@ import { IonicModule } from 'ionic-angular';
 	exports: [
 		CommentComponent, 
 		PostCardComponent, 
-		PostRenderComponent
+		PostRenderComponent,
+    NoDataComponent
 	]
 })
 export class ComponentsModule {}

@@ -56,6 +56,10 @@ export class CommentsPage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
+
+    this.steemActions.mock_transaction().then(data => {
+      console.log(data)
+    })
     
   }
 
@@ -80,6 +84,7 @@ export class CommentsPage {
       if (comments.results.length < 1) {
         this.no_content = true;
       }
+      
       else {
         this.comments = comments.results.reverse();
       }

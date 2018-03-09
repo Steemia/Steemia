@@ -17,9 +17,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { SocialSharing } from '@ionic-native/social-sharing';
-
-// PAGES
-import { TabsPage } from '../pages/tabs/tabs';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { Camera } from '@ionic-native/camera';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -31,13 +31,13 @@ import { SteemProvider } from 'providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { UtilProvider } from '../providers/util/util';
 import { AlertsProvider } from '../providers/alerts/alerts';
+import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
 
 
 @NgModule({
   declarations: [
     MaterialMenuComponent,
-    MyApp,
-    TabsPage
+    MyApp
   ],
   imports: [
     HttpClientModule,
@@ -45,21 +45,22 @@ import { AlertsProvider } from '../providers/alerts/alerts';
     HttpModule,
     IonicModule.forRoot(MyApp, {
       tabsPlacement: 'bottom',
-      scrollPadding: false,
+      scrollPadding: true,
       scrollAssist: true,
-      autoFocusAssist: false,
+      autoFocusAssist: true,
       preloadModules: true,
       pageTransition: 'wp-transition',
       modalLeave: 'modal-slide-out',
+      popoverEnter: 'popover-pop-in',
+      popoverLeave: 'popover-pop-out',
       tabsHideOnSubPages: true
     }),
     IonicStorageModule.forRoot({ name: '__mydb', driverOrder: ['sqlite', 'websql', 'indexeddb'] }),
-    IonicImageLoader.forRoot()
+    IonicImageLoader.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    TabsPage
+    MyApp
   ],
   providers: [
     SocialSharing,
@@ -74,6 +75,11 @@ import { AlertsProvider } from '../providers/alerts/alerts';
     SteeemActionsProvider,
     UtilProvider,
     AlertsProvider,
+    FileTransfer,
+    FileTransferObject,
+    File,
+    Camera,
+    SteemiaLogProvider
   ]
 })
 export class AppModule {}

@@ -26,7 +26,7 @@ export class SteemConnectProvider {
   public user: string;
   private login_status: boolean;
   public user_object: Object;
-  private user_temp: Object = {};
+  public user_temp: Object = {};
 
   public status: BehaviorSubject<{
     status: boolean,
@@ -78,6 +78,7 @@ export class SteemConnectProvider {
 
     // Save a reference of the login url for later use
     this.loginUrl = this.instance.getLoginURL();
+    console.log(this.loginUrl);
   }
 
   private dispatch_data() {

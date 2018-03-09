@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from 'ionic-angular';
+import { AlertController, ToastController } from 'ionic-angular';
 import { NOT_LOGGED_IN, 
          REBLOGGED_CORRECTLY,
          ERRORS } from '../../constants/constants';
@@ -8,7 +8,9 @@ import { NOT_LOGGED_IN,
 @Injectable()
 export class AlertsProvider {
 
-  constructor(private alertCtrl: AlertController) {
+  constructor(private alertCtrl: AlertController, 
+  private toastCtrl: ToastController) {
+
   }
 
   /**
@@ -18,7 +20,7 @@ export class AlertsProvider {
   public display_alert(type: string) {
     let message;
 
-    switch(type) {
+    switch (type) {
 
       case 'NOT_LOGGED_IN':
         message = NOT_LOGGED_IN;
@@ -47,6 +49,29 @@ export class AlertsProvider {
       buttons: ['Dismiss']
     });
     alert.present();
+  }
+
+  public display_toast(type: string) {
+
+    let message;
+
+    switch (type) {
+      case 'FOLLOW':
+        message = 'You have correctly followed this user 😎';
+        break;
+
+      case 'UNFOLLOW':
+        message = 'You have correctly unfollowed this user 😅';
+        break;
+    }
+
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3500,
+      position: 'bottom'
+    }); 
+
+    toast.present();
   }
 
 }

@@ -11,6 +11,10 @@
 
 <ion-content>
   <ion-spinner *ngIf="is_loading"></ion-spinner>
+
+  <no-data *ngIf="no_content == true" icon="chatbubbles"
+            title="This post does not have any comments, YET!">
+  </no-data>
   <ion-list>
     <ion-item *ngFor="let voter of votes">
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">

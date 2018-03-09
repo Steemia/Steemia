@@ -26,27 +26,35 @@ export class SteeemActionsProvider {
     });
   }
 
+  public mock_transaction() {
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
+
+    return this.steemConnect.instance.follow(this.username, '');
+  }
+
   /**
    * Public method to dispatch a vote/unvote
+   * @param {String} type
    * @param {String} author 
    * @param {String} permlink 
    * @param {Number} weight 
    * @returns returns a promise
    */
-  public dispatch_vote(type:string, author: string, permlink: string, weight: number = 10000) {
+  public dispatch_vote(type: string, author: string, permlink: string, weight: number = 10000) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
 
     let url: string;
-    if (type === 'post') {
+    if (type === 'posts') {
       url = permlink.split('/')[3];
     }
 
     else if (type === 'comment') {
       url = permlink.split('/')[4];
-    }
-    
-
-    if (this.username === '' || this.username === null || this.username === undefined) {
-      return Promise.resolve('not-logged');
     }
 
     return this.steemConnect.instance.vote(this.username, author, url, weight);
@@ -140,10 +148,15 @@ export class SteeemActionsProvider {
    * @param {String} description 
    * @param {Array<string>} tags 
    */
-  public dispatch_post(title: string, description: string, tags: Array<string>, upvote?: boolean) {
+  public dispatch_post(title: string, description: string, tags: Array<string>, upvote?: boolean, rewards?: string) {
 
     // Create the permlink for the new post
-    let permlink = title.replace(/\s/g, "-");
+    let permlink = title.replace(/[^\w\s]/gi, '').replace(/\s\s+/g, '-').replace(/\s/g, '-').toLowerCase();
+
+    // If the user didn't insert any tag, create an empty array
+    if (tags === undefined || tags === null) {
+      tags = [];
+    }
 
     // Push the tag Steemia to the post
     tags.push('steemia');
@@ -169,7 +182,7 @@ export class SteeemActionsProvider {
     ];
     operations.push(commentOp);
 
-    const commentOptionsConfig = this.prepare_beneficiaries(permlink);
+    const commentOptionsConfig = this.prepare_beneficiaries(permlink, rewards);
 
     operations.push(commentOptionsConfig);
 
@@ -177,8 +190,6 @@ export class SteeemActionsProvider {
       const self_vote = this.prepare_self_vote(permlink);
       operations.push(self_vote);
     }
-
-    console.log(operations)
 
     return this.steemConnect.instance.broadcast(operations);
   }
@@ -191,11 +202,11 @@ export class SteeemActionsProvider {
    */
   public dispatch_flag(author: string, permlink: string) {
 
-    let url = permlink.split('/')[3];
-
     if (this.username === '' || this.username === null || this.username === undefined) {
       return Promise.resolve('not-logged');
     }
+
+    let url = permlink.split('/')[3];
 
     return this.steemConnect.instance.vote(this.username, author, url, -1000);
   }
@@ -230,7 +241,7 @@ export class SteeemActionsProvider {
    * @param {String} permlink 
    * @returns returns an array with the operation and data
    */
-  private prepare_beneficiaries(permlink: string): Array<any> {
+  private prepare_beneficiaries(permlink: string, rewardOption: string): Array<any> {
 
     let beneficiariesObject = {
       author: this.username,
@@ -250,12 +261,26 @@ export class SteeemActionsProvider {
               {
                 account: 'steepshot',
                 weight: 1000 // 10% for Steepshot
+              },
+              {
+                account: 'steemia.pay',
+                weight: 500 // 5% for steemia.pay
               }
             ]
           }
         ]
       ]
     };
+
+    // Decline Payment
+    if (rewardOption === '0%') {
+      beneficiariesObject.max_accepted_payout = '0.000 SBD';
+    } 
+
+    // 100% power up
+    else if (rewardOption === '100%') {
+      beneficiariesObject.percent_steem_dollars = 0;
+    }
 
     return [OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
   }

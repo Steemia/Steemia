@@ -27,6 +27,7 @@ export class PostSinglePage {
   private is_logged_in: boolean = false;
   private profile: any;
 
+
   private ngUnsubscribe: Subject<any> = new Subject();
 
   constructor(private zone: NgZone,

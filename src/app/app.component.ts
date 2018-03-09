@@ -6,7 +6,6 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 //import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemProvider } from 'providers/steem/steem';
-import { TabsPage } from '../pages/tabs/tabs';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @Component({
@@ -16,7 +15,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage = TabsPage;
+  rootPage = 'TabsPage';
   private isLoggedIn: boolean;
 
   menuOptions: MaterialMenuOptions;
@@ -68,7 +67,7 @@ export class MyApp {
         email: 'steemia@steemia.io'
       },
       entries: [
-        { title: 'Home', leftIcon: 'home', onClick: () => { } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
         { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
@@ -95,10 +94,10 @@ export class MyApp {
         //onClick: () => { alert('menu header clicked'); }
       },
       entries: [
-        { title: 'Home', leftIcon: 'home', onClick: () => { } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
         { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
-        { title: 'Notifications', leftIcon: 'notifications', onClick: () => { this.openPage('NotificationsPage') } },
-        { title: 'My Profile', leftIcon: 'person', onClick: () => { this.openPage('ProfilePage', 'profile') } },
+        { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
+        { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },

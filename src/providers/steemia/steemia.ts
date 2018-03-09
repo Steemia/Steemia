@@ -11,11 +11,12 @@ import { POSTS,
          STEEPSHOT_BASE_V1_1 } from '../../constants/constants';
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SteemiaProvider {
 
-  private username: string;
+  private username: string = '';
 
   constructor(public http: HttpClient, 
   public util: UtilProvider,
@@ -29,18 +30,55 @@ export class SteemiaProvider {
   }
 
   /**
+   * @method dispatch_tag_search: Perform the search with observables
+   * @param term: Observable object for the search
+   */
+  public dispatch_tag_search(term: Observable<string>, limit: number) {
+    return term.debounceTime(400)
+      .switchMap((value: string) => this.get_tag_search(value, limit));
+  }
+
+
+  private get_tag_search(term: string, limit: number) {
+
+    // Variable to hold the search term
+    let searchTerm;
+
+    // If it has more than 2 words, split it and choose the first one
+    searchTerm = term.split(' ')[0];
+
+    // compose the query for the parameters
+    let que: Query = {
+      limit: limit,
+      show_nsfw: 0,
+      show_low_rated: 0,
+      with_body: 1
+    };
+
+    if (this.username !== null || this.username !== undefined || this.username !== '') {
+      que.username = this.username;
+    }
+
+    return this.http.get(POSTS + searchTerm + '/hot?' + this.util.encodeQueryData(que))
+      .share()
+  }
+
+  /**
    * Method to retrieve the feed from a certain user
    * 
+   * @method get_feed
    * @param {Query} query: Object with data for query
    * @returns A subscriptable observable with the response
    */
   private get_feed(query: Query) {
     return this.http.get(FEED + this.util.encodeQueryData(query))
-      .share()
+      .share();
   }
 
   /**
    * Public method to dispatch the data to the corresponding page
+   * 
+   * @method dispatch_feed
    * @param {Query} query: Object with data for query
    */
   public dispatch_feed(query: Query): Promise<any> {
@@ -50,10 +88,10 @@ export class SteemiaProvider {
       show_nsfw: 0,
       show_low_rated: 0,
       with_body: 1
-    }
+    };
 
     if (query.first_load == true) {
-      que.offset = query.offset
+      que.offset = query.offset;
     }
 
     return this.get_feed(que).toPromise();
@@ -63,6 +101,7 @@ export class SteemiaProvider {
    * Method to retrieve post in any category or in general. Also,
    * can be retrieved by hot, new, or top.
    * 
+   * @method get_posts
    * @param {String} type: hot, new, or top 
    * @param {Query} query: Object with data for query
    * @param {String} category 
@@ -71,17 +110,19 @@ export class SteemiaProvider {
     // Check if a category is given
     if (category) {
       return this.http.get(POSTS + category + '/' + type + '?' + this.util.encodeQueryData(query))
-        .share()
+        .share();
     }
 
     else {
       return this.http.get(POSTS + type + '?' + this.util.encodeQueryData(query))
-        .share()
+        .share();
     }
   }
 
   /**
    * Public method to dispatch the data to the corresponding page
+   * 
+   * @method dispatch_posts
    * @param {Query} query: Object with data for query
    */
   public dispatch_posts(query: Query): Promise<any> {
@@ -95,7 +136,7 @@ export class SteemiaProvider {
     }
 
     if (query.first_load == true) {
-      que.offset = query.offset
+      que.offset = query.offset;
     }
 
     if (query.category) {
@@ -108,16 +149,19 @@ export class SteemiaProvider {
   /**
    * Method to retrieve posts from a single user from its profile.
    * 
+   * @method get_profile_posts
    * @param {Query} query: Object with data for query
    */
   private get_profile_posts(username: string, query: Query) {
     return this.http.get(OWN_POSTS + username + '/posts?' + this.util.encodeQueryData(query))
-      .share()
+      .share();
 
   }
 
   /**
    * Public method to dispatch profile posts
+   * 
+   * @method dispatch_profile_posts
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_posts(query: Query): Promise<any> {
@@ -130,7 +174,7 @@ export class SteemiaProvider {
     }
 
     if (query.first_load == true) {
-      que.offset = query.offset
+      que.offset = query.offset;
     }
 
     return this.get_profile_posts(query.username,que).toPromise();
@@ -138,6 +182,8 @@ export class SteemiaProvider {
 
   /**
    * Public method to dispatch profile info data
+   * 
+   * @method dispatch_profile_info
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_info(query: Query): Promise<any> {
@@ -160,6 +206,8 @@ export class SteemiaProvider {
 
   /**
    * Public method to dispatch comments data
+   * 
+   * @method dispatch_comments
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
@@ -173,13 +221,15 @@ export class SteemiaProvider {
     if (query.first_load == true) {
       que.offset = query.offset;
     }
-    return this.http.get(STEEPSHOT_BASE_V1_1 + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
+    return this.http.get(BASE_API + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
             .share().toPromise();
   }
 
 
   /**
    * Public method to dispatch menu profile data
+   * 
+   * @method dispatch_menu_profile
    * @param {string} account: Username of the user
    */
   public dispatch_menu_profile(username: string): Promise<any> {
@@ -188,6 +238,8 @@ export class SteemiaProvider {
 
    /**
    * Public method to dispatch votes data
+   * 
+   * @method dispatch_votes
    * @param {Query} query: Object with data for query
    */
   public dispatch_votes(query: Query) {
@@ -205,15 +257,19 @@ export class SteemiaProvider {
 
   /**
    * Public method to dispatch account data
+   * 
+   * @method dispatch_account
    * @param {string} account: Username of the user
    */
   public dispatch_account(account) {
-    return this.http.get(STEEM_API + '/get_accounts?names[]=%5B%22'+account+'%22%5D')
+    return this.http.get(STEEM_API + 'get_accounts?names[]=%5B%22'+account+'%22%5D')
       .share().toPromise();
   }
 
   /**
    * Public method to dispatch post single data
+   * 
+   * @method dispatch_post_single
    * @param {Query} query: Object with data for query
    */
   public dispatch_post_single(query: Query) {
@@ -224,12 +280,14 @@ export class SteemiaProvider {
       with_body: 1,
       username: this.username
     };
-    return this.http.get(STEEPSHOT_BASE_V1_1 + 'post/' + url + '/info?' + this.util.encodeQueryData(que))
+    return this.http.get(BASE_API + 'post/' + url + '/info?' + this.util.encodeQueryData(que))
       .share().toPromise();
   }
 
   /**
    * Method to dispatch comment single data
+   * 
+   * @method dispatch_comment_single
    * @param {String} author 
    * @param {String} permlink 
    */

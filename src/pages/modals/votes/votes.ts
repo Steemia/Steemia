@@ -19,6 +19,7 @@ export class VotesPage {
   private permlink: string;
   private votes: any;
   private is_loading = true;
+  private no_content = false;
   
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -32,6 +33,10 @@ export class VotesPage {
       url: this.permlink,
     }).then((votes: PostsRes) => {
       this.votes = votes.results;
+
+      if (votes.results.length < 1) {
+        this.no_content = true;
+      }
 
       // Set the loading spinner to false
       this.is_loading = false

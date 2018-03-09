@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, PopoverController, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { newTemplate } from './new.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -25,16 +25,25 @@ export class NewPage {
   private total_posts: number = 0;
   private is_more_post: boolean = true;
   private triggered: boolean = false;
+  private is_logged: boolean = false;
+  private user: Object;
+  private profile_pc: string = 'assets/user.png';
 
   constructor(private steemia: SteemiaProvider,
     private zone: NgZone,
+    private appCtrl: App,
     private cdr: ChangeDetectorRef,
+    public popoverCtrl: PopoverController,
     private steemConnect: SteemConnectProvider) {
   }
 
   ionViewDidLoad() {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
+        this.user = this.steemConnect.user_object;
+        let json = JSON.parse((this.user as any).account.json_metadata);
+        this.profile_pc = json.profile.profile_image;
+        this.is_logged = true;
         this.is_first_loaded = false;
         this.username = res.userObject.user;
         this.zone.runOutsideAngular(() => {
@@ -44,6 +53,7 @@ export class NewPage {
 
       else if (res.logged_out === true) {
         this.is_first_loaded = false;
+        this.is_logged = false;
         this.username = '';
         this.zone.runOutsideAngular(() => {
           this.dispatchNew('refresh');
@@ -57,6 +67,11 @@ export class NewPage {
         });
       }
     });
+  }
+
+  presentPopover(event) {
+    let popover = this.popoverCtrl.create('MenuOptionsPage');
+    popover.present({ev: event});
   }
 
   /**
@@ -155,6 +170,14 @@ export class NewPage {
     this.is_more_post = true;
     this.total_posts = 0;
     this.is_first_loaded = false;
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.appCtrl.getRootNavs()[0].push(str);
   }
 
 }

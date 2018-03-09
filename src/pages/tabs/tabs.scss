@@ -1,2 +1,29 @@
 page-tabs {
+
+      .fab {
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            width: 50px !important;
+            height: 50px !important;
+      }
+
+      ion-fab[bottom] {
+            bottom: 3px;
+      }
+
+      ion-fab[center] {
+            margin-left: -23px;
+      }
+
+      .tabs-md-dark .tab-button-icon {
+            color: rgba(255, 255, 255, 0.4) !important;
+      }
+
+      .tab-button-icon {
+            font-size: 2.5rem !important;
+      }
+
+      .tabs-md-dark .tab-button[aria-selected=true] .tab-button-icon {
+            color: #fff !important;
+      }
 }

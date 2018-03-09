@@ -24,7 +24,10 @@ export class TrendPage {
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
+  private is_logged: boolean = false;
   private triggered: boolean = false;
+  private user: Object;
+  private profile_pc: string = 'assets/user.png';
 
   constructor(private steemia: SteemiaProvider,
     private zone: NgZone,
@@ -35,6 +38,11 @@ export class TrendPage {
     ionViewDidLoad() {
       this.steemConnect.status.subscribe(res => {
         if (res.status === true) {
+          this.user = this.steemConnect.user_object;
+          this.is_first_loaded = false;
+          let json = JSON.parse((this.user as any).account.json_metadata);
+          this.profile_pc = json.profile.profile_image;
+          this.is_logged = true;
           this.is_first_loaded = false;
           this.username = res.userObject.user;
           this.zone.runOutsideAngular(() => {
@@ -44,6 +52,7 @@ export class TrendPage {
   
         else if (res.logged_out === true) {
           this.is_first_loaded = false;
+          this.is_logged = false;
           this.username = '';
           this.zone.runOutsideAngular(() => {
             this.dispatchTrending('refresh');

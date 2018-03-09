@@ -1,41 +1,42 @@
 import { Component } from '@angular/core';
-import { App } from 'ionic-angular';
+import { IonicPage, App } from 'ionic-angular';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-tabs',
   template: `
     <ion-header>
       <ion-navbar color="primary">
         <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
+          <ion-icon name="mdi-menu"></ion-icon>
         </button>
-
         <ion-title>
           Steemia
         </ion-title>
-
         <ion-buttons end>
           <button ion-button icon-only (click)="openPage('SearchPage')">
-            <ion-icon name="ios-search-outline"></ion-icon>
+            <ion-icon name="mdi-magnify"></ion-icon>
           </button>
           <button ion-button icon-only>
-            <ion-icon name="ios-notifications-outline"></ion-icon>
+            <ion-icon name="mdi-bell"></ion-icon>
           </button>
         </ion-buttons>
       </ion-navbar>
     </ion-header>
     <ion-content>
-      <ion-tabs>
-          <ion-tab [root]="newRoot" tabIcon="flash"></ion-tab>
-          <ion-tab [root]="hotRoot" tabIcon="flame"></ion-tab>
-          <ion-tab></ion-tab>
-          <ion-tab [root]="trendRoot" tabIcon="pulse"></ion-tab>
-          <ion-tab [root]="feedRoot" tabIcon="list"></ion-tab>
-      </ion-tabs>
+    <ion-tabs>
+      <ion-tab [root]="newRoot" tabIcon="mdi-flash-circle" tabTitle="New"></ion-tab>
+      <ion-tab [root]="hotRoot" tabIcon="mdi-flame" tabTitle="Hot"></ion-tab>
+      <ion-tab></ion-tab>
+      <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
+      <ion-tab [root]="feedRoot" tabIcon="mdi-file-document-box" tabTitle="Feed"></ion-tab>
+    </ion-tabs>
 
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage')">
-          <ion-icon name="create"></ion-icon>
+          <ion-icon name="mdi-plus-circle"></ion-icon>
         </button>
       </ion-fab>
     </ion-content>
@@ -49,7 +50,7 @@ export class TabsPage {
   private newRoot = 'NewPage';
 
   constructor(private appCtrl: App) {
-   }
+  }
 
   /**
    * @method openPage: Method to push a page to the nav controller
