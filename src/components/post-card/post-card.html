@@ -61,7 +61,7 @@
         <button end ion-button icon-right clear small>
           <ion-icon name="cash"></ion-icon>
           &nbsp;
-          <div class="info">
+          <div class="info top-4">
               <del *ngIf="content.max_accepted_payout == 0">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</del>
               <p *ngIf="content.max_accepted_payout == 1000000">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</p>
           </div>

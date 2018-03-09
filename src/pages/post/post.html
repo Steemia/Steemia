@@ -12,17 +12,6 @@
 </ion-header>
 
 <ion-content no-bounce padding>
-    <ion-item>
-        <p>{{imageURI}}</p>
-        <button ion-button color="secondary" (click)="getImage()">Get Image</button>
-      </ion-item>
-      <ion-item>
-        <h4>Image Preview</h4>
-        <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
-      </ion-item>
-      <ion-item>
-        <button ion-button (click)="uploadFile()">Upload</button>
-      </ion-item>
   <form [formGroup]="storyForm">
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
