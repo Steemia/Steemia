@@ -5,12 +5,12 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { HttpClient } from '@angular/common/http';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 
 /**
- * Generated class for the WalletPage page.
  *
  * @author Hüseyin TERKİR
- * @version 1.0
+ * @version 2.0
  */
 
 @IonicPage()
@@ -43,17 +43,30 @@ export class WalletPage {
   private ltc_price;
 
   private reward_sbd_balance;
-  private reward_steem_balance
-  private reward_vesting_steem
+  private reward_steem_balance;
+  private reward_vesting_steem;
+
+  private bitcoin;
+  private litecoin;
+  private ethereum;
+
+  private btc_confirmed_balance;
+  private ltc_confirmed_balance;
+  private eth_confirmed_balance;
+
+  private btc_unconfirmed_balance;
+  private ltc_unconfirmed_balance;
+  private eth_unconfirmed_balance;
 
   constructor(private modalCtrl: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
     private steemConnect: SteemConnectProvider,
+    private steeemActions: SteeemActionsProvider,
+    private steemiaProvider: SteemiaProvider,
     private browserTab: BrowserTab,
-    private _http: HttpClient,
-    private steemiaProvider: SteemiaProvider) {
+    private _http: HttpClient) {
 
     this.account = this.navParams.get("author");
   }
@@ -61,37 +74,16 @@ export class WalletPage {
   ionViewDidLoad() {
     this.getAccount();
     this.getCoins();
+    this.checkBTCBalance();
+    this.checkETHBalance();
+    this.checkLTCBalance();  
   }
-
-  /**
-       * Method to open a modal with the Bitcoin Wallet
-       */
-      private openBTCWallet(): void {
-        let bitcoinModal = this.modalCtrl.create("BitcoinPage");
-        bitcoinModal.present();
-      }
-
-      /**
-       * Method to open a modal with the Litecoin Wallet
-       */
-      private openLTCWallet(): void {
-        let litecoinModal = this.modalCtrl.create("LitecoinPage");
-        litecoinModal.present();
-      }
-
-      /**
-       * Method to open a modal with the Bitcoin Wallet
-       */
-      private openETHWallet(): void {
-        let ethereumModal = this.modalCtrl.create("EthereumPage");
-        ethereumModal.present();
-      }
 
   showPrompt(coin) {
     let prompt = this.alertCtrl.create({
       title: 'Transfer to Account',
-      // subTitle: 'Move funds to another Steemia account.',
-      // message: "Click the button below to be redirected to SteemConnect to complete your transaction.",
+      subTitle: 'Move funds to another Steemia account.',
+      message: "Click the button below to be redirected to SteemConnect to complete your transaction.",
       cssClass: 'alert-center',
       enableBackdropDismiss: true,
       inputs: [{
@@ -134,6 +126,75 @@ export class WalletPage {
     });
     prompt.present();
   }
+
+  addAddress() {
+    let prompt = this.alertCtrl.create({
+      title: 'Add an Adresss',
+      message: 'Save Your Cryptocurrency Addresses ',
+      inputs: [{
+        type: 'radio',
+        label: 'Bitcoin',
+        value: 'bitcoin'
+      }, {
+        type: 'radio',
+        label: 'Ethereum',
+        value: 'ethereum'
+      }, {
+        type: 'radio',
+        label: 'Litecoin',
+        value: 'litecoin'
+      }],
+      buttons: [{
+        text: "Cancel",
+        handler: data => {
+          console.log("cancel clicked");
+        }
+      }, {
+        text: "Continue",
+        handler: data => {
+          console.log("Continue clicked");
+          console.log(data);
+          this.SaveAdress(data);
+        }
+      }]
+    });
+    prompt.present();
+    }
+
+  SaveAdress(coin) {
+    let alert = this.alertCtrl.create({
+      title: `Save Your ${coin} Address`,
+      inputs: [{
+        name: 'address',
+        placeholder: `${coin} Address`
+      }],
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log(data);
+            this.browserTab.isAvailable()
+              .then((isAvailable: boolean) => {
+                if (isAvailable) {
+
+                  this.browserTab.openUrl(`https://steemconnect.com/sign/profile-update?${coin}=${data.address}`);
+                } else {
+                  // if custom tabs are not available you may  use InAppBrowser
+                }
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   private getAccount() {
     this.steemiaProvider.dispatch_account(this.account).then(data => {
       this.metadata = JSON.parse(data[0].json_metadata);
@@ -159,9 +220,38 @@ export class WalletPage {
         console.log(this.currencies);
         this.steem_price = this.currencies.STEEM.USD;
         this.sbd_price = this.currencies.SBD.USD;
-        this.btc_price = this.currencies.BTC.USD;
-        this.eth_price = this.currencies.ETH.USD;
-        this.ltc_price = this.currencies.LTC.USD;
+        this.btc_price = (this.currencies.BTC.USD).toFixed(0);
+        this.eth_price = (this.currencies.ETH.USD).toFixed(0);
+        this.ltc_price = (this.currencies.LTC.USD).toFixed(0);
+      })
+  }
+  private checkBTCBalance() {
+    return this._http.get('https://chain.so/api/v2/get_address_balance/BTC/' + this.btc_address)
+      .subscribe(data => {
+        this.bitcoin = data;
+        this.btc_confirmed_balance = this.bitcoin.data.confirmed_balance;
+        this.btc_unconfirmed_balance = this.bitcoin.data.unconfirmed_balance;
+        console.log(this.bitcoin);
+      })
+  }
+
+  private checkLTCBalance() {
+    return this._http.get('https://chain.so/api/v2/get_address_balance/LTC/' + this.ltc_address)
+      .subscribe(data => {
+        this.litecoin = data;
+        this.ltc_confirmed_balance = this.litecoin.data.confirmed_balance;
+        this.ltc_unconfirmed_balance = this.litecoin.data.unconfirmed_balance;
+        console.log(this.litecoin);
+      })
+  }
+
+  private checkETHBalance() {
+    return this._http.get('https://api.blockcypher.com/v1/eth/main/addrs/' + this.eth_address + '/balance')
+      .subscribe(data => {
+        this.ethereum = data;
+        this.eth_confirmed_balance = this.ethereum.balance;
+        this.eth_unconfirmed_balance = this.ethereum.unconfirmed_balance;
+        console.log(this.ethereum);
       })
   }
 

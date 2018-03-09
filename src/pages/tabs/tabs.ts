@@ -33,7 +33,6 @@ import { IonicPage, App } from 'ionic-angular';
       <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
       <ion-tab [root]="feedRoot" tabIcon="mdi-file-document-box" tabTitle="Feed"></ion-tab>
     </ion-tabs>
-
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage')">
           <ion-icon name="mdi-plus-circle"></ion-icon>

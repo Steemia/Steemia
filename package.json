@@ -47,6 +47,7 @@
     "chart.js": "^2.7.2",
     "cordova-android": "7.1.0",
     "cordova-browser": "5.0.3",
+    "cordova-android": "^7.1.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-app-preferences": "^0.99.3",
     "cordova-plugin-browsertab": "^0.2.0",
