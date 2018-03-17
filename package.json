@@ -111,8 +111,7 @@
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-secure-storage": {},
-      "org.apache.cordova.plugin.cache": {}
+      "cordova-plugin-secure-storage": {}
     },
     "platforms": [
       "android",

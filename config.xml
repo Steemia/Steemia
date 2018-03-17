@@ -97,8 +97,8 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="android" spec="7.1.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <engine name="browser" spec="~5.0.3" />
+    <engine name="android" spec="~7.1.0" />
 </widget>
