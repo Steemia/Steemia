@@ -232,6 +232,170 @@ div::-webkit-scrollbar-thumb {
   transition-delay: 100ms;
 }
 
+// ANDROID RANGE
+
+.range-md {
+  padding: 8px 16px;
+}
+
+.range-md [range-left] {
+  margin: 0 20px 0 0;
+}
+
+.range-md [range-right] {
+  margin: 0 0 0 20px;
+}
+
+.range-md.range-has-pin {
+  padding-top: 20px;
+}
+
+.range-md .range-slider {
+  height: 42px;
+}
+
+.range-md .range-bar {
+  left: 0;
+  top: 21px;
+  border-radius: 1px;
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #bdbdbd;
+  pointer-events: none;
+}
+
+.range-md.range-pressed .range-bar-active {
+  will-change: left, right;
+}
+
+.range-md.range-pressed .range-knob-handle {
+  will-change: left;
+}
+
+.range-md .range-bar-active {
+  bottom: 0;
+  width: auto;
+  background: #488aff;
+}
+
+.range-md .range-knob-handle {
+  left: 0;
+  top: 21px;
+  margin-left: -21px;
+  margin-top: -21px;
+  text-align: center;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+}
+
+.range-md .range-knob {
+  left: 7px;
+  top: 7px;
+  border-radius: 50%;
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  -webkit-box-shadow: 0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  pointer-events: none;
+}
+
+.range-md .range-tick {
+  margin-left: -0.5px;
+  border-radius: 0;
+  position: absolute;
+  top: 17.5px;
+  width: 1px;
+  height: 8px;
+  background: #bdbdbd;
+  pointer-events: none;
+}
+
+.range-md .range-tick-active {
+  background: #488aff;
+}
+
+.range-md .range-pin {
+  text-align: center;
+  border-radius: 50px;
+  -webkit-transform: translate3d(0,  28px,  0) scale(0.01);
+  transform: translate3d(0,  28px,  0) scale(0.01);
+  position: relative;
+  top: -20px;
+  display: inline-block;
+  min-width: 28px;
+  font-size: 12px;
+  color: #000;
+  background: transparent;
+  -webkit-transition: -webkit-transform 120ms ease;
+  transition: -webkit-transform 120ms ease;
+  transition: transform 120ms ease;
+  transition: transform 120ms ease, -webkit-transform 120ms ease;
+  padding: 8px;
+}
+
+.range-md .range-knob-pressed .range-pin {
+  -webkit-transform: translate3d(0,  0,  0) scale(1);
+  transform: translate3d(0,  0,  0) scale(1);
+}
+
+.range-md.range-disabled {
+  opacity: .5;
+}
+
+.range-md-primary .range-bar-active,
+.range-md-primary .range-tick-active {
+  background: #488aff;
+}
+
+.range-md-secondary .range-bar-active,
+.range-md-secondary .range-tick-active {
+  background: #32db64;
+}
+
+.range-md-danger .range-bar-active,
+.range-md-danger .range-tick-active {
+  background: #f53d3d;
+}
+
+.range-md-light .range-bar-active,
+.range-md-light .range-tick-active {
+  background: #f4f4f4;
+}
+
+.range-md-dark .range-bar-active,
+.range-md-dark .range-tick-active {
+  background: #222;
+}
+
+.range-md-gray .range-bar-active,
+.range-md-gray .range-tick-active {
+  background: #999;
+}
+
+.range-md-light2 .range-bar-active,
+.range-md-light2 .range-tick-active {
+  background: #dbdbdb;
+}
+
+.range-md-white .range-bar-active,
+.range-md-white .range-tick-active {
+  background: #ffffff;
+}
+
+.range-md-black .range-bar-active,
+.range-md-black .range-tick-active {
+  background: #000000;
+}
+
+.range-md-gray2 .range-bar-active,
+.range-md-gray2 .range-tick-active {
+  background: #f1f2f3;
+}
+
 // MATERIAL DESIGN ICONS
 
 .mdi-icons-general {
