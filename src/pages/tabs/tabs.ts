@@ -35,7 +35,7 @@ import { IonicPage, App } from 'ionic-angular';
     </ion-tabs>
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage')">
-          <ion-icon name="mdi-plus-circle"></ion-icon>
+          <ion-icon name="mdi-message-draw"></ion-icon>
         </button>
       </ion-fab>
     </ion-content>
