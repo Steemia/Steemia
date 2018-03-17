@@ -5,11 +5,11 @@ import marked from 'marked';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
+import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 
 @IonicPage({
   priority: 'high'
@@ -37,21 +37,10 @@ export class PostSinglePage {
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
     public loadingCtrl: LoadingController,
-    private steemConnect: SteemConnectProvider,
-    private steemActions: SteeemActionsProvider) { }
+    private steemActions: SteeemActionsProvider,
+    private steemiaLog: SteemiaLogProvider) { }
 
   ionViewDidLoad() {
-
-    this.steemConnect.status.takeUntil(this.ngUnsubscribe).subscribe(res => {
-      if (res.status === true) {
-
-        this.steemia.dispatch_menu_profile(res.userObject.user).then(data => {
-          this.profile = data;
-          this.is_logged_in = true;
-        });
-      }
-    });
-
     this.post = this.navParams.get('post');
 
     this.post.full_body = marked(this.post.full_body, {
@@ -172,6 +161,7 @@ export class PostSinglePage {
         // Otherwise, it was reblogged correctly
         else {
           loading.dismiss();
+          this.steemiaLog.log_reblog()
           setTimeout(() => {
             this.alerts.display_alert('REBLOGGED_CORRECTLY');
           }, 500);

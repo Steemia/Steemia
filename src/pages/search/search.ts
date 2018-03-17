@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
-import { SteemProvider } from '../../providers/steem/steem';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import 'rxjs/add/operator/takeUntil';
 
@@ -21,7 +20,6 @@ export class SearchPage implements OnInit, OnDestroy {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private steemProvider: SteemProvider,
     private steemiaProvider: SteemiaProvider) {
 
 

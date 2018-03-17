@@ -6,6 +6,10 @@
 // then provide an object with a `src` array of globs and a `dest` string
 const existingConfig = require('../node_modules/@ionic/app-scripts/config/copy.config');
 module.exports = Object.assign(existingConfig, {
+      copyCryptoAssets: {
+            src: ['{{ROOT}}/node_modules/cryptocoins-icons/webfont/**/*'],
+            dest: '{{WWW}}/assets/css'
+      },
       copyMdiFonts: {
             src: ['{{ROOT}}/node_modules/mdi/fonts/**/*'],
             dest: '{{WWW}}/assets/fonts'

@@ -1,0 +1,40 @@
+<ion-card>
+  <ion-item>
+    <ion-chip item-start>
+      <ion-icon [name]="icon"></ion-icon>
+    </ion-chip>
+    <h2 class="coin-name">{{ name }} Wallet</h2>
+    <div item-end>
+        <ion-badge color="primary">Current Price ${{ price }}</ion-badge>
+    </div>
+  </ion-item>
+  <ion-card-content no-padding>
+    <p class="custom-padding">Balance: {{ balance }} {{ coinAb }}</p>
+  </ion-card-content>
+  <ion-row>
+    <ion-col col-4>
+      <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('buy')">
+        <ion-icon name="add"></ion-icon>
+        Buy
+      </button>
+    </ion-col>
+    <ion-col col-4 center text-center>
+      <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('sell')">
+        <ion-icon name="remove"></ion-icon>
+        Sell
+      </button>
+    </ion-col>
+    <ion-col col-4 *ngIf="native == 'true'">
+      <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('transfer')">
+        <ion-icon name="send"></ion-icon>
+        Transfer
+      </button>
+    </ion-col>
+    <ion-col col-4 *ngIf="native == 'false'">
+      <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('check')">
+        <ion-icon name="card"></ion-icon>
+        Check
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-card>

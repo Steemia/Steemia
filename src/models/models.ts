@@ -1,3 +1,9 @@
+export interface Address {
+    address?: any;
+    confirmed?: any;
+    unconfirmed?: any;
+}
+
 export interface Query {
     limit?: number; // How much will be queried
     offset?: string; // Used for pagination

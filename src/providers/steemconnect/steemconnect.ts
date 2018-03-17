@@ -1,11 +1,3 @@
-/**
- * 
- * Provider for Steem actions based on the SteemConnect API
- * 
- * @author Jayser Mendez
- * 
- */
-
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular'
 import { steemConnect } from 'models/models';
@@ -15,6 +7,15 @@ import { Subscription } from 'rxjs/Subscription';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http } from '@angular/http';
+import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
+
+/**
+ * 
+ * Provider for Steem actions based on the SteemConnect API
+ * 
+ * @author Jayser Mendez
+ * 
+ */
 
 @Injectable()
 export class SteemConnectProvider {
@@ -39,45 +40,50 @@ export class SteemConnectProvider {
   constructor(public storage: Storage,
     public platform: Platform,
     private iab: InAppBrowser,
-    private http: Http) {
+    private http: Http,
+    private secureStorage: SecureStorage) {
 
-    // Save a reference of the steemconnect instance for later use
-    this.instance = SteemConnect;
+    this.platform.ready().then(() => {
+      // Save a reference of the steemconnect instance for later use
+      this.instance = SteemConnect;
 
-    this.getToken().then(token => {
-      // If the token is null, undefined or empty string, the user is not logged in
-      if (token === null || token === undefined || token === '') {
+      this.getToken().then(token => {
+        // If the token is null, undefined or empty string, the user is not logged in
+        if (token === null || token === undefined || token === '') {
 
-        //Set a null access token to the instance
-        this.instance.setAccessToken(null);
+          //Set a null access token to the instance
+          this.instance.setAccessToken(null);
 
-        // Set login status to false
-        this.login_status = false;
-        this.status.next({
-          status: this.login_status,
-          logged_out: false
-        });
-      }
+          // Set login status to false
+          this.login_status = false;
+          this.status.next({
+            status: this.login_status,
+            logged_out: false
+          });
 
-      // Otherwise if the token is not null, undefined nor an empty string, the user
-      // is logged in
-      else if (token !== null && token !== undefined && token !== '') {
+        }
 
-        // Save the access token for a later reference
-        this.access_token = token.toString();
-        // set the access token to the instance
-        this.instance.setAccessToken(this.access_token);
-        this.token.next(this.access_token);
-        // Set the login status to true
-        this.login_status = true;
-        this.dispatch_data();
+        // Otherwise if the token is not null, undefined nor an empty string, the user
+        // is logged in
+        else if (token !== null && token !== undefined && token !== '') {
 
-      }
-    });
+          // Save the access token for a later reference
+          this.access_token = token.toString();
+          // set the access token to the instance
+          this.instance.setAccessToken(this.access_token);
+          this.token.next(this.access_token);
+          // Set the login status to true
+          this.login_status = true;
+          this.dispatch_data();
 
-    // Save a reference of the login url for later use
-    this.loginUrl = this.instance.getLoginURL();
-    console.log(this.loginUrl);
+        }
+      });
+
+      // Save a reference of the login url for later use
+      this.loginUrl = this.instance.getLoginURL();
+    })
+
+
   }
 
   private dispatch_data() {
@@ -122,15 +128,23 @@ export class SteemConnectProvider {
 
   private getToken() {
     return new Promise((resolve, reject) => {
-      this.storage.get('access_token').then((token) => {
-        if (token) resolve(token)
-        else resolve(null)
-      })
+      this.secureStorage.create('steemia_secure')
+        .then((storage: SecureStorageObject) => {
+          storage.get('access_token').then(
+            data => resolve(data),
+            error => resolve(null)
+          )
+        });
     })
   }
 
   private setToken(token) {
-    this.storage.set('access_token', token).then(() => { });
+    this.secureStorage.create('steemia_secure')
+      .then((storage: SecureStorageObject) => {
+
+        storage.set('access_token', token)
+          .then(() => { });
+      });
   }
 
   /**
@@ -139,10 +153,11 @@ export class SteemConnectProvider {
   public login() {
     return new Promise(resolve => {
       if (this.platform.is('cordova')) {
-        var browserRef = this.iab
-          .create(this.loginUrl, "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
+        const browserRef = this.iab
+          .create(this.loginUrl, '_blank', 'location=yes,clearsessioncache=yes,clearcache=yes');
 
         const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
+          browserRef.close()
           resolve("The Steemconnect sign in flow was canceled")
         });
 
@@ -180,7 +195,10 @@ export class SteemConnectProvider {
       SteemConnect.revokeToken((err, res) => {
         if (err) reject(err);
         else {
-          this.storage.remove('access_token').then(() => { });
+          this.secureStorage.create('steemia_secure')
+            .then((storage: SecureStorageObject) => {
+              storage.remove('access_token').then(() => {});
+            });
           this.login_status = false;
           this.user_temp = {};
           this.status.next({

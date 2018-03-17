@@ -10,6 +10,10 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+
+// Socket IO Server
+const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
 
 // IONIC NATIVE
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,6 +24,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
+import { SecureStorage } from '@ionic-native/secure-storage';
+import { SecureStorageMock } from '@ionic-native-mocks/secure-storage';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -27,11 +33,11 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
 // PROVIDERS
 import { SteeemActionsProvider } from '../providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from '../providers/steemia/steemia';
-import { SteemProvider } from 'providers/steem/steem';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { UtilProvider } from '../providers/util/util';
 import { AlertsProvider } from '../providers/alerts/alerts';
 import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
+import { CryptoProvider } from '../providers/crypto-api/crypto-api';
 
 
 @NgModule({
@@ -70,7 +76,6 @@ import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SteemConnectProvider,
-    SteemProvider,
     SteemiaProvider,
     SteeemActionsProvider,
     UtilProvider,
@@ -79,7 +84,10 @@ import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
     FileTransferObject,
     File,
     Camera,
-    SteemiaLogProvider
+    SteemiaLogProvider,
+    CryptoProvider,
+    //SecureStorage // Only for prod dev
+    { provide: SecureStorage, useClass: SecureStorageMock } // Only for local dev
   ]
 })
 export class AppModule {}

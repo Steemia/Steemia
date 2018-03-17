@@ -154,6 +154,50 @@ div::-webkit-scrollbar-thumb {
   margin: 0 -5px !important;
 }
 
+// CRYPTO ICONS
+
+.crypto-icons-general {
+  display: inline-block;
+  font: normal normal normal 24px/1 "cryptocoins";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+// STEEM ICON
+.ion-ios-cc-steem::before,
+.ion-ios-cc-steem-outline::before,
+.ion-md-cc-steem::before {
+  @extend .crypto-icons-general;
+  content: "\E0E1";
+}
+
+// BTC ICON
+.ion-ios-cc-btc::before,
+.ion-ios-cc-btc-outline::before,
+.ion-md-cc-btc::before {
+  @extend .crypto-icons-general;
+  content: "\E029";
+}
+
+// ETH ICON
+.ion-ios-cc-eth::before,
+.ion-ios-cc-eth-outline::before,
+.ion-md-cc-eth::before {
+  @extend .crypto-icons-general;
+  content: "\E04D";
+}
+
+// LTC ICON
+.ion-ios-cc-ltc::before,
+.ion-ios-cc-ltc-outline::before,
+.ion-md-cc-ltc::before {
+  @extend .crypto-icons-general;
+  content: "\E085";
+}
+
 
 // MATERIAL DESIGN ICONS
 

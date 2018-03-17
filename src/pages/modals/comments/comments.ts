@@ -17,6 +17,9 @@ import { ERRORS } from '../../../constants/constants';
 })
 export class CommentsPage {
 
+  private slice: number = 15;
+  private is_more: boolean = true;
+
   private author: string;
   private permlink: string;
   private comments: Array<any> = [];
@@ -56,10 +59,6 @@ export class CommentsPage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
-
-    this.steemActions.mock_transaction().then(data => {
-      console.log(data)
-    })
     
   }
 
@@ -84,6 +83,10 @@ export class CommentsPage {
       if (comments.results.length < 1) {
         this.no_content = true;
       }
+
+      if (this.slice > comments.results.length) {
+        this.is_more = false;
+      }
       
       else {
         this.comments = comments.results.reverse();
@@ -97,11 +100,32 @@ export class CommentsPage {
     });
   }
 
+  /**
+   * Infinite scroll to load more comments
+   * @param infiniteScroll 
+   */
+  private load_more(infiniteScroll) {
+    setTimeout(() => {
+      this.slice += 5;
+      if (this.slice > this.comments.length) {
+        this.is_more = false;
+      }
+      infiniteScroll.complete();
+      
+    }, 1000);
+  }
+
+  /**
+   * Reinitialize comments state
+   */
   private reinitialize() {
     this.no_content = false;
     this.comments = [];
   }
 
+  /**
+   * Dispatch a comment to the current post
+   */
   private comment() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'

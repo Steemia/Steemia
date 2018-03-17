@@ -2,11 +2,12 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, ViewController, ActionSheetController, LoadingController, ToastController } from 'ionic-angular';
 import marked from 'marked';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
+
 
 
 @IonicPage()
@@ -17,6 +18,10 @@ import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 export class PostPage {
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
+
+  private caret: number = 0;
+  private is_preview: boolean = false;
+  private markdowntext;
 
   private rewards: string = '50%'
   private storyForm: FormGroup;
@@ -40,6 +45,25 @@ export class PostPage {
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
 
+  }
+
+  insertText(text) {
+    const current = this.storyForm.value.description.toString();
+    let final = current.substr(0, this.caret) + text + current.substr(this.caret);
+    this.storyForm.controls["description"].setValue(final);
+  }
+
+  showPreview() {
+    if (this.is_preview == false) {
+      let plainText = this.storyForm.value.description;
+      this.markdowntext = marked(plainText.toString())
+      this.is_preview = true;
+
+    }
+
+    else {
+      this.is_preview = false;
+    }
   }
 
   getImage() {
@@ -73,11 +97,12 @@ export class PostPage {
         mimeType: "image/jpeg",
         headers: {
           trx: signature,
-          
+
         }
       }
 
     });
+
 
 
 
@@ -93,6 +118,14 @@ export class PostPage {
     //     this.presentToast(err);
     //   });
   }
+
+  getCaretPos(oField) {
+    let node = oField._elementRef.nativeElement.children[0];
+    if (node.selectionStart || node.selectionStart == '0') {
+      this.caret = node.selectionStart;
+    }
+  }
+
 
   presentToast(msg) {
     let toast = this.toastCtrl.create({
@@ -217,3 +250,4 @@ export class PostPage {
     }
   }
 }
+

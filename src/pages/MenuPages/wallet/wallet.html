@@ -1,277 +1,54 @@
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>Wallet</ion-title>
-
     <ion-buttons end item-end>
       <button class="ion-button" ion-button icon-only (click)="addAddress()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-  <ion-card *ngIf="reward_sbd_balance>0 || reward_vesting_steem>0 || reward_steem_balance>0">
+  <ion-card *ngIf="rewards?.sbd > 0 || rewards?.vesting_steem > 0 || rewards?.steem > 0">
     <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/steem.png">
-      </ion-avatar>
-      <h2>Unclaimed Rewards</h2>
-      <ion-note></ion-note>
+      <p style="font-size: 14px;" text-center>
+        Your current rewards: {{ rewards?.sbd }} SBD, {{ rewards?.vesting_steem }} SP, {{ rewards?.steem }} STEEM
+      </p>
     </ion-item>
-    <ion-card-content>
-      <ion-chip item-start *ngIf="reward_sbd_balance>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_sbd_balance }} SBD</ion-label>
-      </ion-chip>
-      <ion-chip item-start *ngIf="reward_vesting_steem>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_vesting_steem }} SP</ion-label>
-      </ion-chip>
-      <ion-chip item-start *ngIf="reward_steem_balance>0">
-        <ion-icon name="cash" color="dark"></ion-icon>
-        <ion-label>{{ reward_steem_balance }} STEEM</ion-label>
-      </ion-chip>
-    </ion-card-content>
     <ion-row>
-      <ion-col col-4>
-
-      </ion-col>
-      <ion-col col-4 center text-center>
-
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="claimRewards()">
+      <ion-col>
+        <button mode="ios" block round color="light" icon-left ion-button small (click)="claim_rewards()">
           <ion-icon name="ribbon"></ion-icon>
-          Claim
+          Claim Rewards
         </button>
       </ion-col>
     </ion-row>
   </ion-card>
 
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/steem.png">
-      </ion-avatar>
-      <h2>STEEM</h2>
-      <ion-note>Current Price: ${{ steem_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>{{ balance }}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buySteem('steem')">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small (click)="sellSteem()">
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="showPrompt('STEEM')">
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+  <ion-list>
+    <!-- STEEM WALLET -->
+    <wallet-item name="STEEM" [price]="prices?.steem" [balance]="account_balance?.balance" icon="cc-steem" native="true" coinAb="STEEM"
+      (tapEvent)="eventListener($event)"></wallet-item>
 
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/steem.png">
-      </ion-avatar>
-      <h2>SBD</h2>
-      <ion-note>Current Price: ${{ sbd_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>{{ sbd_balance }}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buySteem('sbd')">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small (click)="sellSBD()">
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="showPrompt('SBD')">
-          <ion-icon name="send"></ion-icon>
-          Transfer
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
-  <!--
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="https://files.coinmarketcap.com/static/img/coins/200x200/25.png">
-      </ion-avatar>
-      <h2>Vesting Shares</h2>
-      <p> </p>
-    </ion-item>
-    <ion-card-content>
-        <ion-chip item-start>
-            <ion-icon name="cash" color="dark"></ion-icon>
-            <ion-label>{{ vesting_shares }}</ion-label>
-          </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="add"></ion-icon>
-          Power Up
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Power Down
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="send"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
--->
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/bitcoin.png">
-      </ion-avatar>
-      <h2>Bitcoin</h2>
-      <ion-note>Current Price: ${{ btc_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>{{ btc_confirmed_balance }} BTC</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyBTC()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="checkBTCBalance()">
-          <ion-icon name="card"></ion-icon>
-          Check
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/ethereum.png">
-      </ion-avatar>
-      <h2>Ethereum</h2>
-      <ion-note>Current Price: ${{ eth_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>{{ eth_confirmed_balance }} ETH</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyETH()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="checkETHBalance()">
-          <ion-icon name="card"></ion-icon>
-          Check
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <br>
+    <!-- SBD WALLET -->
+    <wallet-item name="SBD" [price]="prices?.sbd" [balance]="account_balance?.sbd" icon="cc-steem" native="true" coinAb="SBD"
+      (tapEvent)="eventListener($event)"></wallet-item>
 
+    <!-- EXTERNAL WALLETS -->
 
-  <ion-card>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/litecoin.png">
-      </ion-avatar>
-      <h2>Litecoin</h2>
-      <ion-note>Current Price: ${{ ltc_price }}</ion-note>
-    </ion-item>
-    <ion-card-content>
-      <ion-chip item-start>
-        <ion-icon name="cash" color="light"></ion-icon>
-        <ion-label>{{ ltc_confirmed_balance }} LTC</ion-label>
-      </ion-chip>
-    </ion-card-content>
-    <ion-row>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="buyLTC()">
-          <ion-icon name="add"></ion-icon>
-          Buy
-        </button>
-      </ion-col>
-      <ion-col col-4 center text-center>
-        <button block round color="light" icon-left ion-button small>
-          <ion-icon name="remove"></ion-icon>
-          Sell
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <button block round color="light" icon-left ion-button small (click)="checkLTCBalance()">
-          <ion-icon name="card"></ion-icon>
-          Check
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+    <!-- BTC WALLET -->
+    <wallet-item name="BTC" *ngIf="address?.btc.address != null" [price]="prices?.btc" [balance]="address?.btc.confirmed" icon="cc-btc"
+      native="false" coinAb="BTC" (tapEvent)="eventListener($event)"></wallet-item>
+
+    <!-- ETH WALLET -->
+    <wallet-item name="ETH" *ngIf="address?.eth.address != null" [price]="prices?.eth" [balance]="address?.eth.confirmed" icon="cc-eth"
+      native="false" coinAb="ETH" (tapEvent)="eventListener($event)"></wallet-item>
+    
+    <!-- ETH WALLET -->
+    <wallet-item name="LTC" *ngIf="address?.ltc.address != null" [price]="prices?.ltc" [balance]="address?.ltc.confirmed" icon="cc-ltc"
+      native="false" coinAb="LTC" (tapEvent)="eventListener($event)"></wallet-item>
+
+  </ion-list>
+
 </ion-content>

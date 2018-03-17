@@ -20,7 +20,7 @@ export class UtilProvider {
    * @param event 
    */
   public imgError(type: string, event): void {
-    if (type === 'comment') {
+    if (type === 'comment' || type === 'profile') {
       event.target.src = NO_IMAGE_COMMENT;
     }
 

@@ -1,10 +1,20 @@
-page-wallet {
+wallet-item {
 
       .card {
             -webkit-box-shadow:  none !important;
             -moz-box-shadow:  none !important;
             box-shadow: none !important;
             border-radius: 8px;
+      }
+
+      .chip-md > ion-icon {
+            color: #fff;
+            background-color: transparent !important;
+            margin-top: -1px;
+      }
+      
+      .chip {
+            background: #488aff !important;
       }
 
       .custom-padding {

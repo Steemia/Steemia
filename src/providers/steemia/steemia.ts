@@ -12,6 +12,11 @@ import { POSTS,
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
+import "rxjs/add/operator/debounceTime";
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/share';
+
+
 
 @Injectable()
 export class SteemiaProvider {

@@ -5,6 +5,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 
 @Component({
   selector: 'post-card',
@@ -21,7 +22,8 @@ export class PostCardComponent {
     private steemActions: SteeemActionsProvider,
     public util: UtilProvider,
     private alerts: AlertsProvider,
-    private steemiaProvider: SteemiaProvider) {
+    private steemiaProvider: SteemiaProvider,
+    private steemiaLog: SteemiaLogProvider) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
@@ -99,16 +101,21 @@ export class PostCardComponent {
 
         if (weight > 0) {
           this.content.vote = true;
+          this.steemiaLog.log_vote(author, permlink); // log vote to server side
         }
 
         else {
           this.content.vote = false;
+          this.steemiaLog.log_unvote(author, permlink); // Log unvote to server side
         }
 
         this.refreshPost();
 
       }
-    }).catch(err => {console.log(err); this.is_voting = false});
+    }).catch(err => {
+      
+      console.log(err); this.is_voting = false
+    });
   }
 
   private refreshPost() {
@@ -118,7 +125,7 @@ export class PostCardComponent {
       this.content.net_likes = (data as any).net_likes;
       this.content.net_votes = (data as any).net_votes;
       this.content.top_likers_avatars = (data as any).top_likers_avatars;
-      this.content.pending_payout_value = (data as any).pending_payout_value;
+      this.content.total_payout_reward = (data as any).total_payout_reward;
       this.content.children = (data as any).children;
     });
   }

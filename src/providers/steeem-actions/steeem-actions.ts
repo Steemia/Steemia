@@ -8,6 +8,12 @@ import {
 } from '../../constants/constants';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
+/**
+ * Class with steem actions using SteemConnect V2
+ * @author Jayser Mendez
+ * @version 0.0.1
+ */
+
 @Injectable()
 export class SteeemActionsProvider {
 

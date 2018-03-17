@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, Platform } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
-import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { BrowserTab } from '@ionic-native/browser-tab';
-import { HttpClient } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
-
+import { CryptoProvider } from 'providers/crypto-api/crypto-api';
+import { Address } from 'models/models';
 /**
  *
  * @author Hüseyin TERKİR
@@ -20,65 +20,80 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 })
 export class WalletPage {
 
+  // Main Account Data
+  private account_balance: {
+    sbd?: any,
+    balance?: any,
+    vesting_shares?: any
+  } = {};
+
+  // Rewards Data
+  private rewards = {
+    steem: null,
+    sbd: null,
+    vesting_steem: null
+  };
+
+  // Account Addresses Data
+  private address = {
+    btc: {
+      address: null,
+      confirmed: null,
+      unconfirmed: null
+    },
+    ltc: {
+      address: null,
+      confirmed: null,
+      unconfirmed: null
+    },
+    eth: {
+      address: null,
+      confirmed: null,
+      unconfirmed: null
+    }
+  };
+
+  // Coin's Prices
+  private prices: any;
+
   private account: string = "steemia-io";
-  private metadata;
 
-  private sbd_balance;
-  private sbd_float;
-
-  private balance;
-  private balance_float;
-
-  private vesting_shares;
-
-  private btc_address;
-  private ltc_address;
-  private eth_address;
-
-  private currencies;
-  private steem_price;
-  private sbd_price;
-  private btc_price;
-  private eth_price;
-  private ltc_price;
-
-  private reward_sbd_balance;
-  private reward_steem_balance;
-  private reward_vesting_steem;
-
-  private bitcoin;
-  private litecoin;
-  private ethereum;
-
-  private btc_confirmed_balance;
-  private ltc_confirmed_balance;
-  private eth_confirmed_balance;
-
-  private btc_unconfirmed_balance;
-  private ltc_unconfirmed_balance;
-  private eth_unconfirmed_balance;
-
-  constructor(private modalCtrl: ModalController,
-    public navCtrl: NavController,
-    public navParams: NavParams,
+  constructor(public navParams: NavParams,
     public alertCtrl: AlertController,
-    private steemConnect: SteemConnectProvider,
+    public platform: Platform,
     private steeemActions: SteeemActionsProvider,
     private steemiaProvider: SteemiaProvider,
     private browserTab: BrowserTab,
-    private _http: HttpClient) {
+    private iab: InAppBrowser,
+    private cryptoProvider: CryptoProvider) {}
+
+  ionViewWillLoad() {
 
     this.account = this.navParams.get("author");
+
+    this.getAccount().then(() => {
+      // Conditions to avoid querying not necessary data.
+      if (this.address.btc.address !== null || this.address.btc.address !== undefined) {
+        this.checkBalance('btc');
+      }
+
+      if (this.address.eth.address !== null || this.address.eth.address !== undefined) {
+        this.checkBalance('eth');
+      }
+
+      if (this.address.ltc.address !== null || this.address.ltc.address !== undefined) {
+        this.checkBalance('ltc');
+      }
+      this.cryptoProvider.get_prices().then(prices => {
+        this.prices = prices;
+      });
+    });
   }
 
-  ionViewDidLoad() {
-    this.getAccount();
-    this.getCoins();
-    this.checkBTCBalance();
-    this.checkETHBalance();
-    this.checkLTCBalance();  
-  }
-
+  /**
+   * Method to transfer coins
+   * @param coin
+   */
   showPrompt(coin) {
     let prompt = this.alertCtrl.create({
       title: 'Transfer to Account',
@@ -98,17 +113,11 @@ export class WalletPage {
       }],
       buttons: [{
         text: 'Cancel',
-        cssClass: 'block round dark ion-button',
-        handler: data => {
-          console.log('Cancel clicked');
-          console.log(data);
-        }
+        cssClass: 'block round dark ion-button'
       },
       {
         text: 'Send',
         handler: data => {
-          console.log('Send clicked');
-          console.log(data);
           this.browserTab.isAvailable()
             .then((isAvailable: boolean) => {
               if (isAvailable) {
@@ -127,7 +136,10 @@ export class WalletPage {
     prompt.present();
   }
 
-  addAddress() {
+  /**
+   * Method to add a new crypto address
+   */
+  private addAddress() {
     let prompt = this.alertCtrl.create({
       title: 'Add an Adresss',
       message: 'Save Your Cryptocurrency Addresses ',
@@ -145,23 +157,22 @@ export class WalletPage {
         value: 'litecoin'
       }],
       buttons: [{
-        text: "Cancel",
-        handler: data => {
-          console.log("cancel clicked");
-        }
+        text: "Cancel"
       }, {
         text: "Continue",
         handler: data => {
-          console.log("Continue clicked");
-          console.log(data);
           this.SaveAdress(data);
         }
       }]
     });
     prompt.present();
-    }
+  }
 
-  SaveAdress(coin) {
+  /**
+   * Method to save a new crypto address
+   * @param coin 
+   */
+  private SaveAdress(coin): void {
     let alert = this.alertCtrl.create({
       title: `Save Your ${coin} Address`,
       inputs: [{
@@ -169,196 +180,200 @@ export class WalletPage {
         placeholder: `${coin} Address`
       }],
       buttons: [{
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            console.log(data);
-            this.browserTab.isAvailable()
-              .then((isAvailable: boolean) => {
-                if (isAvailable) {
+        text: 'Cancel',
+        role: 'cancel'
+      },
+      {
+        text: 'Save',
+        handler: data => {
+          this.browserTab.isAvailable()
+            .then((isAvailable: boolean) => {
+              if (isAvailable) {
 
-                  this.browserTab.openUrl(`https://steemconnect.com/sign/profile-update?${coin}=${data.address}`);
-                } else {
-                  // if custom tabs are not available you may  use InAppBrowser
-                }
-              });
-          }
+                this.browserTab.openUrl(`https://steemconnect.com/sign/profile-update?${coin}=${data.address}`);
+              } else {
+                // if custom tabs are not available you may  use InAppBrowser
+              }
+            });
         }
+      }
       ]
     });
     alert.present();
   }
 
+  /**
+   * Method to get account data
+   */
   private getAccount() {
-    this.steemiaProvider.dispatch_account(this.account).then(data => {
-      this.metadata = JSON.parse(data[0].json_metadata);
-        this.btc_address = this.metadata.profile.bitcoin;
-        this.ltc_address = this.metadata.profile.litecoin;
-        this.eth_address = this.metadata.profile.ethereum;
-        this.sbd_balance = data[0].sbd_balance;
-        this.balance = data[0].balance;
-        this.sbd_float = parseFloat(data[0].sbd_balance);
-        this.balance_float = parseFloat(data[0].balance);
-        this.vesting_shares = parseInt(data[0].vesting_shares).toFixed(2);
-        this.reward_sbd_balance = parseFloat(data[0].reward_sbd_balance);
-        this.reward_steem_balance = parseFloat(data[0].reward_steem_balance);
-        this.reward_vesting_steem = parseFloat(data[0].reward_vesting_steem);
+    return new Promise(resolve => {
+      this.steemiaProvider.dispatch_account(this.account).then(data => {
+
+        const metadata = JSON.parse(data[0].json_metadata);
+  
+        this.account_balance = {
+          sbd: parseFloat(data[0].sbd_balance),
+          balance: parseFloat(data[0].balance),
+          vesting_shares: parseInt(data[0].vesting_shares).toFixed(2)
+        }
+  
+        this.rewards = {
+          sbd: parseFloat(data[0].reward_sbd_balance),
+          steem: parseFloat(data[0].reward_steem_balance),
+          vesting_steem: parseFloat(data[0].reward_vesting_steem)
+        }
+  
+        if (metadata.profile.bitcoin) {
+          this.address.btc.address = metadata.profile.bitcoin;
+        }
+  
+        if (metadata.profile.litecoin) {
+          this.address.ltc.address = metadata.profile.litecoin;
+        }
+  
+        if (metadata.profile.ethereum) {
+          this.address.eth.address = metadata.profile.ethereum;
+        }
+      }).then(() => {
+        resolve();
+      });
+    })
+    
+  }
+
+  /**
+   * Event listener for the wallet item component
+   * @param {Object} event 
+   */
+  private eventListener(event) {
+
+    if (event.type === 'transfer') {
+      console.log("transfer triggered")
+      this.showPrompt(event.name)
+    }
+
+    else if (event.type === 'buy') {
+      switch (event.name) {
+        case 'STEEM':
+          this.buySteem();
+          break;
+
+        case 'SBD':
+          this.buySbd();
+          break;
+
+        case 'Bitcoin':
+          this.buy_crypto('btc');
+          break;
+
+        case 'Litecoin':
+          this.buy_crypto('ltc');
+          break;
+
+        case 'Ethereum':
+          this.buy_crypto('eth');
+          break;
+      }
+    }
+
+    else if (event.type === 'sell') {
+      switch (event.name) {
+        case 'STEEM':
+          this.sell('balance');
+          break;
+
+        case 'SBD':
+          this.sell('sbd');
+          break;
+
+        case 'Bitcoin':
+          this.sell('btc');
+          break;
+
+        case 'Litecoin':
+          this.sell('ltc');
+          break;
+
+        case 'Ethereum':
+          this.sell('eth');
+          break;
+      }
+    }
+
+    else if (event.type === 'check') {
+      switch (event.name) {
+        case 'STEEM':
+          this.checkBalance('balance');
+          break;
+
+        case 'SBD':
+          this.checkBalance('sbd');
+          break;
+
+        case 'BTC':
+          this.checkBalance('btc');
+          break;
+
+        case 'LTC':
+          this.checkBalance('ltc');
+          break;
+
+        case 'ETH':
+          this.checkBalance('eth');
+          break;
+      }
+    }
+  }
+
+  /**
+   * Method to check account balance
+   * @param {String} type 
+   */
+  private checkBalance(type: string): void {
+    this.cryptoProvider.check_balance(type, this.address[type].address).then((data: any) => {
+      this.address[type].confirmed = data.confirmed;
+      this.address[type].unconfirmed = data.unconfirmed;
     });
   }
 
-  private getCoins() {
-    return this._http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
-      .subscribe(data => {
-        console.log('my data: ', data);
-        this.currencies = data;
-        console.log(this.currencies);
-        this.steem_price = this.currencies.STEEM.USD;
-        this.sbd_price = this.currencies.SBD.USD;
-        this.btc_price = (this.currencies.BTC.USD).toFixed(0);
-        this.eth_price = (this.currencies.ETH.USD).toFixed(0);
-        this.ltc_price = (this.currencies.LTC.USD).toFixed(0);
-      })
-  }
-  private checkBTCBalance() {
-    return this._http.get('https://chain.so/api/v2/get_address_balance/BTC/' + this.btc_address)
-      .subscribe(data => {
-        this.bitcoin = data;
-        this.btc_confirmed_balance = this.bitcoin.data.confirmed_balance;
-        this.btc_unconfirmed_balance = this.bitcoin.data.unconfirmed_balance;
-        console.log(this.bitcoin);
-      })
+  /**
+   * Method to sell cryptos
+   * @param {String} type 
+   */
+  private sell(type: string): void {
+    this.cryptoProvider.buy_sell(this.account_balance[type], this.address.btc.address, type, 'btc');
   }
 
-  private checkLTCBalance() {
-    return this._http.get('https://chain.so/api/v2/get_address_balance/LTC/' + this.ltc_address)
-      .subscribe(data => {
-        this.litecoin = data;
-        this.ltc_confirmed_balance = this.litecoin.data.confirmed_balance;
-        this.ltc_unconfirmed_balance = this.litecoin.data.unconfirmed_balance;
-        console.log(this.litecoin);
-      })
+  /**
+   * Method to buy cryptos
+   * @param {String} type 
+   */
+  private buy_crypto(type: string): void {
+    this.cryptoProvider.buy_sell(this.account_balance.sbd, this.address[type].address, 'sbd', type);
+
   }
 
-  private checkETHBalance() {
-    return this._http.get('https://api.blockcypher.com/v1/eth/main/addrs/' + this.eth_address + '/balance')
-      .subscribe(data => {
-        this.ethereum = data;
-        this.eth_confirmed_balance = this.ethereum.balance;
-        this.eth_unconfirmed_balance = this.ethereum.unconfirmed_balance;
-        console.log(this.ethereum);
-      })
+  /**
+   * Method to void Steem
+   */
+  private buySteem(): void {
+    this.cryptoProvider.buy_sell(1, this.account, 'btc', 'steem');
   }
 
-  private buySteem(coin) {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=btc' +
-            '&input_coin_amount=1' +
-            '&output_coin_type=' + coin +
-            '&receive_address=' + this.account +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
+  /**
+   * Method to buy SBD
+   */
+  private buySbd(): void {
+    this.cryptoProvider.buy_sell(1, this.account, 'btc', 'sbd');
   }
-  private sellSteem() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
 
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=steem' +
-            '&input_coin_amount=' + this.balance_float +
-            '&output_coin_type=btc' +
-            '&receive_address=' + this.btc_address +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
-  }
-  private sellSBD() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=sbd' +
-            '&input_coin_amount=' + this.sbd_float +
-            '&output_coin_type=btc' +
-            '&receive_address=' + this.btc_address +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
-  }
-  private buySP() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=steem' +
-            '&input_coin_amount=' + this.balance_float +
-            '&output_coin_type=sp' +
-            '&receive_address=' + this.account +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
-  }
-  private buyBTC() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=sbd' +
-            '&input_coin_amount=' + this.sbd_float +
-            '&output_coin_type=btc' +
-            '&receive_address=' + this.btc_address +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
-  }
-  private buyLTC() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=sbd' +
-            '&input_coin_amount=' + this.sbd_float +
-            '&output_coin_type=ltc' +
-            '&receive_address=' + this.ltc_address +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
-  }
-  private buyETH() {
-    this.browserTab.isAvailable()
-      .then((isAvailable: boolean) => {
-        if (isAvailable) {
-
-          this.browserTab.openUrl('https://blocktrades.us/?input_coin_type=sbd' +
-            '&input_coin_amount=' + this.sbd_float +
-            '&output_coin_type=eth' +
-            '&receive_address=' + this.eth_address +
-            '&memo=' /* +this.memo */);
-        } else {
-          // if custom tabs are not available you may  use InAppBrowser
-        }
-      });
+  private claim_rewards() {
+    const steem = this.rewards.steem.toString() + ' STEEM';
+    const sbd = this.rewards.sbd.toString() + ' SBD';
+    const sp = this.rewards.vesting_steem.toString() + ' VESTS';
+    this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
+      this.getAccount();
+    });
   }
 
 }
