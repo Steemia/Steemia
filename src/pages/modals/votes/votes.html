@@ -12,17 +12,20 @@
 <ion-content>
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-  <no-data *ngIf="no_content == true" icon="chatbubbles"
-            title="This post does not have any comments, YET!">
+  <no-data *ngIf="no_content == true" icon="chatbubbles" title="This post does not have any comments, YET!">
   </no-data>
-  <ion-list>
-    <ion-item *ngFor="let voter of votes">
+  <ion-list>  
+    <ion-item *ngFor="let voter of votes | slice:0:slice;">
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">
-        <img [src]="renderImage(voter.profile_image)" (error)="imgError($event)">
+        <img [src]="util.renderImage('profile', voter.profile_image)" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
       <h2 tappable (click)="openProfile(voter.username)">{{ voter.username }}</h2>
       <p>{{ voter.name }}</p>
       <ion-note item-end>%{{ voter.percent }}</ion-note>
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll *ngIf="is_more == true" (ionInfinite)="load_more($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

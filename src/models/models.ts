@@ -1,3 +1,9 @@
+export interface Address {
+    address?: any;
+    confirmed?: any;
+    unconfirmed?: any;
+}
+
 export interface Query {
     limit?: number; // How much will be queried
     offset?: string; // Used for pagination
@@ -10,6 +16,7 @@ export interface Query {
     type?: string;
     category?: string;
     url?: string;
+    query?: string;
 }
 
 export interface PostsRes {

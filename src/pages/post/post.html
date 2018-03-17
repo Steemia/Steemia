@@ -12,7 +12,9 @@
 </ion-header>
 
 <ion-content no-bounce padding>
-  <form [formGroup]="storyForm">
+  <p *ngIf="is_preview == true" text-center>Preview Mode</p>
+  <div *ngIf="is_preview == true" [innerHtml]="markdowntext"></div>
+  <form *ngIf="is_preview == false" [formGroup]="storyForm">
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
         <ion-badge color="primary">Title</ion-badge> 
@@ -25,7 +27,8 @@
       <ion-label class="label-title" color="primary" stacked>
         <ion-badge color="primary">Description</ion-badge>
       </ion-label>
-      <ion-textarea type="text" rows="15" placeholder="Write your story in here." [formControl]="storyForm.controls['description']"></ion-textarea>
+      <ion-textarea #myInput *ngIf="is_preview == false" (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" type="text" rows="15" 
+        placeholder="Write your story in here." [formControl]="storyForm.controls['description']"></ion-textarea>
     </ion-item>
     <hr />
     <ion-item no-lines>
@@ -39,12 +42,12 @@
     <hr />
   </form>
 
-  <ion-item no-lines>
+  <ion-item *ngIf="is_preview == false" no-lines>
     <ion-label color="primary">Upvote</ion-label>
     <ion-toggle [(ngModel)]="upvote"></ion-toggle>
   </ion-item>
   <hr />
-  <ion-item no-lines>
+  <ion-item *ngIf="is_preview == false" no-lines>
     <ion-label color="primary">Rewards</ion-label>
     <ion-select text-wrap [(ngModel)]="rewards">
       <ion-option text-wrap value="50%">Default 50% / 50%</ion-option>
@@ -58,22 +61,22 @@
 <ion-footer>
   <ion-grid class="top-four">
     <ion-row>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('**bold**')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class="fa fa-bold"></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('*italic*')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class="fa fa-italic"></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('# header')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class="fa fa-header"></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('> quote')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class="fa fa-quote-right"></i>
         </a>
@@ -98,7 +101,7 @@
           <i class='fa fa-picture-o'></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)" tappable (click)="presentActionSheet()">
+      <ion-col (mousedown)="preventFocusChange($event)" tappable (click)="showPreview()">
         <a class="button button-small">
           <i class='fa fa-eye'></i>
         </a>

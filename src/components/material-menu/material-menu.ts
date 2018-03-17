@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChange, OnInit } from '@angular/core';
+import { UtilProvider } from 'providers/util/util';
 
 @Component({
   selector: 'material-menu',
@@ -10,7 +11,7 @@ export class MaterialMenuComponent implements OnInit {
 
   private _options = {};
 
-  constructor() {
+  constructor(public util: UtilProvider) {
     
   }
 

@@ -3,6 +3,7 @@ import { AlertController, NavController } from 'ionic-angular';
 import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
+import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 
 @Component({
   selector: 'render-comment',
@@ -17,7 +18,8 @@ export class CommentComponent {
   private steemActions: SteeemActionsProvider,
   private navCtrl: NavController,
   private steemiaProvider: SteemiaProvider,
-  public util: UtilProvider) {}
+  public util: UtilProvider,
+  private steemiaLog: SteemiaLogProvider) {}
 
   /**
    * Method to cast a vote or unvote
@@ -50,15 +52,19 @@ export class CommentComponent {
 
         if (weight > 0) {
           this.comment.vote = true;
+          this.steemiaLog.log_vote(author, permlink); // log vote to server side
         }
 
         else {
           this.comment.vote = false;
+          this.steemiaLog.log_unvote(author, permlink); // Log unvote to server side
         }
 
         this.refresh_comment();
       }
-    }).catch(err => {console.log(err); this.is_voting = false});
+    }).catch(err => {
+      console.log(err); this.is_voting = false
+    });
   }
 
   private refresh_comment() {

@@ -7,13 +7,17 @@ import { MomentModule } from 'angular2-moment';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { IonicModule } from 'ionic-angular';
 import { NoDataComponent } from './no-data/no-data';
+import { WalletItemComponent } from './wallet-item/wallet-item';
+import { UserItemComponent } from './user-item/user-item';
 
 @NgModule({
 	declarations: [
-		CommentComponent, 
-		PostCardComponent, 
+		CommentComponent,
+		PostCardComponent,
 		PostRenderComponent,
-    NoDataComponent
+		NoDataComponent,
+		WalletItemComponent,
+    UserItemComponent
 	],
 
 	imports: [
@@ -23,10 +27,12 @@ import { NoDataComponent } from './no-data/no-data';
 	],
 
 	exports: [
-		CommentComponent, 
-		PostCardComponent, 
+		CommentComponent,
+		PostCardComponent,
 		PostRenderComponent,
-    NoDataComponent
+		NoDataComponent,
+		WalletItemComponent,
+    UserItemComponent
 	]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

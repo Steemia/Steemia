@@ -5,8 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 //import { ActionsSteem }  from 'providers/steemconnect/actions';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
-import { SteemProvider } from 'providers/steem/steem';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { Socket } from 'ng-socket-io';
 
 @Component({
   templateUrl: 'app.html'
@@ -34,7 +34,6 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     private events: Events,
-    private steemProvider: SteemProvider,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
@@ -49,6 +48,8 @@ export class MyApp {
       else {
         this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
           this.profile = data;
+          // this.socket.connect();
+          // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
         });
@@ -98,7 +99,8 @@ export class MyApp {
         { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
-        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage') } },
+        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
+        // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat-mock') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
@@ -128,13 +130,18 @@ export class MyApp {
     });
   }
 
-
   private openPage(page: any, type?: string): void {
     this.menuCtrl.close().then(() => {
-      if (type === 'profile' || type === 'wallet') {
+      if (type === 'profile' || type === 'wallet' || type === 'chat') {
         this.nav.push(page, {
           author: this.profile.username
         });
+      }
+
+      else if (type === 'chat-mock') {
+        this.nav.push(page, {
+          author: 'mendezjayser'
+        })
       }
       else {
         this.nav.push(page);

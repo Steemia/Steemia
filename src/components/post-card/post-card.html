@@ -7,7 +7,8 @@
   
       <ion-item>
         <ion-avatar item-start tappable (click)="openProfile(content.author)">
-          <img-loader [src]="util.renderImage('profile', content.avatar)" useImg></img-loader>
+            <img [src]="util.renderImage('profile', content.avatar)" (error)="util.imgError('profile',$event)"/>
+         
         </ion-avatar>
         <div>
           <ion-badge color="primary" tappable (click)="openProfile(content.author)"> {{ content.author }}</ion-badge>
@@ -62,8 +63,8 @@
           <ion-icon name="cash"></ion-icon>
           &nbsp;
           <div class="info top-4">
-              <del *ngIf="content.max_accepted_payout == 0">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</del>
-              <p *ngIf="content.max_accepted_payout == 1000000">{{ content.pending_payout_value | currency:'USD': 'symbol' }}</p>
+              <del *ngIf="content.max_accepted_payout == 0">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</del>
+              <p *ngIf="content.max_accepted_payout == 1000000">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</p>
           </div>
         </button>
       </ion-col>

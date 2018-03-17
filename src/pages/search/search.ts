@@ -1,64 +1,77 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
-import { SteemProvider } from '../../providers/steem/steem';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-import 'rxjs/add/operator/takeUntil';
+import { Subscription } from 'rxjs/Subscription';
 
-@IonicPage()
+/**
+ * Search page for users and tags
+ * 
+ * @author Jayser Mendez
+ * @version 0.0.1
+ */
+
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-search',
   templateUrl: 'search.html',
 })
-export class SearchPage implements OnInit, OnDestroy {
+export class SearchPage {
 
+  private sub: Subscription;
+  private is_tag: boolean = false;
+  private is_user: boolean = false;
   objectKeys = Object.keys;
-  private destroyed$: Subject<{}> = new Subject();
   results: Object;
   searchTerm$ = new Subject<string>();
   isSearching: boolean = false;
-  gender: string = 'Post';
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private steemProvider: SteemProvider,
-    private steemiaProvider: SteemiaProvider) {
+    private steemiaProvider: SteemiaProvider) { }
 
+  ionViewWillEnter() {  
+    this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$, 20)
+      .subscribe((results: any) => {
 
-  }
+        // Detect if the results are for tags
+        if (results.offset) {
+          this.is_tag = true;
+          this.is_user = false;
+        }
 
-  public ngOnInit() {
-    this.steemiaProvider.dispatch_tag_search(this.searchTerm$, 10)
-      .takeUntil(this.destroyed$)
-      .subscribe(results => {
+        // Detect if the results are for users
+        else if (!results.offset) {
+          this.is_tag = false;
+          this.is_user = true;
+        }
+
         this.isSearching = false;
-        this.results = (results as any).results;
-        console.log(results)
+        this.results = results.results;
       });
-    // this.steemProvider
-    //   .getSearch(this.searchTerm$, "created", "desc")
-    //   .takeUntil(this.destroyed$)
-    //   .subscribe(results => {
-    //     this.isSearching = false;
-    //     this.results = results.results;
-    //   });
+      
   }
 
-  public ngOnDestroy() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
+  ionViewWillLeave() {
+    this.sub.unsubscribe(); // Remove subscription of the search observable
   }
 
   performSearch(event) {
-
     this.isSearching = true;
 
-    if (event === undefined) {
+    try {
+      event = event.trim()
+    }
+    catch (e) {} // length is not enough to trim it 
 
+    if (event === undefined || event === '') {
       this.isSearching = false;
       this.results = null;
+    }
 
-    } else {
+    else {
       this.searchTerm$.next(event);
     }
 
