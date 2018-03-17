@@ -4,7 +4,6 @@ import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 
-
 @IonicPage({
   priority: 'medium'
 })
@@ -35,7 +34,6 @@ export class VotesPage {
     this.steemia.dispatch_votes({
       url: this.permlink,
     }).then((votes: PostsRes) => {
-      this.votes = votes.results;
 
       if (votes.results.length < 1) {
         this.no_content = true;
@@ -44,6 +42,8 @@ export class VotesPage {
       if (this.slice > votes.results.length) {
         this.is_more = false;
       }
+
+      this.votes = votes.results;
 
       // Set the loading spinner to false
       this.is_loading = false

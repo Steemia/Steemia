@@ -81,6 +81,7 @@ export class SteemConnectProvider {
 
       // Save a reference of the login url for later use
       this.loginUrl = this.instance.getLoginURL();
+      console.log(this.loginUrl)
     })
 
 

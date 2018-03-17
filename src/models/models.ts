@@ -16,6 +16,7 @@ export interface Query {
     type?: string;
     category?: string;
     url?: string;
+    query?: string;
 }
 
 export interface PostsRes {

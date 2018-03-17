@@ -1,21 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query, PostsRes } from 'models/models';
-import { POSTS,
-         OWN_POSTS, 
-         BASE_API, 
-         BASE_API_V1, 
-         STEEPSHOT_BASE, 
-         STEEM_API,
-         FEED,
-         STEEPSHOT_BASE_V1_1 } from '../../constants/constants';
+import {
+  POSTS,
+  OWN_POSTS,
+  BASE_API,
+  BASE_API_V1,
+  STEEPSHOT_BASE,
+  STEEM_API,
+  FEED,
+  STEEPSHOT_BASE_V1_1,
+  USER_SEARCH
+} from '../../constants/constants';
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/debounceTime";
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/share';
+import 'rxjs/add/observable/of';
 
+/**
+ * 
+ * Class with Steemia API methods
+ * 
+ * @author Jayser Mendez
+ * @version 0.0.1
+ * 
+ */
 
 
 @Injectable()
@@ -23,9 +35,9 @@ export class SteemiaProvider {
 
   private username: string = '';
 
-  constructor(public http: HttpClient, 
-  public util: UtilProvider,
-  private steemConnect: SteemConnectProvider) {
+  constructor(public http: HttpClient,
+    public util: UtilProvider,
+    private steemConnect: SteemConnectProvider) {
 
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
@@ -35,37 +47,78 @@ export class SteemiaProvider {
   }
 
   /**
-   * @method dispatch_tag_search: Perform the search with observables
-   * @param term: Observable object for the search
+   * @method dispatch_search: Method to dispatch the search
+   * @param {Observable<string>} term 
+   * @param {number} limit 
    */
-  public dispatch_tag_search(term: Observable<string>, limit: number) {
-    return term.debounceTime(400)
-      .switchMap((value: string) => this.get_tag_search(value, limit));
+  public dispatch_search(term: Observable<string>, limit: number) {
+    return term.debounceTime(2500)
+      .switchMap((value: string) => this.get_search(value, limit));
   }
 
+  /**
+   * @method get_search: Prepare the http call for the search
+   * @param {String} term: String with the search term
+   * @param {Number} limit: Limit of items to return
+   */
+  private get_search(value: string, limit) {
 
-  private get_tag_search(term: string, limit: number) {
+    let que: Query;
+    let result: any;
 
-    // Variable to hold the search term
-    let searchTerm;
+    // If the search is for an user
+    if (value[0] === '@') {
+      value = value.substr(1);
 
-    // If it has more than 2 words, split it and choose the first one
-    searchTerm = term.split(' ')[0];
+      if (this.isEmpty(value) === true) {
+        return Observable.of({ error: 'value is empty' })
+      }
 
-    // compose the query for the parameters
-    let que: Query = {
-      limit: limit,
-      show_nsfw: 0,
-      show_low_rated: 0,
-      with_body: 1
-    };
+      que = {
+        show_low_rated: 0,
+        show_nsfw: 0,
+        query: value
+      };
 
-    if (this.username !== null || this.username !== undefined || this.username !== '') {
-      que.username = this.username;
+      // If the user is logged in, include it into the query
+      if (this.isEmpty(this.username) === false) {
+        que.username = this.username;
+      }
+      result = this.http.get(USER_SEARCH + this.util.encodeQueryData(que))
     }
 
-    return this.http.get(POSTS + searchTerm + '/hot?' + this.util.encodeQueryData(que))
-      .share()
+    else if (this.isEmpty(value) === true) {
+      return Observable.of({ error: 'value is empty' })
+    }
+
+    // Otherwise, it is a tag search
+    else {
+      value = value.split(' ')[0];
+      value = value.replace(/[^0-9a-z]/gi, '');
+
+      que = {
+        limit: limit,
+        show_nsfw: 0,
+        show_low_rated: 0,
+        with_body: 1
+      };
+
+      // If the user is logged in, include it into the query
+      if (this.isEmpty(this.username) === false) {
+        que.username = this.username;
+      }
+      
+      result = this.http.get(POSTS + value + '/hot?' + this.util.encodeQueryData(que))
+        .share()
+    }
+
+    // Return the prepared http call
+    return result;
+
+  }
+
+  isEmpty(value) {
+    return value === '' || value === ' ' || value === null || value === undefined
   }
 
   /**
@@ -147,7 +200,7 @@ export class SteemiaProvider {
     if (query.category) {
       return this.get_posts(query.type, que, query.category).toPromise();
     }
-    
+
     return this.get_posts(query.type, que).toPromise();
   }
 
@@ -182,7 +235,7 @@ export class SteemiaProvider {
       que.offset = query.offset;
     }
 
-    return this.get_profile_posts(query.username,que).toPromise();
+    return this.get_profile_posts(query.username, que).toPromise();
   }
 
   /**
@@ -206,7 +259,7 @@ export class SteemiaProvider {
         show_low_rated: 0
       })).share().toPromise();
     }
-    
+
   }
 
   /**
@@ -227,7 +280,7 @@ export class SteemiaProvider {
       que.offset = query.offset;
     }
     return this.http.get(BASE_API + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que))
-            .share().toPromise();
+      .share().toPromise();
   }
 
 
@@ -241,12 +294,12 @@ export class SteemiaProvider {
     return this.http.get(BASE_API + 'user/' + username + '/info').share().toPromise();
   }
 
-   /**
-   * Public method to dispatch votes data
-   * 
-   * @method dispatch_votes
-   * @param {Query} query: Object with data for query
-   */
+  /**
+  * Public method to dispatch votes data
+  * 
+  * @method dispatch_votes
+  * @param {Query} query: Object with data for query
+  */
   public dispatch_votes(query: Query) {
     let que: Query = {
       username: query.current_user
@@ -256,7 +309,7 @@ export class SteemiaProvider {
       que.offset = query.offset;
     }
     return this.http.get(STEEPSHOT_BASE + 'post/' + query.url + '/voters?')
-            .share().toPromise();
+      .share().toPromise();
 
   }
 
@@ -267,7 +320,7 @@ export class SteemiaProvider {
    * @param {string} account: Username of the user
    */
   public dispatch_account(account) {
-    return this.http.get(STEEM_API + 'get_accounts?names[]=%5B%22'+account+'%22%5D')
+    return this.http.get(STEEM_API + 'get_accounts?names[]=%5B%22' + account + '%22%5D')
       .share().toPromise();
   }
 
@@ -300,7 +353,7 @@ export class SteemiaProvider {
 
     let url = permlink.split('/')[4];
 
-    return this.http.get(STEEM_API + 'get_content?' +  this.util.encodeQueryData({author: author, permlink: url}))
+    return this.http.get(STEEM_API + 'get_content?' + this.util.encodeQueryData({ author: author, permlink: url }))
       .share().toPromise();
   }
 

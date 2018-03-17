@@ -8,6 +8,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { IonicModule } from 'ionic-angular';
 import { NoDataComponent } from './no-data/no-data';
 import { WalletItemComponent } from './wallet-item/wallet-item';
+import { UserItemComponent } from './user-item/user-item';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { WalletItemComponent } from './wallet-item/wallet-item';
 		PostCardComponent,
 		PostRenderComponent,
 		NoDataComponent,
-		WalletItemComponent
+		WalletItemComponent,
+    UserItemComponent
 	],
 
 	imports: [
@@ -29,7 +31,8 @@ import { WalletItemComponent } from './wallet-item/wallet-item';
 		PostCardComponent,
 		PostRenderComponent,
 		NoDataComponent,
-		WalletItemComponent
+		WalletItemComponent,
+    UserItemComponent
 	]
 })
 export class ComponentsModule { }

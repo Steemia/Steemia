@@ -4,6 +4,7 @@ export const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
 export const BASE_API_V1 = 'https://steepshot.org/api/steemia/v1/';
 export const STEEPSHOT_BASE = 'https://steepshot.org/api/v1/';
 export const STEEPSHOT_BASE_V1_1 = 'https://steepshot.org/api/v1_1/';
+export const USER_SEARCH = BASE_API + 'user/search?';
 export const FEED = BASE_API + 'recent?';
 export const POSTS = BASE_API + 'posts/';
 export const OWN_POSTS = BASE_API + 'user/';

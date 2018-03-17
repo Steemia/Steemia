@@ -88,9 +88,7 @@ export class CommentsPage {
         this.is_more = false;
       }
       
-      else {
-        this.comments = comments.results.reverse();
-      }
+      this.comments = comments.results.reverse();
 
       // Set the loading spinner to false
       this.is_loading = false;

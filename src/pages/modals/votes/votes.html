@@ -14,8 +14,7 @@
 
   <no-data *ngIf="no_content == true" icon="chatbubbles" title="This post does not have any comments, YET!">
   </no-data>
-  <ion-list>
-      
+  <ion-list>  
     <ion-item *ngFor="let voter of votes | slice:0:slice;">
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">
         <img [src]="util.renderImage('profile', voter.profile_image)" (error)="util.imgError('profile',$event)" />
