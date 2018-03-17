@@ -1,6 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 /**
+ * Wallet Item Class
+ * 
+ * @author Jayser Mendez
+ * @version 0.0.1
  * 
  */
 
