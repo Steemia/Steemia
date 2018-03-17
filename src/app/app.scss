@@ -154,6 +154,80 @@ div::-webkit-scrollbar-thumb {
   margin: 0 -5px !important;
 }
 
+// ANDROID POPOVER
+
+
+.popover-content {
+  width: 98% !important;
+  left: 1% !important;
+}
+
+.popover-md .popover-arrow {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  width: 20px;
+  height: 10px;
+}
+
+.popover-md .popover-arrow::after {
+  left: 3px;
+  top: 3px;
+  border-radius: 3px;
+  position: absolute;
+  z-index: 10;
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  content: "";
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.popover-md.popover-bottom .popover-arrow {
+  top: auto;
+  bottom: -10px;
+}
+
+.popover-md.popover-bottom .popover-arrow::after {
+  top: -6px;
+}
+
+.popover-md .item-md {
+  padding-left: 16px;
+}
+
+.popover-ios .item-ios[detail-push] .item-inner,
+.popover-ios button.item-ios:not([detail-none]) .item-inner,
+.popover-ios a.item-ios:not([detail-none]) .item-inner {
+  background-position: right 14px center;
+}
+
+.popover-md .item-md[detail-push] .item-inner,
+.popover-md button.item-md:not([detail-none]) .item-inner,
+.popover-md a.item-md:not([detail-none]) .item-inner {
+  background-position: right 14px center;
+}
+
+.popover-md .popover-content {
+  border-radius: 10px;
+  width: 200px;
+  min-width: 0;
+  min-height: 0;
+  max-height: 90%;
+  color: #000;
+  background: #fff;
+  box-shadow: none;
+  border-left: 1px solid #d2cfcf;
+  border-right: 1px solid #d2cfcf;
+  border-bottom: 1px solid #d2cfcf;
+}
+
+.popover-md .popover-viewport {
+  opacity: 0;
+  -webkit-transition-delay: 100ms;
+  transition-delay: 100ms;
+}
 
 // MATERIAL DESIGN ICONS
 
