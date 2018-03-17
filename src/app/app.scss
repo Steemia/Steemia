@@ -341,3 +341,11 @@ div::-webkit-scrollbar-thumb {
   @extend .mdi-icons-general;
   content: "\F004";
 }
+
+// DRAW ICON
+.ion-ios-mdi-message-draw::before,
+.ion-ios-mdi-message-draw-outline::before,
+.ion-md-mdi-message-draw::before {
+  @extend .mdi-icons-general;
+  content: "\F363";
+}
