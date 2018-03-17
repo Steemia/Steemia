@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST } from '../../constants/constants';
 
@@ -11,8 +12,29 @@ import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST } from '../../constants/con
 
 @Injectable()
 export class UtilProvider {
-  
-  constructor() {}
+  public upvote: number;
+
+  constructor(public storage: Storage) {}
+
+  /**
+   * Method to set default vote value
+   * @param vote 
+   */
+  public setVoteValue(vote) {
+    this.storage.set('vote_value', vote).then(() => { });
+  }
+
+  /**
+   * Method to get default vote value
+   */
+  public getVoteValue() {
+    return new Promise((resolve, reject) => {
+      this.storage.get('vote_value').then((vote) => {
+        if (vote) resolve(vote)
+        else resolve(null)
+      })
+    })
+  }
 
   /**
    * Method to replace broken images with placeholder

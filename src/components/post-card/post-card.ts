@@ -1,10 +1,14 @@
 import { Component, Input} from '@angular/core';
-import { App, ModalController } from 'ionic-angular';
+import { App, ModalController, PopoverController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
+// PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { AlertsProvider } from 'providers/alerts/alerts';
+// PAGES
+import { VotingSliderPage } from './../../pages/voting-slider/voting-slider';
+
 
 @Component({
   selector: 'post-card',
@@ -14,9 +18,11 @@ export class PostCardComponent {
 
   @Input('post') content: any;
   private is_voting: boolean = false;
+  public popover;
 
   constructor(private app: App,
     private modalCtrl: ModalController,
+    public popoverCtrl: PopoverController,
     private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
     public util: UtilProvider,
@@ -31,6 +37,22 @@ export class PostCardComponent {
     this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
     this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
+  }
+
+  /**
+   * Method to open the voting-slider popover
+   */
+  presentPopover(myEvent) {
+    this.popover = this.popoverCtrl.create(VotingSliderPage, this.content);
+    this.popover.present({
+      ev: myEvent
+    });
+
+    this.popover.onDidDismiss(data => {
+      console.log('data');
+      console.log(data);
+      this.refreshPost();
+    })
   }
 
   /**
@@ -115,6 +137,7 @@ export class PostCardComponent {
     this.steemiaProvider.dispatch_post_single({
       url: this.content.url
     }).then(data => {
+      this.content.vote = (data as any).vote;
       this.content.net_likes = (data as any).net_likes;
       this.content.net_votes = (data as any).net_votes;
       this.content.top_likers_avatars = (data as any).top_likers_avatars;
