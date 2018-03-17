@@ -156,6 +156,9 @@ div::-webkit-scrollbar-thumb {
 
 // ANDROID POPOVER
 
+.popover-viewport {
+  opacity: 1 !important;
+}
 
 .popover-content {
   width: 98% !important;
