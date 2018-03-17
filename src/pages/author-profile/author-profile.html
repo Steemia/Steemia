@@ -20,24 +20,21 @@
 
         <!-- Mock placeholder until data is loaded -->
         <ion-badge *ngIf="!account_data">
-          <ion-icon name="person-add"></ion-icon> Follow
+          <i class="fa fa-user-plus"></i> Follow
         </ion-badge>
 
         <!-- If you have not follow this user -->
         <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
-          <ion-icon name="person-add"></ion-icon> Follow
+          <i class="fa fa-user-plus"></i> Follow
         </ion-badge>
 
         <!-- If you have follow this user -->
         <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
-          <ion-icon name="person-add"></ion-icon> Unfollow
+          <i class="fa fa-user-times"></i> Unfollow
         </ion-badge>
-
+        
         <ion-badge>
-          <ion-icon name="volume-off"></ion-icon> Block
-        </ion-badge>
-        <ion-badge>
-          <ion-icon name="chatbubbles"></ion-icon> Chat
+          <i class="fa fa-comments-o"></i> Chat
         </ion-badge>
       </span>
       <span class="infos_nick">
