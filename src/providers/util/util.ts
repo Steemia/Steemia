@@ -12,7 +12,7 @@ import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST } from '../../constants/con
 
 @Injectable()
 export class UtilProvider {
-  public upvote: number = 1;
+  public upvote: any = 1;
 
   constructor(public storage: Storage) {}
 
