@@ -6,9 +6,9 @@
       </ion-note> -->
   
       <ion-item>
-        <ion-avatar item-start tappable (click)="openProfile(content.author)">
-          <img-loader [src]="util.renderImage('profile', content.avatar)" useImg></img-loader>
-        </ion-avatar>
+          <ion-avatar item-start tappable (click)="openProfile(content.author)">
+            <img [src]="util.renderImage('profile', content.avatar)" (error)="util.imgError('profile',$event)"/>
+          </ion-avatar>
         <div>
           <ion-badge color="primary" tappable (click)="openProfile(content.author)"> {{ content.author }}</ion-badge>
           <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
