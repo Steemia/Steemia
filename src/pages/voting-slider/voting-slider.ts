@@ -43,9 +43,8 @@ export class VotingSliderPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad VotingSliderPage');
     this.util.getVoteValue().then(value => {
-      this.upvote = value;
+      this.upvote = (value as any);
     });
   }
   close() {
@@ -55,6 +54,7 @@ export class VotingSliderPage {
   onChangeUpvote() {
     console.log(this.upvote);
   }
+
   public tryUpvote(upvote) {
     this.author = this.navParams.get('author');
     this.url = this.navParams.get('url');
