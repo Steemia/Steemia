@@ -1,4 +1,13 @@
 post-card {
+      
+      .upvote {
+            font-size: 1.8em;
+            color: gray !important;
+      }
+      .unvote {
+            font-size: 1.8em;
+            color: #488aff !important;
+      }
 
       #postImage { 
             height: 280px; 

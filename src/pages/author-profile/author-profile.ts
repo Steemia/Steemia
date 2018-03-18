@@ -17,8 +17,14 @@ export class AuthorProfilePage {
 
   private sections: string = "blog";
   private account_data: Object;
+  private steem_account_data: Object;
   private username: string;
   private current_user: string;
+
+  private reward_vesting_steem;
+  private reward_vesting_balance;
+  private vesting_shares;
+  private effective_sp;
 
   private contents: Array<any> = [];
   private offset: string = null;
@@ -61,6 +67,7 @@ export class AuthorProfilePage {
     });
 
     this.get_account();
+    this.getSteemProfile();
   }
 
   /**
@@ -146,6 +153,30 @@ export class AuthorProfilePage {
       this.account_data = data;
       loading.dismiss();
     });
+  }
+
+  /**
+   * Method to get account data with steem balance
+   */
+  private getSteemProfile() {
+    this.steemia.dispatch_account(this.username).then(data => {
+      this.steem_account_data = data;
+      this.reward_vesting_steem = data[0].reward_vesting_steem;
+      this.vesting_shares = data[0].vesting_shares;
+      this.reward_vesting_balance = data[0].reward_vesting_balance;
+      console.log(this.steem_account_data);
+      this.calculateSP();
+    });
+  }
+  
+  /**
+   * Method to calculate effective steem power
+   */
+  private calculateSP() {
+    this.effective_sp = parseFloat(this.reward_vesting_steem) * (parseFloat(this.vesting_shares) / parseFloat(this.reward_vesting_balance));
+    this.effective_sp = (this.effective_sp).toFixed(0);
+    console.log('----effective_sp----');
+    console.log(this.effective_sp);
   }
 
   /**

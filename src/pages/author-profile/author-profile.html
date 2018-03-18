@@ -20,24 +20,21 @@
 
         <!-- Mock placeholder until data is loaded -->
         <ion-badge *ngIf="!account_data">
-          <ion-icon name="person-add"></ion-icon> Follow
+          <i class="fa fa-user-plus"></i> Follow
         </ion-badge>
 
         <!-- If you have not follow this user -->
         <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
-          <ion-icon name="person-add"></ion-icon> Follow
+          <i class="fa fa-user-plus"></i> Follow
         </ion-badge>
 
         <!-- If you have follow this user -->
         <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
-          <ion-icon name="person-add"></ion-icon> Unfollow
+          <i class="fa fa-user-times"></i> Unfollow
         </ion-badge>
-
+        
         <ion-badge>
-          <ion-icon name="volume-off"></ion-icon> Block
-        </ion-badge>
-        <ion-badge>
-          <ion-icon name="chatbubbles"></ion-icon> Chat
+          <i class="fa fa-comments-o"></i> Chat
         </ion-badge>
       </span>
       <span class="infos_nick">
@@ -141,42 +138,21 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM</h2>
-            <p>2.250 STEEM</p>
+            <p>{{ steem_account_data[0]?.balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>SBD</h2>
-            <p>30.250 SBD</p>
+            <p>{{ steem_account_data[0]?.sbd_balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>2.250 SP</p>
-          </ion-item>
-          <ion-item>
-            <ion-avatar item-start>
-              <img src="assets/bitcoin.png">
-            </ion-avatar>
-            <h2>Bitcoin</h2>
-            <p>0.050 BTC</p>
-          </ion-item>
-          <ion-item>
-            <ion-avatar item-start>
-              <img src="assets/ethereum.png">
-            </ion-avatar>
-            <h2>Ethereum</h2>
-            <p>1.250 ETH</p>
-          </ion-item>
-          <ion-item>
-            <ion-avatar item-start>
-              <img src="assets/litecoin.png">
-            </ion-avatar>
-            <h2>Litecoin</h2>
-            <p>2.000 LTC</p>
+            <p>{{ effective_sp }} SP</p>
           </ion-item>
         </ion-list>
       </div>

@@ -6,10 +6,16 @@
       </ion-note> -->
   
       <ion-item>
+<<<<<<< HEAD
         <ion-avatar item-start tappable (click)="openProfile(content.author)">
             <img [src]="util.renderImage('profile', content.avatar)" (error)="util.imgError('profile',$event)"/>
          
         </ion-avatar>
+=======
+          <ion-avatar item-start tappable (click)="openProfile(content.author)">
+            <img [src]="util.renderImage('profile', content.avatar)" (error)="util.imgError('profile',$event)"/>
+          </ion-avatar>
+>>>>>>> voting-slider
         <div>
           <ion-badge color="primary" tappable (click)="openProfile(content.author)"> {{ content.author }}</ion-badge>
           <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
@@ -21,9 +27,9 @@
           </ion-badge>
           <ion-note end>{{ content.created | amTimeAgo }}</ion-note>
         </div>
-        <ion-icon *ngIf="!content.vote && is_voting == false" name="mdi-thumb-up-outline" item-right (tap)="castVote(content.author, content.url, 10000);"></ion-icon>
-  
-        <ion-icon *ngIf="content?.vote && is_voting == false" name="mdi-thumb-up" item-right color="primary" (tap)="castVote(content.author, content.url, 0);"></ion-icon>
+        <i *ngIf="!content.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event)"></i>
+       
+        <i *ngIf="content?.vote && is_voting == false" class="fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(content.author, content.url, 0);"></i>
   
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
       </ion-item>
