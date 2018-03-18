@@ -1,7 +1,7 @@
 <ion-content class="popover-page">
   <ion-item>
     <ion-range range-dark max="100" min="1" [(ngModel)]="upvote" (ngModelChange)="onChangeUpvote($event)">
-      <ion-label range-left> {{ upvote }} </ion-label>
+      <ion-label range-left> {{ upvote }}% </ion-label>
       <ion-spinner *ngIf="is_voting == true" range-right item-right></ion-spinner>
       <ion-icon *ngIf="!is_voting" range-right (tap)="tryUpvote(upvote)" name="md-checkmark-circle-outline"></ion-icon>
     </ion-range>

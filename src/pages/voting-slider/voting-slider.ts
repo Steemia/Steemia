@@ -20,7 +20,7 @@ import { SteemiaProvider } from './../../providers/steemia/steemia';
 })
 export class VotingSliderPage {
   private is_voting: boolean = false;
-  public upvote;
+  public upvote = 1;
   public author;
   public url;
   public content;

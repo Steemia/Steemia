@@ -6,13 +6,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { AlertsProvider } from 'providers/alerts/alerts';
-<<<<<<< HEAD
 import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
-=======
-// PAGES
-import { VotingSliderPage } from './../../pages/voting-slider/voting-slider';
-
->>>>>>> voting-slider
 
 @Component({
   selector: 'post-card',
@@ -48,7 +42,7 @@ export class PostCardComponent {
    * Method to open the voting-slider popover
    */
   presentPopover(myEvent) {
-    this.popover = this.popoverCtrl.create(VotingSliderPage, this.content);
+    this.popover = this.popoverCtrl.create('VotingSliderPage', this.content);
     this.popover.present({
       ev: myEvent
     });
