@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 
@@ -37,6 +37,7 @@ export class ProfilePage {
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
+    private modalCtrl: ModalController,
     public loadingCtrl: LoadingController) {
 
     this.username = this.navParams.get('author');
@@ -50,6 +51,11 @@ export class ProfilePage {
 
     this.get_account();
     this.getSteemProfile();
+  }
+
+  public presentProfileModal() {
+    let profileModal = this.modalCtrl.create('EditProfilePage');
+    profileModal.present();
   }
 
   /**
