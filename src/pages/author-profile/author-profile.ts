@@ -1,4 +1,4 @@
-import { UtilProvider } from './../../../../SteemiaUpdate/src/providers/util/util';
+import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
