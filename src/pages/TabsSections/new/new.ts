@@ -1,3 +1,4 @@
+import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, PopoverController, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
@@ -33,6 +34,7 @@ export class NewPage {
     private zone: NgZone,
     private appCtrl: App,
     private cdr: ChangeDetectorRef,
+    public util: UtilProvider,
     public popoverCtrl: PopoverController,
     private steemConnect: SteemConnectProvider) {
   }

@@ -10,7 +10,7 @@ export const newTemplate = `
 
   <ion-item *ngIf="!is_loading && is_logged" no-lines class="share-post" (click)="openPage('PostPage')">
     <ion-avatar item-start>
-      <img [src]="profile_pc" />
+      <img [src]="profile_pc" (error)="util.imgError('profile',$event)"/>
     </ion-avatar>
     <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
     </ion-searchbar>

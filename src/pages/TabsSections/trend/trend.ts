@@ -1,3 +1,4 @@
+import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { PostsRes } from 'models/models';
@@ -29,7 +30,8 @@ export class TrendPage {
   private user: Object;
   private profile_pc: string = 'assets/user.png';
 
-  constructor(private steemia: SteemiaProvider,
+  constructor(public util: UtilProvider,
+    private steemia: SteemiaProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemConnect: SteemConnectProvider) { }
