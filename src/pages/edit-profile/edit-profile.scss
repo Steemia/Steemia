@@ -1,3 +1,40 @@
 page-edit-profile {
-
+    .item-md ion-avatar img {
+        margin: auto;
+        width: 100px;
+        height: 100px;
+        border: 2px solid white;
+    }
+    .item-ios ion-avatar img {
+        margin: auto;
+        width: 100px;
+        height: 100px;
+    }
+    .item-md {
+        background-color: transparent;
+        border-top: 1px solid lightgray;
+    //  border-bottom: 1px solid lightgray;
+    }
+    .item-ios {
+        background-color: transparent;
+        border-bottom: 1px solid lightgray;
+    }
+    .list-ios > .item-block {
+        border: none !important;
+    }
+    .list-md .item-block .item-inner {
+        border: none;
+    }
+    .list-ios .item-block .item-inner {
+        border: none;
+    }
+    .list-header-md {
+        border: none;
+        margin-bottom: 0px;
+    }
+    .background {
+        background-image: url('https://blog.csiro.au/wp-content/uploads/2016/11/blockchain.jpg');
+        background-size: cover;
+    }
+    
 }

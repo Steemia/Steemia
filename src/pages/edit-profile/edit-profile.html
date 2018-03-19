@@ -1,18 +1,101 @@
-<!--
-  Generated template for the EditProfilePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>edit-profile</ion-title>
+  <ion-navbar color="primary">
+      <button ion-button (tap)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+    <ion-title>Edit Profile</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-avatar>
+        <img src="https://img.busy.org/@hsynterkr?s=200">
+      </ion-avatar>
+    </ion-item>
+    <ion-list-header>
+      NAME
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="contact" item-start></ion-icon>
+      <ion-label>
+        Huseyin Terkir
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('name')">Edit</button>
+    </ion-item>
 
+    <ion-list-header>
+      ABOUT
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="information-circle" item-start></ion-icon>
+      <ion-label>
+        Steemia
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('about')">Edit</button>
+    </ion-item>
+
+    <ion-list-header>
+      LOCATION
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="pin" item-start></ion-icon>
+      <ion-label>
+        New York City
+      </ion-label>
+      <button ion-button clear item-end  (click)="showPrompt('location')">Edit</button>
+    </ion-item>
+
+    <ion-list-header>
+      WEBSITE
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="globe" item-start></ion-icon>
+      <ion-label>
+        Huseyin Terkir
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('website')">Edit</button>
+    </ion-item>
+
+    <ion-list-header>
+      SOCIAL ACCOUNTS
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="logo-facebook" item-start></ion-icon>
+      <ion-label>
+        @hsynterkr
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('facebook')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-github" item-start></ion-icon>
+      <ion-label>
+        @hsynterkr
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('github')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-twitter" item-start></ion-icon>
+      <ion-label item-right>
+        @hsynterkr
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('twitter')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-instagram" item-start></ion-icon>
+      <ion-label item-end>
+        @hsynterkr
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('instagram')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-youtube" item-start></ion-icon>
+      <ion-label end>
+        @hsynterkr
+      </ion-label>
+      <button ion-button clear item-end (click)="showPrompt('youtube')">Edit</button>
+    </ion-item>
+  </ion-list>
 </ion-content>
