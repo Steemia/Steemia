@@ -1,6 +1,8 @@
+import { UtilProvider } from 'providers/util/util';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { Component, Input } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -8,12 +10,17 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController } 
   templateUrl: 'edit-profile.html',
 })
 export class EditProfilePage {
+  private account_data;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    public util: UtilProvider,
+    private steemia: SteemiaProvider,
     private browserTab: BrowserTab,
+    private loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public viewCtrl: ViewController) {
+      this.account_data = this.navParams.get('steem_account_data');
   }
 
   private saveInfo(input, value) {
@@ -35,7 +42,9 @@ export class EditProfilePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditProfilePage');
+    console.log(this.account_data);
   }
+
 
   public dismiss() {
     this.viewCtrl.dismiss();
@@ -43,12 +52,12 @@ export class EditProfilePage {
 
   public showPrompt(input) {
     let prompt = this.alertCtrl.create({
-      title: 'Edit your'+ input,
+      title: 'Submit your '+ input,
       message: "Click the Save button below to be redirected to SteemConnect to complete your transaction.",
       inputs: [
         {
           name: 'title',
-          placeholder: 'Change Info'
+          placeholder: 'Submit your '+ input +' here'
         },
       ],
       buttons: [

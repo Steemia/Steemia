@@ -12,7 +12,7 @@
   <ion-list>
     <ion-item>
       <ion-avatar>
-        <img src="https://img.busy.org/@hsynterkr?s=200">
+        <img src="{{ account_data?.profile.profile_image }}" (error)="util.imgError('profile',$event)"> 
       </ion-avatar>
     </ion-item>
     <ion-list-header>
@@ -21,7 +21,7 @@
     <ion-item>
       <ion-icon name="contact" item-start></ion-icon>
       <ion-label>
-        Huseyin Terkir
+        {{ account_data?.profile.name }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('name')">Edit</button>
     </ion-item>
@@ -32,7 +32,7 @@
     <ion-item>
       <ion-icon name="information-circle" item-start></ion-icon>
       <ion-label>
-        Steemia
+        {{ account_data?.profile.about }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('about')">Edit</button>
     </ion-item>
@@ -43,7 +43,7 @@
     <ion-item>
       <ion-icon name="pin" item-start></ion-icon>
       <ion-label>
-        New York City
+        {{ account_data?.profile.location }}
       </ion-label>
       <button ion-button clear item-end  (click)="showPrompt('location')">Edit</button>
     </ion-item>
@@ -54,7 +54,7 @@
     <ion-item>
       <ion-icon name="globe" item-start></ion-icon>
       <ion-label>
-        Huseyin Terkir
+        {{ account_data?.profile.website }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('website')">Edit</button>
     </ion-item>
@@ -65,35 +65,35 @@
     <ion-item>
       <ion-icon name="logo-facebook" item-start></ion-icon>
       <ion-label>
-        @hsynterkr
+        @{{ account_data?.profile.facebook }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('facebook')">Edit</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-github" item-start></ion-icon>
       <ion-label>
-        @hsynterkr
+        @{{ account_data?.profile.github }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('github')">Edit</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-twitter" item-start></ion-icon>
       <ion-label item-right>
-        @hsynterkr
+        @{{ account_data?.profile.twitter }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('twitter')">Edit</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-instagram" item-start></ion-icon>
       <ion-label item-end>
-        @hsynterkr
+        @{{ account_data?.profile.instagram }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('instagram')">Edit</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-youtube" item-start></ion-icon>
       <ion-label end>
-        @hsynterkr
+        @{{ account_data?.profile.youtube }}
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('youtube')">Edit</button>
     </ion-item>

@@ -54,7 +54,7 @@ export class ProfilePage {
   }
 
   public presentProfileModal() {
-    let profileModal = this.modalCtrl.create('EditProfilePage');
+    let profileModal = this.modalCtrl.create('EditProfilePage', {steem_account_data: JSON.parse(this.steem_account_data[0].json_metadata)});
     profileModal.present();
   }
 
