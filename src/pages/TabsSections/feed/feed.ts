@@ -32,7 +32,8 @@ export class FeedPage {
     private zone: NgZone,
     public util: UtilProvider,
     private cdr: ChangeDetectorRef,
-    private steemia: SteemiaProvider) { }
+    private steemia: SteemiaProvider) {
+  }
 
   ionViewDidLoad() {
 

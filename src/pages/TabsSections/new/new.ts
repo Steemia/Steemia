@@ -36,8 +36,7 @@ export class NewPage {
     private cdr: ChangeDetectorRef,
     public util: UtilProvider,
     public popoverCtrl: PopoverController,
-    private steemConnect: SteemConnectProvider) {
-  }
+    private steemConnect: SteemConnectProvider) {}
 
   ionViewDidLoad() {
     this.steemConnect.status.subscribe(res => {

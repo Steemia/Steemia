@@ -26,6 +26,7 @@ import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { SecureStorage } from '@ionic-native/secure-storage';
 import { SecureStorageMock } from '@ionic-native-mocks/secure-storage';
+import { GoogleAnalyticsMock } from '@ionic-native-mocks/google-analytics';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -38,7 +39,8 @@ import { UtilProvider } from '../providers/util/util';
 import { AlertsProvider } from '../providers/alerts/alerts';
 import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
 import { CryptoProvider } from '../providers/crypto-api/crypto-api';
-
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { GoogleTrackingProvider } from '../providers/google-tracking/google-tracking';
 
 @NgModule({
   declarations: [
@@ -86,8 +88,11 @@ import { CryptoProvider } from '../providers/crypto-api/crypto-api';
     Camera,
     SteemiaLogProvider,
     CryptoProvider,
-    //SecureStorage // Only for prod dev
-    { provide: SecureStorage, useClass: SecureStorageMock } // Only for local dev
+    //SecureStorage, // Only for prod build
+    { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
+    GoogleTrackingProvider,
+    //GoogleAnalytics,
+    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock }
   ]
 })
 export class AppModule {}

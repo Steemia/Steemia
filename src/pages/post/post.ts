@@ -1,5 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, ViewController, ActionSheetController, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, 
+         ViewController, 
+         ActionSheetController, 
+         LoadingController, 
+         ToastController,
+         NavController } from 'ionic-angular';
 import marked from 'marked';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -7,8 +12,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
-
-
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage()
 @Component({
@@ -33,7 +37,9 @@ export class PostPage {
     public actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     private steemActions: SteeemActionsProvider,
+    private navCtrl: NavController,
     private transfer: FileTransfer,
+    private alerts: AlertsProvider,
     private camera: Camera,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
@@ -143,15 +149,34 @@ export class PostPage {
 
   private post() {
     if (this.storyForm.valid) {
+      let loading = this.loadingCtrl.create({
+        content: 'We are posting your amazing story 💯'
+      });
+
+      loading.present();
       let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
       this.steemActions.dispatch_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
         tags, this.upvote, this.rewards).then(res => {
-          this.steemiaLog.log_post().then(res => {
-            console.log('log', res)
-          });
-          console.log(res)
+
+          if (res === 'not-logged-in') {
+            // Show alert telling the user that needs to login
+            loading.dismiss();
+          }
+
+          if (res === 'Correct') {
+            loading.dismiss();
+            this.alerts.display_toast('Post was posted correctly!').present();
+            this.navCtrl.pop();
+            // Close page and tell the user that it was posted correctly
+            console.log('posted correctly')
+          }
+
+          else {
+            loading.dismiss();
+          }
+
         });
 
     }

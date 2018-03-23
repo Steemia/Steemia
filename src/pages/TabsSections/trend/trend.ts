@@ -34,8 +34,9 @@ export class TrendPage {
     private steemia: SteemiaProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private steemConnect: SteemConnectProvider) { }
+    private steemConnect: SteemConnectProvider) { 
 
+    }
 
     ionViewDidLoad() {
       this.steemConnect.status.subscribe(res => {

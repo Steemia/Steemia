@@ -5,8 +5,7 @@ import { ImageLoaderConfig } from 'ionic-image-loader';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
-import { AlertsProvider } from 'providers/alerts/alerts';
-import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @Component({
   selector: 'post-card',
@@ -24,9 +23,8 @@ export class PostCardComponent {
     private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
     public util: UtilProvider,
-    private alerts: AlertsProvider,
-    private steemiaProvider: SteemiaProvider,
-    private steemiaLog: SteemiaLogProvider) {
+    private steemConnect: SteemConnectProvider,
+    private steemiaProvider: SteemiaProvider) {
 
     this.imageLoaderConfig.setBackgroundSize('cover');
     this.imageLoaderConfig.setHeight('200px');
@@ -42,16 +40,14 @@ export class PostCardComponent {
    * Method to open the voting-slider popover
    */
   presentPopover(myEvent) {
-    this.popover = this.popoverCtrl.create('VotingSliderPage', this.content);
+    this.popover = this.popoverCtrl.create('VotingSliderPage');
     this.popover.present({
       ev: myEvent
     });
 
     this.popover.onDidDismiss(data => {
-      console.log('data');
-      console.log(data);
-      this.refreshPost();
-    })
+      this.castVote(this.content.author, this.content.url, data.weight);
+    });
   }
 
   /**
@@ -69,9 +65,18 @@ export class PostCardComponent {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.app.getRootNavs()[0].push('AuthorProfilePage', {
-      author: author
-    })
+    if ((this.steemConnect.user_object as any).user == author) {
+      this.app.getRootNavs()[0].push('ProfilePage', {
+        author: (this.steemConnect.user_object as any).user
+      });
+    }
+
+    else {
+      this.app.getRootNavs()[0].push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
 
   /**
@@ -104,37 +109,19 @@ export class PostCardComponent {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-
     this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
-      if (data) {
 
-        // Catch if the user is not logged in and display an alert
-        if (data == 'not-logged') {
-          
-          this.alerts.display_alert('NOT_LOGGED_IN');
-          this.is_voting = false; // remove the spinner
-          return;
-        }
-
-        this.is_voting = false;
-
-        if (weight > 0) {
-          this.content.vote = true;
-          this.steemiaLog.log_vote(author, permlink); // log vote to server side
-        }
-
-        else {
-          this.content.vote = false;
-          this.steemiaLog.log_unvote(author, permlink); // Log unvote to server side
-        }
-
-        this.refreshPost();
-
+      this.is_voting = false; // remove the spinner
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') {
+        return;
       }
-    }).catch(err => {
-      
-      console.log(err); this.is_voting = false
+
+      if (data === 'Correct') {
+        this.refreshPost();
+      }
     });
+
   }
 
   private refreshPost() {

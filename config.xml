@@ -99,6 +99,7 @@
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
-    <engine name="browser" spec="~5.0.3" />
     <engine name="android" spec="~7.1.0" />
+    <plugin name="cordova-plugin-google-analytics" spec="^1.8.3" />
+    <engine name="browser" spec="~5.0.3" />
 </widget>

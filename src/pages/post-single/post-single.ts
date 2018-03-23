@@ -143,40 +143,29 @@ export class PostSinglePage {
     });
     loading.present();
     this.steemActions.dispatch_reblog(this.post.author, this.post.url).then(data => {
-      let msg = data;
-      console.log(data)
 
-      msg = msg.toString();
-      if (data) {
-
-        // Catch if the user is not logged in and display an alert
-        if (data === 'not-logged') {
-          loading.dismiss();
-          setTimeout(() => {
-            this.alerts.display_alert('NOT_LOGGED_IN');
-          }, 500);
-          return;
-        }
-
-        // Otherwise, it was reblogged correctly
-        else {
-          loading.dismiss();
-          this.steemiaLog.log_reblog()
-          setTimeout(() => {
-            this.alerts.display_alert('REBLOGGED_CORRECTLY');
-          }, 500);
-        }
+      // Catch if the user is not logged in and display an alert
+      if (data === 'not-logged') {
+        this.show_prompt(loading, 'NOT_LOGGED_IN');
+        return;
       }
-    }).catch(e => {
 
-      let include = e.error_description.includes(ERRORS.DUPLICATE_REBLOG.error);
-      if (include) {
-        loading.dismiss();
-        setTimeout(() => {
-          this.alerts.display_alert('ALREADY_REBLOGGED');
-        }, 500);
+      if (data === 'Correct') {
+        this.show_prompt(loading, 'REBLOGGED_CORRECTLY');
       }
+
+      if (data === 'ALREADY_REBLOGGED') {
+        this.show_prompt(loading, 'ALREADY_REBLOGGED');
+      }
+
     });
+  }
+
+  private show_prompt(loader, msg) {
+    loader.dismiss();
+    setTimeout(() => {
+      this.alerts.display_alert(msg);
+    }, 500);
   }
 
   private share() {

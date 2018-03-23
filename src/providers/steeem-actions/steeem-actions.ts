@@ -4,9 +4,13 @@ import {
   METADATA,
   MAX_ACCEPTED_PAYOUT,
   PERCENT_STEEM_DOLLARS,
-  OPERATIONS
+  OPERATIONS,
+  ERRORS
 } from '../../constants/constants';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
+import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 /**
  * Class with steem actions using SteemConnect V2
@@ -22,7 +26,10 @@ export class SteeemActionsProvider {
   private options: Object;
 
   constructor(private steemConnect: SteemConnectProvider,
-    private socialShare: SocialSharing) {
+    private socialShare: SocialSharing,
+    private ga: GoogleTrackingProvider,
+    private alerts: AlertsProvider,
+    private steemiaLog: SteemiaLogProvider) {
 
     // Subscribe to the logged in user so the broadcast actions can work
     this.steemConnect.status.subscribe(res => {
@@ -51,6 +58,7 @@ export class SteeemActionsProvider {
   public dispatch_vote(type: string, author: string, permlink: string, weight: number = 10000) {
 
     if (this.username === '' || this.username === null || this.username === undefined) {
+      this.alerts.display_alert('NOT_LOGGED_IN');
       return Promise.resolve('not-logged');
     }
 
@@ -63,7 +71,41 @@ export class SteeemActionsProvider {
       url = permlink.split('/')[4];
     }
 
-    return this.steemConnect.instance.vote(this.username, author, url, weight);
+    return new Promise(resolve => {
+      this.steemConnect.instance.vote(this.username, author, url, weight).then(data => {
+        if (data) {
+          if (weight > 0) {
+            if (type === 'posts') {
+              
+              this.steemiaLog.log_vote(author, permlink); // log vote to server side
+            }
+
+            else if (type === 'comment') {
+              this.steemiaLog.log_vote(author, url); // log vote to server side
+            }
+            
+            this.ga.track_event('Vote', 'Upvote', 'Weight', weight); // Send data to GA
+          }
+
+          else {
+            if (type === 'posts') {
+              
+              this.steemiaLog.log_vote(author, permlink); // log vote to server side
+            }
+
+            else if (type === 'comment') {
+              this.steemiaLog.log_unvote(author, url); // log vote to server side
+            }
+        
+            this.ga.track_event('Vote', 'Downvote', 'Weight', weight);
+          }
+
+          resolve('Correct')
+        }
+      }).catch(e => {
+        resolve('Error')
+      });
+    });
   }
 
   /**
@@ -77,7 +119,17 @@ export class SteeemActionsProvider {
       return Promise.resolve('not-logged');
     }
 
-    return this.steemConnect.instance.follow(this.username, user_to_follow);
+    return new Promise(resolve => {
+      this.steemConnect.instance.follow(this.username, user_to_follow).then(data => {
+        if (data) {
+          this.ga.track_event('Follow', 'follow', 'user', 1);
+          this.steemiaLog.log_follow(user_to_follow);
+          resolve('Correct');
+        }
+      }).catch(err => {
+        resolve('Error');
+      });
+    });
   }
 
   /**
@@ -91,7 +143,17 @@ export class SteeemActionsProvider {
       return Promise.resolve('not-logged');
     }
 
-    return this.steemConnect.instance.unfollow(this.username, user_to_unfollow);
+    return new Promise(resolve => {
+      this.steemConnect.instance.unfollow(this.username, user_to_unfollow).then(data => {
+        if (data) {
+          this.ga.track_event('Unfollow', 'unfollow', 'user', 0);
+          this.steemiaLog.log_unfollow(user_to_unfollow);
+          resolve('Correct');
+        }
+      }).catch(err => {
+        resolve('Error');
+      });
+    });
   }
 
   public dispatch_mute() {
@@ -111,7 +173,20 @@ export class SteeemActionsProvider {
       return Promise.resolve('not-logged');
     }
 
-    return this.steemConnect.instance.reblog(this.username, author, url);
+    return new Promise(resolve => {
+      this.steemConnect.instance.reblog(this.username, author, url).then(data => {
+        if (data) {
+          this.ga.track_event('Reblog', 'reblog', 'Post', 1);
+          this.steemiaLog.log_reblog(); // TODO: Implement this function
+          resolve('Correct')
+        }
+      }).catch(e => {
+        let include = e.error_description.includes(ERRORS.DUPLICATE_REBLOG.error);
+        if (include) {
+          resolve('ALREADY_REBLOGGED');
+        }
+      });
+    });
   }
 
   /**
@@ -144,8 +219,22 @@ export class SteeemActionsProvider {
     let url = permlink.split('/')[3];
     let permUrl = this.commentPermlink('', url);
 
-    return this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA);
-
+    return new Promise(resolve => {
+      this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA).then(data => {
+        if (data) {
+          this.ga.track_event('Comment', 'comment', 'post', 1);
+          this.steemiaLog.log_comment(author, url).then(() => {
+            resolve('Correct');
+          });
+          
+        }
+      }).catch(e => {
+        let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
+        if (include) {
+          resolve('COMMENT_INTERVAL');
+        }
+      });
+    });
   }
 
   /**
@@ -155,6 +244,10 @@ export class SteeemActionsProvider {
    * @param {Array<string>} tags 
    */
   public dispatch_post(title: string, description: string, tags: Array<string>, upvote?: boolean, rewards?: string) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
 
     // Create the permlink for the new post
     let permlink = title.replace(/[^\w\s]/gi, '').replace(/\s\s+/g, '-').replace(/\s/g, '-').toLowerCase();
@@ -166,7 +259,6 @@ export class SteeemActionsProvider {
 
     // Push the tag Steemia to the post
     tags.push('steemia');
-
 
     let jsonMetadata = { tags: tags, app: `steemia/0.1`, format: 'markdown' };
 
@@ -197,7 +289,15 @@ export class SteeemActionsProvider {
       operations.push(self_vote);
     }
 
-    return this.steemConnect.instance.broadcast(operations);
+    return new Promise(resolve => {
+      this.steemConnect.instance.broadcast(operations).then(data => {
+        if (data) {
+          this.ga.track_event('Post', 'post', 'create', 1);
+          this.steemiaLog.log_post();
+          resolve('Correct')
+        }
+      })
+    });
   }
 
   /**
@@ -206,7 +306,7 @@ export class SteeemActionsProvider {
    * @param {String} permlink
    * @returns returns a promise
    */
-  public dispatch_flag(author: string, permlink: string) {
+  public dispatch_flag(author: string, permlink: string, type: string) {
 
     if (this.username === '' || this.username === null || this.username === undefined) {
       return Promise.resolve('not-logged');
@@ -214,7 +314,15 @@ export class SteeemActionsProvider {
 
     let url = permlink.split('/')[3];
 
-    return this.steemConnect.instance.vote(this.username, author, url, -1000);
+    return new Promise(resolve => {
+      this.steemConnect.instance.vote(this.username, author, url, -1000).then(data => {
+        if (data) {
+          this.ga.track_event('Flag', 'flag', type, 1);
+          this.steemiaLog.log_flag(author, permlink);
+          resolve('Correct');
+        }
+      })
+    });
   }
 
   /**

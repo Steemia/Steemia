@@ -257,7 +257,7 @@ export class AuthorProfilePage {
         }, 500);
       }
 
-      else {
+      if (res === 'Correct') {
         loading.dismiss();
         this.alerts.display_toast('FOLLOW');
         (this.account_data as any).has_followed = 1; // Update the button instead of calling the API again
@@ -281,7 +281,7 @@ export class AuthorProfilePage {
         }, 500);
       }
 
-      else {
+      if (res === 'Correct') {
         loading.dismiss();
         this.alerts.display_toast('UNFOLLOW');
         (this.account_data as any).has_followed = 0; // Update the button instead of calling the API again

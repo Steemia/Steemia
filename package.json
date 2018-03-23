@@ -33,12 +33,14 @@
     "@angular/platform-browser": "^5.2.9",
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@covalent/text-editor": "^1.0.0",
+    "@ionic-native-mocks/google-analytics": "^2.0.7",
     "@ionic-native-mocks/secure-storage": "^2.0.7",
     "@ionic-native/browser-tab": "^4.5.3",
     "@ionic-native/camera": "^4.5.3",
     "@ionic-native/core": "^4.5.3",
     "@ionic-native/file": "^4.5.3",
     "@ionic-native/file-transfer": "^4.5.3",
+    "@ionic-native/google-analytics": "^4.6.0",
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/secure-storage": "^4.5.3",
     "@ionic-native/social-sharing": "^4.5.3",
@@ -57,6 +59,7 @@
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-file-transfer": "^1.7.1",
+    "cordova-plugin-google-analytics": "^1.8.3",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-secure-storage": "^2.6.8",
@@ -111,7 +114,8 @@
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-secure-storage": {}
+      "cordova-plugin-secure-storage": {},
+      "cordova-plugin-google-analytics": {}
     },
     "platforms": [
       "android",
