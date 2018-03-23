@@ -26,6 +26,18 @@ export class SteemiaLogProvider {
   private steemConnect: SteemConnectProvider) {}
 
   /**
+   * Metehod to log a new comment to server side
+   * @method log_vote
+   * @param {String} author 
+   * @param {String} permlink
+   * @returns returns a promise
+   */
+  public log_comment(author, permlink): Promise<any> {
+    return this.http.post(BASE_API_V1 + 'log/post/' + this.makePostId(author, permlink) + '/comment', this.get_data(), this.httpOptions)
+      .toPromise();
+  }
+
+  /**
    * Method to log a new post to server side
    * @method log_post
    * @returns Returns a promise
@@ -41,10 +53,10 @@ export class SteemiaLogProvider {
    * @method log_vote
    * @param {String} author 
    * @param {String} permlink
+   * @param {String} type
    * @returns returns a promise
    */
-  public log_vote(author, permlink) {
-
+  public log_vote(author: string, permlink: string) {
     return this.http.post(BASE_API_V1 + 'log/post/' + this.makePostId(author, permlink) + '/upvote', this.get_data(), this.httpOptions)
       .toPromise();
 
@@ -55,9 +67,10 @@ export class SteemiaLogProvider {
    * @method log_unvote
    * @param {String} author 
    * @param {String} permlink 
+   * @param {String} type
    * @returns returns a promise
    */
-  public log_unvote(author, permlink) {
+  public log_unvote(author: string, permlink: string, type?: string) {
 
     return this.http.post(BASE_API_V1 + 'log/post/' + this.makePostId(author, permlink) + '/downvote', this.get_data(), this.httpOptions)
       .toPromise();

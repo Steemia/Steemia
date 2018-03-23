@@ -32,9 +32,7 @@ export class HotPage {
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
-    private steemConnect: SteemConnectProvider) {
-
-  }
+    private steemConnect: SteemConnectProvider) { }
 
   ionViewDidLoad() {
     this.steemConnect.status.subscribe(res => {

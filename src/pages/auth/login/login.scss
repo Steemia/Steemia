@@ -1,3 +1,76 @@
 page-login {
 
+      ion-content .scroll-content {
+            margin-top:0px !important;
+      }
+
+      ion-content {
+            background-color: white !important;
+      }
+
+      ion-header, .toolbar-background {
+            background-color: initial !important;
+        
+            &:after {
+              height: 0  !important;
+            }
+      }
+
+      ion-footer {
+            background-color: #ececec !important;
+      }
+     
+
+      .bar-button-default-md, 
+      .bar-button-clear-md-default, 
+      .bar-button-md-default,
+      .bar-button-default-ios,
+      .bar-button-clear-ios-default, 
+      .bar-button-ios-default {
+            color: #ffffff !important;
+      }
+
+      .swiper-pagination-bullet-active {
+            background: #ffffff !important;
+      }
+
+      .header-container {
+            height: 60vh;
+            background-size: cover;
+            background: #488aff;
+      }
+
+      .container {
+            position: relative;
+            height: 27vh;
+            background: white;
+      }
+
+      #child {
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+      .button-ios {
+            padding: 2em !important;
+      }
+
+      h5 { 
+            width:100%; 
+            text-align:center; 
+            border-bottom: 1px solid #000; 
+            line-height:0.1em; 
+            margin:10px 0 20px; 
+      } 
+
+      h5 span { 
+            background:#fff; 
+            padding:0 10px; 
+      }
+
+
+
 }

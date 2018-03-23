@@ -3,7 +3,6 @@ import { AlertController, NavController } from 'ionic-angular';
 import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
-import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 
 @Component({
   selector: 'render-comment',
@@ -18,8 +17,7 @@ export class CommentComponent {
   private steemActions: SteeemActionsProvider,
   private navCtrl: NavController,
   private steemiaProvider: SteemiaProvider,
-  public util: UtilProvider,
-  private steemiaLog: SteemiaLogProvider) {}
+  public util: UtilProvider) {}
 
   /**
    * Method to cast a vote or unvote
@@ -33,37 +31,24 @@ export class CommentComponent {
     this.is_voting = true;
 
     this.steemActions.dispatch_vote('comment', author, permlink, weight).then(data => {
-      if (data) {
 
-        // Catch if the user is not logged in and display an alert
-        if (data == 'not-logged') {
-          let alert = this.alertCtrl.create({
-            title: 'Alert',
-            subTitle: 'This action requires you to be logged in. Please, login and try again.',
-            buttons: ['Dismiss']
-          });
-          alert.present();
+      this.is_voting = false; // remove the spinner
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') {
+        return;
+      }
 
-          this.is_voting = false; // remove the spinner
-          return;
-        }
+      if (weight > 0) {
+        this.comment.vote = true;
+      }
 
-        this.is_voting = false;
+      else {
+        this.comment.vote = false;
+      }
 
-        if (weight > 0) {
-          this.comment.vote = true;
-          this.steemiaLog.log_vote(author, permlink); // log vote to server side
-        }
-
-        else {
-          this.comment.vote = false;
-          this.steemiaLog.log_unvote(author, permlink); // Log unvote to server side
-        }
-
+      if (data === 'Correct') {
         this.refresh_comment();
       }
-    }).catch(err => {
-      console.log(err); this.is_voting = false
     });
   }
 

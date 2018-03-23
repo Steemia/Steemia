@@ -2,7 +2,7 @@ import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App, ViewController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
@@ -53,13 +53,13 @@ export class CommentsPage {
     try {
       this.username = (this.steemConnect.user_object as any).user;
     }
-    catch (e) {}
-    
+    catch (e) { }
+
 
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
-    
+
   }
 
   /**
@@ -77,6 +77,7 @@ export class CommentsPage {
       // reinitialize all the data after initializing the query
       // to avoid the data to dissapear
       if (action === "refresh") {
+        console.log('refresh')
         this.reinitialize();
       }
 
@@ -87,7 +88,6 @@ export class CommentsPage {
       if (this.slice > comments.results.length) {
         this.is_more = false;
       }
-      
       this.comments = comments.results.reverse();
 
       // Set the loading spinner to false
@@ -109,7 +109,7 @@ export class CommentsPage {
         this.is_more = false;
       }
       infiniteScroll.complete();
-      
+
     }, 1000);
   }
 
@@ -130,27 +130,32 @@ export class CommentsPage {
     });
     loading.present();
     this.steemActions.dispatch_comment(this.author, this.permlink, this.chatBox).then(res => {
-      
-      if (res) {
+
+      if (res === 'not-logged') {
+        this.show_prompt(loading, 'NOT_LOGGED_IN');
+        return;
+      }
+
+      else if (res === 'Correct') {
         this.chatBox = '';
         this.zone.runOutsideAngular(() => {
           this.load_comments('refresh');
         });
-      }
-    }).then(() => {
-
-      loading.dismiss();
-
-    }).catch(e => {
-
-      let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
-      if (include) {
         loading.dismiss();
-        setTimeout(() => {
-          this.alerts.display_alert('COMMENT_INTERVAL');
-        }, 500);
       }
+      
+      else if (res === 'COMMENT_INTERVAL') {
+        this.show_prompt(loading, 'COMMENT_INTERVAL');
+      }
+
     });
+  }
+
+  private show_prompt(loader, msg) {
+    loader.dismiss();
+    setTimeout(() => {
+      this.alerts.display_alert(msg);
+    }, 500);
   }
 
   private dismiss() {

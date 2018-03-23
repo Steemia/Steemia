@@ -30,7 +30,8 @@ export class FeedPage {
   constructor(private steemConnect: SteemConnectProvider,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private steemia: SteemiaProvider) { }
+    private steemia: SteemiaProvider) {
+  }
 
   ionViewDidLoad() {
 

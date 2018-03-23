@@ -71,7 +71,7 @@ export class AlertsProvider {
       position: 'bottom'
     }); 
 
-    toast.present();
+    return toast;
   }
 
 }

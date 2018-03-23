@@ -7,6 +7,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Socket } from 'ng-socket-io';
+import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,6 +34,7 @@ export class MyApp {
     private splashScreen: SplashScreen,
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
+    private ga: GoogleTrackingProvider,
     private events: Events,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
@@ -127,6 +129,7 @@ export class MyApp {
       this.statusBar.styleBlackOpaque();
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
+      this.ga.track_page('Loaded App')
     });
   }
 
