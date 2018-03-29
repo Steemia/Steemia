@@ -17,25 +17,8 @@
         <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
       </span>
       <span class="infos_name">
-
-        <!-- Mock placeholder until data is loaded -->
-        <ion-badge *ngIf="!account_data">
-          <i class="fa fa-user-plus"></i> Follow
-        </ion-badge>
-
-        <!-- If you have not follow this user -->
-        <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
-          <i class="fa fa-user-plus"></i> Follow
-        </ion-badge>
-
-        <!-- If you have follow this user -->
-        <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
-          <i class="fa fa-user-times"></i> Unfollow
-        </ion-badge>
-
         <ion-badge>
-          <i class="fa fa-comments-o"></i> Chat
-        </ion-badge>
+          <ion-icon name="ios-create"></ion-icon> Edit Profile</ion-badge>
       </span>
       <span class="infos_nick">
         <span class="joined-date">
