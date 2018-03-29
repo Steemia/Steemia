@@ -13,8 +13,7 @@
     <div class="card-profile_visual"></div>
     <div class="card-profile_user-infos">
       <span class="info_picture">
-        <img *ngIf="account_data?.profile_image" [src]="account_data?.profile_image" class="picture" />
-        <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
+        <img *ngIf="account_data?.profile_image" (error)="util.imgError('profile',$event)" [src]="account_data?.profile_image" class="picture" />
       </span>
       <span class="infos_name">
 

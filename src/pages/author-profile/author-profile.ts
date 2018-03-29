@@ -1,3 +1,4 @@
+import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
@@ -33,6 +34,7 @@ export class AuthorProfilePage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private zone: NgZone,
+    public util: UtilProvider,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,

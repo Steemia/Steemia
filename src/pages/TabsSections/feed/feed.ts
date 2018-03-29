@@ -1,3 +1,4 @@
+import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { PostsRes } from 'models/models';
@@ -29,6 +30,7 @@ export class FeedPage {
 
   constructor(private steemConnect: SteemConnectProvider,
     private zone: NgZone,
+    public util: UtilProvider,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider) {
   }
