@@ -147,8 +147,8 @@ export class AuthorProfilePage {
   
     loading.present();
     this.steemia.dispatch_profile_info({
-      username: this.username,
-      current_user: this.current_user,
+      user: this.username,
+      username: this.current_user,
     }).then(data => {
       this.account_data = data;
       loading.dismiss();

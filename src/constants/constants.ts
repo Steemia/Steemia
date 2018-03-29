@@ -1,4 +1,9 @@
 // ENDPOINTS
+export const STEEMIA_API = 'https://steemia-api.herokuapp.com/';
+export const STEEMIA_POSTS =  STEEMIA_API + 'posts/';
+export const STEEMIA_USERS = STEEMIA_API + 'users/'
+export const RAW_SERVER = 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/';
+
 export const IMG_SERVER = 'https://steemitimages.com/';
 export const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
 export const BASE_API_V1 = 'https://steepshot.org/api/steemia/v1/';

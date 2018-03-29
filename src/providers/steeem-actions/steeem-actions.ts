@@ -9,7 +9,6 @@ import {
 } from '../../constants/constants';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
-import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 import { AlertsProvider } from 'providers/alerts/alerts';
 
 /**
@@ -28,8 +27,7 @@ export class SteeemActionsProvider {
   constructor(private steemConnect: SteemConnectProvider,
     private socialShare: SocialSharing,
     private ga: GoogleTrackingProvider,
-    private alerts: AlertsProvider,
-    private steemiaLog: SteemiaLogProvider) {
+    private alerts: AlertsProvider) {
 
     // Subscribe to the logged in user so the broadcast actions can work
     this.steemConnect.status.subscribe(res => {
@@ -75,28 +73,10 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.vote(this.username, author, url, weight).then(data => {
         if (data) {
           if (weight > 0) {
-            if (type === 'posts') {
-              
-              this.steemiaLog.log_vote(author, permlink); // log vote to server side
-            }
-
-            else if (type === 'comment') {
-              this.steemiaLog.log_vote(author, url); // log vote to server side
-            }
-            
             this.ga.track_event('Vote', 'Upvote', 'Weight', weight); // Send data to GA
           }
 
           else {
-            if (type === 'posts') {
-              
-              this.steemiaLog.log_vote(author, permlink); // log vote to server side
-            }
-
-            else if (type === 'comment') {
-              this.steemiaLog.log_unvote(author, url); // log vote to server side
-            }
-        
             this.ga.track_event('Vote', 'Downvote', 'Weight', weight);
           }
 
@@ -123,7 +103,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.follow(this.username, user_to_follow).then(data => {
         if (data) {
           this.ga.track_event('Follow', 'follow', 'user', 1);
-          this.steemiaLog.log_follow(user_to_follow);
           resolve('Correct');
         }
       }).catch(err => {
@@ -147,7 +126,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.unfollow(this.username, user_to_unfollow).then(data => {
         if (data) {
           this.ga.track_event('Unfollow', 'unfollow', 'user', 0);
-          this.steemiaLog.log_unfollow(user_to_unfollow);
           resolve('Correct');
         }
       }).catch(err => {
@@ -177,7 +155,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.reblog(this.username, author, url).then(data => {
         if (data) {
           this.ga.track_event('Reblog', 'reblog', 'Post', 1);
-          this.steemiaLog.log_reblog(); // TODO: Implement this function
           resolve('Correct')
         }
       }).catch(e => {
@@ -223,10 +200,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA).then(data => {
         if (data) {
           this.ga.track_event('Comment', 'comment', 'post', 1);
-          this.steemiaLog.log_comment(author, url).then(() => {
-            resolve('Correct');
-          });
-          
         }
       }).catch(e => {
         let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
@@ -293,7 +266,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.broadcast(operations).then(data => {
         if (data) {
           this.ga.track_event('Post', 'post', 'create', 1);
-          this.steemiaLog.log_post();
           resolve('Correct')
         }
       })
@@ -318,7 +290,6 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.vote(this.username, author, url, -1000).then(data => {
         if (data) {
           this.ga.track_event('Flag', 'flag', type, 1);
-          this.steemiaLog.log_flag(author, permlink);
           resolve('Correct');
         }
       })
@@ -373,8 +344,12 @@ export class SteeemActionsProvider {
                 weight: 1000 // 10% for Steemia-io
               },
               {
-                account: 'steepshot',
-                weight: 1000 // 10% for Steepshot
+                account: 'jaysermendez',
+                weight: 500 // 5% for jaysermendez
+              },
+              {
+                account: 'hsynterkr',
+                weight: 500 // 5% for hsynterkr
               },
               {
                 account: 'steemia.pay',

@@ -31,8 +31,10 @@ export class VotesPage {
 
   ionViewDidLoad() {
     this.permlink = this.navParams.get('permlink');
+    this.author = this.navParams.get('author');
     this.steemia.dispatch_votes({
-      url: this.permlink,
+      permlink: this.permlink,
+      author: this.author
     }).then((votes: PostsRes) => {
 
       if (votes.results.length < 1) {
