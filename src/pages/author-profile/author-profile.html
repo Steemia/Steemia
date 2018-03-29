@@ -139,21 +139,21 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM</h2>
-            <p>{{ steem_account_data[0]?.balance }}</p>
+            <p>{{ account_data?.balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>SBD</h2>
-            <p>{{ steem_account_data[0]?.sbd_balance }}</p>
+            <p>{{ account_data?.sbd_balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ effective_sp }} SP</p>
+            <p>{{ account_data?.voting_power }} SP</p>
           </ion-item>
         </ion-list>
       </div>
