@@ -15,6 +15,8 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 })
 export class AuthorProfilePage {
 
+  private skip: number = 0
+
   private sections: string = "blog";
   private account_data: Object;
   private username: string;
@@ -24,7 +26,6 @@ export class AuthorProfilePage {
   private offset: string = null;
   private is_first_loaded: boolean = false;
   private is_loading = true;
-  private first_limit: number = 15;
   private limit: number = 15;
   private total_posts: number = 0;
   private is_more_post: boolean = true;
@@ -44,14 +45,7 @@ export class AuthorProfilePage {
 
     this.username = this.navParams.get('author');
 
-    this.steemConnect.status.subscribe(res => {
-      if (res.status === true) {
-        this.current_user = res.userObject.user;
-      }
-      else {
-        this.current_user = 'not logged';
-      }
-    });
+    this.current_user = (this.steemConnect.user_temp as any).user;
   }
 
   ionViewDidLoad() {
@@ -70,11 +64,10 @@ export class AuthorProfilePage {
 
     // Call the API
     this.steemia.dispatch_profile_posts({
-      username: this.username,
-      current_user: this.current_user,
+      user: this.username,
+      username: this.current_user,
       limit: this.limit,
-      first_load: this.is_first_loaded,
-      offset: this.offset
+      skip: this.skip
     }).then((res: PostsRes) => {
 
       // Check if the action is to refresh. If so, we need to 
@@ -84,38 +77,13 @@ export class AuthorProfilePage {
         this.reinitialize();
       }
       
-      // By default, the offset is null, so we want the whole data
-      if (this.offset === null) {
-        
-        this.contents = this.contents.concat(res.results);
+      this.contents = this.contents.concat(res.results);
+
+      if (res.results.length === 0) {
+        this.is_more_post = false;
       }
 
-      // Otherwise, we want the data execpt for the first index
-      else {
-        this.contents = this.contents.concat(res.results.splice(1));
-      }
-
-      if (res.count >= 1) {
-        // Check if there are more post to load
-        if (this.contents[this.contents.length - 1].title === res.results[res.results.length - 1].title
-          && this.is_first_loaded == true) {
-          this.is_more_post = false;
-        }
-      }
-
-      else {
-        this.no_post = true;
-      }
-      
-
-      // If first load is set to false, set it to true so next query
-      // is able to use the offset
-      if (this.is_first_loaded == false) {
-        this.is_first_loaded = true;
-      }
-      
-      // Declare the new offset
-      this.offset = res.offset;
+      this.skip += this.limit;
 
       // Set the loading spinner to false
       this.is_loading = false;

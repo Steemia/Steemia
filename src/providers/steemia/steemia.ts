@@ -174,29 +174,14 @@ export class SteemiaProvider {
   }
 
   /**
-   * Method to retrieve posts from a single user from its profile.
-   * 
-   * @method get_profile_posts
-   * @param {Query} query: Object with data for query
-   */
-  private get_profile_posts(username: string, query: Query) {
-    return this.http.get(OWN_POSTS + username + '/posts?' + this.util.encodeQueryData(query))
-      .share();
-
-  }
-
-  /**
    * Public method to dispatch profile posts
    * 
    * @method dispatch_profile_posts
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_posts(query: Query): Promise<any> {
-    let que: Query = {
-      limit: query.limit,
-      username: query.current_user
-    }
-    return this.get_profile_posts(query.username, que).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'blog?' + this.util.encodeQueryData(query))
+      .share().toPromise()
   }
 
   /**
@@ -244,7 +229,6 @@ export class SteemiaProvider {
   * @param {Query} query: Object with data for query
   */
   public dispatch_votes(query: Query) {
-    console.log(query)
     query.permlink = query.permlink.split('/')[3];
     return this.http.get(STEEMIA_POSTS + 'votes?' + this.util.encodeQueryData(query))
       .share().toPromise();
