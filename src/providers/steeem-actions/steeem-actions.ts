@@ -200,6 +200,7 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA).then(data => {
         if (data) {
           this.ga.track_event('Comment', 'comment', 'post', 1);
+          resolve("Correct")
         }
       }).catch(e => {
         let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);

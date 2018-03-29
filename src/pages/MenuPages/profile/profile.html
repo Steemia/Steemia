@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>
       <ion-badge color="gray">{{ account_data?.username }}</ion-badge>
-      <!-- <ion-badge color="light">{{ account_data?.reputation }}</ion-badge> -->
+      <ion-badge color="light">{{ account_data?.reputation }}</ion-badge>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -17,8 +17,25 @@
         <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
       </span>
       <span class="infos_name">
+
+        <!-- Mock placeholder until data is loaded -->
+        <ion-badge *ngIf="!account_data">
+          <i class="fa fa-user-plus"></i> Follow
+        </ion-badge>
+
+        <!-- If you have not follow this user -->
+        <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
+          <i class="fa fa-user-plus"></i> Follow
+        </ion-badge>
+
+        <!-- If you have follow this user -->
+        <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
+          <i class="fa fa-user-times"></i> Unfollow
+        </ion-badge>
+
         <ion-badge>
-          <ion-icon name="ios-create"></ion-icon> Edit Profile</ion-badge>
+          <i class="fa fa-comments-o"></i> Chat
+        </ion-badge>
       </span>
       <span class="infos_nick">
         <span class="joined-date">
@@ -32,7 +49,6 @@
       </span>
 
     </div>
-
 
     <div class="card-profile_user-stats">
       <ion-segment [(ngModel)]="sections" mode="md" (ionChange)="segmentChanged()">
@@ -66,11 +82,19 @@
 
     <div [ngSwitch]="sections">
       <div *ngSwitchCase="'blog'">
-        <ion-spinner *ngIf="contents.length < 1"></ion-spinner>
 
-        <post-render *ngIf="contents.length >= 1" [posts]="contents"></post-render>
+        <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-        <ion-infinite-scroll *ngIf="contents.length >= 1" (ionInfinite)="doInfinite($event)" distance="1%">
+        <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
+
+        <no-data *ngIf="no_post == true" icon="chatbubbles" title="This user has not posts, YET!">
+        </no-data>
+
+        <div *ngIf="is_more_post == false">
+          <p text-center>There are not more posts to load</p>
+        </div>
+
+        <ion-infinite-scroll *ngIf="contents.length >= 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>
@@ -113,21 +137,21 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM</h2>
-            <p>{{ steem_account_data[0]?.balance }}</p>
+            <p>{{ account_data?.balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>SBD</h2>
-            <p>{{ steem_account_data[0]?.sbd_balance }}</p>
+            <p>{{ account_data?.sbd_balance }}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ effective_sp }} SP</p>
+            <p>{{ account_data?.voting_power }} SP</p>
           </ion-item>
         </ion-list>
       </div>

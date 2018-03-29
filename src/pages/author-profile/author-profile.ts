@@ -15,7 +15,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 })
 export class AuthorProfilePage {
 
-  private skip: number = 0
+  private skip: number = 0;
 
   private sections: string = "blog";
   private account_data: Object;
@@ -23,11 +23,8 @@ export class AuthorProfilePage {
   private current_user: string;
 
   private contents: Array<any> = [];
-  private offset: string = null;
-  private is_first_loaded: boolean = false;
   private is_loading = true;
   private limit: number = 15;
-  private total_posts: number = 0;
   private is_more_post: boolean = true;
   showToolbar:boolean = false;
   private no_post: boolean = false;
@@ -123,7 +120,6 @@ export class AuthorProfilePage {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.is_first_loaded = false;
     this.zone.runOutsideAngular(() => {
       this.dispatchPosts("refresh", refresher);
     });
@@ -136,9 +132,6 @@ export class AuthorProfilePage {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    if (this.first_limit === this.limit && this.is_first_loaded == true) {
-      this.limit += 1;
-    }
     this.zone.runOutsideAngular(() => {
       this.dispatchPosts("inifinite", infiniteScroll);
     });
@@ -149,13 +142,9 @@ export class AuthorProfilePage {
    * Used for pull to refresh the posts
    */
   private reinitialize(): void {
-    this.offset = null;
     this.limit = 15;
-    this.first_limit = 15;
     this.contents = [];
     this.is_more_post = true;
-    this.total_posts = 0;
-    this.is_first_loaded = false;
   }
 
   /**

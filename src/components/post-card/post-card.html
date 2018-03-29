@@ -19,7 +19,7 @@
             <ion-icon mini name="attach"></ion-icon>
             &nbsp; {{ content.category }}
           </ion-badge>
-          <ion-note end>{{ parse_date(content.created) }}</ion-note>
+          <ion-note end>{{ util.parse_date(content.created) }}</ion-note>
         </div>
         <i *ngIf="!content.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event)"></i>
        

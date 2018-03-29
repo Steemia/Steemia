@@ -1,7 +1,6 @@
 import { Component, Input} from '@angular/core';
 import { App, ModalController, PopoverController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
-import moment from 'moment';
 // PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -67,11 +66,6 @@ export class PostCardComponent {
   
   onStateChange(event){
     console.log('player state', event.data);
-  }
-
-
-  private parse_date(date) {
-    return moment.utc(date).local().fromNow();
   }
 
   /**

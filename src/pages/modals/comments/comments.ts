@@ -49,12 +49,7 @@ export class CommentsPage {
   ionViewDidLoad() {
     this.permlink = this.navParams.get('permlink');
     this.author = this.navParams.get('author');
-
-    try {
-      this.username = (this.steemConnect.user_object as any).user;
-    }
-    catch (e) { }
-
+    this.username = (this.steemConnect.user_temp as any).user;
 
     this.zone.runOutsideAngular(() => {
       this.load_comments();
@@ -68,9 +63,8 @@ export class CommentsPage {
    */
   private load_comments(action?: string): void {
     this.steemia.dispatch_comments({
-      url: this.permlink,
-      limit: 50,
-      current_user: this.username
+      permlink: encodeURIComponent(this.permlink),
+      username: this.username
     }).then((comments: PostsRes) => {
 
       // Check if the action is to refresh. If so, we need to 
@@ -130,7 +124,7 @@ export class CommentsPage {
     });
     loading.present();
     this.steemActions.dispatch_comment(this.author, this.permlink, this.chatBox).then(res => {
-
+      console.log(res)
       if (res === 'not-logged') {
         this.show_prompt(loading, 'NOT_LOGGED_IN');
         return;

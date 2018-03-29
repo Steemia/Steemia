@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST, RAW_SERVER } from '../../constants/constants';
+import moment from 'moment';
 
 /**
  * Utility Class
@@ -15,6 +16,14 @@ export class UtilProvider {
   public upvote: any = 1;
 
   constructor(public storage: Storage) {}
+
+  /**
+   * Method to parse date to local time
+   * @param date 
+   */
+  public parse_date(date) {
+    return moment.utc(date).local().fromNow();
+  }
 
   /**
    * Method to set default vote value

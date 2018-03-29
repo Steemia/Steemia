@@ -203,12 +203,7 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
-    let que: Query = {
-      limit: query.limit,
-      username: query.current_user
-    };
-
-    return this.http.get(BASE_API + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que)).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'comments?' + this.util.encodeQueryData(query)).toPromise();
   }
 
 
