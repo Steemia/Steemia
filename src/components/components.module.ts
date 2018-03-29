@@ -9,6 +9,9 @@ import { IonicModule } from 'ionic-angular';
 import { NoDataComponent } from './no-data/no-data';
 import { WalletItemComponent } from './wallet-item/wallet-item';
 import { UserItemComponent } from './user-item/user-item';
+import { YoutubePlayerModule } from 'ngx-youtube-player';
+
+
 
 @NgModule({
 	declarations: [
@@ -21,6 +24,7 @@ import { UserItemComponent } from './user-item/user-item';
 	],
 
 	imports: [
+		YoutubePlayerModule,
 		IonicModule,
 		MomentModule,
 		IonicImageLoader

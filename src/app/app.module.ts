@@ -37,7 +37,6 @@ import { SteemiaProvider } from '../providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { UtilProvider } from '../providers/util/util';
 import { AlertsProvider } from '../providers/alerts/alerts';
-import { SteemiaLogProvider } from '../providers/steemia-log/steemia-log';
 import { CryptoProvider } from '../providers/crypto-api/crypto-api';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { GoogleTrackingProvider } from '../providers/google-tracking/google-tracking';
@@ -86,7 +85,6 @@ import { GoogleTrackingProvider } from '../providers/google-tracking/google-trac
     FileTransferObject,
     File,
     Camera,
-    SteemiaLogProvider,
     CryptoProvider,
     //SecureStorage, // Only for prod build
     { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build

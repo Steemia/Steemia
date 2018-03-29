@@ -10,7 +10,9 @@ import {
   STEEM_API,
   FEED,
   STEEPSHOT_BASE_V1_1,
-  USER_SEARCH
+  USER_SEARCH,
+  STEEMIA_POSTS,
+  STEEMIA_USERS
 } from '../../constants/constants';
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
@@ -38,7 +40,6 @@ export class SteemiaProvider {
   constructor(public http: HttpClient,
     public util: UtilProvider,
     private steemConnect: SteemConnectProvider) {
-
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
         this.username = res.userObject.user;
@@ -75,8 +76,6 @@ export class SteemiaProvider {
       }
 
       que = {
-        show_low_rated: 0,
-        show_nsfw: 0,
         query: value
       };
 
@@ -97,10 +96,7 @@ export class SteemiaProvider {
       value = value.replace(/[^0-9a-z]/gi, '');
 
       que = {
-        limit: limit,
-        show_nsfw: 0,
-        show_low_rated: 0,
-        with_body: 1
+        limit: limit
       };
 
       // If the user is logged in, include it into the query
@@ -129,7 +125,7 @@ export class SteemiaProvider {
    * @returns A subscriptable observable with the response
    */
   private get_feed(query: Query) {
-    return this.http.get(FEED + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + 'feed?' + this.util.encodeQueryData(query))
       .share();
   }
 
@@ -140,19 +136,8 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_feed(query: Query): Promise<any> {
-    let que: Query = {
-      username: query.username,
-      limit: query.limit,
-      show_nsfw: 0,
-      show_low_rated: 0,
-      with_body: 1
-    };
 
-    if (query.first_load == true) {
-      que.offset = query.offset;
-    }
-
-    return this.get_feed(que).toPromise();
+    return this.get_feed(query).toPromise();
   }
 
   /**
@@ -172,7 +157,7 @@ export class SteemiaProvider {
     }
 
     else {
-      return this.http.get(POSTS + type + '?' + this.util.encodeQueryData(query))
+      return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query))
         .share();
     }
   }
@@ -184,36 +169,8 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_posts(query: Query): Promise<any> {
-    let que: Query = {
-      type: query.type,
-      limit: query.limit,
-      show_nsfw: 0,
-      show_low_rated: 0,
-      with_body: 1,
-      username: query.username,
-    }
 
-    if (query.first_load == true) {
-      que.offset = query.offset;
-    }
-
-    if (query.category) {
-      return this.get_posts(query.type, que, query.category).toPromise();
-    }
-
-    return this.get_posts(query.type, que).toPromise();
-  }
-
-  /**
-   * Method to retrieve posts from a single user from its profile.
-   * 
-   * @method get_profile_posts
-   * @param {Query} query: Object with data for query
-   */
-  private get_profile_posts(username: string, query: Query) {
-    return this.http.get(OWN_POSTS + username + '/posts?' + this.util.encodeQueryData(query))
-      .share();
-
+    return this.get_posts(query.type, query).toPromise();
   }
 
   /**
@@ -223,19 +180,8 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_posts(query: Query): Promise<any> {
-    let que: Query = {
-      limit: query.limit,
-      show_nsfw: 0,
-      show_low_rated: 0,
-      with_body: 1,
-      username: query.current_user
-    }
-
-    if (query.first_load == true) {
-      que.offset = query.offset;
-    }
-
-    return this.get_profile_posts(query.username, que).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'blog?' + this.util.encodeQueryData(query))
+      .share().toPromise()
   }
 
   /**
@@ -246,19 +192,7 @@ export class SteemiaProvider {
    */
   public dispatch_profile_info(query: Query): Promise<any> {
 
-    if (query.current_user !== 'not logged') {
-      return this.http.get(BASE_API_V1 + query.current_user + '/user/' + query.username + '/info?' + this.util.encodeQueryData({
-        show_nsfw: 0,
-        show_low_rated: 0
-      })).share().toPromise();
-    }
-
-    else {
-      return this.http.get(BASE_API + 'user/' + query.username + '/info?' + this.util.encodeQueryData({
-        show_nsfw: 0,
-        show_low_rated: 0
-      })).share().toPromise();
-    }
+    return this.http.get(STEEMIA_USERS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
 
   }
 
@@ -269,17 +203,7 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
-    let que: Query = {
-      show_nsfw: 0,
-      show_low_rated: 0,
-      limit: query.limit,
-      username: query.current_user
-    };
-
-    if (query.first_load == true) {
-      que.offset = query.offset;
-    }
-    return this.http.get(BASE_API + 'post/' + query.url + '/comments?' + this.util.encodeQueryData(que)).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'comments?' + this.util.encodeQueryData(query)).toPromise();
   }
 
 
@@ -290,7 +214,7 @@ export class SteemiaProvider {
    * @param {string} account: Username of the user
    */
   public dispatch_menu_profile(username: string): Promise<any> {
-    return this.http.get(BASE_API + 'user/' + username + '/info').share().toPromise();
+    return this.http.get(STEEMIA_USERS + 'info?user=' + username).share().toPromise();
   }
 
   /**
@@ -300,14 +224,8 @@ export class SteemiaProvider {
   * @param {Query} query: Object with data for query
   */
   public dispatch_votes(query: Query) {
-    let que: Query = {
-      username: query.current_user
-    };
-
-    if (query.first_load == true) {
-      que.offset = query.offset;
-    }
-    return this.http.get(STEEPSHOT_BASE + 'post/' + query.url + '/voters?')
+    query.permlink = query.permlink.split('/')[3];
+    return this.http.get(STEEMIA_POSTS + 'votes?' + this.util.encodeQueryData(query))
       .share().toPromise();
 
   }
@@ -330,15 +248,9 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_post_single(query: Query) {
-    let url = query.url;
-    let que: Query = {
-      show_nsfw: 0,
-      show_low_rated: 0,
-      with_body: 1,
-      username: this.username
-    };
-    return this.http.get(BASE_API + 'post/' + url + '/info?' + this.util.encodeQueryData(que))
-      .share().toPromise();
+    query.permlink = query.permlink.split('/')[3];
+    query.username = this.username;
+    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
   }
 
   /**

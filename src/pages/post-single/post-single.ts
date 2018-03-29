@@ -9,7 +9,6 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
-import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 
 @IonicPage({
   priority: 'high'
@@ -37,8 +36,7 @@ export class PostSinglePage {
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
     public loadingCtrl: LoadingController,
-    private steemActions: SteeemActionsProvider,
-    private steemiaLog: SteemiaLogProvider) { }
+    private steemActions: SteeemActionsProvider) { }
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');

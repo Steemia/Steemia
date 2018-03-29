@@ -11,7 +11,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { SteemiaLogProvider } from 'providers/steemia-log/steemia-log';
 import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage()
@@ -42,8 +41,7 @@ export class PostPage {
     private alerts: AlertsProvider,
     private camera: Camera,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController,
-    private steemiaLog: SteemiaLogProvider) {
+    public toastCtrl: ToastController) {
 
     this.storyForm = this.formBuilder.group({
       title: ['', Validators.required],

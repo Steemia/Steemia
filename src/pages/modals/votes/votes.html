@@ -17,7 +17,7 @@
   <ion-list>  
     <ion-item *ngFor="let voter of votes | slice:0:slice;">
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">
-        <img [src]="util.renderImage('profile', voter.profile_image)" (error)="util.imgError('profile',$event)" />
+        <img [src]="voter.profile_image" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
       <h2 tappable (click)="openProfile(voter.username)">{{ voter.username }}</h2>
       <p>{{ voter.name }}</p>

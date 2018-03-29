@@ -1,15 +1,15 @@
 <div>
-  <img class="profile-pic left" [src]="util.renderImage('profile', comment.avatar)" tappable (click)="openProfile(comment.author)"
+  <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)"
     (error)="util.imgError('comment', $event)" />
   <!--  wave-->
   <div class="chat-bubble left slide-left">
 
     <div>
       <ion-badge color="light" style="border: 1px solid #dbdbdb" tappable (click)="openProfile(comment.author)"> {{ comment.author }}</ion-badge>
-      <!-- <ion-badge color="light2" style="color:black"> {{ comment.author_reputation }} </ion-badge> -->
+      <ion-badge color="light2" style="color:black"> {{ comment.author_reputation }} </ion-badge>
       <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
       &nbsp;&nbsp;
-      <span class="created_date">{{ comment.created | amTimeAgo }}</span>
+      <span class="created_date">{{ util.parse_date(comment.created) }}</span>
       <div class="message" [innerHTML]="comment.body" autolinker></div>
     </div>
 

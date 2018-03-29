@@ -26,7 +26,7 @@ export const postSinglePage = `
         </div>
 
         <div>
-          <div *ngFor="let tag of post?.json_metadata.tags" style="float: left !important; margin: 5px 5px 0px 0px">
+          <div *ngFor="let tag of post?.tags" style="float: left !important; margin: 5px 5px 0px 0px">
             <ion-badge color="light">
               <ion-icon name="attach"></ion-icon>
               {{ tag }}
