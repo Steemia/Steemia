@@ -1,5 +1,5 @@
 // ENDPOINTS
-export const STEEMIA_API = 'http://localhost:3000/';
+export const STEEMIA_API = 'https://steemia-api.herokuapp.com/';
 export const STEEMIA_POSTS =  STEEMIA_API + 'posts/';
 export const STEEMIA_USERS = STEEMIA_API + 'users/'
 export const STEEMIA_TAGS = STEEMIA_API + 'tags/';
