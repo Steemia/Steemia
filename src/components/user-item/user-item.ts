@@ -28,7 +28,7 @@ export class UserItemComponent {
    */
   private follow() {
     this.is_loading = true;
-    this.steemActions.dispatch_follow(this.item.author).then(data => {
+    this.steemActions.dispatch_follow(this.item.name).then(data => {
       this.is_loading = false;
       this.item.has_followed = true;
     });
@@ -39,7 +39,7 @@ export class UserItemComponent {
    */
   private unfollow() {
     this.is_loading = true;
-    this.steemActions.dispatch_unfollow(this.item.author).then(data => {
+    this.steemActions.dispatch_unfollow(this.item.name).then(data => {
       this.is_loading = false;
       this.item.has_followed = false;
     });
@@ -49,9 +49,9 @@ export class UserItemComponent {
    * Method to open author profile page
    * @param {String} author: author of the post
    */
-  private openProfile(author: string): void {
+  private openProfile(): void {
     this.navCtrl.push('AuthorProfilePage', {
-      author: author
+      author: this.item.name
     })
   }
 

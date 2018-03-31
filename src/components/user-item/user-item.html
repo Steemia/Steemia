@@ -1,6 +1,6 @@
 <ion-item>
-  <ion-avatar item-start tappable (click)="openProfile(item.author)">
-    <img [src]="util.renderImage('profile', item.avatar)" (error)="util.imgError('profile',$event)" />
+  <ion-avatar item-start tappable (click)="openProfile()">
+    <img [src]="item.avatar" (error)="util.imgError('profile',$event)" />
   </ion-avatar>
   <div item-end>
     <ion-spinner text-center *ngIf="is_loading == true"></ion-spinner>
@@ -13,5 +13,5 @@
       &nbsp;&nbsp;Unfollow
     </button>
   </div>
-  <h2 tappable (click)="openProfile(item.author)">{{ item.author }}</h2>
+  <h2 tappable (click)="openProfile(item.author)">{{ item.name }}</h2>
 </ion-item>

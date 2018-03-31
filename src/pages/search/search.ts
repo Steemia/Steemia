@@ -19,10 +19,11 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'search.html',
 })
 export class SearchPage {
-
   private sub: Subscription;
   private is_tag: boolean = false;
   private is_user: boolean = false;
+  private is_more_post: boolean = true;
+  
   objectKeys = Object.keys;
   results: Object;
   searchTerm$ = new Subject<string>();
@@ -33,17 +34,20 @@ export class SearchPage {
     private steemiaProvider: SteemiaProvider) { }
 
   ionViewWillEnter() {  
-    this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$, 20)
+    this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$)
       .subscribe((results: any) => {
 
+        if (results.results.length === 0) {
+          this.is_more_post = false;
+        }
+
         // Detect if the results are for tags
-        if (results.offset) {
+        if (results.type === 'full_text_search' || results.type === 'tags_search') {
           this.is_tag = true;
           this.is_user = false;
         }
 
-        // Detect if the results are for users
-        else if (!results.offset) {
+        else if (results.type === 'user_search') {
           this.is_tag = false;
           this.is_user = true;
         }

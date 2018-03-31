@@ -52,7 +52,6 @@ export class NewPage {
       }
 
       else if (res.logged_out === true) {
-        this.is_first_loaded = false;
         this.is_logged = false;
         this.username = '';
         this.clear_links()

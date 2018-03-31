@@ -13,18 +13,25 @@
   <ion-grid class="noResults" *ngIf="!results && !isSearching">
     <ion-row>
       <ion-col text-center>
-        <div class="ask-steem" text-center>
-          <a href="https://www.asksteem.com">
-            <img src="https://cdn.hoxly.com/asksteem/attribution.png">
-          </a>
-          <p>This search engine is working thanks to https://www.asksteem.com</p>
-        </div>
+        <ion-card>
+
+          <ion-card-header>
+            What can I search for?
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>- Tags: For example, #photography</p>
+            <p>- Users: For example, @jaysermendez</p>
+            <p>- Text: For example, photohtaphy</p>
+          </ion-card-content>
+
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <post-render *ngIf="results && !isSearching && is_tag" [posts]="results"></post-render>
-  
+
   <ion-list *ngIf="results && !isSearching && is_user">
     <user-item *ngFor="let user of results" [item]="user"></user-item>
   </ion-list>

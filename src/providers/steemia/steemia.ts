@@ -9,10 +9,10 @@ import {
   STEEPSHOT_BASE,
   STEEM_API,
   FEED,
-  STEEPSHOT_BASE_V1_1,
   USER_SEARCH,
   STEEMIA_POSTS,
-  STEEMIA_USERS
+  STEEMIA_USERS,
+  STEEMIA_TAGS
 } from '../../constants/constants';
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
@@ -50,19 +50,17 @@ export class SteemiaProvider {
   /**
    * @method dispatch_search: Method to dispatch the search
    * @param {Observable<string>} term 
-   * @param {number} limit 
    */
-  public dispatch_search(term: Observable<string>, limit: number) {
-    return term.debounceTime(2500)
-      .switchMap((value: string) => this.get_search(value, limit));
+  public dispatch_search(term: Observable<string>) {
+    return term.debounceTime(1000)
+      .switchMap((value: string) => this.get_search(value));
   }
 
   /**
    * @method get_search: Prepare the http call for the search
    * @param {String} term: String with the search term
-   * @param {Number} limit: Limit of items to return
    */
-  private get_search(value: string, limit) {
+  private get_search(value: string) {
 
     let que: Query;
     let result: any;
@@ -72,18 +70,37 @@ export class SteemiaProvider {
       value = value.substr(1);
 
       if (this.isEmpty(value) === true) {
-        return Observable.of({ error: 'value is empty' })
+        return Observable.of({ error: 'value is empty' });
       }
 
       que = {
-        query: value
-      };
+        search: value
+      }
 
       // If the user is logged in, include it into the query
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      result = this.http.get(USER_SEARCH + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_USERS + 'search?' + this.util.encodeQueryData(que));
+    }
+
+    // If the search is for a tag
+    else if (value[0] === '#') {
+      value = value.substr(1);
+
+      if (this.isEmpty(value) === true) {
+        return Observable.of({ error: 'value is empty' });
+      }
+
+      que = {
+        search: value
+      }
+
+      // If the user is logged in, include it into the query
+      if (this.isEmpty(this.username) === false) {
+        que.username = this.username;
+      }
+      result = this.http.get(STEEMIA_TAGS + 'search?' + this.util.encodeQueryData(que))
     }
 
     else if (this.isEmpty(value) === true) {
@@ -96,7 +113,7 @@ export class SteemiaProvider {
       value = value.replace(/[^0-9a-z]/gi, '');
 
       que = {
-        limit: limit
+        search: value
       };
 
       // If the user is logged in, include it into the query
@@ -104,7 +121,7 @@ export class SteemiaProvider {
         que.username = this.username;
       }
       
-      result = this.http.get(POSTS + value + '/hot?' + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_POSTS + 'search?' + this.util.encodeQueryData(que))
         .share()
     }
 
