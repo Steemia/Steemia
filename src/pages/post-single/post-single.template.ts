@@ -34,19 +34,17 @@ export const postSinglePage = `
           </div>
         </div>
 
-        <ion-icon *ngIf="!post?.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(post?.author, post?.url, 10000);"></ion-icon>
-
-        <ion-icon *ngIf="post?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(post?.author, post?.url, 0);"></ion-icon>
+        <i *ngIf="!post?.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="castVote(post?.author, post?.url, 10000);"></i>
+       
+        <i *ngIf="post?.vote && is_voting == false" class="fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(post?.author, post?.url, 0);"></i>
 
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
 
       </ion-item>
     </ion-card-header>
-    <hr />
-    <ion-card-content no-padding>
-      <div id="content" [innerHTML]="post?.full_body"></div>
-    </ion-card-content>
   </ion-card>
+
+  <div id="content" padding [innerHTML]="post?.full_body"></div>
 
   <div class="comment-box" text-center>
     <button ion-button round>Post a comment</button>

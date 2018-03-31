@@ -1,7 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
-import marked from 'marked';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -40,16 +39,6 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-
-    this.post.full_body = marked(this.post.full_body, {
-      gfm: true,
-      tables: true,
-      smartLists: true,
-      breaks: true,
-      pedantic: false,
-      sanitize: false,
-      smartypants: false
-    });
 
     this.zone.runOutsideAngular(() => {
       this.load_comments();

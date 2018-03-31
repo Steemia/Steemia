@@ -61,7 +61,6 @@ export class SteemConnectProvider {
             logged_out: false
           });
           
-          
         }
 
         // Otherwise if the token is not null, undefined nor an empty string, the user

@@ -557,3 +557,13 @@ div::-webkit-scrollbar-thumb {
   @extend .mdi-icons-general;
   content: "\F363";
 }
+
+.upvote {
+  font-size: 1.8em;
+  color: gray !important;
+}
+
+.unvote {
+  font-size: 1.8em;
+  color: #488aff !important;
+}
