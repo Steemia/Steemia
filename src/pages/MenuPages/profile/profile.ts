@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -22,6 +22,13 @@ export class ProfilePage {
   private username: string;
   private current_user: string;
 
+  private steem_account_data: Object;
+
+  private reward_vesting_steem;
+  private reward_vesting_balance;
+  private vesting_shares;
+  private effective_sp;
+
   private contents: Array<any> = [];
   private is_loading = true;
   private limit: number = 15;
@@ -36,6 +43,7 @@ export class ProfilePage {
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
     private steemConnect: SteemConnectProvider,
     private alerts: AlertsProvider,
     private steemActions: SteeemActionsProvider) {
@@ -111,6 +119,33 @@ export class ProfilePage {
       this.account_data = data;
       loading.dismiss();
     });
+  }
+
+  public presentProfileModal() {
+    let profileModal = this.modalCtrl.create('EditProfilePage', {steem_account_data: JSON.parse(this.steem_account_data[0].json_metadata)});
+    profileModal.present();
+  }
+
+  /**
+   * Method to get account data with steem_balance
+   */
+  private getSteemProfile() {
+    this.steemia.dispatch_account(this.current_user).then(data => {
+      this.steem_account_data = data;
+      this.reward_vesting_steem = data[0].reward_vesting_steem;
+      this.vesting_shares = data[0].vesting_shares;
+      this.reward_vesting_balance = data[0].reward_vesting_balance;
+      console.log(this.steem_account_data);
+      this.calculateSP();
+    });
+  }
+  
+  /**
+   * Method to calculate effective steem power
+   */
+  private calculateSP() {
+    this.effective_sp = parseFloat(this.reward_vesting_steem) * (parseFloat(this.vesting_shares) / parseFloat(this.reward_vesting_balance));
+    this.effective_sp = (this.effective_sp).toFixed(0);
   }
 
   /**
