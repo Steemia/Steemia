@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, 
          ViewController, 
+         AlertController,
          ActionSheetController, 
          LoadingController, 
          ToastController,
@@ -29,8 +30,16 @@ export class PostPage {
   private rewards: string = '50%'
   private storyForm: FormGroup;
   private upvote: boolean = false;
+
   imageURI: any;
   imageFileName: any;
+  cameraIMG: any;
+
+  parsedHash: any;
+  response: any;
+  imgdata: any;
+  hash: any;
+  URL: any;
 
   constructor(public viewCtrl: ViewController,
     public actionSheetCtrl: ActionSheetController,
@@ -40,6 +49,7 @@ export class PostPage {
     private transfer: FileTransfer,
     private alerts: AlertsProvider,
     private camera: Camera,
+    public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController) {
 
@@ -70,9 +80,10 @@ export class PostPage {
     }
   }
 
-  getImage() {
+  selectImage() {
     const options: CameraOptions = {
       quality: 100,
+      allowEdit: true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
     }
@@ -80,47 +91,102 @@ export class PostPage {
     this.camera.getPicture(options).then((imageData) => {
       this.imageURI = imageData;
     }, (err) => {
+      // Handle error
       console.log(err);
       this.presentToast(err);
-    });
+      alert(err);
+    }).then(data => {
+      this.uploadFile(this.imageURI);
+      alert(this.imageURI);
+    })
   }
 
-  uploadFile() {
+  getImage() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: false,
+    }
+    
+    this.camera.getPicture(options).then((imageData) => {
+      this.cameraIMG = imageData;
+    }, (err) => {
+     // Handle error
+      console.log(err);
+      this.presentToast(err);
+      alert(err);
+    }).then(data => {
+      this.uploadFile(this.cameraIMG);
+      alert(this.cameraIMG);
+    })
+  }
+
+  presentPrompt() {
+    let alert = this.alertCtrl.create({
+      title: 'Login',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Image URL'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            console.log(data);
+            this.URL = '![image]('+data.URL+')'
+            this.insertText(this.URL);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  uploadFile(image) {
+    let url = 'https://steemia.net/api/v0/add';
     let loader = this.loadingCtrl.create({
       content: "Uploading..."
     });
     loader.present();
-    this.steemActions.mock_transaction().then(data => {
-      let signature = data.result.signatures[0];
-      const fileTransfer: FileTransferObject = this.transfer.create();
 
-      let options: FileUploadOptions = {
-        fileKey: 'ionicfile',
-        fileName: 'ionicfile',
-        chunkedMode: false,
-        mimeType: "image/jpeg",
-        headers: {
-          trx: signature,
+    const fileTransfer: FileTransferObject = this.transfer.create();
 
-        }
-      }
+    let options: FileUploadOptions = {
+      fileKey: 'ionicfile',
+      fileName: 'ionicfile',
+      chunkedMode: false,
+      mimeType: "image/jpeg",
+    }
 
-    });
-
-
-
-
-    // fileTransfer.upload(this.imageURI, 'http://192.168.0.7:8080/api/uploadImage', options)
-    //   .then((data) => {
-    //     console.log(data + " Uploaded Successfully");
-    //     this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
-    //     loader.dismiss();
-    //     this.presentToast("Image uploaded successfully");
-    //   }, (err) => {
-    //     console.log(err);
-    //     loader.dismiss();
-    //     this.presentToast(err);
-    //   });
+    fileTransfer.upload(image, url, options)
+      .then((data) => {
+        console.log(data + " Uploaded Successfully");
+        this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
+        loader.dismiss();
+        this.presentToast("Image uploaded successfully");
+        this.imgdata = data;
+        this.response = this.imgdata.response;
+        this.parsedHash = JSON.parse(this.response);
+        this.hash = this.parsedHash.Hash;
+        this.URL = '![image](https://steemia.net/ipfs/'+this.hash+')'
+       // alert(this.hash);
+      }, (err) => {
+        console.log(err);
+        loader.dismiss();
+        this.presentToast(err);
+      }).then(data => {
+        this.insertText(this.URL);
+      })
   }
 
   getCaretPos(oField) {
@@ -209,6 +275,7 @@ export class PostPage {
           icon: 'camera',
           handler: () => {
             console.log('Destructive clicked');
+         //   this.getImage();
           }
         },
         {
@@ -216,6 +283,7 @@ export class PostPage {
           icon: 'albums',
           handler: () => {
             console.log('Archive clicked');
+            this.selectImage()
           }
         },
         {
@@ -223,6 +291,7 @@ export class PostPage {
           icon: 'md-globe',
           handler: () => {
             console.log('Archive clicked');
+            this.presentPrompt()
           }
         },
         {

@@ -279,7 +279,7 @@ export class WalletPage {
     else if (event.type === 'sell') {
       switch (event.name) {
         case 'STEEM':
-          this.sell('balance');
+          this.sell('steem');
           break;
 
         case 'SBD':

@@ -1,6 +1,6 @@
-import { UtilProvider } from './../../../providers/util/util';
+import { UtilProvider } from 'providers/util/util';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -14,6 +14,7 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    public alertCtrl: AlertController,
     public util: UtilProvider) {
       this.language = [
         'en_US'
@@ -35,8 +36,17 @@ export class SettingsPage {
     console.log(value);
   }
 
+  presentAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Successfully Saved',
+      subTitle: 'Your settings have been successfully saved 😎',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
   saveSettings(){
     this.util.setVoteValue(this.upvote);
+    this.presentAlert();
   }
 
 }
