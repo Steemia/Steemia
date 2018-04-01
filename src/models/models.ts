@@ -6,6 +6,7 @@ export interface Address {
 
 export interface Query {
     search?: string;
+    page?: number;
     limit?: number; // How much will be queried
     current_user?: string; // When you are querying user info, you need current user
     username?: string; // Used to check votes, follows, or feed

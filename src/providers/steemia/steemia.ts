@@ -2,17 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query, PostsRes } from 'models/models';
 import {
-  POSTS,
-  OWN_POSTS,
-  BASE_API,
-  BASE_API_V1,
-  STEEPSHOT_BASE,
   STEEM_API,
-  FEED,
-  USER_SEARCH,
   STEEMIA_POSTS,
   STEEMIA_USERS,
-  STEEMIA_TAGS
+  STEEMIA_TAGS,
+  STEEMIA_SEARCH
 } from '../../constants/constants';
 import { UtilProvider } from '../util/util';
 import { SteemConnectProvider } from '../steemconnect/steemconnect';
@@ -51,16 +45,16 @@ export class SteemiaProvider {
    * @method dispatch_search: Method to dispatch the search
    * @param {Observable<string>} term 
    */
-  public dispatch_search(term: Observable<string>) {
+  public dispatch_search(term: Observable<string>, page: number) {
     return term.debounceTime(1000)
-      .switchMap((value: string) => this.get_search(value));
+      .switchMap((value: string) => this.get_search(value, page));
   }
 
   /**
    * @method get_search: Prepare the http call for the search
    * @param {String} term: String with the search term
    */
-  private get_search(value: string) {
+  private get_search(value: string, page: number) {
 
     let que: Query;
     let result: any;
@@ -81,7 +75,7 @@ export class SteemiaProvider {
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      result = this.http.get(STEEMIA_USERS + 'search?' + this.util.encodeQueryData(que));
+      result = this.http.get(STEEMIA_SEARCH + 'users?' + this.util.encodeQueryData(que));
     }
 
     // If the search is for a tag
@@ -93,14 +87,15 @@ export class SteemiaProvider {
       }
 
       que = {
-        search: value
+        search: value,
+        page: page
       }
 
       // If the user is logged in, include it into the query
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      result = this.http.get(STEEMIA_TAGS + 'search?' + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_SEARCH + 'tags?' + this.util.encodeQueryData(que))
     }
 
     else if (this.isEmpty(value) === true) {
@@ -113,7 +108,8 @@ export class SteemiaProvider {
       value = value.replace(/[^0-9a-z]/gi, '');
 
       que = {
-        search: value
+        search: value,
+        page: page
       };
 
       // If the user is logged in, include it into the query
@@ -121,7 +117,7 @@ export class SteemiaProvider {
         que.username = this.username;
       }
       
-      result = this.http.get(STEEMIA_POSTS + 'search?' + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_SEARCH + 'posts?' + this.util.encodeQueryData(que))
         .share()
     }
 
@@ -167,16 +163,8 @@ export class SteemiaProvider {
    * @param {String} category 
    */
   public get_posts(type: string, query: Query, category?: string) {
-    // Check if a category is given
-    if (category) {
-      return this.http.get(POSTS + category + '/' + type + '?' + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query))
         .share();
-    }
-
-    else {
-      return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query))
-        .share();
-    }
   }
 
   /**

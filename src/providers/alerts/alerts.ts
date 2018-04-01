@@ -35,7 +35,11 @@ export class AlertsProvider {
         break;
 
       case 'COMMENT_INTERVAL':
-        message = ERRORS.COMMENT_INTERVAL.message
+        message = ERRORS.COMMENT_INTERVAL.message;
+        break;
+
+      case 'EMPTY_TEXT':
+        message = ERRORS.EMPTY_TEXT.message;
         break;
 
       default:

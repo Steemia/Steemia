@@ -1,5 +1,6 @@
 // ENDPOINTS
 export const STEEMIA_API = 'https://steemia-api.herokuapp.com/';
+export const STEEMIA_SEARCH = STEEMIA_API + 'search/';
 export const STEEMIA_POSTS =  STEEMIA_API + 'posts/';
 export const STEEMIA_USERS = STEEMIA_API + 'users/'
 export const STEEMIA_TAGS = STEEMIA_API + 'tags/';
@@ -7,13 +8,7 @@ export const STEEMIA_TAGS = STEEMIA_API + 'tags/';
 export const RAW_SERVER = 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/';
 
 export const IMG_SERVER = 'https://steemitimages.com/';
-export const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
-export const BASE_API_V1 = 'https://steepshot.org/api/steemia/v1/';
-export const STEEPSHOT_BASE = 'https://steepshot.org/api/v1/';
-export const USER_SEARCH = BASE_API + 'user/search?';
-export const FEED = BASE_API + 'recent?';
-export const POSTS = BASE_API + 'posts/';
-export const OWN_POSTS = BASE_API + 'user/';
+
 export const STEEMIT = 'https://steemit.com';
 export const STEEM_API = 'https://api.steemjs.com/';
 export const NO_IMAGE_COMMENT = 'assets/user.png';
@@ -42,6 +37,9 @@ export const ERRORS = {
     fingerprint: '<= (get_dynamic_global_properties().maximum_block_size - 256)',
     message: 'Your post is too big.',
   },
+  EMPTY_TEXT: {
+    message: 'A comment cannot be empty.'
+  }
 };
 
 // JSON Metadata
