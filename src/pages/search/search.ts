@@ -37,21 +37,26 @@ export class SearchPage {
   ionViewWillEnter() {  
     this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$, this.page)
       .subscribe((results: any) => {
-
-        if (results.results.length === 0) {
+        try {
+          if (results.results.length === 0) {
+            this.is_more_post = false;
+          }
+  
+          // Detect if the results are for tags
+          if (results.type === 'full_text_search' || results.type === 'tags_search') {
+            this.is_tag = true;
+            this.is_user = false;
+          }
+  
+          else if (results.type === 'user_search') {
+            this.is_tag = false;
+            this.is_user = true;
+          }
+        }
+        catch(e) {
           this.is_more_post = false;
         }
-
-        // Detect if the results are for tags
-        if (results.type === 'full_text_search' || results.type === 'tags_search') {
-          this.is_tag = true;
-          this.is_user = false;
-        }
-
-        else if (results.type === 'user_search') {
-          this.is_tag = false;
-          this.is_user = true;
-        }
+        
 
         this.isSearching = false;
         this.results = results.results;

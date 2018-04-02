@@ -36,10 +36,17 @@
 
       </div>
       <div *ngIf="!content.video_only">
-          <img-loader class="img" [src]="util.renderImage('cover', content.body)" (error)="util.imgError('post', $event)"></img-loader>
+        <img-loader class="img" [src]="util.renderImage('cover', content.body)" (error)="util.imgError('post', $event)">
+        <div class="nsfw-overlay" *ngIf="content.is_nsfw == true">
+          <div class="nsfw-text">
+            <p>NOT SAFE FOR WORK</p>
+            <button ion-button color="primary" mode="ios" (click)="reveal_image();">
+              <ion-icon name="eye" color="white"></ion-icon>&nbsp;&nbsp;Show Image
+            </button>
+          </div>
+        </div>
+        </img-loader>
       </div>
-      
-  
     </ion-card-content>
   
     <ion-row>
