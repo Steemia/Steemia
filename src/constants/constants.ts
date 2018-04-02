@@ -2,13 +2,14 @@
 export const STEEMIA_API = 'https://steemia-api.herokuapp.com/';
 export const STEEMIA_POSTS =  STEEMIA_API + 'posts/';
 export const STEEMIA_USERS = STEEMIA_API + 'users/'
+export const STEEMIA_TAGS = STEEMIA_API + 'tags/';
+
 export const RAW_SERVER = 'https://steemit-production-imageproxy-upload.s3.amazonaws.com/';
 
 export const IMG_SERVER = 'https://steemitimages.com/';
 export const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
 export const BASE_API_V1 = 'https://steepshot.org/api/steemia/v1/';
 export const STEEPSHOT_BASE = 'https://steepshot.org/api/v1/';
-export const STEEPSHOT_BASE_V1_1 = 'https://steepshot.org/api/v1_1/';
 export const USER_SEARCH = BASE_API + 'user/search?';
 export const FEED = BASE_API + 'recent?';
 export const POSTS = BASE_API + 'posts/';
