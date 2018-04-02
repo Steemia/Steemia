@@ -26,10 +26,9 @@ export class CommentComponent {
    * @param permlink 
    * @param weight 
    */
-  private castVote(i, author: string, permlink: string, weight: number = 1000): void {
+  private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-
     this.steemActions.dispatch_vote('comment', author, permlink, weight).then(data => {
 
       this.is_voting = false; // remove the spinner

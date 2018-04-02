@@ -12,17 +12,17 @@ export const postSinglePage = `
 </ion-header>
 
 <ion-content>
-  <ion-card no-padding>
+  <ion-card>
     <h2 class="title" padding>{{ post?.title }}</h2>
     <ion-card-header no-padding>
       <ion-item>
-        <ion-avatar item-start tappable (click)="openProfile()">
-          <img src="https://img.busy.org/@{{post?.author}}?s=100">
-        </ion-avatar>
+        <div class="image-cropper" item-start tappable (click)="openProfile()">
+          <img src="https://img.busy.org/@{{post?.author}}">
+        </div>
         <div>
           <ion-badge color="primary" tappable (click)="openProfile()">{{ post?.author }}</ion-badge>
           <ion-badge color="gray">{{ post?.author_reputation }}</ion-badge>
-          <ion-note end>{{ post?.created | amTimeAgo }}</ion-note>
+          <ion-note end>{{ util.parse_date(post?.created) }}</ion-note>
         </div>
 
         <div>
@@ -34,23 +34,43 @@ export const postSinglePage = `
           </div>
         </div>
 
-        <ion-icon *ngIf="!post?.vote && is_voting == false" name="ios-thumbs-up-outline" item-right (tap)="castVote(post?.author, post?.url, 10000);"></ion-icon>
+        <i *ngIf="!post?.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="castVote(post?.author, post?.url, 10000);"></i>
 
-        <ion-icon *ngIf="post?.vote && is_voting == false" name="ios-thumbs-up" item-right color="primary" (tap)="castVote(post?.author, post?.url, 0);"></ion-icon>
+        <i *ngIf="post?.vote && is_voting == false" class="fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(post?.author, post?.url, 0);"></i>
 
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
 
       </ion-item>
     </ion-card-header>
-    <hr />
-    <ion-card-content no-padding>
-      <div id="content" [innerHTML]="post?.full_body"></div>
-    </ion-card-content>
   </ion-card>
 
-  <div class="comment-box" text-center>
-    <button ion-button round>Post a comment</button>
+  <div id="content" class="cancel-bottom-pd" padding [innerHTML]="post?.full_body"></div>
+
+  <ion-grid padding>
+    <ion-row>
+      <ion-col no-padding>
+        <div *ngFor="let tag of post?.tags" style="float: left !important; margin: 5px 5px 0px 0px">
+          <ion-badge class="custom-chip" color="light">
+            {{ tag }}
+          </ion-badge>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col no-padding class="top-33">
+        <h3>Comments</h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div padding class="cancel-top-pd">
+    <ion-textarea [(ngModel)]="chatBox" rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
+    <button class="pull-right" ion-button mode="ios" (click)="comment()">Post a Comment</button>
   </div>
+
+  <br />
+  <br />
+  <br />
+  <br />
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
@@ -58,6 +78,10 @@ export const postSinglePage = `
     <render-comment [comment]="comment"></render-comment>
   </div>
 
+  <br />
+  <br />
+  <br />
+  <br />
 
   <ion-fab right bottom>
     <button ion-fab color="primary">

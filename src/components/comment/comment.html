@@ -18,16 +18,10 @@
     </div>
 
   </div>
-  <ion-icon *ngIf="!comment.vote && is_voting == false" 
-            name="ios-thumbs-up-outline" class="like-button" 
-            item-right (tap)="castVote(i, comment.author, comment.url, 10000);">
-  </ion-icon>
 
-  <ion-icon *ngIf="comment.vote && is_voting == false" 
-            name="ios-thumbs-up" class="like-button" 
-            color="primary" item-right 
-            (tap)="castVote(i, comment.author, comment.url, 10000);">
-  </ion-icon>
+  <i *ngIf="!comment?.vote && is_voting == false" class="like-button fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="castVote(comment?.author, comment?.url, 10000);"></i>
+
+  <i *ngIf="comment?.vote && is_voting == false" class="like-button fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(comment?.author, comment?.url, 0);"></i>
 
   <ion-spinner *ngIf="is_voting == true"></ion-spinner>
 

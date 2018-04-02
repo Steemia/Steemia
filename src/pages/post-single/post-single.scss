@@ -1,5 +1,9 @@
 page-post-single {
 
+    ion-content {
+        background-color: white !important;
+    }
+
     .card {
         border-top: 1px solid #e9e7e7;
         border-bottom: 1px solid #e9e7e7;
@@ -55,14 +59,33 @@ page-post-single {
         color: #222;
     }
 
-    #content {
-        p {   
-            padding: 5px 16px 5px 16px;
-        }
-        h1, h2, h3, h4, h5, h6, em {
-            padding: 5px 16px 5px 16px;
-        }
+    // #content {
+    //     p {   
+    //         padding: 5px 16px 5px 16px;
+    //     }
+    //     h1, h2, h3, h4, h5, h6, em {
+    //         padding: 5px 16px 5px 16px;
+    //     }
         
+    // }
+
+    blockquote {
+        background: #f9f9f9;
+        border-left: 3px solid #ccc;
+        margin: 1.5em 10px;
+        padding: 0.5em 10px;
+    }
+      
+    blockquote:before {
+        color: #ccc;
+        font-size: 4em;
+        line-height: 0.1em;
+        margin-right: 0.25em;
+        vertical-align: -0.4em;
+    }
+      
+    blockquote p {
+        display: inline;
     }
 
     button[ion-fab] {
@@ -86,13 +109,50 @@ page-post-single {
     .message-wrapper {
         position: relative;
     }
+
+    .message-wrapper:first-child {
+        margin-top: 6vh !important;
+    }
   
     .message-wrapper:last-child {
         margin-bottom: 10px;
     }
 
-    ion-card img {
-        display: -webkit-inline-box !important;
-        width: auto !important;
-    } 
+    .image-cropper {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    .image-cropper img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .custom-chip {
+        padding: 8px;
+        text-transform: capitalize;
+    }
+
+    .cancel-bottom-pd {
+        padding-bottom: 0px !important;
+    }
+
+    .cancel-top-pd {
+        margin-top: -32px !important;
+    }
+
+    ion-textarea {
+        border: 1px solid #e9e7e7;
+    }
+
+    .pull-right {
+        float: right;
+    }
+
+    .top-33 {
+        margin-top: 33px;
+    }
 }

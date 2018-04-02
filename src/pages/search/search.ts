@@ -23,6 +23,7 @@ export class SearchPage {
   private is_tag: boolean = false;
   private is_user: boolean = false;
   private is_more_post: boolean = true;
+  private page: number = 1;
   
   objectKeys = Object.keys;
   results: Object;
@@ -34,7 +35,7 @@ export class SearchPage {
     private steemiaProvider: SteemiaProvider) { }
 
   ionViewWillEnter() {  
-    this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$)
+    this.sub = this.steemiaProvider.dispatch_search(this.searchTerm$, this.page)
       .subscribe((results: any) => {
 
         if (results.results.length === 0) {
