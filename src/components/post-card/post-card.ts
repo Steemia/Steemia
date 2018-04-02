@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import { App, ModalController, PopoverController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 // PROVIDERS
@@ -12,19 +12,22 @@ import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
   selector: 'post-card',
   templateUrl: 'post-card.html'
 })
-export class PostCardComponent {
+export class PostCardComponent implements AfterViewInit {
 
   @Input('post') content: any;
   private is_voting: boolean = false;
   public popover;
   videoUrl: SafeResourceUrl;
   player = [];
+  private revealed: boolean = false;
+  private reveal_trigger: boolean = false;
 
   constructor(private app: App,
     private modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
+    private cdr: ChangeDetectorRef,
     public util: UtilProvider,
     private domSanitizer: DomSanitizer,
     private steemConnect: SteemConnectProvider,
@@ -34,7 +37,7 @@ export class PostCardComponent {
     this.imageLoaderConfig.setHeight('200px');
     this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
     this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-    this.imageLoaderConfig.setConcurrency(10);
+    this.imageLoaderConfig.setConcurrency(25);
     this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
     this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
@@ -42,6 +45,12 @@ export class PostCardComponent {
 
   getYTImage(url) {
     return "https://img.youtube.com/vi/" + this.getId(url) + "/0.jpg";
+  }
+
+  ngAfterViewInit() {
+    if (this.content.is_nsfw === false) {
+      this.reveal_trigger = true;
+    }
   }
 
   private parse_video(url) {
@@ -61,11 +70,10 @@ export class PostCardComponent {
 
   savePlayer(player) {
     this.player.push(player);
-    console.log('player instance', player)
   }
   
   onStateChange(event){
-    console.log('player state', event.data);
+    
   }
 
   /**
@@ -87,12 +95,24 @@ export class PostCardComponent {
    * @param post 
    */
   private postOpen(post): void {
-    this.player.map(yt => {
-      yt.pauseVideo();
-    })
-    this.app.getRootNavs()[0].push('PostSinglePage', {
-      post: post
-    })
+
+    if (this.content.is_nsfw === false && this.reveal_trigger === false) {
+      return;
+    }
+
+    else {
+      try {
+        this.player.map(yt => {
+          yt.pauseVideo();
+        });
+      }
+
+      catch(e) {}
+      
+      this.app.getRootNavs()[0].push('PostSinglePage', {
+        post: post
+      });
+    }
   }
 
   /**
@@ -177,6 +197,15 @@ export class PostCardComponent {
       this.content.total_payout_reward = (data as any).total_payout_reward;
       this.content.children = (data as any).children;
     });
+  }
+
+  private reveal_image() {
+    this.content.is_nsfw = false;
+
+    setTimeout(() => {
+      this.reveal_trigger = true;
+    }, 500);
+    this.cdr.detectChanges();
   }
 
 }

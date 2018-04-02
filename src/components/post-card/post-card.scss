@@ -84,4 +84,25 @@ post-card {
       .top-4 {
             margin-top: 4px !important;
       }
+
+      .nsfw-overlay {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999999;
+      }
+
+      .nsfw-text {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%); 
+            text-align: center;
+            color: white;
+
+            p {
+                  color: white;
+                  font-size: 1.6em;
+            }
+      }
+        
 }
