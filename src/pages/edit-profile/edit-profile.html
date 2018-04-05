@@ -1,8 +1,10 @@
 <ion-header>
   <ion-navbar color="primary">
+    <ion-buttons>
       <button ion-button (tap)="dismiss()">
-          <ion-icon name="close"></ion-icon>
-        </button>
+        <ion-icon class="custom-close" name="close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Edit Profile</ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,7 +14,7 @@
   <ion-list>
     <ion-item>
       <ion-avatar>
-        <img src="{{ account_data?.profile.profile_image }}" (error)="util.imgError('profile',$event)"> 
+        <img src="{{ account_data?.profile.profile_image }}" (error)="util.imgError('profile',$event)">
       </ion-avatar>
     </ion-item>
     <ion-list-header>
@@ -45,7 +47,7 @@
       <ion-label>
         {{ account_data?.profile.location }}
       </ion-label>
-      <button ion-button clear item-end  (click)="showPrompt('location')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('location')">Edit</button>
     </ion-item>
 
     <ion-list-header>

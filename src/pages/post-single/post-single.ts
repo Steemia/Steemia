@@ -1,5 +1,5 @@
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, Content } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -11,6 +11,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 
+
 @IonicPage({
   priority: 'high'
 })
@@ -19,6 +20,7 @@ import { UtilProvider } from 'providers/util/util';
   template: postSinglePage
 })
 export class PostSinglePage {
+  @ViewChild(Content) content: Content;
 
   private post: any;
   private is_voting: boolean = false;
@@ -29,6 +31,8 @@ export class PostSinglePage {
   private current_user: string = "";
   private user;
   private chatBox: string = '';
+  private is_owner: boolean = false;
+  private ref;
 
 
   private ngUnsubscribe: Subject<any> = new Subject();
@@ -48,8 +52,12 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-    this.current_user = (this.steemConnect.user_temp as any).user;
     
+    this.current_user = (this.steemConnect.user_temp as any).user;
+
+    if (this.current_user === this.post.author) {
+      this.is_owner = true;
+    }
 
     this.zone.runOutsideAngular(() => {
       this.load_comments();
@@ -74,10 +82,10 @@ export class PostSinglePage {
       if (action === "refresh") {
         this.reinitialize();
       }
-      this.comments = comments.results.reverse();;
+      this.comments = comments.results.reverse();
 
       // Set the loading spinner to false
-      this.is_loading = false
+      this.is_loading = false;
 
       // Tell Angular that changes were made since we detach the auto check
       this.cdr.detectChanges();
@@ -204,6 +212,10 @@ export class PostSinglePage {
       }
 
     });
+  }
+
+  editPost() {
+    this.navCtrl.push("EditPostPage");
   }
 
 }

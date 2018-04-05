@@ -2,7 +2,6 @@ section-scss {
 
   .share-post {
     margin-top: 11px;
-    width: 95.2%;
     margin-left: 10px;
     border-radius: 5px;
     border: 1px solid #e9e7e7 !important;
@@ -11,7 +10,6 @@ section-scss {
   .ios {
     .share-post {
       margin-top: 10px;
-      width: 93.8%;
       margin-left: 12px;
       border-radius: 5px;
       border: 1px solid #e9e7e7 !important;
@@ -96,6 +94,14 @@ section-scss {
   .toolbar-content {
     max-width: 73% !important;
     margin-left: -8px !important;
+  }
+
+  .card {
+    -webkit-box-shadow:  none !important;
+    -moz-box-shadow:  none !important;
+    box-shadow: none !important;
+    border-radius: 8px;
+    border: 1px solid #e9e7e7;
   }
 
   @keyframes fadein {

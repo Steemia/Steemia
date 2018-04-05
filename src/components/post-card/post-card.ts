@@ -86,7 +86,10 @@ export class PostCardComponent implements AfterViewInit {
     });
 
     this.popover.onDidDismiss(data => {
-      this.castVote(this.content.author, this.content.url, data.weight);
+      if (data) {
+        this.castVote(this.content.author, this.content.url, data.weight);
+      }
+      
     });
   }
 
@@ -145,7 +148,7 @@ export class PostCardComponent implements AfterViewInit {
    * @param post 
    */
   private openComments(url: string, author: string): void {
-    let commentModal = this.modalCtrl.create('CommentsPage', { permlink: url, author:  author});
+    let commentModal = this.modalCtrl.create('CommentsPage', { permlink: url, author:  author}, { cssClass:"full-modal" });
     commentModal.present();
   }
 
@@ -155,7 +158,7 @@ export class PostCardComponent implements AfterViewInit {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author });
+    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
     votesModal.present();
   }
 

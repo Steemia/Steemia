@@ -26,4 +26,17 @@ page-tabs {
       .tabs-md-dark .tab-button[aria-selected=true] .tab-button-icon {
             color: #fff !important;
       }
+
+      button {
+            ion-badge {
+                  position: absolute;
+                  top: -0.2rem;
+                  right: -0.10rem;
+                  opacity: 1;
+      
+                  & ~ ion-icon {
+                        margin-right: 1.2rem;
+                  }
+            }
+      }
 }

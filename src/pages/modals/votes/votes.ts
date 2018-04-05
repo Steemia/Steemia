@@ -13,7 +13,7 @@ import { UtilProvider } from 'providers/util/util';
 })
 export class VotesPage {
 
-  private slice: number = 15;
+  private slice: number = 25;
   private is_more: boolean = true;
 
   private author: string;
@@ -59,7 +59,7 @@ export class VotesPage {
   private load_more(infiniteScroll) {
     setTimeout(() => {
 
-      this.slice += 5;
+      this.slice += 25;
 
       if (this.slice > this.votes.length) {
         this.is_more = false;
