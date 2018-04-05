@@ -5,13 +5,13 @@ import { ComponentsModule } from '../../components/components.module';
 import { MomentModule } from 'angular2-moment';
 
 @NgModule({
-  declarations: [
-      PostSinglePage,
-  ],
-  imports: [
-      MomentModule,
-      ComponentsModule,
-      IonicPageModule.forChild(PostSinglePage),
-  ],
+    declarations: [
+        PostSinglePage,
+    ],
+    imports: [
+        MomentModule,
+        ComponentsModule,
+        IonicPageModule.forChild(PostSinglePage),
+    ],
 })
-export class PostSinglePageModule {}
+export class PostSinglePageModule { }

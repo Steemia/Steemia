@@ -16,10 +16,10 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage()
 @Component({
-  selector: 'page-post',
-  templateUrl: 'post.html',
+  selector: 'page-edit-post',
+  templateUrl: 'edit-post.html',
 })
-export class PostPage {
+export class EditPostPage {
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 

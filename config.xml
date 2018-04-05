@@ -102,4 +102,5 @@
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <plugin name="cordova-plugin-google-analytics" spec="~1.8.3" />
     <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
 </widget>

@@ -8,6 +8,7 @@ import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Socket } from 'ng-socket-io';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
+import { WebsocketsProvider } from 'providers/websockets/websockets';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,6 +37,7 @@ export class MyApp {
     private menuCtrl: MenuController,
     private ga: GoogleTrackingProvider,
     private events: Events,
+    private ws: WebsocketsProvider,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
@@ -54,6 +56,8 @@ export class MyApp {
           // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
+          this.ws.sendAsync('login', this.steemConnect.get_token, 1);
+          this.ws.sendAsync('get_notifications', this.profile.username, 0);
         });
       }
     });

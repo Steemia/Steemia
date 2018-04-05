@@ -259,6 +259,17 @@ export class SteemiaProvider {
   }
 
   /**
+   * Public method to dispatch post single data
+   * 
+   * @method dispatch_post_single
+   * @param {Query} query: Object with data for query
+   */
+  public dispatch_post_single_notifications(query: Query) {
+    query.username = this.username;
+    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
+  }
+
+  /**
    * Method to dispatch comment single data
    * 
    * @method dispatch_comment_single

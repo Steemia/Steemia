@@ -1,6 +1,6 @@
-<div>
-  <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)"
-    (error)="util.imgError('comment', $event)" />
+<div [attr.id]="comment.permlink">
+  <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)" (error)="util.imgError('comment', $event)"
+  />
   <!--  wave-->
   <div class="chat-bubble left slide-left">
 

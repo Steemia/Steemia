@@ -1,0 +1,103 @@
+page-edit-post {
+
+    // Resolve width for general tablets
+    @media only screen and (device-width: 768px) {
+
+          .scroll-content {
+                width: 75% !important;
+                margin-left: auto;
+                margin-right: auto;
+          }
+          
+          .card {
+                border-radius: 5px;
+                border: 1px solid #e9e7e7;
+          }
+    }
+  
+    // Resolve width for Ipad Pro
+    @media only screen 
+    and (min-device-width : 1024px) 
+    and (max-device-width : 1366px) { 
+    
+          .scroll-content {
+                width: 75% !important;
+                margin-left: auto;
+                margin-right: auto;
+          }
+    
+          .card {
+                border-radius: 5px;
+                border: 1px solid #e9e7e7;
+          }
+                
+    }
+
+    ion-select {
+          max-width: 60% !important;
+    }
+
+    hr {
+          background-color: #f1f2f3 !important;
+    }
+
+    ion-item {
+          border: 1px solid #e9e7e7 !important;
+          border-radius: 8px;
+          margin-top: -8px !important;
+    }
+
+    .label-title {
+          font-size: 0.9em !important;
+    }
+
+    .editor-toolbar {
+          background-color: #f1f2f3;
+          border-top-left-radius: 0 !important;
+          border-top-right-radius: 0 !important;
+          position: -webkit-sticky; // Safari fallback
+          position: sticky; // other browsers
+          top: 0px; // become fixed/sticky when toolbar goes against the top of the viewport
+        
+          // Make toolbar useable/visible when it becomes sticky
+          z-index: 100;
+          opacity: initial;
+    }
+
+    .editor-preview, .editor-preview-side {
+          background-color: #ffffff !important;
+    }
+        
+    // Hovering would otherwise cause the text to become visible 'behind' the toolbar
+    .editor-toolbar:hover {
+          opacity: initial;
+    } 
+
+    .editor-toolbar.disabled-for-preview a:not(.no-disable) {
+          pointer-events: all !important;
+    }
+
+    .CodeMirror-wrap pre {
+          word-wrap: break-word;
+          white-space: pre-wrap;
+          word-break: normal;
+          pointer-events: all;
+    }
+
+    ion-footer {
+          border-top: 1px solid #bbb;
+          height: 49px;
+    }
+
+    .fa {
+          color: #2d3e4f;
+    }
+
+    .top-five {
+          margin-top: 5px;
+    }
+
+    .top-four {
+          margin-top: 4px;
+    }
+}
