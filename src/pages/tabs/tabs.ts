@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
+import { WebsocketsProvider } from 'providers/websockets/websockets';
 
 @IonicPage({
   priority: 'high'
@@ -19,8 +20,9 @@ import { IonicPage, App } from 'ionic-angular';
           <button ion-button icon-only (click)="openPage('SearchPage')">
             <ion-icon name="mdi-magnify"></ion-icon>
           </button>
-          <button ion-button icon-only>
-            <ion-icon name="mdi-bell"></ion-icon>
+          <button id="notification-button" ion-button icon-only (click)="openPage('NotificationsPage')">
+            <ion-badge color="danger" *ngIf="notifications != 0">{{ notifications }}</ion-badge>
+            <ion-icon name="mdi-bell"></ion-icon>              
           </button>
         </ion-buttons>
       </ion-navbar>
@@ -47,8 +49,12 @@ export class TabsPage {
   private trendRoot = 'TrendPage';
   private hotRoot = 'HotPage';
   private newRoot = 'NewPage';
+  private notifications: number = 0;
 
-  constructor(private appCtrl: App) {
+  constructor(private appCtrl: App, private ws: WebsocketsProvider) {
+    this.ws.counter.subscribe(count => {
+      this.notifications = count;
+    });
   }
 
   /**

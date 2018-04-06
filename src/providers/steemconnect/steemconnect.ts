@@ -60,7 +60,6 @@ export class SteemConnectProvider {
             status: this.login_status,
             logged_out: false
           });
-          
         }
 
         // Otherwise if the token is not null, undefined nor an empty string, the user
@@ -75,16 +74,19 @@ export class SteemConnectProvider {
           // Set the login status to true
           this.login_status = true;
           this.dispatch_data();
-
+          
         }
       });
 
       // Save a reference of the login url for later use
       this.loginUrl = this.instance.getLoginURL();
       console.log(this.loginUrl)
-    })
+    });
 
+  }
 
+  get get_token() {
+    return this.access_token;
   }
 
   private dispatch_data() {
@@ -209,6 +211,36 @@ export class SteemConnectProvider {
           resolve('done');
         }
       });
+    });
+  }
+
+  private getMetadata() {
+    return new Promise(resolve => {
+      this.instance.me((err, res) => {
+        if (res) resolve(res.user_metadata);
+        else resolve(err)
+      });
+    });
+  }
+
+  public saveNotificationsLastTimestamp(lastTimestamp: number) {
+    return new Promise(resolve => {
+      this.getMetadata().then(metadata => {
+        this.instance.updateUserMetadata({
+          ...metadata,
+          notifications_last_timestamp: lastTimestamp,
+        }, (err, res) => {
+          resolve(res.user_metadata.notifications_last_timestamp);
+        })
+      })
+    });
+  }
+
+  public getNotificationsLastTimestamp() {
+    return new Promise(resolve => {
+      this.get_current_user().then((user: object) => {
+        resolve((user as any).user_metadata.notifications_last_timestamp)
+      })
     });
   }
 

@@ -567,3 +567,35 @@ div::-webkit-scrollbar-thumb {
   font-size: 1.8em;
   color: #488aff !important;
 }
+
+@media only screen and (min-height: 768px) and (min-width: 768px) {
+  .full-modal {
+    .modal-wrapper {
+  
+      position: absolute;
+      display: block;
+      left: calc(50% - (80%/2)) !important;
+      top: calc(50% - (80%/2)) !important;
+      width: 80% !important;
+      height: 80% !important;
+    } 
+  }
+}
+
+@media only screen and (min-height: 600px) and (min-width: 768px) {
+  .full-modal {
+    .modal-wrapper {
+  
+      position: absolute;
+      display: block;
+      left: calc(50% - (80%/2)) !important;
+      top: calc(50% - (80%/2)) !important;
+      width: 80% !important;
+      height: 80% !important;
+    } 
+  }
+}
+
+.custom-close {
+  font-size: 24px;
+}

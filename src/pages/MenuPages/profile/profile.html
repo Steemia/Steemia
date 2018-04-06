@@ -63,7 +63,7 @@
 
     </div>
 
-    <div [ngSwitch]="sections">
+    <div [ngSwitch]="sections" class="custom-width">
       <div *ngSwitchCase="'blog'">
 
         <ion-spinner *ngIf="is_loading"></ion-spinner>

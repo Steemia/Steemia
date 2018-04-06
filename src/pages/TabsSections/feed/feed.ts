@@ -1,6 +1,6 @@
 import { UtilProvider } from 'providers/util/util';
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { Component, NgZone, ChangeDetectorRef, } from '@angular/core';
+import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { feedTemplate } from './feed.template';
@@ -31,6 +31,7 @@ export class FeedPage {
   constructor(private steemConnect: SteemConnectProvider,
     private zone: NgZone,
     public util: UtilProvider,
+    private appCtrl: App,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider) {
   }
@@ -159,6 +160,14 @@ export class FeedPage {
     this.first_limit = 15;
     this.contents = [];
     this.is_more_post = true;
+  }
+
+  /**
+   * @method openPage: Method to push a page to the nav controller
+   * @param {string} str: the name of the page to push
+   */
+  private openPage(str: string): void {
+    this.appCtrl.getRootNavs()[0].push(str);
   }
 
 }

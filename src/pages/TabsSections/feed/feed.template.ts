@@ -8,13 +8,15 @@ export const feedTemplate = `
 
   <ion-spinner *ngIf="is_loading && logged_in == true"></ion-spinner>
 
-  <ion-item *ngIf="!is_loading && logged_in == true" no-lines class="share-post" (click)="openPage('PostPage')">
-    <ion-avatar item-start>
-      <img [src]="profile_pc" (error)="util.imgError('profile',$event)"/>
-    </ion-avatar>
-    <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
-    </ion-searchbar>
-  </ion-item>
+  <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')">
+    <ion-item>
+      <ion-avatar item-start>
+        <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
+      </ion-avatar>
+      <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
+      </ion-searchbar>
+    </ion-item>
+  </ion-card>
 
   <div *ngIf="logged_in == false">
     You need to log in to see this page
