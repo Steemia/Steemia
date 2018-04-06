@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, NavController, PopoverController } from 'ionic-angular';
 import { SteeemActionsProvider }  from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
@@ -12,12 +12,28 @@ export class CommentComponent {
 
   @Input('comment') comment: any;
   private is_voting: boolean = false;
+  public popover;
 
-  constructor(private alertCtrl: AlertController,
+  constructor(public popoverCtrl: PopoverController,
+  private alertCtrl: AlertController,
   private steemActions: SteeemActionsProvider,
   private navCtrl: NavController,
   private steemiaProvider: SteemiaProvider,
   public util: UtilProvider) {}
+
+
+
+   /**
+   * Method to open the voting-slider popover
+   */
+  presentPopover(author, url) {
+    this.popover = this.popoverCtrl.create('VotingSliderPage');
+    this.popover.present();
+
+    this.popover.onDidDismiss(data => {
+      this.castVote(author, url, data.weight);
+    });
+  }
 
   /**
    * Method to cast a vote or unvote
