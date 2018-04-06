@@ -122,31 +122,10 @@ export class ProfilePage {
   }
 
   public presentProfileModal() {
-    let profileModal = this.modalCtrl.create('EditProfilePage', {steem_account_data: JSON.parse(this.steem_account_data[0].json_metadata)});
+    let profileModal = this.modalCtrl.create('EditProfilePage', {steem_account_data: (this.account_data as any).json_metadata});
     profileModal.present();
   }
 
-  /**
-   * Method to get account data with steem_balance
-   */
-  private getSteemProfile() {
-    this.steemia.dispatch_account(this.current_user).then(data => {
-      this.steem_account_data = data;
-      this.reward_vesting_steem = data[0].reward_vesting_steem;
-      this.vesting_shares = data[0].vesting_shares;
-      this.reward_vesting_balance = data[0].reward_vesting_balance;
-      console.log(this.steem_account_data);
-      this.calculateSP();
-    });
-  }
-  
-  /**
-   * Method to calculate effective steem power
-   */
-  private calculateSP() {
-    this.effective_sp = parseFloat(this.reward_vesting_steem) * (parseFloat(this.vesting_shares) / parseFloat(this.reward_vesting_balance));
-    this.effective_sp = (this.effective_sp).toFixed(0);
-  }
 
   /**
    * 

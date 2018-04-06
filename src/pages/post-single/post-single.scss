@@ -1,7 +1,12 @@
 page-post-single {
 
-    ion-content {
-        background-color: white !important;
+    // ion-content {
+    //     background-color: white !important;
+    // }
+
+    ion-card-content img {
+        display: block;
+        width: auto !important;
     }
 
     .card {
@@ -16,9 +21,18 @@ page-post-single {
     // Resolve width for general tablets
     @media only screen and (device-width: 768px) {
         .scroll-content {
-        width: 89% !important;
-        margin-left: auto;
-        margin-right: auto;;
+            width: 75% !important;
+            margin-left: auto;
+            margin-right: auto;;
+        }
+
+        .card {
+            border-radius: 5px;
+            border: 1px solid #e9e7e7;
+        }
+
+        .card:first-child {
+            margin: 15px 0 0 0 !important;
         }
     }
 
@@ -28,9 +42,18 @@ page-post-single {
     and (max-device-width : 1366px) { 
 
         .scroll-content {
-        width: 75% !important;
-        margin-left: auto;
-        margin-right: auto;;
+            width: 75% !important;
+            margin-left: auto;
+            margin-right: auto;;
+        }
+
+        .card {
+            border-radius: 5px;
+            border: 1px solid #e9e7e7;
+        }
+
+        .card:first-child {
+            margin: 15px 0 0 0 !important;
         }
     }
 
@@ -44,9 +67,9 @@ page-post-single {
         overflow-x: scroll !important;
     }
 
-    .card:first-child {
-        margin: 0 !important;
-    }
+    // .card:first-child {
+    //     margin: 0 !important;
+    // }
 
     ion-card-header {
         display: inline !important;
@@ -59,15 +82,23 @@ page-post-single {
         color: #222;
     }
 
-    // #content {
-    //     p {   
-    //         padding: 5px 16px 5px 16px;
-    //     }
-    //     h1, h2, h3, h4, h5, h6, em {
-    //         padding: 5px 16px 5px 16px;
-    //     }
+    #content {
+        p {   
+            padding: 5px 0 5px 0;
+        }
+        h1, h2, h3, h4, h5, h6, em {
+            padding: 5px 0 5px 0;
+        }
+
+        h4 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
         
-    // }
+    }
 
     blockquote {
         background: #f9f9f9;
@@ -118,17 +149,11 @@ page-post-single {
         margin-bottom: 10px;
     }
 
-    .image-cropper {
-        width: 40px;
-        height: 40px;
+    ion-avatar img {
+        object-fit: cover;
         position: relative;
-        overflow: hidden;
-        border-radius: 50%;
-    }
-
-    .image-cropper img {
-        width: 100%;
-        height: 100%;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
     }
 
     .custom-chip {
@@ -154,5 +179,29 @@ page-post-single {
 
     .top-33 {
         margin-top: 33px;
+    }
+
+    thead {
+        background-color: #f1f1f1;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+      
+    tr { 
+        border: 1px solid #f1f1f1;
+    }
+
+    tr:first-child {
+        border-top: none;
+    }
+      
+    tr:last-child {
+        border-bottom: none;
+    }
+
+    .h3-custom {
+        font-size: 2.2rem !important;
     }
 }

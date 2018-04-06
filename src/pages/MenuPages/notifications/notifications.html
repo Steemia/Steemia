@@ -1,18 +1,81 @@
-<!--
-  Generated template for the NotificationsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>profile</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Notifications</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+  <ion-list>
+    <div *ngFor="let notification of notifications; let i = index">
+
+      <!-- IF NOTIFICATION IS FOLLOW -->
+      <ion-item *ngIf="notification.type == 'follow'" (click)="open_profile(i);">
+        <ion-avatar item-start>
+          <img [src]="render_image(notification.follower)">
+        </ion-avatar>
+
+        <h2>
+          <strong>{{ notification.follower }}</strong> started following you
+        </h2>
+
+        <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
+      </ion-item>
+
+      <!-- IF NOTIFICATION IS MENTION -->
+      <ion-item *ngIf="notification.type == 'mention'" (click)="open_post(i);">
+        <ion-avatar item-start>
+          <img [src]="render_image(notification.author)">
+        </ion-avatar>
+
+        <h2>
+          <strong>{{ notification.author }}</strong> mentioned you in a post
+        </h2>
+        <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
+      </ion-item>
+
+      <!-- IF NOTIFICATION IS REPLY -->
+      <ion-item *ngIf="notification.type == 'reply'" (click)="open_post(i);">
+        <ion-avatar item-start>
+          <img [src]="render_image(notification.author)">
+        </ion-avatar>
+        <h2>
+          <strong>{{ notification.author }}</strong> commented on your post
+        </h2>
+        <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
+      </ion-item>
+
+      <!-- IF NOTIFICATION IS TRANSFER -->
+      <ion-item *ngIf="notification.type == 'transfer'">
+        <ion-avatar item-start>
+          <img [src]="render_image(notification.from)">
+        </ion-avatar>
+
+        <h2>
+          <strong>{{ notification.from }}</strong> sent you {{ notification.amount }}
+        </h2>
+
+        <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
+      </ion-item>
+
+      <!-- IF NOTIFICATION IS REBLOG -->
+      <ion-item *ngIf="notification.type == 'reblog'" (click)="open_post(i);">
+        <ion-avatar item-start>
+          <img [src]="render_image(notification.account)">
+        </ion-avatar>
+
+        <h2>
+          <strong>{{ notification.account }}</strong> reblogged your post
+        </h2>
+
+        <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
+      </ion-item>
+
+    </div>
+
+  </ion-list>
 
 </ion-content>

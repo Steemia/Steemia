@@ -7,7 +7,6 @@ import { IonicPage,
          ToastController,
          NavController } from 'ionic-angular';
 import marked from 'marked';
-import { Storage } from '@ionic/storage';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
@@ -17,10 +16,10 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 
 @IonicPage()
 @Component({
-  selector: 'page-post',
-  templateUrl: 'post.html',
+  selector: 'page-edit-post',
+  templateUrl: 'edit-post.html',
 })
-export class PostPage {
+export class EditPostPage {
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 
@@ -50,7 +49,6 @@ export class PostPage {
     private transfer: FileTransfer,
     private alerts: AlertsProvider,
     private camera: Camera,
-    public storage: Storage,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController) {
@@ -60,56 +58,13 @@ export class PostPage {
       description: ['', Validators.required],
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
-  }
 
-  ionViewDidLoad(){
-   this.storage.get('title').then((title) => {
-      if(title) {
-        this.insertTitle(title);
-      }
-   });
-   this.storage.get('description').then((description) => {
-      if(description) {
-        this.insertText(description);
-      }
-   });
-   this.storage.get('tags').then((tags) => {
-      if(tags) {
-        this.insertTags(tags);
-      }
-   });
-  }
-
-  ionViewDidLeave(){
-    this.storage.set('title', this.storyForm.controls['title'].value).then(() => { });
-    this.storage.set('description', this.storyForm.controls['description'].value).then(() => { });
-    this.storage.set('tags', this.storyForm.controls['tags'].value).then(() => { });
-  }
-
-  public deleteDraft() {
-      this.storage.ready().then(() => {
-        this.storage.remove('title').then(() => { });
-        this.storage.remove('description').then(() => { });
-        this.storage.remove('tags').then((res) => { });
-      });
   }
 
   insertText(text) {
     const current = this.storyForm.value.description.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
     this.storyForm.controls["description"].setValue(final);
-  }
-
-  insertTitle(text) {
-    const current = this.storyForm.value.title.toString();
-    let final = current.substr(0, this.caret) + text + current.substr(this.caret);
-    this.storyForm.controls["title"].setValue(final);
-  }
-
-  insertTags(text) {
-    const current = this.storyForm.value.tags.toString();
-    let final = current.substr(0, this.caret) + text + current.substr(this.caret);
-    this.storyForm.controls["tags"].setValue(final);
   }
 
   showPreview() {
@@ -277,9 +232,9 @@ export class PostPage {
           if (res === 'Correct') {
             loading.dismiss();
             this.presentToast('Post was posted correctly!');
-            this.navCtrl.pop().then(() => {
-              this.deleteDraft();             
-            });
+            this.navCtrl.pop();
+            // Close page and tell the user that it was posted correctly
+            console.log('posted correctly')
           }
 
           else {
