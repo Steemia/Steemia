@@ -20,7 +20,6 @@ import { UtilProvider } from 'providers/util/util';
   template: postSinglePage
 })
 export class PostSinglePage {
-  @ViewChild(Content) content: Content;
 
   private post: any;
   private is_voting: boolean = false;
@@ -115,30 +114,31 @@ export class PostSinglePage {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+      this.is_voting = false; // remove the spinner
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') return;
 
-    this.steemActions.dispatch_vote('post', author, permlink, weight).then(data => {
-      if (data) {
+      if (data === 'Correct') this.refreshPost();
+      
+    });
+  }
 
-        // Catch if the user is not logged in and display an alert
-        if (data === 'not-logged') {
-          this.alerts.display_alert('NOT_LOGGED_IN');
-          this.is_voting = false; // remove the spinner
-          return;
-        }
-
-        this.is_voting = false;
-
-        if (weight > 0) {
-          this.post.vote = true;
-        }
-
-        else {
-          this.post.vote = false;
-        }
-
-        //this.refreshPost();
-      }
-    }).catch(err => { console.log(err); this.is_voting = false });
+  /**
+   * Method to refresh the current data of the post
+   */
+  private refreshPost(): void {
+    this.steemia.dispatch_post_single({
+      author: this.post.author,
+      permlink: this.post.url
+    }).then(data => {
+      this.post.vote = (data as any).vote;
+      this.post.net_likes = (data as any).net_likes;
+      this.post.net_votes = (data as any).net_votes;
+      this.post.top_likers_avatars = (data as any).top_likers_avatars;
+      this.post.total_payout_reward = (data as any).total_payout_reward;
+      this.post.children = (data as any).children;
+    });
   }
 
   private reblog() {

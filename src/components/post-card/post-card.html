@@ -33,7 +33,7 @@
   <ion-card-content no-padding tappable (click)="postOpen(content)">
     <h2 padding>{{ content.title }}</h2>
     <div *ngIf="content.video_only">
-      <youtube-player protocol="https" [videoId]="parse_video(content.videos[0])" (ready)="savePlayer($event)" (change)="onStateChange($event)"></youtube-player>
+      <youtube-player protocol="https" [videoId]="getId(content.videos[0])" (ready)="savePlayer($event)"></youtube-player>
 
     </div>
     <div *ngIf="!content.video_only">

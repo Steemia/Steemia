@@ -14,6 +14,7 @@ import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage
  * Provider for Steem actions based on the SteemConnect API
  * 
  * @author Jayser Mendez
+ * @version 0.0.1
  * 
  */
 
@@ -22,7 +23,7 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public steemData;
-  private access_token: string;
+  private access_token;
   public instance;
   public user: string;
   private login_status: boolean;
@@ -85,10 +86,16 @@ export class SteemConnectProvider {
 
   }
 
+  /**
+   * Getter for access token
+   */
   get get_token() {
     return this.access_token;
   }
 
+  /**
+   * Method to dispatch current state of the application
+   */
   private dispatch_data() {
 
     this.get_current_user().then((user: object) => {
@@ -102,7 +109,11 @@ export class SteemConnectProvider {
     });
   }
 
-  public get_current_user() {
+  /** 
+   * Method to ger current user
+   * @returns Returns a promise with the current user object
+   */
+  public get_current_user(): Promise<any> {
 
     if (Object.keys(this.user_temp).length != 0) {
       return Promise.resolve(this.user_temp);
@@ -129,7 +140,11 @@ export class SteemConnectProvider {
     });
   }
 
-  private getToken() {
+  /**
+   * Private method to get token from secured storage
+   * @returns Returns a promise with the token
+   */
+  private getToken(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.secureStorage.create('steemia_secure')
         .then((storage: SecureStorageObject) => {
@@ -141,7 +156,11 @@ export class SteemConnectProvider {
     })
   }
 
-  private setToken(token) {
+  /**
+   * Private method to save token in secured storage
+   * @param {String} token 
+   */
+  private setToken(token: string): void {
     this.secureStorage.create('steemia_secure')
       .then((storage: SecureStorageObject) => {
 
@@ -193,7 +212,12 @@ export class SteemConnectProvider {
 
   }
 
-  public doLogout() {
+  /**
+   * Method to logout and remove token from secured storage. This method will
+   * dispatch the next state of the app.
+   * @returns Returns a promise with a dummy data just for validation
+   */
+  public doLogout(): Promise<any> {
     return new Promise((resolve, reject) => {
       SteemConnect.revokeToken((err, res) => {
         if (err) reject(err);
@@ -214,6 +238,9 @@ export class SteemConnectProvider {
     });
   }
 
+  /** 
+   * Private method to get user metadata from SteemConnect
+  */
   private getMetadata() {
     return new Promise(resolve => {
       this.instance.me((err, res) => {
@@ -223,6 +250,11 @@ export class SteemConnectProvider {
     });
   }
 
+  /**
+   * Method to save last notification timestamp
+   * @param {Number} lastTimestamp 
+   * @returns Returns a promise with the last timestamp
+   */
   public saveNotificationsLastTimestamp(lastTimestamp: number) {
     return new Promise(resolve => {
       this.getMetadata().then(metadata => {
@@ -236,6 +268,10 @@ export class SteemConnectProvider {
     });
   }
 
+  /**
+   * Method to get the last notification timestamp
+   * @returns Returns a promise with the last timestamp
+   */
   public getNotificationsLastTimestamp() {
     return new Promise(resolve => {
       this.get_current_user().then((user: object) => {
@@ -243,5 +279,4 @@ export class SteemConnectProvider {
       })
     });
   }
-
 }

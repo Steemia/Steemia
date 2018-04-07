@@ -6,7 +6,6 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'post-card',
@@ -17,7 +16,6 @@ export class PostCardComponent implements AfterViewInit {
   @Input('post') content: any;
   private is_voting: boolean = false;
   public popover;
-  videoUrl: SafeResourceUrl;
   player = [];
   private revealed: boolean = false;
   private reveal_trigger: boolean = false;
@@ -29,7 +27,6 @@ export class PostCardComponent implements AfterViewInit {
     private steemActions: SteeemActionsProvider,
     private cdr: ChangeDetectorRef,
     public util: UtilProvider,
-    private domSanitizer: DomSanitizer,
     private steemConnect: SteemConnectProvider,
     private steemiaProvider: SteemiaProvider) {
 
@@ -43,37 +40,31 @@ export class PostCardComponent implements AfterViewInit {
 
   }
 
-  getYTImage(url) {
-    return "https://img.youtube.com/vi/" + this.getId(url) + "/0.jpg";
-  }
-
   ngAfterViewInit() {
     if (this.content.is_nsfw === false) {
       this.reveal_trigger = true;
     }
   }
 
-  private parse_video(url) {
-    return this.getId(url);
-  }
-
-  private getId(url) {
+  /**
+   * Method to extract id from youtube urls
+   * @param {String} url 
+   * @returns Returns a string with the id of the video
+   */
+  private getId(url): string {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.match(regExp);
 
-    if (match && match[2].length == 11) {
-        return match[2];
-    } else {
-        return 'error';
-    }
+    if (match && match[2].length == 11) return match[2];
+    else return 'error';
   }
 
-  savePlayer(player) {
+  /**
+   * Method to save all the players into an array
+   * @param {Event} player 
+   */
+  savePlayer(player): void {
     this.player.push(player);
-  }
-  
-  onStateChange(event){
-    
   }
 
   /**
@@ -84,12 +75,10 @@ export class PostCardComponent implements AfterViewInit {
     this.popover.present({
       ev: myEvent
     });
-
     this.popover.onDidDismiss(data => {
       if (data) {
         this.castVote(this.content.author, this.content.url, data.weight);
       }
-      
     });
   }
 
@@ -174,21 +163,19 @@ export class PostCardComponent implements AfterViewInit {
     // Set the is voting value of the post to true
     this.is_voting = true;
     this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
-
       this.is_voting = false; // remove the spinner
       // Catch if the user is not logged in and display an alert
-      if (data == 'not-logged') {
-        return;
-      }
+      if (data == 'not-logged') return;
 
-      if (data === 'Correct') {
-        this.refreshPost();
-      }
+      if (data === 'Correct') this.refreshPost();
+
     });
-
   }
 
-  private refreshPost() {
+  /**
+   * Method to refresh the current data of the post
+   */
+  private refreshPost(): void {
     this.steemiaProvider.dispatch_post_single({
       author: this.content.author,
       permlink: this.content.url
@@ -202,9 +189,11 @@ export class PostCardComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Method to reveal NSFW Image
+   */
   private reveal_image() {
     this.content.is_nsfw = false;
-
     setTimeout(() => {
       this.reveal_trigger = true;
     }, 500);
