@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-buttons>
+      <button ion-button (tap)="dismiss(null)">
+        <ion-icon class="custom-close" name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Edit Comment</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item no-lines>
+    <ion-label class="label-title" color="primary" stacked>
+      <ion-badge color="primary">Comment</ion-badge>
+    </ion-label>
+    <ion-textarea type="text" rows="15" placeholder="Type here the title of your post"
+      maxlength="100" [(ngModel)]="comment_body"></ion-textarea>
+  </ion-item>
+  <button ion-button round block (click)="save()">Submit</button>
+
+</ion-content>

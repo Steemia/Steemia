@@ -15,7 +15,7 @@
       <!-- IF NOTIFICATION IS FOLLOW -->
       <ion-item *ngIf="notification.type == 'follow'" (click)="open_profile(i);">
         <ion-avatar item-start>
-          <img [src]="render_image(notification.follower)">
+          <img [src]="render_image(notification.follower)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
 
         <h2>
@@ -28,7 +28,7 @@
       <!-- IF NOTIFICATION IS MENTION -->
       <ion-item *ngIf="notification.type == 'mention'" (click)="open_post(i);">
         <ion-avatar item-start>
-          <img [src]="render_image(notification.author)">
+          <img [src]="render_image(notification.author)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
 
         <h2>
@@ -40,7 +40,7 @@
       <!-- IF NOTIFICATION IS REPLY -->
       <ion-item *ngIf="notification.type == 'reply'" (click)="open_post(i);">
         <ion-avatar item-start>
-          <img [src]="render_image(notification.author)">
+          <img [src]="render_image(notification.author)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
         <h2>
           <strong>{{ notification.author }}</strong> commented on your post
@@ -51,7 +51,7 @@
       <!-- IF NOTIFICATION IS TRANSFER -->
       <ion-item *ngIf="notification.type == 'transfer'">
         <ion-avatar item-start>
-          <img [src]="render_image(notification.from)">
+          <img [src]="render_image(notification.from)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
 
         <h2>
@@ -64,7 +64,7 @@
       <!-- IF NOTIFICATION IS REBLOG -->
       <ion-item *ngIf="notification.type == 'reblog'" (click)="open_post(i);">
         <ion-avatar item-start>
-          <img [src]="render_image(notification.account)">
+          <img [src]="render_image(notification.account)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
 
         <h2>

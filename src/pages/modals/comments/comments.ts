@@ -104,7 +104,7 @@ export class CommentsPage {
       }
       infiniteScroll.complete();
 
-    }, 1000);
+    }, 500);
   }
 
   /**

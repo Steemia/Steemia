@@ -22,7 +22,7 @@ export const feedTemplate = `
     You need to log in to see this page
   </div>
 
-  <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents"></post-render>
+  <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents" [from]="'NORMAL'"></post-render>
 
   <div *ngIf="is_more_post == false">
     <p text-center>There are not more posts to load</p>

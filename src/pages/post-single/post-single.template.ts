@@ -88,7 +88,7 @@ export const postSinglePage = `
         <ion-icon name="share-alt"></ion-icon>
         <ion-label>Reblog</ion-label>
       </button>
-      <button ion-fab>
+      <button ion-fab (click)="castFlag(post?.author, post?.url)">
         <ion-icon name="flag"></ion-icon>
         <ion-label>Flag Post</ion-label>
       </button>

@@ -3,7 +3,7 @@ import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
-//import { ActionsSteem }  from 'providers/steemconnect/actions';
+import { FCM } from '@ionic-native/fcm';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Socket } from 'ng-socket-io';
@@ -38,6 +38,7 @@ export class MyApp {
     private ga: GoogleTrackingProvider,
     private events: Events,
     private ws: WebsocketsProvider,
+    private fcm: FCM,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
@@ -68,7 +69,6 @@ export class MyApp {
     this.loggedOutPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: this.profilePicture,
         username: 'Steemia',
         email: 'steemia@steemia.io'
@@ -94,7 +94,6 @@ export class MyApp {
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        //background: 'linear-gradient(to right, #347eff 0%, #1ea3ff 100%)',
         picture: this.profile.profile_image,
         username: this.profile.username,
         email: this.profile.location || '',
@@ -106,7 +105,6 @@ export class MyApp {
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
-        // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat-mock') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
@@ -133,7 +131,20 @@ export class MyApp {
       this.statusBar.styleBlackOpaque();
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
-      this.ga.track_page('Loaded App')
+      this.ga.track_page('Loaded App');
+
+      this.fcm.onNotification().subscribe(
+        (data) => {
+          if (data.wasTapped) {
+            console.log("Received in background", JSON.stringify(data))
+          } else {
+
+            console.log("Received in foreground", JSON.stringify(data))
+          }
+        }, error => {
+          console.error("Error in notification", error)
+        }
+      );
     });
   }
 
@@ -143,12 +154,6 @@ export class MyApp {
         this.nav.push(page, {
           author: this.profile.username
         });
-      }
-
-      else if (type === 'chat-mock') {
-        this.nav.push(page, {
-          author: 'mendezjayser'
-        })
       }
       else {
         this.nav.push(page);

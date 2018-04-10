@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectorRef, AfterViewInit} from '@angular/core';
-import { App, ModalController, PopoverController } from 'ionic-angular';
+import { App, ModalController, PopoverController, NavController } from 'ionic-angular';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 // PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
@@ -14,6 +14,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 export class PostCardComponent implements AfterViewInit {
 
   @Input('post') content: any;
+  @Input('from') from: string;
   private is_voting: boolean = false;
   public popover;
   player = [];
@@ -22,6 +23,7 @@ export class PostCardComponent implements AfterViewInit {
 
   constructor(private app: App,
     private modalCtrl: ModalController,
+    private navCtrl: NavController,
     public popoverCtrl: PopoverController,
     private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
@@ -100,10 +102,17 @@ export class PostCardComponent implements AfterViewInit {
       }
 
       catch(e) {}
+      if (this.from === 'PROFILE') {
+        this.navCtrl.push('PostSinglePage', {
+          post: post
+        });
+      }
+      else {
+        this.app.getRootNavs()[0].push('PostSinglePage', {
+          post: post
+        });
+      }
       
-      this.app.getRootNavs()[0].push('PostSinglePage', {
-        post: post
-      });
     }
   }
 

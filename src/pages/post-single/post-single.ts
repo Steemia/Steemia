@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
-
+import marked from 'marked';
 
 @IonicPage({
   priority: 'high'
@@ -42,6 +42,7 @@ export class PostSinglePage {
     public navParams: NavParams,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
+    private toastCtrl: ToastController,
     public util: UtilProvider,
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
@@ -51,6 +52,7 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
+    this.post.full_body = marked(this.post.full_body);
     
     this.current_user = (this.steemConnect.user_temp as any).user;
 
@@ -121,6 +123,41 @@ export class PostSinglePage {
 
       if (data === 'Correct') this.refreshPost();
       
+    });
+  }
+
+  /**
+   * Method to cast a flag
+   * @param i 
+   * @param author 
+   * @param permlink 
+   * @param weight 
+   */
+  private castFlag(author: string, permlink: string, weight: number = -10000): void {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait until the post is being flag.'
+    });
+    loading.present();
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+
+      loading.dismiss();
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') {
+        return;
+      }
+
+      else if (data === 'Correct') {
+        this.toastCtrl.create({
+          message: 'Post was flagged correctly!'
+        });
+      }
+
+      else if (data === 'flag-error') {
+        setTimeout(() => {
+          this.alerts.display_alert('FLAG_ERROR');
+        }, 200);
+        
+      }
     });
   }
 
@@ -215,7 +252,8 @@ export class PostSinglePage {
   }
 
   editPost() {
-    this.navCtrl.push("EditPostPage");
+    this.navCtrl.push("EditPostPage", {
+      post: this.post
+    });
   }
-
 }
