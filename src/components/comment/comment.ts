@@ -42,6 +42,19 @@ export class CommentComponent {
     this.current_user = (this.steemConnect.user_temp as any).user;
   }
 
+
+   /**
+   * Method to open the voting-slider popover
+   */
+  presentPopover(author, url) {
+    let popover = this.popoverCtrl.create('VotingSliderPage');
+    popover.present();
+
+    popover.onDidDismiss(data => {
+      this.castVote(author, url, data.weight);
+    });
+  }
+
   /**
    * Method to cast a vote or unvote
    * @param i 
