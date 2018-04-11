@@ -18,8 +18,14 @@ export const feedTemplate = `
     </ion-item>
   </ion-card>
 
-  <div *ngIf="logged_in == false">
-    You need to log in to see this page
+  <div *ngIf="logged_in == false" class="vertical-align h-100">
+    <ion-card>
+      <ion-card-content>
+        <p text-center> You need to log in to see this page</p>
+        <button ion-button block mode="ios" (click)="openPage('LoginPage')">Login Now!</button>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 
   <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents" [from]="'NORMAL'"></post-render>

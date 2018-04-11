@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, App } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, App, Tabs } from 'ionic-angular';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { AlertsProvider } from 'providers/alerts/alerts';
@@ -31,11 +31,12 @@ import { AlertsProvider } from 'providers/alerts/alerts';
     </ion-header>
     <ion-content>
     <ion-tabs>
-      <ion-tab [root]="newRoot" tabIcon="mdi-flash-circle" tabTitle="New"></ion-tab>
-      <ion-tab [root]="hotRoot" tabIcon="mdi-flame" tabTitle="Hot"></ion-tab>
-      <ion-tab></ion-tab>
-      <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
       <ion-tab [root]="feedRoot" tabIcon="mdi-file-document-box" tabTitle="Feed"></ion-tab>
+      <ion-tab [root]="newRoot" tabIcon="mdi-flash-circle" tabTitle="New"></ion-tab>
+      <ion-tab></ion-tab>
+      <ion-tab [root]="hotRoot" tabIcon="mdi-flame" tabTitle="Hot"></ion-tab>
+      <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
+      
     </ion-tabs>
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage', true)">
@@ -53,10 +54,11 @@ export class TabsPage {
   private newRoot = 'NewPage';
   private notifications: number = 0;
 
-  constructor(private appCtrl: App, 
+  constructor(private appCtrl: App,
     private ws: WebsocketsProvider,
     private alerts: AlertsProvider,
     private steemConnect: SteemConnectProvider) {
+
     this.ws.counter.subscribe(count => {
       this.notifications = count;
     });
@@ -80,7 +82,6 @@ export class TabsPage {
     else {
       this.appCtrl.getRootNavs()[0].push(str);
     }
-    
   }
 
 }

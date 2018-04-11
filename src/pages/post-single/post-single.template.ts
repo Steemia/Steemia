@@ -36,7 +36,7 @@ export const postSinglePage = `
       <hr />
     </ion-card-header>
     <ion-card-content no-padding>
-      <div id="content" class="cancel-bottom-pd" padding [innerHTML]="post?.full_body"></div>
+      <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="post?.full_body"></div>
 
       <ion-grid padding>
         <ion-row>

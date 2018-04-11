@@ -13,9 +13,9 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
 // Socket IO Server
-const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
+//const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
 
-// IONIC NATIVE
+// IONIC NATIVE / PROVIDERS
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';

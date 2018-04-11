@@ -10,7 +10,6 @@ import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
-import marked from 'marked';
 
 @IonicPage({
   priority: 'high'
@@ -33,9 +32,6 @@ export class PostSinglePage {
   private is_owner: boolean = false;
   private ref;
 
-
-  private ngUnsubscribe: Subject<any> = new Subject();
-
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
@@ -52,7 +48,7 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-    this.post.full_body = marked(this.post.full_body);
+    //this.post.full_body = marked(this.post.full_body);
     
     this.current_user = (this.steemConnect.user_temp as any).user;
 
@@ -64,11 +60,6 @@ export class PostSinglePage {
       this.load_comments();
     });
 
-  }
-
-  ionViewDidLeave() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   private load_comments(action?: string) {

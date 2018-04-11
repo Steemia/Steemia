@@ -86,7 +86,6 @@
     "ionic-image-loader": "^5.0.0",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
-    "marked": "^0.3.19",
     "mdi": "^2.2.43",
     "moment": "^2.22.0",
     "ng-socket-io": "^0.2.4",
@@ -95,7 +94,6 @@
     "rxjs": "^5.5.8",
     "sc2-sdk": "^1.0.2",
     "steem": "^0.7.1",
-    "steemconnect": "0.0.35",
     "sw-toolbox": "3.6.0",
     "zone.js": "^0.8.25"
   },

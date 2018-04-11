@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, Platform } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
+import { IonicPage, NavParams, LoadingController } from 'ionic-angular';
+import { AlertController, ToastController } from 'ionic-angular';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { CryptoProvider } from 'providers/crypto-api/crypto-api';
 import { Address } from 'models/models';
+
 /**
  *
  * @author Hüseyin TERKİR
+ * @author Jayser Mendez
  * @version 2.0
  */
 
@@ -31,7 +33,8 @@ export class WalletPage {
   private rewards = {
     steem: null,
     sbd: null,
-    vesting_steem: null
+    vesting_steem: null,
+    vesting_steem_balance: null
   };
 
   // Account Addresses Data
@@ -60,7 +63,8 @@ export class WalletPage {
 
   constructor(public navParams: NavParams,
     public alertCtrl: AlertController,
-    public platform: Platform,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     private steeemActions: SteeemActionsProvider,
     private steemiaProvider: SteemiaProvider,
     private browserTab: BrowserTab,
@@ -220,7 +224,8 @@ export class WalletPage {
         this.rewards = {
           sbd: parseFloat(data[0].reward_sbd_balance),
           steem: parseFloat(data[0].reward_steem_balance),
-          vesting_steem: parseFloat(data[0].reward_vesting_steem)
+          vesting_steem: parseFloat(data[0].reward_vesting_balance),
+          vesting_steem_balance: parseFloat(data[0].reward_vesting_steem)
         }
   
         if (metadata.profile.bitcoin) {
@@ -354,7 +359,7 @@ export class WalletPage {
   }
 
   /**
-   * Method to void Steem
+   * Method to buy Steem
    */
   private buySteem(): void {
     this.cryptoProvider.buy_sell(1, this.account, 'btc', 'steem');
@@ -367,12 +372,24 @@ export class WalletPage {
     this.cryptoProvider.buy_sell(1, this.account, 'btc', 'sbd');
   }
 
-  private claim_rewards() {
-    const steem = this.rewards.steem.toString() + ' STEEM';
-    const sbd = this.rewards.sbd.toString() + ' SBD';
-    const sp = this.rewards.vesting_steem.toString() + ' VESTS';
+  /**
+   * Method to claim rewards
+   */
+  private claim_rewards(): void {
+    const steem = this.rewards.steem.toFixed(3).toString() + ' STEEM';
+    const sbd = this.rewards.sbd.toFixed(3).toString() + ' SBD';
+    const sp = this.rewards.vesting_steem.toFixed(6).toString() + ' VESTS';
+    let loader = this.loadingCtrl.create({
+      content: "Collecting rewards 💰💵💸🤑"
+    });
+    loader.present();
     this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
+      loader.dismiss();
       this.getAccount();
+      this.toastCtrl.create({
+        message: 'Your rewards are now in your account 😎',
+        duration: 1500
+      });
     });
   }
 
