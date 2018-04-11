@@ -26,8 +26,6 @@ export const postSinglePage = `
         </div>
         <p style="margin-top: 6px;">{{ post?.reading_time }}</p>
 
-
-
         <i *ngIf="!post?.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="castVote(post?.author, post?.url, 10000);"></i>
 
         <i *ngIf="post?.vote && is_voting == false" class="fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(post?.author, post?.url, 0);"></i>
@@ -38,7 +36,7 @@ export const postSinglePage = `
       <hr />
     </ion-card-header>
     <ion-card-content no-padding>
-      <div id="content" class="cancel-bottom-pd" padding [innerHTML]="post?.full_body"></div>
+      <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="post?.full_body"></div>
 
       <ion-grid padding>
         <ion-row>
@@ -90,7 +88,7 @@ export const postSinglePage = `
         <ion-icon name="share-alt"></ion-icon>
         <ion-label>Reblog</ion-label>
       </button>
-      <button ion-fab>
+      <button ion-fab (click)="castFlag(post?.author, post?.url)">
         <ion-icon name="flag"></ion-icon>
         <ion-label>Flag Post</ion-label>
       </button>

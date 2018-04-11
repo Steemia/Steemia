@@ -85,7 +85,7 @@
 
         <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-        <post-render *ngIf="!is_loading" [posts]="contents"></post-render>
+        <post-render *ngIf="!is_loading" [posts]="contents" [from]="'PROFILE'"></post-render>
 
         <no-data *ngIf="no_post == true" icon="chatbubbles" title="This user has not posts, YET!">
         </no-data>

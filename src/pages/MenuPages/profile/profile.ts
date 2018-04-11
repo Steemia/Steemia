@@ -36,6 +36,9 @@ export class ProfilePage {
   showToolbar:boolean = false;
   private no_post: boolean = false;
 
+  private start_author: string = null;
+  private start_permlink: string = null;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -63,17 +66,30 @@ export class ProfilePage {
   }
 
   /**
-   * Method to dispatch posts and avoid repetition of code
+   * Method to dispatch hot and avoid repetition of code
    */
   private dispatchPosts(action?: string, event?: any) {
+    let que;
 
+    if (this.start_author !== null && this.start_permlink !== null) {
+      que = {
+        user: this.username,
+        username: this.current_user,
+        limit: this.limit,
+        start_author: this.start_author,
+        start_permlink: this.start_permlink
+      }
+    }
+
+    else {
+      que = {
+        user: this.username,
+        username: this.current_user,
+        limit: this.limit
+      }
+    }
     // Call the API
-    this.steemia.dispatch_profile_posts({
-      user: this.username,
-      username: this.current_user,
-      limit: this.limit,
-      skip: this.skip
-    }).then((res: PostsRes) => {
+    this.steemia.dispatch_profile_posts(que).then((res: PostsRes) => {
 
       // Check if the action is to refresh. If so, we need to 
       // reinitialize all the data after initializing the query
@@ -81,17 +97,18 @@ export class ProfilePage {
       if (action === "refresh") {
         this.reinitialize();
       }
-      
-      this.contents = this.contents.concat(res.results);
 
       if (res.results.length === 0) {
         this.is_more_post = false;
       }
 
-      this.skip += this.limit;
+      this.contents = this.contents.concat(res.results);
+
+      this.start_author = (res as any).offset_author;
+      this.start_permlink = (res as any).offset;
 
       // Set the loading spinner to false
-      this.is_loading = false;
+      this.is_loading = false
 
       // If this was called from an event, complete it
       if (event) {

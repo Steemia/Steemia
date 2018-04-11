@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -11,7 +11,6 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 
-
 @IonicPage({
   priority: 'high'
 })
@@ -20,7 +19,6 @@ import { UtilProvider } from 'providers/util/util';
   template: postSinglePage
 })
 export class PostSinglePage {
-  @ViewChild(Content) content: Content;
 
   private post: any;
   private is_voting: boolean = false;
@@ -34,15 +32,13 @@ export class PostSinglePage {
   private is_owner: boolean = false;
   private ref;
 
-
-  private ngUnsubscribe: Subject<any> = new Subject();
-
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
+    private toastCtrl: ToastController,
     public util: UtilProvider,
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
@@ -52,6 +48,7 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
+    //this.post.full_body = marked(this.post.full_body);
     
     this.current_user = (this.steemConnect.user_temp as any).user;
 
@@ -63,11 +60,6 @@ export class PostSinglePage {
       this.load_comments();
     });
 
-  }
-
-  ionViewDidLeave() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   private load_comments(action?: string) {
@@ -115,30 +107,66 @@ export class PostSinglePage {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+      this.is_voting = false; // remove the spinner
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') return;
 
-    this.steemActions.dispatch_vote('post', author, permlink, weight).then(data => {
-      if (data) {
+      if (data === 'Correct') this.refreshPost();
+      
+    });
+  }
 
-        // Catch if the user is not logged in and display an alert
-        if (data === 'not-logged') {
-          this.alerts.display_alert('NOT_LOGGED_IN');
-          this.is_voting = false; // remove the spinner
-          return;
-        }
+  /**
+   * Method to cast a flag
+   * @param i 
+   * @param author 
+   * @param permlink 
+   * @param weight 
+   */
+  private castFlag(author: string, permlink: string, weight: number = -10000): void {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait until the post is being flag.'
+    });
+    loading.present();
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
 
-        this.is_voting = false;
-
-        if (weight > 0) {
-          this.post.vote = true;
-        }
-
-        else {
-          this.post.vote = false;
-        }
-
-        //this.refreshPost();
+      loading.dismiss();
+      // Catch if the user is not logged in and display an alert
+      if (data == 'not-logged') {
+        return;
       }
-    }).catch(err => { console.log(err); this.is_voting = false });
+
+      else if (data === 'Correct') {
+        this.toastCtrl.create({
+          message: 'Post was flagged correctly!'
+        });
+      }
+
+      else if (data === 'flag-error') {
+        setTimeout(() => {
+          this.alerts.display_alert('FLAG_ERROR');
+        }, 200);
+        
+      }
+    });
+  }
+
+  /**
+   * Method to refresh the current data of the post
+   */
+  private refreshPost(): void {
+    this.steemia.dispatch_post_single({
+      author: this.post.author,
+      permlink: this.post.url
+    }).then(data => {
+      this.post.vote = (data as any).vote;
+      this.post.net_likes = (data as any).net_likes;
+      this.post.net_votes = (data as any).net_votes;
+      this.post.top_likers_avatars = (data as any).top_likers_avatars;
+      this.post.total_payout_reward = (data as any).total_payout_reward;
+      this.post.children = (data as any).children;
+    });
   }
 
   private reblog() {
@@ -215,7 +243,8 @@ export class PostSinglePage {
   }
 
   editPost() {
-    this.navCtrl.push("EditPostPage");
+    this.navCtrl.push("EditPostPage", {
+      post: this.post
+    });
   }
-
 }

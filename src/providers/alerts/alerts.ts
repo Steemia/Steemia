@@ -42,6 +42,10 @@ export class AlertsProvider {
         message = ERRORS.EMPTY_TEXT.message;
         break;
 
+      case 'FLAG_ERROR':
+        message = ERRORS.FLAG_ERROR.message;
+        break;
+
       default:
         message = 'Type is not given';
         break;

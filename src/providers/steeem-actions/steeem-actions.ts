@@ -83,7 +83,11 @@ export class SteeemActionsProvider {
           resolve('Correct')
         }
       }).catch(e => {
-        resolve('Error')
+
+        if (e.error_description.includes(ERRORS.FLAG_ERROR.error)) {
+          resolve('flag-error');
+
+        }
       });
     });
   }
@@ -212,6 +216,36 @@ export class SteeemActionsProvider {
   }
 
   /**
+   * Method to dispatch an edit comment
+   * @param {String} author 
+   * @param {String} permlink 
+   * @param {String} body 
+   */
+  public dispatch_edit_comment(author, permlink, body) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
+    console.log(permlink)
+    let url = permlink.split('/')[4];
+    let parent = permlink.split('/')[3].split('#')[0];
+
+    return new Promise(resolve => {
+      this.steemConnect.instance.comment(author, parent, this.username, url, '', body, METADATA).then(data => {
+        if (data) {
+          this.ga.track_event('Comment', 'edit comment', 'post', 1);
+          resolve("Correct")
+        }
+      }).catch(e => {
+        let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
+        if (include) {
+          resolve('COMMENT_INTERVAL');
+        }
+      });
+    });
+  }
+
+  /**
    * Method to dispatch a post
    * @param {String} title 
    * @param {String} description 
@@ -262,6 +296,57 @@ export class SteeemActionsProvider {
       const self_vote = this.prepare_self_vote(permlink);
       operations.push(self_vote);
     }
+
+    return new Promise(resolve => {
+      this.steemConnect.instance.broadcast(operations).then(data => {
+        if (data) {
+          this.ga.track_event('Post', 'post', 'create', 1);
+          resolve('Correct')
+        }
+      })
+    });
+  }
+
+  /**
+   * Method to dispatch a edit post
+   * @param {String} title 
+   * @param {String} description 
+   * @param {Array<string>} tags 
+   */
+  public dispatch_edit_post(title: string, description: string, tags: Array<string>, permlink: string) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
+
+    // If the user didn't insert any tag, create an empty array
+    if (tags === undefined || tags === null) {
+      tags = [];
+    }
+
+    // Push the tag Steemia to the post
+    tags.push('steemia');
+
+    let jsonMetadata = { tags: tags, app: `steemia/0.1`, format: 'markdown' };
+
+    // Create empty array for the operations
+    const operations = [];
+
+    // Create the object for the post
+    const commentOp = [
+      OPERATIONS.COMMENT,
+      {
+        parent_author: '', // Since it is a post, parent author is empty
+        parent_permlink: tags[0], // Parent permlink will be the 0th index in the tags array
+        author: this.username, // Author is the current logged in username
+        permlink: permlink, // Permlink of the post
+        title: title, // Title of the post
+        body: description, // Description of the post
+        json_metadata: this.create_json_metadata(tags), // JSON string with the tags, app, and format
+      },
+    ];
+    
+    operations.push(commentOp);
 
     return new Promise(resolve => {
       this.steemConnect.instance.broadcast(operations).then(data => {

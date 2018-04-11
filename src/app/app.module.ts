@@ -13,9 +13,9 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
 // Socket IO Server
-const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
+//const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
 
-// IONIC NATIVE
+// IONIC NATIVE / PROVIDERS
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -28,6 +28,8 @@ import { SecureStorage } from '@ionic-native/secure-storage';
 import { SecureStorageMock } from '@ionic-native-mocks/secure-storage';
 import { GoogleAnalyticsMock } from '@ionic-native-mocks/google-analytics';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { FCM } from '@ionic-native/fcm';
+import { Clipboard } from '@ionic-native/clipboard';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -72,6 +74,7 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     MyApp
   ],
   providers: [
+    Clipboard,
     LocalNotifications,
     SocialSharing,
     StatusBar,
@@ -94,7 +97,8 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     GoogleTrackingProvider,
     //GoogleAnalytics,
     { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
-    WebsocketsProvider
+    WebsocketsProvider,
+    FCM
   ]
 })
 export class AppModule {}

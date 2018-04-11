@@ -5,7 +5,8 @@ import { IonicPage,
          ActionSheetController, 
          LoadingController, 
          ToastController,
-         NavController } from 'ionic-angular';
+         NavController,
+         Platform } from 'ionic-angular';
 import marked from 'marked';
 import { Storage } from '@ionic/storage';
 import { TdTextEditorComponent } from '@covalent/text-editor';
@@ -32,22 +33,13 @@ export class PostPage {
   private storyForm: FormGroup;
   private upvote: boolean = false;
 
-  imageURI: any;
-  imageFileName: any;
-  cameraIMG: any;
-
-  parsedHash: any;
-  response: any;
-  imgdata: any;
-  hash: any;
-  URL: any;
-
-  constructor(public viewCtrl: ViewController,
-    public actionSheetCtrl: ActionSheetController,
+  constructor(private viewCtrl: ViewController,
+    private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private transfer: FileTransfer,
+    private platform: Platform,
     private alerts: AlertsProvider,
     private camera: Camera,
     public storage: Storage,
@@ -60,6 +52,15 @@ export class PostPage {
       description: ['', Validators.required],
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
+    
+    this.platform.registerBackButtonAction(() => {
+      if (this.is_preview === true) {
+        this.showPreview();
+      }
+      else {
+        this.navCtrl.pop();
+      }
+    }, 1);
   }
 
   ionViewDidLoad(){
@@ -79,7 +80,6 @@ export class PostPage {
       }
    });
   }
-
   ionViewDidLeave(){
     this.storage.set('title', this.storyForm.controls['title'].value).then(() => { });
     this.storage.set('description', this.storyForm.controls['description'].value).then(() => { });
@@ -94,12 +94,16 @@ export class PostPage {
       });
   }
 
-  insertText(text) {
+  /**
+   * Method to insert text at current pointer
+   * @param {String} text: Text to insert 
+   */
+  insertText(text: string): void {
     const current = this.storyForm.value.description.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
     this.storyForm.controls["description"].setValue(final);
   }
-
+    
   insertTitle(text) {
     const current = this.storyForm.value.title.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
@@ -112,7 +116,10 @@ export class PostPage {
     this.storyForm.controls["tags"].setValue(final);
   }
 
-  showPreview() {
+  /**
+   * Method to switch view to preview mode
+   */
+  showPreview(): void {
     if (this.is_preview == false) {
       let plainText = this.storyForm.value.description;
       this.markdowntext = marked(plainText.toString())
@@ -125,49 +132,39 @@ export class PostPage {
     }
   }
 
-  selectImage() {
+  /**
+   * Method to retrieve an image from camera or library
+   * @param {String} from: origin of the image
+   */
+  private choose_image(from, edit: boolean): void {
+    let imageURI;
     const options: CameraOptions = {
-      quality: 100,
-      allowEdit: true,
+      quality: 80,
+      allowEdit: edit,
       destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      this.imageURI = imageData;
-    }, (err) => {
-      // Handle error
-      console.log(err);
-      this.presentToast(err);
-      alert(err);
-    }).then(data => {
-      this.uploadFile(this.imageURI);
-      alert(this.imageURI);
-    })
-  }
-
-  getImage() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: false,
+      sourceType: from
     }
-    
+
     this.camera.getPicture(options).then((imageData) => {
-      this.cameraIMG = imageData;
+      imageURI = imageData;
+
     }, (err) => {
-     // Handle error
-      console.log(err);
-      this.presentToast(err);
-      alert(err);
+      if (err) {
+        //this.presentToast(err);
+      }
     }).then(data => {
-      this.uploadFile(this.cameraIMG);
-      alert(this.cameraIMG);
-    })
+      if (imageURI) {
+        this.uploadFile(imageURI);
+      }
+    });
   }
 
-  presentPrompt() {
+  /**
+   * Method to show insert URL actionsheet
+   */
+  presentInsertURL(): void {
     let alert = this.alertCtrl.create({
       title: 'Login',
       inputs: [
@@ -187,9 +184,7 @@ export class PostPage {
         {
           text: 'OK',
           handler: data => {
-            console.log(data);
-            this.URL = '![image]('+data.URL+')'
-            this.insertText(this.URL);
+            this.insertText('![image](' + data.URL + ')');
           }
         }
       ]
@@ -197,7 +192,11 @@ export class PostPage {
     alert.present();
   }
 
-  uploadFile(image) {
+  /**
+   * Method to upload image to Steemia IPFS
+   * @param {String} image: Image path to be uploaded
+   */
+  uploadFile(image): void {
     let url = 'https://steemia.net/api/v0/add';
     let loader = this.loadingCtrl.create({
       content: "Uploading..."
@@ -215,48 +214,45 @@ export class PostPage {
 
     fileTransfer.upload(image, url, options)
       .then((data) => {
-        console.log(data + " Uploaded Successfully");
-        this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
         loader.dismiss();
         this.presentToast("Image uploaded successfully");
-        this.imgdata = data;
-        this.response = this.imgdata.response;
-        this.parsedHash = JSON.parse(this.response);
-        this.hash = this.parsedHash.Hash;
-        this.URL = '![image](https://steemia.net/ipfs/'+this.hash+')'
-       // alert(this.hash);
+        let hash = data.response;
+        this.insertText('![image](https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash + ')');
       }, (err) => {
-        console.log(err);
         loader.dismiss();
         this.presentToast(err);
-      }).then(data => {
-        this.insertText(this.URL);
-      })
+      });
   }
 
-  getCaretPos(oField) {
+  /**
+   * Method to get caret position in a textfield
+   * @param oField 
+   */
+  getCaretPos(oField): void {
     let node = oField._elementRef.nativeElement.children[0];
     if (node.selectionStart || node.selectionStart == '0') {
       this.caret = node.selectionStart;
     }
   }
 
-
+  /**
+   * Method to show a toast message
+   * @param {String} msg: message to show in the toast
+   */
   presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
-      duration: 3000,
+      duration: 1500,
       position: 'bottom'
-    });
-
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
     });
 
     toast.present();
   }
 
-  private post() {
+  /**
+   * Method to post the article
+   */
+  private post(): void {
     if (this.storyForm.valid) {
       let loading = this.loadingCtrl.create({
         content: 'We are posting your amazing story 💯'
@@ -307,11 +303,18 @@ export class PostPage {
     return;
   }
 
+  /**
+   * Method to prevent default behavior of an object.
+   * @param event 
+   */
   protected preventEnter(event: any): void {
     event.preventDefault();
   }
 
-  presentActionSheet() {
+  /**
+   * Method to present actionsheet with options
+   */
+  presentActionSheet(): void {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'How do you want to insert the image? 📷🌄',
       buttons: [
@@ -319,24 +322,21 @@ export class PostPage {
           text: 'Camera',
           icon: 'camera',
           handler: () => {
-            console.log('Destructive clicked');
-         //   this.getImage();
+            this.choose_image(this.camera.PictureSourceType.CAMERA, false);
           }
         },
         {
           text: 'Gallery',
           icon: 'albums',
           handler: () => {
-            console.log('Archive clicked');
-            this.selectImage()
+            this.choose_image(this.camera.PictureSourceType.PHOTOLIBRARY, true);
           }
         },
         {
           text: 'Custom URL',
           icon: 'md-globe',
           handler: () => {
-            console.log('Archive clicked');
-            this.presentPrompt()
+            this.presentInsertURL()
           }
         },
         {
@@ -344,7 +344,6 @@ export class PostPage {
           icon: 'close',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
           }
         }
       ]
@@ -353,38 +352,13 @@ export class PostPage {
     actionSheet.present();
   }
 
+  /**
+   * Method to prevent focus change of an element
+   * @param e 
+   */
   preventFocusChange(e) {
     e.preventDefault();
   }
 
-
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
-
-  convert(this) {
-    if (this.toggleVal == true) {
-      if (this.plainText && this.plainText != '') {
-        let plainText = this.plainText;
-
-        this.markdownText = marked(plainText.toString());
-        this.content = this.markdownText;
-      } else {
-        this.toggleVal = false
-      }
-    }
-  }
-  md2html(this) {
-    if (this.toggleVal == true) {
-      if (this.data.body) {
-        let plainText = this.data.body;
-
-        this.markdownText = marked(plainText.toString());
-        this.htmldata = this.markdownText;
-      } else {
-        this.toggleVal = false
-      }
-    }
-  }
 }
 

@@ -1,4 +1,4 @@
-<div [attr.id]="comment.permlink">
+<div [attr.id]="comment.permlink" (press)="show_options()">
   <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)" (error)="util.imgError('comment', $event)"
   />
   <!--  wave-->

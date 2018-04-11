@@ -1,11 +1,14 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, 
-         ViewController, 
-         AlertController,
-         ActionSheetController, 
-         LoadingController, 
-         ToastController,
-         NavController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import {
+  IonicPage,
+  ViewController,
+  AlertController,
+  ActionSheetController,
+  LoadingController,
+  ToastController,
+  NavController,
+  NavParams,
+} from 'ionic-angular';
 import marked from 'marked';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -23,13 +26,12 @@ export class EditPostPage {
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 
+  private content: any;
   private caret: number = 0;
   private is_preview: boolean = false;
   private markdowntext;
-
-  private rewards: string = '50%'
+  
   private storyForm: FormGroup;
-  private upvote: boolean = false;
 
   imageURI: any;
   imageFileName: any;
@@ -46,6 +48,7 @@ export class EditPostPage {
     private formBuilder: FormBuilder,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private transfer: FileTransfer,
     private alerts: AlertsProvider,
     private camera: Camera,
@@ -53,11 +56,23 @@ export class EditPostPage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController) {
 
+    this.content = this.navParams.get('post');
+
     this.storyForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
+
+  }
+
+  ionViewDidLoad() {
+    this.storyForm.controls['title'].setValue(this.content.title);
+    this.storyForm.controls['description'].setValue(this.content.raw_body);
+    let tags = this.content.tags.filter((element) => {
+      return element !== 'steemia';
+    });
+    this.storyForm.controls['tags'].setValue(tags.join());
 
   }
 
@@ -108,11 +123,11 @@ export class EditPostPage {
       mediaType: this.camera.MediaType.PICTURE,
       allowEdit: false,
     }
-    
+
     this.camera.getPicture(options).then((imageData) => {
       this.cameraIMG = imageData;
     }, (err) => {
-     // Handle error
+      // Handle error
       console.log(err);
       this.presentToast(err);
       alert(err);
@@ -143,7 +158,7 @@ export class EditPostPage {
           text: 'OK',
           handler: data => {
             console.log(data);
-            this.URL = '![image]('+data.URL+')'
+            this.URL = '![image](' + data.URL + ')'
             this.insertText(this.URL);
           }
         }
@@ -178,8 +193,8 @@ export class EditPostPage {
         this.response = this.imgdata.response;
         this.parsedHash = JSON.parse(this.response);
         this.hash = this.parsedHash.Hash;
-        this.URL = '![image](https://steemia.net/ipfs/'+this.hash+')'
-       // alert(this.hash);
+        this.URL = '![image](https://steemia.net/ipfs/' + this.hash + ')'
+        // alert(this.hash);
       }, (err) => {
         console.log(err);
         loader.dismiss();
@@ -214,15 +229,15 @@ export class EditPostPage {
   private post() {
     if (this.storyForm.valid) {
       let loading = this.loadingCtrl.create({
-        content: 'We are posting your amazing story 💯'
+        content: 'We are editing your amazing story 💯'
       });
 
       loading.present();
       let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
-      this.steemActions.dispatch_post(
+      this.steemActions.dispatch_edit_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
-        tags, this.upvote, this.rewards).then(res => {
+        tags, this.content.root_permlink).then(res => {
 
           if (res === 'not-logged-in') {
             // Show alert telling the user that needs to login
@@ -231,7 +246,7 @@ export class EditPostPage {
 
           if (res === 'Correct') {
             loading.dismiss();
-            this.presentToast('Post was posted correctly!');
+            this.presentToast('Post was edited correctly!');
             this.navCtrl.pop();
             // Close page and tell the user that it was posted correctly
             console.log('posted correctly')
@@ -275,7 +290,7 @@ export class EditPostPage {
           icon: 'camera',
           handler: () => {
             console.log('Destructive clicked');
-         //   this.getImage();
+            //   this.getImage();
           }
         },
         {
@@ -329,6 +344,7 @@ export class EditPostPage {
       }
     }
   }
+
   md2html(this) {
     if (this.toggleVal == true) {
       if (this.data.body) {

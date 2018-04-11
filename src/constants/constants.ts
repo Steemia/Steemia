@@ -21,6 +21,10 @@ export const IS_REBLOGGED = "You've already reblogged this post. 😂";
 
 // ERRORS
 export const ERRORS = {
+  FLAG_ERROR: {
+    error: 'itr->vote_percent != o.weight: You have already voted in a similar way.',
+    message: 'You have already flag this post with the same percentage.'
+  },
   DUPLICATE_REBLOG: {
     error: 'blog_itr == blog_comment_idx.end(): Account has already reblogged this post',
     message: 'You have already reblogged this post'

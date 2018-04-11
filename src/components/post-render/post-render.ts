@@ -15,6 +15,7 @@ import { Component, Input } from '@angular/core';
 export class PostRenderComponent {
 
   @Input('posts') private contents: Array<any> = [];
+  @Input('from') from: string;
 
   constructor() { 
   }
