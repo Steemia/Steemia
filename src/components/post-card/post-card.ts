@@ -108,7 +108,7 @@ export class PostCardComponent implements AfterViewInit {
         });
       }
       else {
-        this.app.getRootNavs()[0].push('PostSinglePage', {
+        this.app.getRootNav().push('PostSinglePage', {
           post: post
         });
       }
@@ -123,18 +123,18 @@ export class PostCardComponent implements AfterViewInit {
   private openProfile(author: string): void {
     if (this.steemConnect.user_object !== undefined) {
       if ((this.steemConnect.user_object as any).user == author) {
-        this.app.getRootNavs()[0].push('ProfilePage', {
+        this.app.getRootNav().push('ProfilePage', {
           author: (this.steemConnect.user_object as any).user
         });
       }
       else {
-        this.app.getRootNavs()[0].push('AuthorProfilePage', {
+        this.app.getRootNav().push('AuthorProfilePage', {
           author: author
         });
       }
     }
     else {
-      this.app.getRootNavs()[0].push('AuthorProfilePage', {
+      this.app.getRootNav().push('AuthorProfilePage', {
         author: author
       });
     }
