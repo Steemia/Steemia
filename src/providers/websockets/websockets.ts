@@ -43,7 +43,6 @@ export class WebsocketsProvider {
       // Catch first array of notifications
       if (data.id == 0) {
         this.static_notifications = data.result;
-        console.log(this.last_timestamp)
         this.static_notifications.map(notification => {
           if (notification.timestamp > this.last_timestamp) {
 
@@ -57,24 +56,50 @@ export class WebsocketsProvider {
       // Catch new notifications
       if (data.notification) {
         if (data.type === "notification") {
-          if (data.notification.type === 'reply') {
-            this.localNotifications.schedule({
-              id: data.notification.block,
-              text: data.notification.author + ' commented on your post',
-              data: 'test',
-              icon: 'https://steemitimages.com/u/' + data.notification.author + '/avatar/small'
-            });
+          if (data.notification.type === 'reply') {   
             if (data.notification.author !== this.current_user) {
-              
+              this.localNotifications.schedule({
+                id: data.notification.block,
+                text: data.notification.author + ' commented on your post.',
+                data: 'test',
+                icon: 'https://steemitimages.com/u/' + data.notification.author + '/avatar/small'
+              });
             }
           }
 
           else if (data.notification.type === 'mention') {
             this.localNotifications.schedule({
               id: data.notification.block,
-              text: data.notification.author + ' mentioned you in a post',
+              text: data.notification.author + ' mentioned you in a post.',
               data: 'test',
               icon: 'https://steemitimages.com/u/' + data.notification.author + '/avatar/small'
+            });
+          }
+
+          else if (data.notification.type === 'transfer') {
+            this.localNotifications.schedule({
+              id: data.notification.block,
+              text: data.notification.from + ' sent you ' + data.notification.amount,
+              data: 'test',
+              icon: 'https://steemitimages.com/u/' + data.notification.from + '/avatar/small'
+            });
+          }
+
+          else if (data.notification.type === 'reblog') {
+            this.localNotifications.schedule({
+              id: data.notification.block,
+              text: data.notification.account + ' reblogged your post.',
+              data: 'test',
+              icon: 'https://steemitimages.com/u/' + data.notification.account + '/avatar/small'
+            });
+          }
+
+          else if (data.notification.type === 'follow') {
+            this.localNotifications.schedule({
+              id: data.notification.block,
+              text: data.notification.follower + ' started following you.',
+              data: 'test',
+              icon: 'https://steemitimages.com/u/' + data.notification.follower + '/avatar/small'
             });
           }
           

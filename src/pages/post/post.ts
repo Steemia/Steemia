@@ -5,9 +5,8 @@ import {
   AlertController,
   ActionSheetController,
   LoadingController,
-  ToastController,
   NavController,
-  Platform
+  ToastController
 } from 'ionic-angular';
 import marked from 'marked';
 import { Storage } from '@ionic/storage';
@@ -41,7 +40,6 @@ export class PostPage {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private transfer: FileTransfer,
-    private platform: Platform,
     private alerts: AlertsProvider,
     private camera: Camera,
     public storage: Storage,
@@ -54,18 +52,20 @@ export class PostPage {
       description: ['', Validators.required],
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
-
-    this.platform.registerBackButtonAction(() => {
-      if (this.is_preview === true) {
-        this.showPreview();
-      }
-      else {
-        this.navCtrl.pop();
-      }
-    }, 1);
   }
 
-  ionViewDidLoad() {
+  ionViewCanLeave(): boolean {
+    if (this.is_preview === true) {
+      this.showPreview();
+      return false;
+    }
+    else {
+      return true;
+    }
+
+  }
+
+  ionViewDidLoad(): void {
     this.storage.get('title').then((title) => {
       if (title) {
         this.insertTitle(title);
@@ -83,7 +83,7 @@ export class PostPage {
         this.insertTags(tags);
       }
     });
-    
+
   }
 
   ionViewDidLeave() {
