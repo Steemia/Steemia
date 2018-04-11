@@ -1,12 +1,14 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, 
-         ViewController, 
-         AlertController,
-         ActionSheetController, 
-         LoadingController, 
-         ToastController,
-         NavController,
-         Platform } from 'ionic-angular';
+import {
+  IonicPage,
+  ViewController,
+  AlertController,
+  ActionSheetController,
+  LoadingController,
+  ToastController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import marked from 'marked';
 import { Storage } from '@ionic/storage';
 import { TdTextEditorComponent } from '@covalent/text-editor';
@@ -52,7 +54,7 @@ export class PostPage {
       description: ['', Validators.required],
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
-    
+
     this.platform.registerBackButtonAction(() => {
       if (this.is_preview === true) {
         this.showPreview();
@@ -63,35 +65,39 @@ export class PostPage {
     }, 1);
   }
 
-  ionViewDidLoad(){
-   this.storage.get('title').then((title) => {
-      if(title) {
+  ionViewDidLoad() {
+    this.storage.get('title').then((title) => {
+      if (title) {
         this.insertTitle(title);
       }
-   });
-   this.storage.get('description').then((description) => {
-      if(description) {
+    });
+
+    this.storage.get('description').then((description) => {
+      if (description) {
         this.insertText(description);
       }
-   });
-   this.storage.get('tags').then((tags) => {
-      if(tags) {
+    });
+
+    this.storage.get('tags').then((tags) => {
+      if (tags) {
         this.insertTags(tags);
       }
-   });
+    });
+    
   }
-  ionViewDidLeave(){
+
+  ionViewDidLeave() {
     this.storage.set('title', this.storyForm.controls['title'].value).then(() => { });
     this.storage.set('description', this.storyForm.controls['description'].value).then(() => { });
     this.storage.set('tags', this.storyForm.controls['tags'].value).then(() => { });
   }
 
   public deleteDraft() {
-      this.storage.ready().then(() => {
-        this.storage.remove('title').then(() => { });
-        this.storage.remove('description').then(() => { });
-        this.storage.remove('tags').then((res) => { });
-      });
+    this.storage.ready().then(() => {
+      this.storage.remove('title').then(() => { });
+      this.storage.remove('description').then(() => { });
+      this.storage.remove('tags').then((res) => { });
+    });
   }
 
   /**
@@ -103,7 +109,7 @@ export class PostPage {
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
     this.storyForm.controls["description"].setValue(final);
   }
-    
+
   insertTitle(text) {
     const current = this.storyForm.value.title.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
@@ -274,7 +280,7 @@ export class PostPage {
             loading.dismiss();
             this.presentToast('Post was posted correctly!');
             this.navCtrl.pop().then(() => {
-              this.deleteDraft();             
+              this.deleteDraft();
             });
           }
 

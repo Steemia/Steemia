@@ -4,6 +4,7 @@ import { AlertController,
          ActionSheetController, 
          LoadingController, 
          ToastController, 
+         PopoverController,
          ModalController } from 'ionic-angular';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -34,14 +35,15 @@ export class CommentComponent {
     private clipboard: Clipboard,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
+    private popoverCtrl: PopoverController,
     private steemConnect: SteemConnectProvider,
     private actionSheet: ActionSheetController,
     private steemiaProvider: SteemiaProvider,
     private util: UtilProvider) {
 
     this.current_user = (this.steemConnect.user_temp as any).user;
+    
   }
-
 
    /**
    * Method to open the voting-slider popover
