@@ -2,7 +2,7 @@ export const feedTemplate = `
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="logged_in == true">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
