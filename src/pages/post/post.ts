@@ -65,7 +65,7 @@ export class PostPage {
 
   }
 
-  ionViewDidLoad(): void {
+  ionViewDidLoad() {
     this.storage.get('title').then((title) => {
       if (title) {
         this.insertTitle(title);
@@ -83,7 +83,6 @@ export class PostPage {
         this.insertTags(tags);
       }
     });
-
   }
 
   ionViewDidLeave() {
