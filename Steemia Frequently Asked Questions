@@ -1,0 +1,63 @@
+Steemia - Frequently Asked Questions (FAQ)
+Steemia FAQ
+
+This information will be continually updated to accommodate new information and will be used inside the App to help users find answers to their question.
+
+
+What is Steemia?
+
+Steemia is a social network app running over the Steem Blockchain. This app will provide the users an enriched user experience plus features commonly encountered in a casually used social media. The goal of this project is to give the community a mobile app where they can do their daily activity in the blockchain.
+
+
+What is Steem?
+
+Steem is a blockchain-based social media platform where anyone can earn rewards. The steem blockchain not only holds a cryptocurrency token called STEEM, but also content created by its users, a system to vote on that content, and many other features you would find on popular social networking site.
+
+
+What is Steemit.com?
+
+Steemit.com is a social networking website launched in 2016 by Ned Scott and Dan Larimer. The site offers a full suite of tools to manage your Steem account, discover content and create content on the steem blockchain.
+
+
+What is the difference between Steemia and Steemit?
+
+The basic difference between Steemia and Steemit is in features they offer.
+Steemia offers social experience where you can share any type of content, pictures, quick thoughts, short status updates from your mobile device through app; while Steemit encourages users to create longer blog posts/articles with an emphasis on reading.
+
+
+How does Steemia work?
+
+Steemia reads the same blockchain as Steemit, and thus the same posts i.e what you post on your steemit.com account appears on your steemia app and vice versa.
+
+
+Can I create an account on Steemia?
+
+Currently no, you cannot. To participate, you must create an account through Steemit. The reason being that to create an account, the account needs to be given/delegated an initial amount of Steem Power to be created. Steemia currently does not have the funding to create accounts - but as platform evolves we will be able to provide in-app signups.
+
+How  do i log into Steemia?
+Therefore, logging into to Steemia is done using SteemConnect.com. SteemConnect is an identity layer on top of the Steem blockchain that makes accounts secure. SteemConnect requires only your private keys when logging in and not your master password.
+
+When I vote or post on Steemia, what does that do on Steemit?
+
+Every action on either Steemia or Steemit is performed on the Steem blockchain - and in turn - on all apps powered by it.
+For example - you can read a post on Steemia which was written by someone on Steemit.com or Utopian.io and reply to it through Steemia, and then someone from Busy.org could respond to you.
+There are number of different apps all powered by the Steem blockchain that create one massive community of users.
+
+
+Is Steemia application free to use?
+
+Steemia application is provided for free and can be download Google play store as well as from our official GitHub.
+
+
+What security risks do I face by using my passwords on Steemia?
+
+By using your Posting private key, Active private key or Main password on Steemia, the biggest risk you face is that if someone gets access to your physical device they might perform some actions on your behalf. We have PIN code security in place, if you choose to enable, can protect you from these type of situations.
+Your keys will never leave your device, all transactions are generated locally and broadcasted to the network through websocket of your choice. 
+
+
+Where can I leave feedback or suggestions or report bugs?
+
+You can report them directly on: 
+
+1. Our GitHub issue page - https://github.com/Steemia/Steemia/issues
+2. On our discord channel - https://discord.gg/97jNcEc
