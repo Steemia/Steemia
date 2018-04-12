@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{ title }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <ion-list *ngIf="!loading">
+    <ion-item *ngFor="let user of data">
+      <ion-avatar item-start tappable (click)="openProfile()">
+        <img [src]="user.avatar" (error)="util.imgError('profile',$event)" />
+      </ion-avatar>
+      <h2 tappable (click)="openProfile(item.author)">{{ user.account }}</h2>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="data.length > 1 && is_more_post == true && !loading" (ionInfinite)="doInfinite($event)" distance="1%">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

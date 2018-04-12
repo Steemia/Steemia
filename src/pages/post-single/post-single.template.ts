@@ -26,7 +26,7 @@ export const postSinglePage = `
         </div>
         <p style="margin-top: 6px;">{{ post?.reading_time }}</p>
 
-        <i *ngIf="!post?.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="castVote(post?.author, post?.url, 10000);"></i>
+        <i *ngIf="!post?.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event);"></i>
 
         <i *ngIf="post?.vote && is_voting == false" class="fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(post?.author, post?.url, 0);"></i>
 

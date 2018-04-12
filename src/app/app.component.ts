@@ -51,14 +51,15 @@ export class MyApp {
       }
 
       else {
-        this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
-          this.profile = data;
+        this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
+          this.profile = data[0];
+          this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
           // this.socket.connect();
           // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
-          this.ws.sendAsync('get_notifications', this.profile.username, 0);
+          this.ws.sendAsync('get_notifications', this.profile.name, 0);
         });
       }
     });
@@ -94,9 +95,9 @@ export class MyApp {
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        picture: this.profile.profile_image,
-        username: this.profile.username,
-        email: this.profile.location || '',
+        picture: this.profile.json_metadata.profile.profile_image,
+        username: this.profile.name,
+        email: this.profile.json_metadata.profile.location || '',
         //onClick: () => { alert('menu header clicked'); }
       },
       entries: [
@@ -152,7 +153,7 @@ export class MyApp {
     this.menuCtrl.close().then(() => {
       if (type === 'profile' || type === 'wallet' || type === 'chat') {
         this.nav.push(page, {
-          author: this.profile.username
+          author: this.profile.name
         });
       }
       else {

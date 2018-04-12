@@ -16,7 +16,6 @@ export class PostCardComponent implements AfterViewInit {
   @Input('post') content: any;
   @Input('from') from: string;
   private is_voting: boolean = false;
-  public popover;
   player = [];
   private revealed: boolean = false;
   private reveal_trigger: boolean = false;
@@ -73,11 +72,11 @@ export class PostCardComponent implements AfterViewInit {
    * Method to open the voting-slider popover
    */
   presentPopover(myEvent) {
-    this.popover = this.popoverCtrl.create('VotingSliderPage');
-    this.popover.present({
+    let popover = this.popoverCtrl.create('VotingSliderPage');
+    popover.present({
       ev: myEvent
     });
-    this.popover.onDidDismiss(data => {
+    popover.onDidDismiss(data => {
       if (data) {
         this.castVote(this.content.author, this.content.url, data.weight);
       }

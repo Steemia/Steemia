@@ -46,7 +46,7 @@ export class SteemiaProvider {
    * @param {Observable<string>} term 
    */
   public dispatch_search(term: Observable<string>, page: number) {
-    return term.debounceTime(1000)
+    return term.debounceTime(500)
       .switchMap((value: string) => this.get_search(value, page));
   }
 
@@ -131,18 +131,6 @@ export class SteemiaProvider {
   }
 
   /**
-   * Method to retrieve the feed from a certain user
-   * 
-   * @method get_feed
-   * @param {Query} query: Object with data for query
-   * @returns A subscriptable observable with the response
-   */
-  private get_feed(query: Query) {
-    return this.http.get(STEEMIA_POSTS + 'feed?' + this.util.encodeQueryData(query))
-      .share();
-  }
-
-  /**
    * Public method to dispatch the data to the corresponding page
    * 
    * @method dispatch_feed
@@ -150,7 +138,8 @@ export class SteemiaProvider {
    */
   public dispatch_feed(query: Query): Promise<any> {
 
-    return this.get_feed(query).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'feed?' + this.util.encodeQueryData(query))
+      .share().toPromise();
   }
 
   /**
@@ -197,7 +186,7 @@ export class SteemiaProvider {
    */
   public dispatch_profile_info(query: Query): Promise<any> {
 
-    return this.http.get(STEEMIA_USERS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
+    return this.http.get(STEEMIA_USERS + 'info?' + this.util.encodeQueryData(query)).toPromise();
 
   }
 
@@ -282,6 +271,59 @@ export class SteemiaProvider {
 
     return this.http.get(STEEM_API + 'get_content?' + this.util.encodeQueryData({ author: author, permlink: url }))
       .share().toPromise();
+  }
+
+  /**
+   * Method to dispatch followers of an user
+   * @param {String} username 
+   * @param {Number} limit 
+   * @param {String} start_follower 
+   */
+  public dispatch_followers(username: string, limit: number, start_follower?: string) {
+    if (!start_follower) {
+      start_follower = '';
+    }
+
+    return this.http.get(STEEMIA_USERS + 'followers?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_follower})).toPromise();
+  }
+
+  /**
+   * Method to dispatch following of an user
+   * @param {String} username 
+   * @param {Number} limit 
+   * @param {String} start_following 
+   */
+  public dispatch_following(username: string, limit: number, start_following?: string) {
+    if (!start_following) {
+      start_following = '';
+    }
+
+    return this.http.get(STEEMIA_USERS + 'following?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_following})).toPromise();
+  }
+
+  /**
+   * Method to dispatch user stats data
+   * @param username 
+   */
+  public dispatch_stats(username: string) {
+    return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({user: username})).toPromise();
+  }
+
+  /**
+   * Method to see if a user is following you or vice versa.
+   * @param username 
+   * @param target 
+   */
+  public is_following(username: string, target: string) {
+    return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({username: username, user: target})).toPromise();
+  }
+
+  /**
+   * Method to get voting power
+   * @param username
+   */
+  public get_voting_power(username: string) {
+    return this.http.get(STEEMIA_USERS + 'voting_power?username=' + username).toPromise();
   }
 
 }

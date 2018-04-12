@@ -13,8 +13,7 @@
     <div class="card-profile_visual"></div>
     <div class="card-profile_user-infos">
       <span class="info_picture">
-        <img *ngIf="account_data?.profile_image" [src]="account_data?.profile_image" class="picture" />
-        <img *ngIf="!account_data?.profile_image" src="assets/user.png" class="picture" />
+        <img [src]="render_image()" class="picture" />
       </span>
       <span class="infos_name">
         <ion-badge tappable (tap)="presentProfileModal()">
@@ -86,15 +85,15 @@
       </div>
       <div *ngSwitchCase="'about'">
         <ion-list>
-          <ion-item>
+          <ion-item tappable (click)="open_followers();">
             <ion-icon name="people" item-start></ion-icon>
             Followers
-            <ion-badge color="light" item-end>{{ account_data?.followers_count }}</ion-badge>
+            <ion-badge color="light" item-end>{{ stats?.followers_count }}</ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item tappable (click)="open_following();">
             <ion-icon name="person-add" item-start></ion-icon>
             Following
-            <ion-badge color="light" item-end>{{ account_data?.following_count }}</ion-badge>
+            <ion-badge color="light" item-end>{{ stats?.following_count }}</ion-badge>
           </ion-item>
           <ion-item>
             <ion-icon name="paper" item-start></ion-icon>
@@ -134,7 +133,7 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ account_data?.voting_power }} SP</p>
+            <p>{{ voting_power }} SP</p>
           </ion-item>
         </ion-list>
       </div>
