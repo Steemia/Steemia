@@ -1,18 +1,101 @@
-<!--
-  Generated template for the AboutPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>about</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>About</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <ion-list>
+    <ion-item class="photo">
+      <ion-avatar>
+        <img src="assets/logo.png">
+      </ion-avatar>
+    </ion-item>
+    <ion-list-header>
+      ABOUT US
+    </ion-list-header>
+    <ion-card-content>
+      <p>
+        Steemia is a social network app running over the Steem Blockchain. 
+        This app will provide the users an enriched user experience plus 
+        features commonly encountered in a casually used social media. 
+        The goal of this project is to give the community a mobile app 
+        where they can do their daily activity in the blockchain.
+      </p>
+    </ion-card-content>
 
+    <ion-list-header>
+      FAQ
+    </ion-list-header>
+    <ion-card-content>
+      <ion-label> <strong>What is the Steem?</strong> </ion-label>
+      <p>
+          Steem is a blockchain database that supports community building and social interaction
+          with cryptocurrency rewards. Steem combines concepts from social media with lessons
+          learned from building cryptocurrencies and their communities. An important key to
+          inspiring participation in any community, currency or free market economy is a fair
+          accounting system that consistently reflects each person's contribution. Steem is the first
+          cryptocurrency that attempts to accurately and transparently reward an unbounded
+          number of individuals who make subjective contributions to its community.          
+      </p>
+
+      <ion-label> <strong>What is the Steemit?</strong> </ion-label>
+      <p>
+          Steemit is a blogging and social networking website that uses its Steem blockchain-based 
+          rewards platform for publishers. The Steem blockchain produces Steem and Steem Dollars 
+          which are magic bean tokens obtained for posting, discovering, and commenting on content.
+          <br>
+          Steemit, Inc. is a privately held company based in New York City and headquartered in Virginia. 
+          The company was founded by <a href="https://steemit.com/@ned">Ned Scott</a>, and <a href="https://steemit.com/@dan">Dan Larimer</a>, creator of BitShares, and EOS.
+      </p>
+    
+    </ion-card-content>
+
+    <ion-list-header>
+      SECURITY
+    </ion-list-header>
+    <ion-card-content>
+      <ion-label> <strong>What is the SteemConnect?</strong> </ion-label>
+      <p>
+          SteemConnect is an identity layer on top of the Steem blockchain that 
+          makes accounts secure, never have to give your keys out to anyone.
+          <br>
+          SteemConnect gives you full access to the Steem ecosystem without giving up your private keys. 
+          That’s right, never risk a malicious or incompetent 3rd party app getting your private keys again. 
+          SteemConnect acts as the identity layer in between that enables participation without vulnerability.
+      </p> 
+         
+          <ion-label> <strong> Security Measures! </strong> </ion-label>
+      <p>    
+          Security is one of our main concern. We as users, we take security seriously. Even though SteemConnect 
+          encrypt your key in exchange of a token, we decide to also protect this token. For instance, storing 
+          the token in plan into the local storage, it can be retrieved by any other application. For iOS, the 
+          token is protected using the keychain which is highly secured. While for Android, the encryption is 
+          done by the following steps: 
+      </p>    
+          <ol>
+            <li>A random 256-bit AES key is generated</li>
+            <li>The AES key encrypts the value</li>
+            <li>The AES key is encrypted with a device-generated RSA (RSA/ECB/PKCS1Padding) from the Android KeyStore</li>
+            <li>The combination of the encrypted AES key and value are stored in SharedPreferences.</li>
+          </ol>
+      <p>    
+          To retrieve the key, the process is inverted.
+          <br>
+          https://github.com/Crypho/cordova-plugin-secure-storage
+      </p>
+    </ion-card-content>
+
+    <ion-list-header>
+      CONTACT & FEEDBACK
+    </ion-list-header>
+    <ion-card-content>
+        <ion-label> <strong> Contact/Feedback </strong> </ion-label>
+      <p>
+        <a href="https://discord.gg/KbAHS7s">Discord Channel</a>
+        <br>
+        <a href="https://steemit.com/@steemia-io">steemit.com/@steemia-io</a>
+      </p>
+    </ion-card-content>
+  </ion-list>
 </ion-content>
