@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PostsRes } from 'models/models';
+import { UtilProvider } from 'providers/util/util';
 
 @IonicPage()
 @Component({
@@ -15,6 +16,7 @@ export class BookmarksPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public util: UtilProvider,
     public storage: Storage) {
   }
 
