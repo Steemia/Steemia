@@ -16,6 +16,7 @@ export class PostRenderComponent {
 
   @Input('posts') private contents: Array<any> = [];
   @Input('from') from: string;
+  @Input('user') user: string;
 
   constructor() { 
   }

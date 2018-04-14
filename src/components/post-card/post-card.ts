@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import { App, ModalController, PopoverController, NavController } from 'ionic-angular';
-import { ImageLoaderConfig } from 'ionic-image-loader';
 // PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -15,33 +14,34 @@ export class PostCardComponent implements AfterViewInit {
 
   @Input('post') content: any;
   @Input('from') from: string;
+  @Input('user') user: string;
   private is_voting: boolean = false;
   player = [];
   private revealed: boolean = false;
   private reveal_trigger: boolean = false;
+  private inner_rebblog: boolean = false;
 
   constructor(private app: App,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     public popoverCtrl: PopoverController,
-    private imageLoaderConfig: ImageLoaderConfig,
     private steemActions: SteeemActionsProvider,
     private cdr: ChangeDetectorRef,
     public util: UtilProvider,
     private steemConnect: SteemConnectProvider,
     private steemiaProvider: SteemiaProvider) {
 
-    this.imageLoaderConfig.setBackgroundSize('cover');
-    this.imageLoaderConfig.setHeight('200px');
-    this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
-    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-    this.imageLoaderConfig.setConcurrency(25);
-    this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
-    this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
+      
 
   }
 
   ngAfterViewInit() {
+    if (this.content.author !== this.user && this.from == 'PROFILE') {
+      console.log("got here")
+      this.inner_rebblog = true;
+      
+      this.cdr.detectChanges();
+    }
     if (this.content.is_nsfw === false) {
       this.reveal_trigger = true;
     }

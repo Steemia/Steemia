@@ -9,6 +9,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Socket } from 'ng-socket-io';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
+import { ImageLoaderConfig } from 'ionic-image-loader';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,11 +37,14 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     private ga: GoogleTrackingProvider,
+    private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
     private ws: WebsocketsProvider,
     private fcm: FCM,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
+
+    
 
     this.initializeApp();
 
@@ -73,7 +77,7 @@ export class MyApp {
         picture: this.profilePicture,
         username: 'Steemia',
         email: 'steemia@steemia.io',
-        
+
       },
       entries: [
         { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
@@ -99,14 +103,15 @@ export class MyApp {
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
         email: this.profile.json_metadata.profile.location || '',
-        onClick: () => { 
+        onClick: () => {
           this.openPage('ProfilePage', 'profile');
         }
       },
       entries: [
         { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
-        { 
-          title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
+        {
+          title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
+        },
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
@@ -137,6 +142,13 @@ export class MyApp {
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
       this.ga.track_page('Loaded App');
+      this.imageLoaderConfig.setBackgroundSize('cover');
+    this.imageLoaderConfig.setHeight('200px');
+    this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
+    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
+    this.imageLoaderConfig.setConcurrency(25);
+    this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
+    this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {

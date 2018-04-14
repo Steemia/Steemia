@@ -92,8 +92,8 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     File,
     Camera,
     CryptoProvider,
-    SecureStorage, // Only for prod build
-    //{ provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
+    //SecureStorage, // Only for prod build
+    { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
     GoogleTrackingProvider,
     //GoogleAnalytics,
     { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },

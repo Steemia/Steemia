@@ -54,7 +54,6 @@ export class SteemConnectProvider {
 
           //Set a null access token to the instance
           this.instance.setAccessToken(null);
-
           // Set login status to false
           this.login_status = false;
           this.status.next({

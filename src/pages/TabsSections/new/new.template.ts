@@ -17,7 +17,7 @@ export const newTemplate = `
     </ion-item>
   </ion-card>
 
-  <post-render *ngIf="!is_loading" [posts]="contents" [from]="'NORMAL'"></post-render>
+  <post-render *ngIf="!is_loading" [posts]="contents" [from]="'NORMAL'" [user]="'null'"></post-render>
 
   <div *ngIf="is_more_post == false">
     <p text-center>There are not more posts to load</p>

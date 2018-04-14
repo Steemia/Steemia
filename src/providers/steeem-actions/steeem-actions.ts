@@ -430,14 +430,6 @@ export class SteeemActionsProvider {
                 weight: 1000 // 10% for Steemia-io
               },
               {
-                account: 'jaysermendez',
-                weight: 500 // 5% for jaysermendez
-              },
-              {
-                account: 'hsynterkr',
-                weight: 500 // 5% for hsynterkr
-              },
-              {
                 account: 'steemia.pay',
                 weight: 500 // 5% for steemia.pay
               }
