@@ -261,38 +261,49 @@ export class PostSinglePage {
   }
 
   addBookmark() {
-    this.storage.get('bookmarks').then(data => {
-      if(data) {
-        this.bookmarks = data;
-        this.bookmarks.push(this.post);
-        this.storage.set('bookmarks', this.bookmarks).then(data => { 
-          this.is_bookmarked = true;
-          this.presentAlert('saved')
-        });
-      } else {
-        this.bookmarks = [this.post];
-        this.storage.set('bookmarks', this.bookmarks).then(data => { 
-          this.is_bookmarked = true;
-          this.presentAlert('saved')
-        });
-      }
-    });
+    if ((this.steemConnect.user_temp as any).user) {
+      this.storage.get('bookmarks').then(data => {
+        if(data) {
+          this.bookmarks = data;
+          this.bookmarks.push(this.post);
+          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+            this.is_bookmarked = true;
+            this.presentAlert('saved')
+          });
+        } else {
+          this.bookmarks = [this.post];
+          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+            this.is_bookmarked = true;
+            this.presentAlert('saved')
+          });
+        }
+      });
+    }
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
+    
   }
 
   removeBookmark() {
-    this.storage.get('bookmarks').then(data => {
-      this.bookmarks = data;
-      for(let object of data) {
-        if (object.author === this.post.author && object.url === this.post.url) {
-          let index = this.bookmarks.indexOf(object);
-          this.bookmarks.splice(index,1);
-          this.storage.set('bookmarks', this.bookmarks).then(data => {
-            this.is_bookmarked = false;
-            this.presentAlert('removed');
-          })
+    if ((this.steemConnect.user_temp as any).user) {
+      this.storage.get('bookmarks').then(data => {
+        this.bookmarks = data;
+        for(let object of data) {
+          if (object.author === this.post.author && object.url === this.post.url) {
+            let index = this.bookmarks.indexOf(object);
+            this.bookmarks.splice(index,1);
+            this.storage.set('bookmarks', this.bookmarks).then(data => {
+              this.is_bookmarked = false;
+              this.presentAlert('removed');
+            })
+          }
         }
-      }
-    })
+      })
+    }
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
   }
 
   presentAlert(param) {
