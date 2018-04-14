@@ -1,18 +1,32 @@
-<!--
-  Generated template for the BookmarksPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>bookmarks</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Bookmarks</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>
+    
+    <ion-item-sliding *ngFor="let bookmark of bookmarks">
+      <ion-item (click)="openPost(bookmark)">
+        <ion-thumbnail item-start>
+          <img [src]="bookmark.body">
+        </ion-thumbnail>
+        <h2> {{ bookmark.title }} </h2>
+        <p> @{{ bookmark.author }} </p>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="removeBookmark(bookmark)">
+          <ion-icon name="trash"></ion-icon>
+          Remove
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+
+  </ion-list>
 
 </ion-content>
