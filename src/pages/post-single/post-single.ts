@@ -1,5 +1,5 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -10,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
+import { Storage } from '@ionic/storage';
 
 @IonicPage({
   priority: 'high'
@@ -22,6 +23,7 @@ export class PostSinglePage {
 
   private post: any;
   private is_voting: boolean = false;
+  private is_bookmarked: boolean = false;
   private comments: Array<any> = [];
   private is_loading: boolean = true;
   private is_logged_in: boolean = false;
@@ -31,25 +33,29 @@ export class PostSinglePage {
   private chatBox: string = '';
   private is_owner: boolean = false;
   private ref;
+  private bookmarks;
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
+    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public util: UtilProvider,
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
     private steemConnect: SteemConnectProvider) { 
       this.user = (this.steemConnect.user_temp as any);
-    }
+    } 
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
     //this.post.full_body = marked(this.post.full_body);
-    
+    console.log(this.post);
+
     this.current_user = (this.steemConnect.user_temp as any).user;
 
     if (this.current_user === this.post.author) {
@@ -59,6 +65,12 @@ export class PostSinglePage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
+
+    this.storage.ready().then(() => {
+      this.storage.get('bookmarks').then(data => {
+        console.log(this.containsObject(data))
+      });
+    })
 
   }
 
@@ -247,4 +259,69 @@ export class PostSinglePage {
       post: this.post
     });
   }
+
+  addBookmark() {
+    if ((this.steemConnect.user_temp as any).user) {
+      this.storage.get('bookmarks').then(data => {
+        if(data) {
+          this.bookmarks = data;
+          this.bookmarks.push(this.post);
+          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+            this.is_bookmarked = true;
+            this.presentAlert('saved')
+          });
+        } else {
+          this.bookmarks = [this.post];
+          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+            this.is_bookmarked = true;
+            this.presentAlert('saved')
+          });
+        }
+      });
+    }
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
+    
+  }
+
+  removeBookmark() {
+    if ((this.steemConnect.user_temp as any).user) {
+      this.storage.get('bookmarks').then(data => {
+        this.bookmarks = data;
+        for(let object of data) {
+          if (object.author === this.post.author && object.url === this.post.url) {
+            let index = this.bookmarks.indexOf(object);
+            this.bookmarks.splice(index,1);
+            this.storage.set('bookmarks', this.bookmarks).then(data => {
+              this.is_bookmarked = false;
+              this.presentAlert('removed');
+            })
+          }
+        }
+      })
+    }
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
+  }
+
+  presentAlert(param) {
+    let alert = this.alertCtrl.create({
+      title: 'Bookmark '+param+' 😎',
+      subTitle: 'Bookmark '+param+' successfully',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  containsObject(array) {
+    for(let object of array) {
+      console.log(object.author)
+      if (object.author === this.post.author && object.url === this.post.url) {
+        this.is_bookmarked = true;
+      }
+    }
+  } 
+
 }

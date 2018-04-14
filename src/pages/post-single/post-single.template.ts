@@ -4,8 +4,11 @@ export const postSinglePage = `
   <ion-navbar color="primary">
     <ion-title></ion-title>
     <ion-buttons end>
-      <button ion-button>
+      <button *ngIf="!is_bookmarked" ion-button (click)="addBookmark()">
         <ion-icon class="custom-close" name="ios-bookmark-outline"></ion-icon>
+      </button>
+      <button *ngIf="is_bookmarked" ion-button (click)="removeBookmark()">
+        <ion-icon class="custom-close" name="ios-bookmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>

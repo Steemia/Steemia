@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the BookmarksPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Storage } from '@ionic/storage';
+import { PostsRes } from 'models/models';
+import { UtilProvider } from 'providers/util/util';
 
 @IonicPage()
 @Component({
@@ -14,12 +10,43 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'bookmarks.html',
 })
 export class BookmarksPage {
+  public bookmarks;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private profile_pc: string = 'assets/user.png';
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public util: UtilProvider,
+    public storage: Storage) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BookmarksPage');
+    this.storage.get('bookmarks').then(data => {
+      if (data) {
+        this.bookmarks = data;
+      };
+    });
+  }
+
+  openPost(post) {
+    this.navCtrl.push('PostSinglePage', {
+      post: post
+    });
+  }
+
+  removeBookmark(post) {
+    this.storage.get('bookmarks').then(data => {
+      this.bookmarks = data;
+      for(let object of data) {
+        if (object.author === post.author && object.url === post.url) {
+          let index = this.bookmarks.indexOf(object);
+          this.bookmarks.splice(index,1);
+          this.storage.set('bookmarks', this.bookmarks).then(data => {
+          })
+        }
+      }
+    })
   }
 
 }
