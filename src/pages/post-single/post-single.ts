@@ -1,5 +1,11 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, 
+         NavController, 
+         NavParams, 
+         LoadingController, 
+         ToastController,
+         AlertController,
+         PopoverController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -42,6 +48,7 @@ export class PostSinglePage {
     public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
+    private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public util: UtilProvider,
@@ -106,6 +113,21 @@ export class PostSinglePage {
   private openProfile(): void {
     this.navCtrl.push(AuthorProfilePage, {
       author: this.post.author
+    });
+  }
+
+  /**
+   * Method to open the voting-slider popover
+   */
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create('VotingSliderPage');
+    popover.present({
+      ev: myEvent
+    });
+    popover.onDidDismiss(data => {
+      if (data) {
+        this.castVote(this.post.author, this.post.url, data.weight);
+      }
     });
   }
 

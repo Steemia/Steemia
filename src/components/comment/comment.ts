@@ -45,15 +45,19 @@ export class CommentComponent {
     
   }
 
-   /**
+  /**
    * Method to open the voting-slider popover
    */
-  presentPopover(author, url) {
+  presentPopover(event) {
     let popover = this.popoverCtrl.create('VotingSliderPage');
-    popover.present();
+    popover.present({
+      ev: event
+    });
 
     popover.onDidDismiss(data => {
-      this.castVote(author, url, data.weight);
+      if (data) {
+        this.castVote(this.comment.author, this.comment.url, data.weight);
+      }
     });
   }
 

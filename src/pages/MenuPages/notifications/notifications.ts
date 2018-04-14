@@ -21,17 +21,19 @@ export class NotificationsPage {
     private steemiaProvider: SteemiaProvider,
     private steemConnect: SteemConnectProvider,
     public util: UtilProvider) {
-      this.ws.notifications.subscribe(data => {
+    this.ws.notifications.subscribe(data => {
+      if (data) {
         this.notifications = data;
         this.steemConnect.saveNotificationsLastTimestamp(this.notifications[0].timestamp).then(data => {
           this.ws.set_timestamp = data;
         });
-      });
-      this.ws.counter.next(0);
+      }
+    });
+    this.ws.counter.next(0);
   }
 
   ionViewDidLoad() {
-   
+
   }
 
   ionWillLeave() {

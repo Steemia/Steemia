@@ -9,6 +9,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Socket } from 'ng-socket-io';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
+import { ImageLoaderConfig } from 'ionic-image-loader';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,29 +37,33 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     private ga: GoogleTrackingProvider,
+    private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
     private ws: WebsocketsProvider,
     private fcm: FCM,
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
+    
+
     this.initializeApp();
 
     this.steemConnect.status.subscribe(res => {
-      if (res.status == false) {
+      if (res.status === false || res.status === null) {
         this.isLoggedIn = false;
         this.initializeLoggedOutMenu();
       }
 
-      else {
-        this.steemiaProvider.dispatch_menu_profile(res.userObject.user).then(data => {
-          this.profile = data;
+      else if (res.status === true) {
+        this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
+          this.profile = data[0];
+          this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
           // this.socket.connect();
           // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
-          this.ws.sendAsync('get_notifications', this.profile.username, 0);
+          this.ws.sendAsync('get_notifications', this.profile.name, 0);
         });
       }
     });
@@ -71,10 +76,11 @@ export class MyApp {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Steemia',
-        email: 'steemia@steemia.io'
+        email: 'steemia@steemia.io',
+
       },
       entries: [
-        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
         { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
@@ -94,14 +100,18 @@ export class MyApp {
     this.loggedInPages = {
       header: {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
-        picture: this.profile.profile_image,
-        username: this.profile.username,
-        email: this.profile.location || '',
-        //onClick: () => { alert('menu header clicked'); }
+        picture: this.profile.json_metadata.profile.profile_image,
+        username: this.profile.name,
+        email: this.profile.json_metadata.profile.location || '',
+        onClick: () => {
+          this.openPage('ProfilePage', 'profile');
+        }
       },
       entries: [
-        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
-        { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
+        {
+          title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
+        },
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
@@ -132,6 +142,13 @@ export class MyApp {
       this.statusBar.backgroundColorByHexString('#488aff');
       this.splashScreen.hide();
       this.ga.track_page('Loaded App');
+      this.imageLoaderConfig.setBackgroundSize('cover');
+    this.imageLoaderConfig.setHeight('200px');
+    this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
+    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
+    this.imageLoaderConfig.setConcurrency(25);
+    this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
+    this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {
@@ -152,7 +169,7 @@ export class MyApp {
     this.menuCtrl.close().then(() => {
       if (type === 'profile' || type === 'wallet' || type === 'chat') {
         this.nav.push(page, {
-          author: this.profile.username
+          author: this.profile.name
         });
       }
       else {

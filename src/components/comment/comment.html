@@ -19,7 +19,7 @@
 
   </div>
 
-  <i *ngIf="!comment?.vote && is_voting == false" class="like-button fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover(comment?.author, comment?.url);"></i>
+  <i *ngIf="!comment?.vote && is_voting == false" class="like-button fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event);"></i>
 
   <i *ngIf="comment?.vote && is_voting == false" class="like-button fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(comment?.author, comment?.url, 0);"></i>
 

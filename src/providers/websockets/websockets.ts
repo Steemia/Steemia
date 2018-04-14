@@ -33,7 +33,7 @@ export class WebsocketsProvider {
     });
 
     this.ws.onOpen((msg: MessageEvent) => {
-      console.log("Notification server loaded")
+      console.log("Notification server loaded");
     });
 
     this.ws.onMessage((msg: MessageEvent) => {

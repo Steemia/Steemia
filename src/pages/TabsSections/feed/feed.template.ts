@@ -6,7 +6,7 @@ export const feedTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-spinner *ngIf="is_loading && logged_in == true"></ion-spinner>
+  <ion-spinner *ngIf="is_loading"></ion-spinner>
 
   <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')">
     <ion-item>
@@ -28,7 +28,7 @@ export const feedTemplate = `
 
   </div>
 
-  <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents" [from]="'NORMAL'"></post-render>
+  <post-render *ngIf="!is_loading && logged_in == true" [posts]="contents" [from]="'NORMAL'" [user]="'null'"></post-render>
 
   <div *ngIf="is_more_post == false">
     <p text-center>There are not more posts to load</p>

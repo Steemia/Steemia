@@ -386,10 +386,12 @@ export class WalletPage {
     this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
       loader.dismiss();
       this.getAccount();
-      this.toastCtrl.create({
+      let toast = this.toastCtrl.create({
         message: 'Your rewards are now in your account 😎',
         duration: 1500
       });
+
+      toast.present();
     });
   }
 

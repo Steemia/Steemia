@@ -13,25 +13,20 @@
     <div class="card-profile_visual"></div>
     <div class="card-profile_user-infos">
       <span class="info_picture">
-        <img *ngIf="account_data?.profile_image" (error)="util.imgError('profile',$event)" [src]="account_data?.profile_image" class="picture" />
+        <img (error)="util.imgError('profile',$event)" [src]="render_image()" class="picture" />
       </span>
       <span class="infos_name">
 
-        <!-- Mock placeholder until data is loaded -->
-        <ion-badge *ngIf="!account_data">
-          <i class="fa fa-user-plus"></i> Follow
-        </ion-badge>
-
         <!-- If you have not follow this user -->
-        <ion-badge *ngIf="account_data?.has_followed == 0" tappable (click)="follow()">
+        <ion-badge *ngIf="following == false" tappable (click)="follow()">
           <i class="fa fa-user-plus"></i> Follow
         </ion-badge>
 
         <!-- If you have follow this user -->
-        <ion-badge *ngIf="account_data?.has_followed == 1" tappable (click)="unfollow()">
+        <ion-badge *ngIf="following == true" tappable (click)="unfollow()">
           <i class="fa fa-user-times"></i> Unfollow
         </ion-badge>
-        
+
         <ion-badge>
           <i class="fa fa-comments-o"></i> Chat
         </ion-badge>
@@ -85,7 +80,7 @@
 
         <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-        <post-render *ngIf="!is_loading" [posts]="contents" [from]="'PROFILE'"></post-render>
+        <post-render *ngIf="!is_loading" [posts]="contents" [from]="'PROFILE'" [user]="username"></post-render>
 
         <no-data *ngIf="no_post == true" icon="chatbubbles" title="This user has not posts, YET!">
         </no-data>
@@ -99,19 +94,24 @@
         </ion-infinite-scroll>
       </div>
       <div *ngSwitchCase="'activity'">
-        Activity
+        <ion-card>
+          <ion-card-content text-center>
+            <img src="assets/img1.png" />
+            <p>We are still working in this feature 👷‍♀️</p>
+          </ion-card-content>
+        </ion-card>
       </div>
       <div *ngSwitchCase="'about'">
         <ion-list>
-          <ion-item>
+          <ion-item tappable (click)="open_followers();">
             <ion-icon name="people" item-start></ion-icon>
             Followers
-            <ion-badge color="light" item-end>{{ account_data?.followers_count }}</ion-badge>
+            <ion-badge color="light" item-end>{{ stats?.followers_count }}</ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item tappable (click)="open_following();">
             <ion-icon name="person-add" item-start></ion-icon>
             Following
-            <ion-badge color="light" item-end>{{ account_data?.following_count }}</ion-badge>
+            <ion-badge color="light" item-end>{{ stats?.following_count }}</ion-badge>
           </ion-item>
           <ion-item>
             <ion-icon name="paper" item-start></ion-icon>
@@ -151,7 +151,7 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ account_data?.voting_power }} SP</p>
+            <p>{{ voting_power }} SP</p>
           </ion-item>
         </ion-list>
       </div>

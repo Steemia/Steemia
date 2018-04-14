@@ -33,6 +33,10 @@ export class AuthorProfilePage {
   private start_author: string = null;
   private start_permlink: string = null;
 
+  private stats = {};
+  private following: boolean = false;
+  private voting_power: number = 0;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -50,6 +54,10 @@ export class AuthorProfilePage {
     this.current_user = (this.steemConnect.user_temp as any).user;
   }
 
+  private render_image() {
+    return 'https://steemitimages.com/u/' + this.username + '/avatar/small';
+  }
+
   ionViewDidLoad() {
 
     this.zone.runOutsideAngular(() => {
@@ -57,6 +65,19 @@ export class AuthorProfilePage {
     });
 
     this.get_account();
+    
+    this.steemia.dispatch_stats(this.username).then((data: any) => {
+      (this.stats as any).followers_count = data.followers_count;
+      (this.stats as any).following_count = data.following_count;
+    });
+
+    this.steemia.is_following(this.username, this.current_user).then((data: any) => {
+      this.following = data.following;
+    });
+
+    this.steemia.get_voting_power(this.username).then((data:any) => {
+      this.voting_power = data.voting_power.toFixed(3);
+    });
   }
 
   /**
@@ -230,6 +251,26 @@ export class AuthorProfilePage {
         (this.account_data as any).has_followed = 0; // Update the button instead of calling the API again
         (this.account_data as any).followers_count -= 1;
       }
+    });
+  }
+
+  /**
+   * Method to open followers page
+   */
+  private open_followers() {
+    this.navCtrl.push('FollowListPage', {
+      Title: 'Followers',
+      Username: this.username
+    });
+  }
+
+  /**
+   * Method to open following page
+   */
+  private open_following() {
+    this.navCtrl.push('FollowListPage', {
+      Title: 'Following',
+      Username: this.username
     });
   }
 }

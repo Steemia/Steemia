@@ -36,7 +36,6 @@ import { AlertsProvider } from 'providers/alerts/alerts';
       <ion-tab></ion-tab>
       <ion-tab [root]="hotRoot" tabIcon="mdi-flame" tabTitle="Hot"></ion-tab>
       <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
-      
     </ion-tabs>
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage', true)">
