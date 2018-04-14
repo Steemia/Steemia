@@ -1,10 +1,9 @@
 <div class="ion-material-sidemenu-container">
   <div 
     class="ion-material-sidemenu-header" 
-    (click)="_options.header.onClick && _options.header.onClick()"
     [ngStyle]="_options.header.background && {'background': _options.header.background}"
   >
-    <img [src]="_options.header.picture" (error)="util.imgError('profile',$event)" class="picture"/>
+    <img (click)="_options.header.onClick && _options.header.onClick()" [src]="_options.header.picture" (error)="util.imgError('profile',$event)" class="picture"/>
     <div class="subtitle">
       <h1>{{ _options.header.username }}</h1>
       <h2 *ngIf="_options.header.email">{{ _options.header.email }}</h2>

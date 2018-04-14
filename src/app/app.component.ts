@@ -45,12 +45,12 @@ export class MyApp {
     this.initializeApp();
 
     this.steemConnect.status.subscribe(res => {
-      if (res.status == false) {
+      if (res.status === false || res.status === null) {
         this.isLoggedIn = false;
         this.initializeLoggedOutMenu();
       }
 
-      else {
+      else if (res.status === true) {
         this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
           this.profile = data[0];
           this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
@@ -72,10 +72,11 @@ export class MyApp {
         background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Steemia',
-        email: 'steemia@steemia.io'
+        email: 'steemia@steemia.io',
+        
       },
       entries: [
-        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage("AboutPage") } },
         { title: 'Login', leftIcon: 'log-in', onClick: () => { this.openPage("LoginPage") } }
       ]
@@ -98,11 +99,14 @@ export class MyApp {
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
         email: this.profile.json_metadata.profile.location || '',
-        //onClick: () => { alert('menu header clicked'); }
+        onClick: () => { 
+          this.openPage('ProfilePage', 'profile');
+        }
       },
       entries: [
-        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { } },
-        { title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
+        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
+        { 
+          title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') } },
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },

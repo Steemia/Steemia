@@ -34,7 +34,7 @@ export class SteemConnectProvider {
     status: boolean,
     userObject?: any,
     logged_out?: boolean
-  }> = new BehaviorSubject({ status: false });
+  }> = new BehaviorSubject({ status: null });
 
   public token: BehaviorSubject<string> = new BehaviorSubject('');
 

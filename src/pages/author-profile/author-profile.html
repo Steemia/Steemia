@@ -26,7 +26,7 @@
         <ion-badge *ngIf="following == true" tappable (click)="unfollow()">
           <i class="fa fa-user-times"></i> Unfollow
         </ion-badge>
-        
+
         <ion-badge>
           <i class="fa fa-comments-o"></i> Chat
         </ion-badge>
@@ -94,7 +94,12 @@
         </ion-infinite-scroll>
       </div>
       <div *ngSwitchCase="'activity'">
-        Activity
+        <ion-card>
+          <ion-card-content text-center>
+            <img src="assets/img1.png" />
+            <p>We are still working in this feature 👷‍♀️</p>
+          </ion-card-content>
+        </ion-card>
       </div>
       <div *ngSwitchCase="'about'">
         <ion-list>

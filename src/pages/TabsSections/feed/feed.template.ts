@@ -6,7 +6,7 @@ export const feedTemplate = `
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-spinner *ngIf="is_loading && logged_in == true"></ion-spinner>
+  <ion-spinner *ngIf="is_loading"></ion-spinner>
 
   <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')">
     <ion-item>

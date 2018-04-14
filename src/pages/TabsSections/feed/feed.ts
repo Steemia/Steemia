@@ -21,7 +21,7 @@ export class FeedPage {
   private first_limit: number = 15;
   private limit: number = 15;
   private is_more_post: boolean = true;
-  private logged_in: boolean = false;
+  private logged_in: boolean = null;
   private user: Object;
   private profile_pc: string = 'assets/user.png';
 
@@ -51,10 +51,16 @@ export class FeedPage {
         });
       }
 
+      else if (res.status === false) {
+        this.is_loading = false;
+        this.username = '';
+        this.logged_in = false;
+      }
+
       else if (res.logged_out === true) {
         this.logged_in = false;
         this.username = '';
-        this.is_loading = true;
+        this.is_loading = false;
         this.reinitialize();
       }
     });
@@ -117,7 +123,7 @@ export class FeedPage {
       this.start_permlink = (res as any).offset;
 
       // Set the loading spinner to false
-      this.is_loading = false
+      this.is_loading = false;
 
       // If this was called from an event, complete it
       if (event) {

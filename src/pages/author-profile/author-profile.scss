@@ -1,5 +1,13 @@
 page-author-profile {
 
+  .card {
+    -webkit-box-shadow:  none !important;
+    -moz-box-shadow:  none !important;
+    box-shadow: none !important;
+    border-radius: 8px;
+    border: 1px solid #e9e7e7;
+  }
+
   $gradient:#F96B4C,
             #F23182;
 
