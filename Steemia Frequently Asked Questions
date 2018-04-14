@@ -1,0 +1,54 @@
+Steemia - Frequently Asked Questions (FAQ)
+Steemia FAQ
+
+This Frequently Asked Question will be continually updated to accommodate new information with respect to new updates and changes on the App and will be used inside the App to help users find answers to their questions.
+
+
+What is Steemia?
+
+Steemia is a social network app built on the Steem Blockchain, which rewards users in Steem or Steem Dollars Cryptocurrencies. This app will provide users robust experiences in addition to features typically found on other social media platform including a p2p chat, notifications; it also gives users the ability to watch various cryptocurrencies including Bitcoin, Litecoin, and Ether wallets. The goal of this App is to give the Steemit community a mobile app where they can carry out their daily activity on the Steem-blockchain while earning rewards (getting paid) in the process.
+
+
+How do I create a Steemia account?
+
+You cannot create an account on Steemia, but you can logging with your username and private key created on Steemit.com, using SteemConnect. This is because Steemia is built on the steem-blockchain. 
+SteemConnect is an identity layer on top of the Steem-blockchain that makes accounts secure. SteemConnect requires only your private key when logging in and not your master password.
+
+
+What is Steemit.com?
+
+Steemit.com is a blockchain-based social media platform where anyone can earn rewards by blogging, posting videos, commenting and interacting with authors. The steem blockchain not only holds earned cryptocurrency tokens called STEEM and STEEM DOLLARS, but also content (article, video, music, pictures etc) created by its users, a system to vote on that content, receive rewards in addition to other features you would find on popular social networking site.
+
+
+What is the relationship between Steemia and Steemit.com?
+
+Steemia is built on the same blockchain as Steemit.com i.e Steem Blockchain, and thus what you post on your steemit.com account appears on your steemia app and vice versa. You will receive notifications from steemit on your Steemia app, such as Upvote and comment on your post, as well as transfers of Steem and Steem Dollar.  
+Summarily, Every action on Steemia appears on steemit and vice-versa, therefore, Steemia serves as a smart interface between Steemit.com and users.
+
+
+Can I change my username?
+
+Steemia is based on the Steem-Blockchain, therefore, your username on Steemit.com is your username on Steemia. However, since it is impossible to change your username on Steemit.com, your username can't be changed on Steemia.
+
+
+What if I lose my password?
+
+We only accept private key generated on Steemit.com. If by any case you forget or lose your private key as a result of tampering with your Steemit.com, you will have to contact Steemit.com for help.
+
+
+Is my personal information safe?
+
+Your information is safe. Note that we do not store your keys at all, hence, we do not have any information that would compromise or jeopardize our App users directly or indirectly.
+
+
+What security risks do I face by using my passwords on Steemia?
+
+By using your Private key on Steemia, the biggest risk you face is that if someone gets access to your physical device (phone or tablet) they might perform some actions on your behalf. 
+
+
+Where can I leave feedbacks or suggestions or report bugs?
+
+You can report them directly on: 
+
+1. Our GitHub issue page - https://github.com/Steemia/Steemia/issues
+2. On our discord channel - https://discord.gg/97jNcEc
