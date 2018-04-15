@@ -110,7 +110,7 @@ export class WalletPage {
   showPrompt(coin) {
     let prompt = this.alertCtrl.create({
       title: 'Transfer to Account',
-      subTitle: 'Move funds to another Steemia account.',
+      subTitle: 'Move funds to another Steemit account.',
       message: "Click the button below to be redirected to SteemConnect to complete your transaction.",
       cssClass: 'alert-center',
       enableBackdropDismiss: true,
