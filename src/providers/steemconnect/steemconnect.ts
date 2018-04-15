@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular'
+import { Platform, LoadingController } from 'ionic-angular'
 import { steemConnect } from 'models/models';
 import SteemConnect from './steemConnectAPI';
 import { Storage } from '@ionic/storage';
@@ -41,6 +41,7 @@ export class SteemConnectProvider {
   constructor(public storage: Storage,
     public platform: Platform,
     private iab: InAppBrowser,
+    private loading: LoadingController,
     private http: Http,
     private secureStorage: SecureStorage) {
 
@@ -218,6 +219,10 @@ export class SteemConnectProvider {
    * @returns Returns a promise with a dummy data just for validation
    */
   public doLogout(): Promise<any> {
+    let loading = this.loading.create({
+      content: 'Please wait until we clear your information 😔'
+    });
+    loading.present();
     return new Promise((resolve, reject) => {
       SteemConnect.revokeToken((err, res) => {
         if (err) reject(err);
@@ -232,6 +237,7 @@ export class SteemConnectProvider {
             status: this.login_status,
             logged_out: true
           });
+          loading.dismiss();
           resolve('done');
         }
       });
