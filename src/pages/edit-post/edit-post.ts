@@ -6,6 +6,7 @@ import {
   ActionSheetController,
   LoadingController,
   ToastController,
+  MenuController,
   NavController,
   NavParams,
 } from 'ionic-angular';
@@ -46,6 +47,7 @@ export class EditPostPage {
   constructor(public viewCtrl: ViewController,
     public actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
+    public menu: MenuController,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -64,6 +66,14 @@ export class EditPostPage {
       tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
     });
 
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   ionViewDidLoad() {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 
@@ -26,6 +26,7 @@ export class FollowListPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    public menu: MenuController,
     private util: UtilProvider,
     private steemiaProvider: SteemiaProvider) {
 
@@ -35,6 +36,14 @@ export class FollowListPage {
     this.username = this.navParams.get('Username');
     this.title = this.navParams.get('Title');
     this.fetchData();
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   fetchData(event?: any): void {

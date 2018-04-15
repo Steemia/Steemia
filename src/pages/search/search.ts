@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { Subscription } from 'rxjs/Subscription';
@@ -32,6 +32,7 @@ export class SearchPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public menu: MenuController,
     private steemiaProvider: SteemiaProvider) { }
 
   ionViewWillEnter() {  
@@ -62,6 +63,14 @@ export class SearchPage {
         this.results = results.results;
       });
       
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   ionViewWillLeave() {

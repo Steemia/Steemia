@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, ViewController, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 
@@ -16,12 +16,21 @@ export class EditCommentPage {
   constructor(public viewCtrl: ViewController,
     public navParams: NavParams,
     private alerts: AlertsProvider,
+    public menu: MenuController,
     private loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
   ) {
 
     this.comment = this.navParams.get('comment');
     this.comment_body = this.comment.body;
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   private save() {

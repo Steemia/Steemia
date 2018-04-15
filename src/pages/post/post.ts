@@ -3,6 +3,7 @@ import {
   IonicPage,
   ViewController,
   AlertController,
+  MenuController,
   ActionSheetController,
   LoadingController,
   NavController,
@@ -39,6 +40,7 @@ export class PostPage {
     private formBuilder: FormBuilder,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
+    public menu: MenuController,
     private transfer: FileTransfer,
     private alerts: AlertsProvider,
     private camera: Camera,
@@ -89,6 +91,11 @@ export class PostPage {
     this.storage.set('title', this.storyForm.controls['title'].value).then(() => { });
     this.storage.set('description', this.storyForm.controls['description'].value).then(() => { });
     this.storage.set('tags', this.storyForm.controls['tags'].value).then(() => { });
+    this.menu.enable(true);
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
   }
 
   public deleteDraft() {

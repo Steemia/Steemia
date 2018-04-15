@@ -10,6 +10,7 @@ import { Socket } from 'ng-socket-io';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { ImageLoaderConfig } from 'ionic-image-loader';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,6 +37,7 @@ export class MyApp {
     private splashScreen: SplashScreen,
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
+    public storage: Storage,
     private ga: GoogleTrackingProvider,
     private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
@@ -44,10 +46,17 @@ export class MyApp {
     private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
-    
-
-    this.initializeApp();
-
+    // Check if the user has already seen the tutorial
+    this.storage.get('hasSeenTutorial')
+      .then((hasSeenTutorial) => {
+        if (hasSeenTutorial) {
+          this.rootPage = 'TabsPage';
+        } else {
+          this.rootPage = 'WalkthroughPage';
+        }
+        this.initializeApp()
+      });
+      
     this.steemConnect.status.subscribe(res => {
       if (res.status === false || res.status === null) {
         this.isLoggedIn = false;
@@ -114,7 +123,7 @@ export class MyApp {
         },
         { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
-        { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
+        // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
@@ -143,12 +152,12 @@ export class MyApp {
       this.splashScreen.hide();
       this.ga.track_page('Loaded App');
       this.imageLoaderConfig.setBackgroundSize('cover');
-    this.imageLoaderConfig.setHeight('200px');
-    this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
-    this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-    this.imageLoaderConfig.setConcurrency(25);
-    this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
-    this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
+      this.imageLoaderConfig.setHeight('200px');
+      this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
+      this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
+      this.imageLoaderConfig.setConcurrency(25);
+      this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
+      this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {

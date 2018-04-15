@@ -99,11 +99,11 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
-    <plugin name="cordova-plugin-google-analytics" spec="^1.8.3" />
     <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.3" />
     <plugin name="cordova-plugin-fcm" spec="https://github.com/Steemia/cordova-plugin-fcm" />
     <plugin name="cordova-clipboard" spec="^1.1.1" />
     <engine name="ios" spec="4.5.4" />
     <engine name="browser" spec="5.0.3" />
     <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-google-analytics" spec="^1.8.3" />
 </widget>

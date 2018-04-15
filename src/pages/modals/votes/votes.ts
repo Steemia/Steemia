@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, 
+         ViewController, 
+         NavController, 
+         NavParams,
+         MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
@@ -25,6 +29,7 @@ export class VotesPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public util: UtilProvider,
+    public menu: MenuController,
     public viewCtrl: ViewController,
     private steemia: SteemiaProvider) {
   }
@@ -50,6 +55,14 @@ export class VotesPage {
       // Set the loading spinner to false
       this.is_loading = false
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   /**

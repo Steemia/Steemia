@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, 
+         NavController, 
+         NavParams, 
+         LoadingController,
+         MenuController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PostsRes } from 'models/models';
 import { UtilProvider } from 'providers/util/util';
+import { SteemiaProvider } from 'providers/steemia/steemia';
 
 @IonicPage()
 @Component({
@@ -16,22 +21,43 @@ export class BookmarksPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public menu: MenuController,
+    private loading: LoadingController,
     public util: UtilProvider,
+    private steemiaProvider: SteemiaProvider,
     public storage: Storage) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BookmarksPage');
     this.storage.get('bookmarks').then(data => {
       if (data) {
-        this.bookmarks = data;
+        this.bookmarks = data.reverse();
       };
     });
   }
 
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
+  }
+
   openPost(post) {
-    this.navCtrl.push('PostSinglePage', {
-      post: post
+    let loading = this.loading.create({
+      content: 'Please wait until we locate your post 💯'
+    });
+
+    loading.present();
+    this.steemiaProvider.dispatch_post_single_notifications({
+      author: post.author,
+      permlink: post.permlink
+    }).then(data => {
+      loading.dismiss();
+      this.navCtrl.push('PostSinglePage', {
+        post: data
+      });
     });
   }
 

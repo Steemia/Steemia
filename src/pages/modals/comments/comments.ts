@@ -1,5 +1,11 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App, ViewController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { IonicPage, 
+         App, 
+         ViewController, 
+         NavParams, 
+         ModalController, 
+         LoadingController,
+         MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
@@ -37,6 +43,7 @@ export class CommentsPage {
     private cdr: ChangeDetectorRef,
     private app: App,
     public viewCtrl: ViewController,
+    public menu: MenuController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private alerts: AlertsProvider,
@@ -54,7 +61,14 @@ export class CommentsPage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
+  }
+  
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
 
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   /**

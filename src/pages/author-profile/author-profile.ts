@@ -1,6 +1,6 @@
 import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -42,6 +42,7 @@ export class AuthorProfilePage {
     public navParams: NavParams,
     private zone: NgZone,
     public util: UtilProvider,
+    public menu: MenuController,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,
@@ -78,6 +79,14 @@ export class AuthorProfilePage {
     this.steemia.get_voting_power(this.username).then((data:any) => {
       this.voting_power = data.voting_power.toFixed(3);
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   /**
@@ -224,8 +233,9 @@ export class AuthorProfilePage {
       if (res === 'Correct') {
         loading.dismiss();
         this.alerts.display_toast('FOLLOW');
-        (this.account_data as any).has_followed = 1; // Update the button instead of calling the API again
-        (this.account_data as any).followers_count += 1;
+        this.following = true; // Update the button instead of calling the API again
+        (this.stats as any).followers_count += 1;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -248,8 +258,9 @@ export class AuthorProfilePage {
       if (res === 'Correct') {
         loading.dismiss();
         this.alerts.display_toast('UNFOLLOW');
-        (this.account_data as any).has_followed = 0; // Update the button instead of calling the API again
-        (this.account_data as any).followers_count -= 1;
+        this.following = false; // Update the button instead of calling the API again
+        (this.stats as any).followers_count -= 1;
+        this.cdr.detectChanges();
       }
     });
   }
