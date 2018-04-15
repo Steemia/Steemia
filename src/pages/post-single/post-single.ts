@@ -287,13 +287,24 @@ export class PostSinglePage {
       this.storage.get('bookmarks').then(data => {
         if(data) {
           this.bookmarks = data;
-          this.bookmarks.push(this.post);
+          this.bookmarks.push({ 
+            author: this.post.author, 
+            permlink: this.post.root_permlink, 
+            url: this.post.url,
+            title: this.post.title,
+            body: this.post.body });
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
             this.presentAlert('saved')
           });
         } else {
-          this.bookmarks = [this.post];
+          this.bookmarks = { 
+            author: this.post.author, 
+            permlink: this.post.root_permlink, 
+            url: this.post.url,
+            title: this.post.title,
+            body: this.post.body 
+          };
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
             this.presentAlert('saved')
