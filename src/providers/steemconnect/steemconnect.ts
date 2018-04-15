@@ -41,6 +41,7 @@ export class SteemConnectProvider {
   constructor(public storage: Storage,
     public platform: Platform,
     private iab: InAppBrowser,
+    private loading: LoadingController,
     private http: Http,
     private loading: LoadingController,
     private secureStorage: SecureStorage) {
