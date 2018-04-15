@@ -71,6 +71,11 @@ page-login {
             padding:0 10px; 
       }
 
+      .swiper-container {
+            background: #ffffff;
+      }
 
-
+      .swiper-pagination-bullet-active {
+            background: #488aff !important;
+      }
 }
