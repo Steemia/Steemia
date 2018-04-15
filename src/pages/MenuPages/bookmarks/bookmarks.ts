@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, 
+         NavController, 
+         NavParams, 
+         LoadingController,
+         MenuController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PostsRes } from 'models/models';
 import { UtilProvider } from 'providers/util/util';
@@ -17,6 +21,7 @@ export class BookmarksPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public menu: MenuController,
     private loading: LoadingController,
     public util: UtilProvider,
     private steemiaProvider: SteemiaProvider,
@@ -26,9 +31,17 @@ export class BookmarksPage {
   ionViewDidLoad() {
     this.storage.get('bookmarks').then(data => {
       if (data) {
-        this.bookmarks = data;
+        this.bookmarks = data.reverse();
       };
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   openPost(post) {

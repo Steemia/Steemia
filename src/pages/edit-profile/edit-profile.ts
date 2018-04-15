@@ -2,7 +2,13 @@ import { UtilProvider } from 'providers/util/util';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { Component, Input } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, 
+         NavController, 
+         NavParams, 
+         ViewController, 
+         AlertController, 
+         LoadingController,
+         MenuController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -17,6 +23,7 @@ export class EditProfilePage {
     public util: UtilProvider,
     private steemia: SteemiaProvider,
     private browserTab: BrowserTab,
+    public menu: MenuController,
     private loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public viewCtrl: ViewController) {
@@ -40,11 +47,13 @@ export class EditProfilePage {
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EditProfilePage');
-    console.log(this.account_data);
+  ionViewDidEnter() {
+    this.menu.enable(false);
   }
 
+  ionViewDidLeave() {
+    this.menu.enable(true);
+  }
 
   public dismiss() {
     this.viewCtrl.dismiss();

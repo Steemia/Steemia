@@ -1,6 +1,6 @@
 import { UtilProvider } from 'providers/util/util';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -12,9 +12,9 @@ export class SettingsPage {
   public language;
   private currency;
 
-  constructor(public navCtrl: NavController, 
-    public navParams: NavParams,
+  constructor(public navCtrl: NavController,
     public alertCtrl: AlertController,
+    public menu: MenuController,
     public util: UtilProvider) {
       this.language = [
         'en_US'
@@ -25,16 +25,21 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
     this.util.getVoteValue().then(data => {
       this.upvote = data;
       console.log(data);
     })
   }
 
-  onChangeUpvote(value) {
-    console.log(value);
+  ionViewDidEnter() {
+    this.menu.enable(false);
   }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
+  }
+
+  onChangeUpvote(value) {}
 
   presentAlert() {
     let alert = this.alertCtrl.create({

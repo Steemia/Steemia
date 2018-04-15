@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, MenuController } from 'ionic-angular';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { UtilProvider } from 'providers/util/util';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -16,8 +16,8 @@ export class NotificationsPage {
   private current_user: string = (this.steemConnect.user_temp as any).user;
 
   constructor(public navCtrl: NavController,
-    public navParams: NavParams,
     private ws: WebsocketsProvider,
+    public menu: MenuController,
     private steemiaProvider: SteemiaProvider,
     private steemConnect: SteemConnectProvider,
     public util: UtilProvider) {
@@ -32,8 +32,12 @@ export class NotificationsPage {
     this.ws.counter.next(0);
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
 
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   ionWillLeave() {

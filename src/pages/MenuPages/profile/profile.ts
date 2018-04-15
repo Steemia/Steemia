@@ -1,5 +1,10 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
+import { IonicPage, 
+         NavController, 
+         NavParams, 
+         LoadingController, 
+         ModalController,
+         MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -46,6 +51,7 @@ export class ProfilePage {
     public navParams: NavParams,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
+    public menu: MenuController,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -77,6 +83,14 @@ export class ProfilePage {
     this.steemia.get_voting_power(this.username).then((data:any) => {
       this.voting_power = data.voting_power.toFixed(3);
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   /**

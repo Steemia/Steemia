@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController } from 'ionic-angular';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @IonicPage()
@@ -10,8 +10,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 export class LoginPage {
 
   constructor(public navCtrl: NavController,
-    private steemConnect: SteemConnectProvider) {
-
+    private steemConnect: SteemConnectProvider,
+    public menu: MenuController) {
   }
 
   private doLogin() {
@@ -20,6 +20,14 @@ export class LoginPage {
         this.navCtrl.pop();
       }
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
 }

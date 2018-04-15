@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { AlertController, ToastController } from 'ionic-angular';
 import { BrowserTab } from '@ionic-native/browser-tab';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -64,6 +64,7 @@ export class WalletPage {
   constructor(public navParams: NavParams,
     public alertCtrl: AlertController,
     private toastCtrl: ToastController,
+    public menu: MenuController,
     private loadingCtrl: LoadingController,
     private steeemActions: SteeemActionsProvider,
     private steemiaProvider: SteemiaProvider,
@@ -92,6 +93,14 @@ export class WalletPage {
         this.prices = prices;
       });
     });
+  }
+
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   /**

@@ -3,6 +3,7 @@ import { IonicPage,
          NavController, 
          NavParams, 
          LoadingController, 
+         MenuController,
          ToastController,
          AlertController,
          PopoverController } from 'ionic-angular';
@@ -45,6 +46,7 @@ export class PostSinglePage {
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    public menu: MenuController,
     public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
@@ -60,7 +62,6 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-    //this.post.full_body = marked(this.post.full_body);
     console.log(this.post);
 
     this.current_user = (this.steemConnect.user_temp as any).user;
@@ -75,10 +76,21 @@ export class PostSinglePage {
 
     this.storage.ready().then(() => {
       this.storage.get('bookmarks').then(data => {
-        console.log(this.containsObject(data))
+        if (data) {
+          console.log("here",data)
+          this.containsObject(data);
+        }
+        
       });
-    })
+    });
+  }
 
+  ionViewDidEnter() {
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave() {
+    this.menu.enable(true);
   }
 
   private load_comments(action?: string) {
@@ -298,13 +310,13 @@ export class PostSinglePage {
             this.presentAlert('saved')
           });
         } else {
-          this.bookmarks = { 
+          this.bookmarks = [{ 
             author: this.post.author, 
             permlink: this.post.root_permlink, 
             url: this.post.url,
             title: this.post.title,
             body: this.post.body 
-          };
+          }];
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
             this.presentAlert('saved')
@@ -350,7 +362,6 @@ export class PostSinglePage {
 
   containsObject(array) {
     for(let object of array) {
-      console.log(object.author)
       if (object.author === this.post.author && object.url === this.post.url) {
         this.is_bookmarked = true;
       }

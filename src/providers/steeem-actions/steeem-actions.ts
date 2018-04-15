@@ -390,7 +390,9 @@ export class SteeemActionsProvider {
   public dispatch_share(permlink) {
 
     let url = 'https://steemit.com' + permlink;
-    return this.socialShare.share('Hey, check this amazing post: ' + url + ' And download Steemia app from {url} #steemia')
+    return this.socialShare.share(
+      'Hey, check this amazing post: ' + url + ' And download Steemia Android App from https://play.google.com/store/apps/details?id=com.steemia.steemia #steemia'
+    )
 
   }
 
