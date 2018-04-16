@@ -272,7 +272,7 @@ export class PostPage {
       });
 
       loading.present();
-      let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
+      let tags = this.storyForm.controls.tags.value.toLowerCase().match(/[^,\s][^\,]*[^,\s]*/g);
       this.steemActions.dispatch_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
