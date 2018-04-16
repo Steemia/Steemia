@@ -305,7 +305,6 @@ export class PostPage {
 
     }
     else {
-      loading.dismiss();
       console.log("not valid");
     }
   }
