@@ -2,6 +2,7 @@
 # http://git-scm.com/docs/gitignore
 
 google-services.json
+my-release-key.jks
 
 *~
 *.sw[mnpcod]

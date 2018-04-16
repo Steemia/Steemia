@@ -122,6 +122,38 @@ export class PostPage {
     this.storyForm.controls["title"].setValue(final);
   }
 
+  insertLink() {
+    let alert = this.alertCtrl.create({
+      title: 'Login',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Url to insert'
+        },
+        {
+          name: 'Text',
+          placeholder: 'Text to mask the url'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('[' + data.Text +'](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   insertTags(text) {
     const current = this.storyForm.value.tags.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);

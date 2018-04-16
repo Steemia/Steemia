@@ -81,17 +81,17 @@
           <i class="fa fa-quote-right"></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('- item')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class='fa fa-list'></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertText('1. item')" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class='fa fa-list-ol'></i>
         </a>
       </ion-col>
-      <ion-col (mousedown)="preventFocusChange($event)">
+      <ion-col tappable (click)="insertLink()" (mousedown)="preventFocusChange($event)">
         <a class="button button-small">
           <i class='fa fa-link'></i>
         </a>
