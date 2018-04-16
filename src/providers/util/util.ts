@@ -87,7 +87,9 @@ export class UtilProvider {
    * @param likes 
    */
   public renderLikes(likes: number): string {
-    if (likes > 1 || likes == 0) return likes.toLocaleString() + ' likes';
+    if (likes > 1 || likes == 0) {
+      return likes.toString() + ' likes';
+    }
     else return likes + ' like';
   }
 

@@ -29,11 +29,7 @@ export class PostCardComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
     public util: UtilProvider,
     private steemConnect: SteemConnectProvider,
-    private steemiaProvider: SteemiaProvider) {
-
-      
-
-  }
+    private steemiaProvider: SteemiaProvider) {}
 
   ngAfterViewInit() {
     if (this.content.author !== this.user && this.from == 'PROFILE') {

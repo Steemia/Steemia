@@ -59,7 +59,7 @@
 
   <ion-row>
 
-    <ion-col col-5 text-center>
+    <ion-col col-6 text-center>
       <div style="float: left;" *ngIf="content.top_likers_avatars" (click)="openVotes(content.url, content.author)">
         <div class="voters">
           <span class="voters_image" *ngFor="let voter of content.top_likers_avatars">
@@ -80,10 +80,8 @@
       </button>
     </ion-col>
 
-    <ion-col col-4 text-center>
+    <ion-col col-3 text-center>
       <button end ion-button icon-right clear small>
-        <ion-icon name="cash"></ion-icon>
-        &nbsp;
         <div class="info top-4">
           <del *ngIf="content.max_accepted_payout == 0">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</del>
           <p *ngIf="content.max_accepted_payout == 1000000">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</p>
