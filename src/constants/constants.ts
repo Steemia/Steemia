@@ -27,7 +27,7 @@ export const STEEMIA_PROMO = `
 Download Steemia app from Google Play.
 
 <a href="https://play.google.com/store/apps/details?id=com.steemia.steemia">
-![image](https://play.google.com/intl/en_us/badges/images/badge_new.png)
+<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png" alt="steemia_google_play">
 </a>`
 
 // ERRORS
