@@ -43,7 +43,6 @@ export class SteemConnectProvider {
     private iab: InAppBrowser,
     private loading: LoadingController,
     private http: Http,
-    private loading: LoadingController,
     private secureStorage: SecureStorage) {
 
     this.platform.ready().then(() => {
