@@ -272,7 +272,8 @@ export class PostPage {
       });
 
       loading.present();
-      let tags = this.storyForm.controls.tags.value.toLowerCase().match(/[^,\s][^\,]*[^,\s]*/g);
+      let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
+      tags = tags.map(v => v.toLowerCase());
       this.steemActions.dispatch_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
@@ -304,6 +305,7 @@ export class PostPage {
 
     }
     else {
+      loading.dismiss();
       console.log("not valid");
     }
   }
