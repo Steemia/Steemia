@@ -35,6 +35,15 @@ export class PostPage {
   private storyForm: FormGroup;
   private upvote: boolean = false;
 
+  private badge = `
+  <br>
+  <hr>
+  
+  <a href="https://play.google.com/store/apps/details?id=com.steemia.steemia">
+  ![image](https://play.google.com/intl/en_us/badges/images/badge_new.png)
+  </a>
+  
+  <hr>`
   constructor(private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
@@ -122,38 +131,6 @@ export class PostPage {
     this.storyForm.controls["title"].setValue(final);
   }
 
-  insertLink() {
-    let alert = this.alertCtrl.create({
-      title: 'Insert URL',
-      inputs: [
-        {
-          name: 'URL',
-          placeholder: 'Url to insert'
-        },
-        {
-          name: 'Text',
-          placeholder: 'Text to mask the url'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'OK',
-          handler: data => {
-            this.insertText('[' + data.Text +'](' + data.URL + ')');
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
   insertTags(text) {
     const current = this.storyForm.value.tags.toString();
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
@@ -210,7 +187,7 @@ export class PostPage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Insert Image',
+      title: 'Login',
       inputs: [
         {
           name: 'URL',
@@ -304,6 +281,7 @@ export class PostPage {
 
       loading.present();
       let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
+      this.insertText(this.badge);
       this.steemActions.dispatch_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
