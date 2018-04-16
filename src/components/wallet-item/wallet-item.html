@@ -11,7 +11,7 @@
   <ion-card-content no-padding>
     <p class="custom-padding">Balance: {{ balance }} {{ coinAb }}</p>
   </ion-card-content>
-  <ion-row>
+  <ion-row *ngIf="native == 'true'">
     <ion-col col-4>
       <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('buy')">
         <ion-icon name="add"></ion-icon>
@@ -24,16 +24,10 @@
         Sell
       </button>
     </ion-col>
-    <ion-col col-4 *ngIf="native == 'true'">
+    <ion-col col-4>
       <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('transfer')">
         <ion-icon name="send"></ion-icon>
         Transfer
-      </button>
-    </ion-col>
-    <ion-col col-4 *ngIf="native == 'false'">
-      <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('check')">
-        <ion-icon name="card"></ion-icon>
-        Check
       </button>
     </ion-col>
   </ion-row>

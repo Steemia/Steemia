@@ -313,30 +313,6 @@ export class WalletPage {
           break;
       }
     }
-
-    else if (event.type === 'check') {
-      switch (event.name) {
-        case 'STEEM':
-          this.checkBalance('balance');
-          break;
-
-        case 'SBD':
-          this.checkBalance('sbd');
-          break;
-
-        case 'BTC':
-          this.checkBalance('btc');
-          break;
-
-        case 'LTC':
-          this.checkBalance('ltc');
-          break;
-
-        case 'ETH':
-          this.checkBalance('eth');
-          break;
-      }
-    }
   }
 
   /**

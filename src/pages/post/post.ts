@@ -124,7 +124,7 @@ export class PostPage {
 
   insertLink() {
     let alert = this.alertCtrl.create({
-      title: 'Login',
+      title: 'Insert URL',
       inputs: [
         {
           name: 'URL',
@@ -210,7 +210,7 @@ export class PostPage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Login',
+      title: 'Insert Image',
       inputs: [
         {
           name: 'URL',
