@@ -188,7 +188,7 @@ export class PostPage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Login',
+      title: 'Insert Image',
       inputs: [
         {
           name: 'URL',
@@ -332,6 +332,38 @@ export class PostPage {
    */
   protected preventEnter(event: any): void {
     event.preventDefault();
+  }
+
+  insertLink() {
+    let alert = this.alertCtrl.create({
+      title: 'Insert URL',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Url to insert'
+        },
+        {
+          name: 'Text',
+          placeholder: 'Text to mask the url'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }  
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('[' + data.Text +'](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   /**
