@@ -35,15 +35,6 @@ export class PostPage {
   private storyForm: FormGroup;
   private upvote: boolean = false;
 
-  private badge = `
-  <br>
-  <hr>
-  
-  <a href="https://play.google.com/store/apps/details?id=com.steemia.steemia">
-  ![image](https://play.google.com/intl/en_us/badges/images/badge_new.png)
-  </a>
-  
-  <hr>`
   constructor(private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
@@ -282,23 +273,27 @@ export class PostPage {
 
       loading.present();
       let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
-      this.insertText(this.badge);
       this.steemActions.dispatch_post(
         this.storyForm.controls.title.value,
         this.storyForm.controls.description.value,
         tags, this.upvote, this.rewards).then(res => {
+          console.log(res)
 
           if (res === 'not-logged-in') {
             // Show alert telling the user that needs to login
             loading.dismiss();
           }
 
-          if (res === 'Correct') {
+          else if (res === 'Correct') {
             loading.dismiss();
             this.presentToast('Post was posted correctly!');
             this.navCtrl.pop().then(() => {
               this.deleteDraft();
             });
+          }
+
+          else if (res === 'POST_INTERVAL') {
+            this.show_prompt(loading, 'POST_INTERVAL');
           }
 
           else {
@@ -311,6 +306,13 @@ export class PostPage {
     else {
       console.log("not valid");
     }
+  }
+
+  private show_prompt(loader, msg) {
+    loader.dismiss();
+    setTimeout(() => {
+      this.alerts.display_alert(msg);
+    }, 500);
   }
 
   /**

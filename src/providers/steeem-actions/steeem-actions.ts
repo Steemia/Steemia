@@ -5,6 +5,7 @@ import {
   MAX_ACCEPTED_PAYOUT,
   PERCENT_STEEM_DOLLARS,
   OPERATIONS,
+  STEEMIA_PROMO,
   ERRORS
 } from '../../constants/constants';
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -259,11 +260,14 @@ export class SteeemActionsProvider {
 
     // Create the permlink for the new post
     let permlink = title.replace(/[^\w\s]/gi, '').replace(/\s\s+/g, '-').replace(/\s/g, '-').toLowerCase();
+    permlink = permlink + this.uniqueId();
 
     // If the user didn't insert any tag, create an empty array
     if (tags === undefined || tags === null) {
       tags = [];
     }
+
+    description += STEEMIA_PROMO;
 
     // Push the tag Steemia to the post
     tags.push('steemia');
@@ -303,8 +307,17 @@ export class SteeemActionsProvider {
           this.ga.track_event('Post', 'post', 'create', 1);
           resolve('Correct')
         }
-      })
+      }).catch(e => {
+        console.log(e.error_description === ERRORS.POST_INTERVAL.error)
+        if (e.error_description === ERRORS.POST_INTERVAL.error) {
+          resolve('POST_INTERVAL');
+        }
+      });
     });
+  }
+
+  private uniqueId(): string {
+    return '-id-' + Math.random().toString(36).substr(2, 16);
   }
 
   /**
@@ -354,7 +367,12 @@ export class SteeemActionsProvider {
           this.ga.track_event('Post', 'post', 'create', 1);
           resolve('Correct')
         }
-      })
+      }).catch(e => {
+        let include = e.error_description.includes(ERRORS.POST_INTERVAL.error);
+        if (include) {
+          resolve('POST_INTERVAL');
+        }
+      });
     });
   }
 

@@ -19,6 +19,17 @@ export const NOT_LOGGED_IN = 'This action requires you to be logged in. Please, 
 export const REBLOGGED_CORRECTLY = 'This post has been reblogged correctly. 😏';
 export const IS_REBLOGGED = "You've already reblogged this post. 😂";
 
+// PROMO
+
+export const STEEMIA_PROMO = `
+<br>
+<hr>
+Download Steemia app from Google Play.
+
+<a href="https://play.google.com/store/apps/details?id=com.steemia.steemia">
+![image](https://play.google.com/intl/en_us/badges/images/badge_new.png)
+</a>`
+
 // ERRORS
 export const ERRORS = {
   FLAG_ERROR: {
@@ -30,7 +41,7 @@ export const ERRORS = {
     message: 'You have already reblogged this post'
   },
   POST_INTERVAL: {
-    error: '( now - auth.last_root_post ) > STEEMIT_MIN_ROOT_COMMENT_INTERVAL: You may only post once every 5 minutes.',
+    error: '( now - auth.last_root_post ) > STEEM_MIN_ROOT_COMMENT_INTERVAL: You may only post once every 5 minutes.',
     message: 'You may only post once every 5 minutes.'
   },
   COMMENT_INTERVAL: {
