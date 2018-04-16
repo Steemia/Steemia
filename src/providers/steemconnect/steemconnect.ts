@@ -23,7 +23,7 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public steemData;
-  private access_token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIiwicHJveHkiOiJzdGVlbWlhLmFwcCIsInVzZXIiOiJqYXlzZXJtZW5kZXoiLCJzY29wZSI6WyJsb2dpbiIsIm9mZmxpbmUiLCJ2b3RlIiwiY29tbWVudCIsImNvbW1lbnRfZGVsZXRlIiwiY29tbWVudF9vcHRpb25zIiwiY3VzdG9tX2pzb24iLCJjbGFpbV9yZXdhcmRfYmFsYW5jZSJdLCJpYXQiOjE1MjM4OTgxNTYsImV4cCI6MTUyNDUwMjk1Nn0.S_ZJ1Sx9qDO79ASJfj6PchS_T7Sf956ZiSJLc0UMIQY';
+  private access_token: string;
   public instance;
   public user: string;
   private login_status: boolean;
@@ -54,19 +54,13 @@ export class SteemConnectProvider {
         if (token === null || token === undefined || token === '') {
 
           //Set a null access token to the instance
-          // this.instance.setAccessToken(null);
-          // // Set login status to false
-          // this.login_status = false;
-          // this.status.next({
-          //   status: this.login_status,
-          //   logged_out: false
-          // });
-          // set the access token to the instance
-          this.instance.setAccessToken(this.access_token);
-          this.token.next(this.access_token);
-          // Set the login status to true
-          this.login_status = true;
-          this.dispatch_data();
+          this.instance.setAccessToken(null);
+          // Set login status to false
+          this.login_status = false;
+          this.status.next({
+            status: this.login_status,
+            logged_out: false
+          });
           
         }
 
