@@ -1,4 +1,8 @@
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, 
+         NgZone, 
+         ChangeDetectorRef,
+         ViewChild,
+         ElementRef } from '@angular/core';
 import { IonicPage, 
          App, 
          ViewController, 
@@ -22,6 +26,8 @@ import { ERRORS } from '../../../constants/constants';
   templateUrl: 'comments.html',
 })
 export class CommentsPage {
+
+  @ViewChild('myInput') myInput: ElementRef;
 
   private slice: number = 25;
   private is_more: boolean = true;
@@ -169,5 +175,14 @@ export class CommentsPage {
   private dismiss() {
     this.viewCtrl.dismiss();
   }
+
+  protected adjustTextarea(event: any): void {
+    let textarea: any		= event.target;
+    textarea.style.overflow = 'hidden';
+    textarea.style.height 	= 'auto';
+    textarea.style.height 	= textarea.scrollHeight + 'px';
+    return;
+  }
+  
 
 }

@@ -29,7 +29,8 @@
 
 <ion-footer>
   <ion-item>
-    <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input>
+    <ion-textarea #myInput id="myInput" rows="1" (input)="adjustTextarea($event);" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-textarea>
+    <!-- <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input> -->
     <button ion-button clear (click)="comment()" item-end>
       <ion-icon class="footer-btn" name="send"></ion-icon>
     </button>
