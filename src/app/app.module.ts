@@ -44,6 +44,7 @@ import { CryptoProvider } from '../providers/crypto-api/crypto-api';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { GoogleTrackingProvider } from '../providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from '../providers/websockets/websockets';
+import { CameraProvider } from '../providers/camera/camera';
 
 @NgModule({
   declarations: [
@@ -92,13 +93,14 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     File,
     Camera,
     CryptoProvider,
-    SecureStorage, // Only for prod build
-    //{ provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
+    //SecureStorage, // Only for prod build
+    { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
     GoogleTrackingProvider,
-    GoogleAnalytics,
-    //{ provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
+    //GoogleAnalytics,
+    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
     WebsocketsProvider,
-    FCM
+    FCM,
+    CameraProvider
   ]
 })
 export class AppModule {}

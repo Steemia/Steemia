@@ -11,12 +11,10 @@ import {
 } from 'ionic-angular';
 import marked from 'marked';
 import { Storage } from '@ionic/storage';
-import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { CameraProvider } from 'providers/camera/camera';
 
 @IonicPage()
 @Component({
@@ -24,7 +22,6 @@ import { AlertsProvider } from 'providers/alerts/alerts';
   templateUrl: 'post.html',
 })
 export class PostPage {
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 
   private caret: number = 0;
@@ -41,9 +38,8 @@ export class PostPage {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     public menu: MenuController,
-    private transfer: FileTransfer,
     private alerts: AlertsProvider,
-    private camera: Camera,
+    private camera: CameraProvider,
     public storage: Storage,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
@@ -145,36 +141,6 @@ export class PostPage {
   }
 
   /**
-   * Method to retrieve an image from camera or library
-   * @param {String} from: origin of the image
-   */
-  private choose_image(from, edit: boolean): void {
-    let imageURI;
-    const options: CameraOptions = {
-      quality: 80,
-      allowEdit: edit,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,      
-      sourceType: from
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      imageURI = imageData;
-
-    }, (err) => {
-      if (err) {
-        //this.presentToast(err);
-      }
-    }).then(data => {
-      if (imageURI) {
-        this.uploadFile(imageURI);
-      }
-    });
-  }
-
-  /**
    * Method to show insert URL actionsheet
    */
   presentInsertURL(): void {
@@ -205,37 +171,6 @@ export class PostPage {
     alert.present();
   }
 
-  /**
-   * Method to upload image to Steemia IPFS
-   * @param {String} image: Image path to be uploaded
-   */
-  uploadFile(image): void {
-    let url = 'https://steemia.net/api/v0/add';
-    let loader = this.loadingCtrl.create({
-      content: "Uploading..."
-    });
-    loader.present();
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    let options: FileUploadOptions = {
-      fileKey: 'ionicfile',
-      fileName: 'ionicfile',
-      chunkedMode: false,
-      mimeType: "image/jpeg",
-    }
-
-    fileTransfer.upload(image, url, options)
-      .then((data) => {
-        loader.dismiss();
-        this.presentToast("Image uploaded successfully");
-        let hash = data.response;
-        this.insertText('![image](https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash + ')');
-      }, (err) => {
-        loader.dismiss();
-        this.presentToast(err);
-      });
-  }
 
   /**
    * Method to get caret position in a textfield
@@ -380,14 +315,18 @@ export class PostPage {
           text: 'Camera',
           icon: 'camera',
           handler: () => {
-            this.choose_image(this.camera.PictureSourceType.CAMERA, false);
+            this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {
           text: 'Gallery',
           icon: 'albums',
           handler: () => {
-            this.choose_image(this.camera.PictureSourceType.PHOTOLIBRARY, true);
+            this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {

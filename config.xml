@@ -3,7 +3,7 @@
     <name>Steemia</name>
     <description>A mobile app on Steem blockchain.</description>
     <author email="" href="http://steemia.io/">Steemia-io</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.0.11:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
