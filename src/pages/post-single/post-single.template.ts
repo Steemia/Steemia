@@ -58,8 +58,13 @@ export const postSinglePage = `
         </ion-row>
       </ion-grid>
       <div padding class="cancel-top-pd">
-        <ion-textarea [(ngModel)]="chatBox" rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
+        <ion-textarea #myInput (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);" [(ngModel)]="chatBox"
+          rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
         <button class="pull-right" ion-button mode="ios" (click)="comment()">Post a Comment</button>
+        <button class="pull-right" ion-fab mini (click)="presentActionSheet()">
+          <ion-icon name="images"></ion-icon>
+        </button>
+
       </div>
 
       <br />

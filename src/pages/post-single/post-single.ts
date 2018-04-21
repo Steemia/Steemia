@@ -3,6 +3,7 @@ import { IonicPage,
          NavController, 
          NavParams, 
          LoadingController, 
+         ActionSheetController,
          MenuController,
          ToastController,
          AlertController,
@@ -18,6 +19,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
+import { CameraProvider } from 'providers/camera/camera';
 
 @IonicPage({
   priority: 'high'
@@ -27,6 +29,7 @@ import { Storage } from '@ionic/storage';
   template: postSinglePage
 })
 export class PostSinglePage {
+  @ViewChild('myInput') myInput: ElementRef;
 
   private post: any;
   private is_voting: boolean = false;
@@ -41,12 +44,15 @@ export class PostSinglePage {
   private is_owner: boolean = false;
   private ref;
   private bookmarks;
+  private caret: number = 0;
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
     public menu: MenuController,
+    private camera: CameraProvider,
+    private actionSheetCtrl: ActionSheetController,
     public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
@@ -115,6 +121,17 @@ export class PostSinglePage {
 
   private reinitialize() {
     this.comments = [];
+  }
+
+  /**
+   * Method to get caret position in a textfield
+   * @param oField 
+   */
+  getCaretPos(oField): void {
+    let node = oField._elementRef.nativeElement.children[0];
+    if (node.selectionStart || node.selectionStart == '0') {
+      this.caret = node.selectionStart;
+    }
   }
 
   /**
@@ -374,5 +391,107 @@ export class PostSinglePage {
       }
     }
   } 
+
+  protected adjustTextarea(event?: any): void {
+    this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
+    this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].scrollHeight + 'px';
+    return;
+  }
+
+  /**
+   * Method to insert text at current pointer
+   * @param {String} text: Text to insert 
+   */
+  insertText(text: string): void {
+    const current = this.chatBox;
+    let final = current.substr(0, this.caret) + text + current.substr(this.caret);
+    this.chatBox = final;
+    this.adjustTextarea();
+  }
+
+  /**
+   * Method to present actionsheet with options
+   */
+  presentActionSheet(): void {
+    if ((this.steemConnect.user_temp as any).user) {
+
+      let actionSheet = this.actionSheetCtrl.create({
+        title: 'How do you want to insert the image? 📷🌄',
+        buttons: [
+          {
+            text: 'Camera',
+            icon: 'camera',
+            handler: () => {
+              this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
+                this.insertText(image);
+              });
+            }
+          },
+          {
+            text: 'Gallery',
+            icon: 'albums',
+            handler: () => {
+              this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
+                this.insertText(image);
+              });
+            }
+          },
+          {
+            text: 'Custom URL',
+            icon: 'md-globe',
+            handler: () => {
+              this.presentInsertURL()
+            }
+          },
+          {
+            text: 'Cancel',
+            icon: 'close',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+  
+      actionSheet.present();
+
+    }
+
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
+    
+  }
+
+  /**
+   * Method to show insert URL actionsheet
+   */
+  presentInsertURL(): void {
+    let alert = this.alertCtrl.create({
+      title: 'Insert Image',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Image URL'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('![image](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
 }
