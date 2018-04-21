@@ -76,6 +76,16 @@ export class FollowListPage {
     }
   }
 
+  /**
+   * Method to open author profile page
+   * @param {String} author: author of the post
+   */
+  private openProfile(author: string): void {
+    this.navCtrl.push('AuthorProfilePage', {
+      author: author
+    });
+  }
+
   doInfinite(event) {
     this.fetchData(event);
   }

@@ -1,5 +1,5 @@
-<ion-header id="header">
-  <ion-navbar color="primary">
+<ion-header [class]="chosenTheme">
+  <ion-navbar color="primary" id="header">
     <ion-buttons>
       <button ion-button (tap)="dismiss()">
         <ion-icon class="custom-close" name="close"></ion-icon>
@@ -10,8 +10,8 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-list>
+<ion-content [class]="chosenTheme">
+  <ion-list id="edit-profile">
     <ion-item>
       <ion-avatar>
         <img src="{{ account_data?.profile.profile_image }}" (error)="util.imgError('profile',$event)">

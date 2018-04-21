@@ -62,7 +62,6 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-    console.log(this.post);
 
     this.current_user = (this.steemConnect.user_temp as any).user;
 
@@ -77,7 +76,6 @@ export class PostSinglePage {
     this.storage.ready().then(() => {
       this.storage.get('bookmarks').then(data => {
         if (data) {
-          console.log("here",data)
           this.containsObject(data);
         }
         
@@ -153,12 +151,21 @@ export class PostSinglePage {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then((data: any) => {
       this.is_voting = false; // remove the spinner
       // Catch if the user is not logged in and display an alert
-      if (data == 'not-logged') return;
+      if (data.msg == 'not-logged') return;
 
-      if (data === 'Correct') this.refreshPost();
+      if (data.msg === 'correct') {
+        if (data.type === 'vote') {
+          this.post.vote = true;
+        }
+
+        else if (data.type === 'unvote') {
+          this.post.vote = false;
+        }
+        this.refreshPost();
+      }
       
     });
   }
@@ -206,7 +213,7 @@ export class PostSinglePage {
       author: this.post.author,
       permlink: this.post.url
     }).then(data => {
-      this.post.vote = (data as any).vote;
+      //this.post.vote = (data as any).vote;
       this.post.net_likes = (data as any).net_likes;
       this.post.net_votes = (data as any).net_votes;
       this.post.top_likers_avatars = (data as any).top_likers_avatars;
@@ -249,7 +256,7 @@ export class PostSinglePage {
 
   private share() {
     this.steemActions.dispatch_share(this.post.url).then(res => {
-      console.log(res)
+      
     })
   }
 
@@ -267,7 +274,6 @@ export class PostSinglePage {
     });
     loading.present();
     this.steemActions.dispatch_comment(this.post.author, this.post.url, this.chatBox).then(res => {
-      console.log(res)
       if (res === 'not-logged') {
         this.show_prompt(loading, 'NOT_LOGGED_IN');
         return;

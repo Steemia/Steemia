@@ -58,7 +58,9 @@ export class SteeemActionsProvider {
 
     if (this.username === '' || this.username === null || this.username === undefined) {
       this.alerts.display_alert('NOT_LOGGED_IN');
-      return Promise.resolve('not-logged');
+      return Promise.resolve({
+        msg: 'not-logged'
+      });
     }
 
     let url: string;
@@ -75,13 +77,21 @@ export class SteeemActionsProvider {
         if (data) {
           if (weight > 0) {
             this.ga.track_event('Vote', 'Upvote', 'Weight', weight); // Send data to GA
+            resolve({
+              msg: 'correct',
+              type: 'vote'
+            });
           }
 
           else {
             this.ga.track_event('Vote', 'Downvote', 'Weight', weight);
+            resolve({
+              msg: 'correct',
+              type: 'unvote'
+            });
           }
 
-          resolve('Correct')
+          
         }
       }).catch(e => {
 

@@ -96,6 +96,10 @@
             p, span, h1, h2, h3, h4, h5, h6, li, ul, div, em, strong, center, td {
                 color: white !important;
             }
+
+            blockquote {
+                background-color: $dark-bg !important;
+            }
             
         }
 
@@ -125,8 +129,29 @@
     }
 
     #wallet-item {
-        .card {
+        background-color: $dark-menu !important;
+
+        ion-item {
             background-color: $dark-menu !important;
+
+            div {
+                div {
+                    ion-label {
+                        h2 {
+                            color: white !important;
+                        }
+                        
+                    }
+                }
+            }
+
+            p {
+                color: #a1a3a4 !important;
+            }
+        }
+
+        p {
+            color: #a1a3a4 !important;
         }
     }
 
@@ -171,8 +196,50 @@
         }
     }
 
-    #editor-toolbar {
+    #posting-page {
+        ion-item {
+            background-color: $dark-menu !important;
+            border: none !important;
+        }
 
+        .select-text, .item-input ion-input, .item-input ion-textarea {
+            color: white !important;
+        }
+    }
+
+    #editor-toolbar {
+        background-color: $dark-menu !important;
+        border-top: 1px solid #293036 !important;
+
+        i {
+            color: white !important;
+        }
+    }
+
+    #edit-profile {
+        ion-icon, ion-label {
+            color: white !important;
+        }
+    }
+
+    page-author-profile, page-profile, page-follow-list {
+        ion-segment {
+            background-color: $dark-menu !important;
+
+            ion-icon, p {
+                color: white !important;
+            }
+        }
+
+        ion-list {
+            ion-item {
+                background-color: $dark-bg !important;
+
+                ion-icon, ion-label, h2, p {
+                    color: white !important;
+                }
+            }
+        }
     }
 
     #no-data {
@@ -221,8 +288,10 @@
             color: white !important;
         }
     }
+
     .opaque {
         background-color: $dark-menu !important;
+        border-bottom: 1px solid rgba(142, 140, 140, 0.10196078431372549) !important;
     
         &:after {
           height: 5px !important;

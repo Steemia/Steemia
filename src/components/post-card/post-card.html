@@ -2,14 +2,14 @@
   <ion-card-header no-padding>
     <div style="margin-top: 10px;" *ngIf="content.reblogged_by != null">
       <ion-note class="reblog" *ngIf="from == 'NORMAL'">
-        <ion-icon name="ios-redo"></ion-icon>
+        <ion-icon name="md-repeat"></ion-icon>
         Reblogged by @{{ content.reblogged_by }}
       </ion-note>
     </div>
 
     <div style="margin-top: 10px;" *ngIf="inner_rebblog == true">
         <ion-note class="reblog" *ngIf="from == 'PROFILE'">
-          <ion-icon name="ios-redo"></ion-icon>
+          <ion-icon name="md-repeat"></ion-icon>
           Reblogged
         </ion-note>
       </div>

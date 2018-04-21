@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce padding>
+<ion-content no-bounce padding id="posting-page">
   <p *ngIf="is_preview == true" text-center>Preview Mode</p>
   <div *ngIf="is_preview == true" [innerHtml]="markdowntext"></div>
   <form *ngIf="is_preview == false" [formGroup]="storyForm">

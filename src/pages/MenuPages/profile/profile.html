@@ -89,28 +89,28 @@
         </ion-card>
       </div>
       <div *ngSwitchCase="'about'">
-        <ion-list>
-          <ion-item tappable (click)="open_followers();">
+        <ion-list no-lines>
+          <ion-item no-lines tappable (click)="open_followers();">
             <ion-icon name="people" item-start></ion-icon>
             Followers
             <ion-badge color="light" item-end>{{ stats?.followers_count }}</ion-badge>
           </ion-item>
-          <ion-item tappable (click)="open_following();">
+          <ion-item no-lines tappable (click)="open_following();">
             <ion-icon name="person-add" item-start></ion-icon>
             Following
             <ion-badge color="light" item-end>{{ stats?.following_count }}</ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item no-lines>
             <ion-icon name="paper" item-start></ion-icon>
             Posts
             <ion-badge color="light" item-end>{{ account_data?.post_count }}</ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item no-lines>
             <ion-icon name="pin" item-start></ion-icon>
             Location
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item no-lines>
             <ion-icon name="globe" item-start></ion-icon>
             Website
             <ion-badge color="light" item-end>{{ account_data?.website }}</ion-badge>
@@ -118,22 +118,22 @@
         </ion-list>
       </div>
       <div *ngSwitchCase="'wallet'">
-        <ion-list>
-          <ion-item>
+        <ion-list no-lines>
+          <ion-item no-lines>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM</h2>
             <p>{{ account_data?.balance }}</p>
           </ion-item>
-          <ion-item>
+          <ion-item no-lines>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>SBD</h2>
             <p>{{ account_data?.sbd_balance }}</p>
           </ion-item>
-          <ion-item>
+          <ion-item no-lines>
             <ion-avatar item-start>
               <img src="assets/steem.png">
             </ion-avatar>

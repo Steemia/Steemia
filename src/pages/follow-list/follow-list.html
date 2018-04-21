@@ -11,12 +11,12 @@
 
   <ion-spinner *ngIf="loading"></ion-spinner>
 
-  <ion-list *ngIf="!loading">
-    <ion-item *ngFor="let user of data">
-      <ion-avatar item-start tappable (click)="openProfile()">
+  <ion-list *ngIf="!loading" no-lines>
+    <ion-item *ngFor="let user of data" no-lines (click)="openProfile(user.account)">
+      <ion-avatar item-start>
         <img [src]="user.avatar" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
-      <h2 tappable (click)="openProfile(item.author)">{{ user.account }}</h2>
+      <h2>{{ user.account }}</h2>
     </ion-item>
   </ion-list>
 
