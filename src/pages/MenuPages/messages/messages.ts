@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import * as Peer from 'peerjs';
+// import * as Peer from 'peerjs';
 
-import { Socket } from 'ng-socket-io';
+// import { Socket } from 'ng-socket-io';
 import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
@@ -24,8 +24,7 @@ export class MessagesPage {
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
-  private toastCtrl: ToastController,
-  private socket: Socket) {
+  private toastCtrl: ToastController) {
 
     this.username = this.navParams.get('author');
 
@@ -53,24 +52,24 @@ export class MessagesPage {
   }
 
   sendMessage() {
-    this.socket.emit('add-message', { text: this.message });
+   // this.socket.emit('add-message', { text: this.message });
     this.message = '';
   }
 
   getMessages() {
     let observable = new Observable(observer => {
-      this.socket.on('message', (data) => {
-        observer.next(data);
-      });
+      // this.socket.on('message', (data) => {
+      //   observer.next(data);
+      // });
     })
     return observable;
   }
  
   getUsers() {
     let observable = new Observable(observer => {
-      this.socket.on('users-changed', (data) => {
-        observer.next(data);
-      });
+      // this.socket.on('users-changed', (data) => {
+      //   observer.next(data);
+      // });
     });
     return observable;
   }
@@ -88,7 +87,7 @@ export class MessagesPage {
   }
 
   ionViewWillLeave() {
-    this.socket.disconnect();
+    //this.socket.disconnect();
   }
 
 }

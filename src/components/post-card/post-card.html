@@ -1,20 +1,20 @@
-<ion-card>
+<ion-card id="post-card">
   <ion-card-header no-padding>
     <div style="margin-top: 10px;" *ngIf="content.reblogged_by != null">
       <ion-note class="reblog" *ngIf="from == 'NORMAL'">
-        <ion-icon name="ios-redo"></ion-icon>
+        <ion-icon name="md-repeat"></ion-icon>
         Reblogged by @{{ content.reblogged_by }}
       </ion-note>
     </div>
 
     <div style="margin-top: 10px;" *ngIf="inner_rebblog == true">
         <ion-note class="reblog" *ngIf="from == 'PROFILE'">
-          <ion-icon name="ios-redo"></ion-icon>
+          <ion-icon name="md-repeat"></ion-icon>
           Reblogged
         </ion-note>
       </div>
 
-    <ion-item>
+    <ion-item id="header">
       <ion-avatar item-start tappable (click)="openProfile(content.author)">
         <img [src]="content.avatar" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
@@ -23,11 +23,7 @@
         <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
       </div>
       <div class="mt4">
-        <ion-badge color="light">
-          <ion-icon mini name="attach"></ion-icon>
-          &nbsp; {{ content.category }}
-        </ion-badge>
-        <ion-note end>{{ util.parse_date(content.created) }}</ion-note>
+        <ion-note end>In <span id="category" Text-Capitalize>{{content.category }}</span> {{ util.parse_date(content.created) }}</ion-note>
       </div>
       <i *ngIf="!content.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event)"></i>
 
@@ -37,7 +33,7 @@
     </ion-item>
   </ion-card-header>
 
-  <ion-card-content no-padding tappable (click)="postOpen(content)">
+  <ion-card-content no-padding tappable (click)="postOpen(content)" id="content">
     <h2 padding>{{ content.title }}</h2>
     <div *ngIf="content.video_only">
       <youtube-player protocol="https" [videoId]="getId(content.videos[0])" (ready)="savePlayer($event)"></youtube-player>
@@ -58,7 +54,6 @@
   </ion-card-content>
 
   <ion-row>
-
     <ion-col col-6 text-center>
       <div style="float: left;" *ngIf="content.top_likers_avatars" (click)="openVotes(content.url, content.author)">
         <div class="voters">
@@ -67,24 +62,24 @@
           </span>
         </div>
         <div class="likes">
-          <p>{{ util.renderLikes(content.net_likes) }}</p>
+          <p id="likes">{{ util.renderLikes(content.net_likes) }}</p>
         </div>
       </div>
     </ion-col>
 
     <ion-col col-3 text-center>
       <button ion-button clear small left (click)="openComments(content.url, content.author)">
-        <ion-icon name="ios-text"></ion-icon>
+        <ion-icon name="ios-text" id="comment-icon"></ion-icon>
         &nbsp;
-        <div class="info">{{ content.children }}</div>
+        <div class="info" id="comment">{{ content.children }}</div>
       </button>
     </ion-col>
 
     <ion-col col-3 text-center>
       <button end ion-button icon-right clear small>
         <div class="info top-4">
-          <del *ngIf="content.max_accepted_payout == 0">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</del>
-          <p *ngIf="content.max_accepted_payout == 1000000">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</p>
+          <del *ngIf="content.max_accepted_payout == 0" id="payout">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</del>
+          <p *ngIf="content.max_accepted_payout == 1000000" id="payout">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</p>
         </div>
       </button>
     </ion-col>

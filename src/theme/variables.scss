@@ -54,7 +54,17 @@ $colors: (
 // iOS only Sass variables can go here
 
 
+// Custom Themes Variables
+// --------------------------------------------------
+// Themes to be used according to the user. User can select
+// Between differents themes available.
 
+// Blue default theme
+$blue-menu: #488aff;
+
+// Dark theme
+$dark-menu: #1d252c;
+$dark-bg: #1a2127;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -84,7 +94,8 @@ $text-input-md-show-invalid-highlight:      $text-input-md-show-focus-highlight 
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-//@import "ionic.theme.dark";
+@import "./app.blue";
+@import "./app.dark";
 
 
 // Ionicons

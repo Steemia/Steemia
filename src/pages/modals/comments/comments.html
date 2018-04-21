@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-navbar color="primary">
+<ion-header [class]="chosenTheme">
+  <ion-navbar color="primary" id="header">
     <ion-buttons>
       <button ion-button (tap)="dismiss()">
         <ion-icon class="custom-close" name="close"></ion-icon>
@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class]="chosenTheme">
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
   <ion-list>
@@ -26,13 +26,23 @@
   </ion-infinite-scroll>
 
 </ion-content>
-
-<ion-footer>
-  <ion-item>
-    <ion-textarea #myInput id="myInput" rows="1" (input)="adjustTextarea($event);" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-textarea>
-    <!-- <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input> -->
-    <button ion-button clear (click)="comment()" item-end>
-      <ion-icon class="footer-btn" name="send"></ion-icon>
-    </button>
-  </ion-item>
-</ion-footer>
+<div [class]="chosenTheme">
+  <ion-footer id="comment-footer">
+    <ion-item no-lines>
+      <button ion-button clear item-start (click)="presentActionSheet()">
+        <ion-icon class="footer-btn" name="camera"></ion-icon>
+      </button>
+      <form [formGroup]="commentForm">
+        <ion-item no-lines>
+          <ion-textarea #myInput type="text" rows="1" (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);"
+            placeholder="Write a comment..." [formControl]="commentForm.controls['comment']"></ion-textarea>
+        </ion-item>
+      </form>
+      <!-- <ion-textarea #myInput id="myInput" rows="1" (input)="adjustTextarea($event);" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-textarea> -->
+      <!-- <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input> -->
+      <button ion-button clear (click)="comment()" item-end>
+        <ion-icon class="footer-btn" name="send"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-footer>
+</div>

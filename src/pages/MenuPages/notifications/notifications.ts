@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController, LoadingController } from 'ionic-angular';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { UtilProvider } from 'providers/util/util';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -18,6 +18,7 @@ export class NotificationsPage {
   constructor(public navCtrl: NavController,
     private ws: WebsocketsProvider,
     public menu: MenuController,
+    private loading: LoadingController,
     private steemiaProvider: SteemiaProvider,
     private steemConnect: SteemConnectProvider,
     public util: UtilProvider) {
@@ -55,6 +56,10 @@ export class NotificationsPage {
 
   private open_post(i) {
     let author;
+    let loading = this.loading.create({
+      content: 'Please wait until we locate the post 💯'
+    })
+    loading.present();
     if (this.notifications[i].type === 'reblog') {
       author = this.current_user;
     }
@@ -74,6 +79,7 @@ export class NotificationsPage {
         author: (data as any).root_author,
         permlink: (data as any).root_permlink
       }).then((res) => {
+        loading.dismiss();
         this.navCtrl.push('PostSinglePage', {
           post: res
         });

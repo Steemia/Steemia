@@ -18,8 +18,9 @@
         {{entry.title}}
       </ion-list-header>
       <div class="list-separator" *ngIf="isDividerEntry(entry) && !entry.title"></div>
-      <button 
+      <button id="menu-item"
         ion-item 
+        no-lines
         detail-none
         [class]="entry.classes"
         [ngClass]="{'menu-item': true, 'activated': entry.isSelected}" 
@@ -27,7 +28,7 @@
         (click)="entry.onClick && entry.onClick(entry)"
       >
         <ion-icon name="{{entry.leftIcon}}" item-left *ngIf="entry.leftIcon"></ion-icon>
-        {{entry.title}}
+        <span id="menu-title">{{ entry.title }}</span>
         <ion-icon name="{{entry.rightIcon}}" item-right *ngIf="entry.rightIcon && !isBadgeEntry(entry)"></ion-icon>
         <ion-badge [color]="entry.badge.color" item-right *ngIf="isBadgeEntry(entry)">{{entry.badge.text}}</ion-badge>
       </button>

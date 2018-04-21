@@ -8,8 +8,8 @@ export const feedTemplate = `
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-  <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')">
-    <ion-item>
+  <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')" id="main-share-card">
+    <ion-item id="header">
       <ion-avatar item-start>
         <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
@@ -19,7 +19,7 @@ export const feedTemplate = `
   </ion-card>
 
   <div *ngIf="logged_in == false" class="vertical-align h-100">
-    <ion-card>
+    <ion-card id="not-logged">
       <ion-card-content>
         <p text-center> You need to log in to see this page</p>
         <button ion-button block mode="ios" (click)="openPage('LoginPage')">Login Now!</button>

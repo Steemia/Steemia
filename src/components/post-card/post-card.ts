@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import { Component, Input, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { App, ModalController, PopoverController, NavController } from 'ionic-angular';
 // PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
@@ -11,13 +11,11 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
   templateUrl: 'post-card.html'
 })
 export class PostCardComponent implements AfterViewInit {
-
   @Input('post') content: any;
   @Input('from') from: string;
   @Input('user') user: string;
   private is_voting: boolean = false;
   player = [];
-  private revealed: boolean = false;
   private reveal_trigger: boolean = false;
   private inner_rebblog: boolean = false;
 
@@ -31,9 +29,8 @@ export class PostCardComponent implements AfterViewInit {
     private steemConnect: SteemConnectProvider,
     private steemiaProvider: SteemiaProvider) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this.content.author !== this.user && this.from == 'PROFILE') {
-      console.log("got here")
       this.inner_rebblog = true;
       
       this.cdr.detectChanges();
@@ -166,12 +163,20 @@ export class PostCardComponent implements AfterViewInit {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then((data: any) => {
       this.is_voting = false; // remove the spinner
-      // Catch if the user is not logged in and display an alert
-      if (data == 'not-logged') return;
+      if (data.msg == 'not-logged') return;
 
-      if (data === 'Correct') this.refreshPost();
+      if (data.msg === 'correct') {
+        if (data.type === 'vote') {
+          this.content.vote = true;
+        }
+
+        else if (data.type === 'unvote') {
+          this.content.vote = false;
+        }
+        this.refreshPost();
+      }
 
     });
   }
@@ -184,7 +189,7 @@ export class PostCardComponent implements AfterViewInit {
       author: this.content.author,
       permlink: this.content.url
     }).then(data => {
-      this.content.vote = (data as any).vote;
+      //this.content.vote = (data as any).vote;
       this.content.net_likes = (data as any).net_likes;
       this.content.net_votes = (data as any).net_votes;
       this.content.top_likers_avatars = (data as any).top_likers_avatars;

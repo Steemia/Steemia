@@ -6,7 +6,6 @@ import { NoDataComponent } from './no-data/no-data';
 import { WalletItemComponent } from './wallet-item/wallet-item';
 import { UserItemComponent } from './user-item/user-item';
 
-import { MomentModule } from 'angular2-moment';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { IonicModule } from 'ionic-angular';
 import { YoutubePlayerModule } from 'ngx-youtube-player';
@@ -24,7 +23,6 @@ import { YoutubePlayerModule } from 'ngx-youtube-player';
 	imports: [
 		YoutubePlayerModule,
 		IonicModule,
-		MomentModule,
 		IonicImageLoader
 	],
 

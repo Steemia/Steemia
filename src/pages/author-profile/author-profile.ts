@@ -28,7 +28,6 @@ export class AuthorProfilePage {
   private limit: number = 15;
   private is_more_post: boolean = true;
   showToolbar:boolean = false;
-  private no_post: boolean = false;
 
   private start_author: string = null;
   private start_permlink: string = null;

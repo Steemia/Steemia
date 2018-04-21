@@ -3,6 +3,7 @@ import { IonicPage,
          NavController, 
          NavParams, 
          LoadingController, 
+         ActionSheetController,
          MenuController,
          ToastController,
          AlertController,
@@ -18,6 +19,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
+import { CameraProvider } from 'providers/camera/camera';
 
 @IonicPage({
   priority: 'high'
@@ -27,6 +29,7 @@ import { Storage } from '@ionic/storage';
   template: postSinglePage
 })
 export class PostSinglePage {
+  @ViewChild('myInput') myInput: ElementRef;
 
   private post: any;
   private is_voting: boolean = false;
@@ -41,12 +44,15 @@ export class PostSinglePage {
   private is_owner: boolean = false;
   private ref;
   private bookmarks;
+  private caret: number = 0;
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
     public menu: MenuController,
+    private camera: CameraProvider,
+    private actionSheetCtrl: ActionSheetController,
     public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
@@ -62,7 +68,6 @@ export class PostSinglePage {
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
-    console.log(this.post);
 
     this.current_user = (this.steemConnect.user_temp as any).user;
 
@@ -77,7 +82,6 @@ export class PostSinglePage {
     this.storage.ready().then(() => {
       this.storage.get('bookmarks').then(data => {
         if (data) {
-          console.log("here",data)
           this.containsObject(data);
         }
         
@@ -120,6 +124,17 @@ export class PostSinglePage {
   }
 
   /**
+   * Method to get caret position in a textfield
+   * @param oField 
+   */
+  getCaretPos(oField): void {
+    let node = oField._elementRef.nativeElement.children[0];
+    if (node.selectionStart || node.selectionStart == '0') {
+      this.caret = node.selectionStart;
+    }
+  }
+
+  /**
    * Method to open author profile page
    */
   private openProfile(): void {
@@ -153,12 +168,21 @@ export class PostSinglePage {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
-    this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
+    this.steemActions.dispatch_vote('posts', author, permlink, weight).then((data: any) => {
       this.is_voting = false; // remove the spinner
       // Catch if the user is not logged in and display an alert
-      if (data == 'not-logged') return;
+      if (data.msg == 'not-logged') return;
 
-      if (data === 'Correct') this.refreshPost();
+      if (data.msg === 'correct') {
+        if (data.type === 'vote') {
+          this.post.vote = true;
+        }
+
+        else if (data.type === 'unvote') {
+          this.post.vote = false;
+        }
+        this.refreshPost();
+      }
       
     });
   }
@@ -206,7 +230,7 @@ export class PostSinglePage {
       author: this.post.author,
       permlink: this.post.url
     }).then(data => {
-      this.post.vote = (data as any).vote;
+      //this.post.vote = (data as any).vote;
       this.post.net_likes = (data as any).net_likes;
       this.post.net_votes = (data as any).net_votes;
       this.post.top_likers_avatars = (data as any).top_likers_avatars;
@@ -249,7 +273,7 @@ export class PostSinglePage {
 
   private share() {
     this.steemActions.dispatch_share(this.post.url).then(res => {
-      console.log(res)
+      
     })
   }
 
@@ -267,7 +291,6 @@ export class PostSinglePage {
     });
     loading.present();
     this.steemActions.dispatch_comment(this.post.author, this.post.url, this.chatBox).then(res => {
-      console.log(res)
       if (res === 'not-logged') {
         this.show_prompt(loading, 'NOT_LOGGED_IN');
         return;
@@ -307,7 +330,7 @@ export class PostSinglePage {
             body: this.post.body });
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
-            this.presentAlert('saved')
+            this.displayToast('saved');
           });
         } else {
           this.bookmarks = [{ 
@@ -319,7 +342,7 @@ export class PostSinglePage {
           }];
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
-            this.presentAlert('saved')
+            this.displayToast('saved');
           });
         }
       });
@@ -340,24 +363,25 @@ export class PostSinglePage {
             this.bookmarks.splice(index,1);
             this.storage.set('bookmarks', this.bookmarks).then(data => {
               this.is_bookmarked = false;
-              this.presentAlert('removed');
-            })
+              this.displayToast('removed');
+            });
           }
         }
-      })
+      });
     }
     else {
       this.alerts.display_alert('NOT_LOGGED_IN');
     }
   }
 
-  presentAlert(param) {
-    let alert = this.alertCtrl.create({
-      title: 'Bookmark '+param+' 😎',
-      subTitle: 'Bookmark '+param+' successfully',
-      buttons: ['OK']
-    });
-    alert.present();
+  displayToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: 'Bookmark ' + msg + ' sucessfully',
+      duration: 1500,
+      position: 'bottom'
+    }); 
+
+    toast.present();
   }
 
   containsObject(array) {
@@ -367,5 +391,107 @@ export class PostSinglePage {
       }
     }
   } 
+
+  protected adjustTextarea(event?: any): void {
+    this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
+    this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].scrollHeight + 'px';
+    return;
+  }
+
+  /**
+   * Method to insert text at current pointer
+   * @param {String} text: Text to insert 
+   */
+  insertText(text: string): void {
+    const current = this.chatBox;
+    let final = current.substr(0, this.caret) + text + current.substr(this.caret);
+    this.chatBox = final;
+    this.adjustTextarea();
+  }
+
+  /**
+   * Method to present actionsheet with options
+   */
+  presentActionSheet(): void {
+    if ((this.steemConnect.user_temp as any).user) {
+
+      let actionSheet = this.actionSheetCtrl.create({
+        title: 'How do you want to insert the image? 📷🌄',
+        buttons: [
+          {
+            text: 'Camera',
+            icon: 'camera',
+            handler: () => {
+              this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
+                this.insertText(image);
+              });
+            }
+          },
+          {
+            text: 'Gallery',
+            icon: 'albums',
+            handler: () => {
+              this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
+                this.insertText(image);
+              });
+            }
+          },
+          {
+            text: 'Custom URL',
+            icon: 'md-globe',
+            handler: () => {
+              this.presentInsertURL()
+            }
+          },
+          {
+            text: 'Cancel',
+            icon: 'close',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+  
+      actionSheet.present();
+
+    }
+
+    else {
+      this.alerts.display_alert('NOT_LOGGED_IN');
+    }
+    
+  }
+
+  /**
+   * Method to show insert URL actionsheet
+   */
+  presentInsertURL(): void {
+    let alert = this.alertCtrl.create({
+      title: 'Insert Image',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Image URL'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('![image](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
 }

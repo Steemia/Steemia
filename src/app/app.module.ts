@@ -1,7 +1,5 @@
 // ENTRY COMPONENT
 import { MyApp } from './app.component';
-import { Config } from 'ionic-angular';
-
 // MODULES
 import { HttpModule } from '@angular/http'
 import { IonicStorageModule } from '@ionic/storage';
@@ -10,8 +8,8 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
+//import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 // Socket IO Server
 //const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
 
@@ -44,6 +42,9 @@ import { CryptoProvider } from '../providers/crypto-api/crypto-api';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { GoogleTrackingProvider } from '../providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from '../providers/websockets/websockets';
+import { CameraProvider } from '../providers/camera/camera';
+import { SettingsProvider } from '../providers/settings/settings';
+
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     MyApp
   ],
   providers: [
+    SettingsProvider,
     Clipboard,
     LocalNotifications,
     SocialSharing,
@@ -92,13 +94,14 @@ import { WebsocketsProvider } from '../providers/websockets/websockets';
     File,
     Camera,
     CryptoProvider,
-    SecureStorage, // Only for prod build
-    //{ provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
+    //SecureStorage, // Only for prod build
+    { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
     GoogleTrackingProvider,
-    GoogleAnalytics,
-    //{ provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
+    //GoogleAnalytics,
+    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
     WebsocketsProvider,
-    FCM
+    FCM,
+    CameraProvider
   ]
 })
 export class AppModule {}

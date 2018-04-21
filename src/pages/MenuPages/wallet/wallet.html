@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header id="header">
   <ion-navbar color="primary">
     <ion-title>Wallet</ion-title>
     <ion-buttons end item-end>
@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="walle-page">
   <ion-card *ngIf="rewards?.sbd > 0 || rewards?.vesting_steem > 0 || rewards?.steem > 0">
     <ion-item>
       <p style="font-size: 14px;" text-center>

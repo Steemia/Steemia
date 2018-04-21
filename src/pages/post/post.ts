@@ -1,22 +1,14 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
-  IonicPage,
-  ViewController,
-  AlertController,
-  MenuController,
-  ActionSheetController,
-  LoadingController,
-  NavController,
-  ToastController
+  IonicPage, ViewController, AlertController, MenuController, ActionSheetController,
+  LoadingController, NavController, ToastController
 } from 'ionic-angular';
 import marked from 'marked';
 import { Storage } from '@ionic/storage';
-import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { CameraProvider } from 'providers/camera/camera';
 
 @IonicPage()
 @Component({
@@ -24,7 +16,6 @@ import { AlertsProvider } from 'providers/alerts/alerts';
   templateUrl: 'post.html',
 })
 export class PostPage {
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 
   private caret: number = 0;
@@ -41,9 +32,8 @@ export class PostPage {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     public menu: MenuController,
-    private transfer: FileTransfer,
     private alerts: AlertsProvider,
-    private camera: Camera,
+    private camera: CameraProvider,
     public storage: Storage,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
@@ -52,7 +42,7 @@ export class PostPage {
     this.storyForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      tags: ['', Validators.pattern(/[^,\s][^\,]*[^,\s]*/g) || '']
+      tags: ['', Validators.required]
     });
   }
 
@@ -145,36 +135,6 @@ export class PostPage {
   }
 
   /**
-   * Method to retrieve an image from camera or library
-   * @param {String} from: origin of the image
-   */
-  private choose_image(from, edit: boolean): void {
-    let imageURI;
-    const options: CameraOptions = {
-      quality: 80,
-      allowEdit: edit,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,      
-      sourceType: from
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      imageURI = imageData;
-
-    }, (err) => {
-      if (err) {
-        //this.presentToast(err);
-      }
-    }).then(data => {
-      if (imageURI) {
-        this.uploadFile(imageURI);
-      }
-    });
-  }
-
-  /**
    * Method to show insert URL actionsheet
    */
   presentInsertURL(): void {
@@ -205,37 +165,6 @@ export class PostPage {
     alert.present();
   }
 
-  /**
-   * Method to upload image to Steemia IPFS
-   * @param {String} image: Image path to be uploaded
-   */
-  uploadFile(image): void {
-    let url = 'https://steemia.net/api/v0/add';
-    let loader = this.loadingCtrl.create({
-      content: "Uploading..."
-    });
-    loader.present();
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    let options: FileUploadOptions = {
-      fileKey: 'ionicfile',
-      fileName: 'ionicfile',
-      chunkedMode: false,
-      mimeType: "image/jpeg",
-    }
-
-    fileTransfer.upload(image, url, options)
-      .then((data) => {
-        loader.dismiss();
-        this.presentToast("Image uploaded successfully");
-        let hash = data.response;
-        this.insertText('![image](https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash + ')');
-      }, (err) => {
-        loader.dismiss();
-        this.presentToast(err);
-      });
-  }
 
   /**
    * Method to get caret position in a textfield
@@ -267,45 +196,67 @@ export class PostPage {
    */
   private post(): void {
     if (this.storyForm.valid) {
-      let loading = this.loadingCtrl.create({
-        content: 'We are posting your amazing story 💯'
-      });
 
-      loading.present();
-      let tags = this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g);
-      tags = tags.map(v => v.toLowerCase());
-      this.steemActions.dispatch_post(
-        this.storyForm.controls.title.value,
-        this.storyForm.controls.description.value,
-        tags, this.upvote, this.rewards).then(res => {
-          console.log(res)
+      if (this.storyForm.controls.tags.value.match(/[^,\s][^\,]*[^,\s]*/g)) {
 
-          if (res === 'not-logged-in') {
-            // Show alert telling the user that needs to login
-            loading.dismiss();
-          }
-
-          else if (res === 'Correct') {
-            loading.dismiss();
-            this.presentToast('Post was posted correctly!');
-            this.navCtrl.pop().then(() => {
-              this.deleteDraft();
-            });
-          }
-
-          else if (res === 'POST_INTERVAL') {
-            this.show_prompt(loading, 'POST_INTERVAL');
-          }
-
-          else {
-            loading.dismiss();
-          }
-
+        let loading = this.loadingCtrl.create({
+          content: 'We are posting your amazing story 💯'
         });
+
+        loading.present();
+        let tags;
+
+        if (this.storyForm.controls.tags.value.indexOf(',') > -1) {
+          tags = this.storyForm.controls.tags.value.split(',')
+        }
+
+        else if (this.storyForm.controls.tags.value.indexOf(' ') > -1) {
+          tags = this.storyForm.controls.tags.value.split(' ');
+        }
+
+        else if (this.storyForm.controls.tags.value === '') {
+          this.alerts.display_alert('NO_TAGS');
+          return;
+        }
+        console.log(tags)
+        tags = tags.map(v => v.toLowerCase());
+        this.steemActions.dispatch_post(
+          this.storyForm.controls.title.value,
+          this.storyForm.controls.description.value,
+          tags, this.upvote, this.rewards).then(res => {
+            console.log(res)
+
+            if (res === 'not-logged-in') {
+              // Show alert telling the user that needs to login
+              loading.dismiss();
+            }
+
+            else if (res === 'Correct') {
+              loading.dismiss();
+              this.presentToast('Post was posted correctly!');
+              this.navCtrl.pop().then(() => {
+                this.deleteDraft();
+              });
+            }
+
+            else if (res === 'POST_INTERVAL') {
+              this.show_prompt(loading, 'POST_INTERVAL');
+            }
+
+            else {
+              loading.dismiss();
+            }
+
+          });
+      }
+
+      else {
+        this.alerts.display_alert('ALL_FIELDS');
+      }
 
     }
     else {
-      console.log("not valid");
+      this.alerts.display_alert('ALL_FIELDS');
     }
   }
 
@@ -356,12 +307,12 @@ export class PostPage {
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
-          }  
+          }
         },
         {
           text: 'OK',
           handler: data => {
-            this.insertText('[' + data.Text +'](' + data.URL + ')');
+            this.insertText('[' + data.Text + '](' + data.URL + ')');
           }
         }
       ]
@@ -380,14 +331,18 @@ export class PostPage {
           text: 'Camera',
           icon: 'camera',
           handler: () => {
-            this.choose_image(this.camera.PictureSourceType.CAMERA, false);
+            this.camera.choose_image(this.camera.FROM_CAMERA, false, 'post').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {
           text: 'Gallery',
           icon: 'albums',
           handler: () => {
-            this.choose_image(this.camera.PictureSourceType.PHOTOLIBRARY, true);
+            this.camera.choose_image(this.camera.FROM_GALLERY, true, 'post').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {

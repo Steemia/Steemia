@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-navbar color="primary">
+<ion-header [class]="chosenTheme">
+  <ion-navbar color="primary" id="header">
     <ion-buttons>
       <button ion-button (tap)="dismiss()">
         <ion-icon class="custom-close" name="close"></ion-icon>
@@ -9,13 +9,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class]="chosenTheme">
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
   <no-data *ngIf="no_content == true" icon="thumbs-up" title="This post does not have any votes, YET!">
   </no-data>
-  <ion-list>  
-    <ion-item *ngFor="let voter of votes | slice:0:slice;">
+  <ion-list no-lines id="voters-list">  
+    <ion-item *ngFor="let voter of votes | slice:0:slice;" no-lines>
       <ion-avatar item-start tappable (click)="openProfile(voter.username)">
         <img [src]="voter.profile_image" (error)="util.imgError('profile',$event)" />
       </ion-avatar>

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header id="header">
 
   <ion-navbar color="primary">
     <ion-title>Notifications</ion-title>
@@ -9,11 +9,11 @@
 
 <ion-content>
 
-  <ion-list>
+  <ion-list no-lines>
     <div *ngFor="let notification of notifications; let i = index">
 
       <!-- IF NOTIFICATION IS FOLLOW -->
-      <ion-item *ngIf="notification.type == 'follow'" (click)="open_profile(i);">
+      <ion-item  no-lines *ngIf="notification.type == 'follow'" (click)="open_profile(i);" id="notification-item">
         <ion-avatar item-start>
           <img [src]="render_image(notification.follower)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
@@ -26,7 +26,7 @@
       </ion-item>
 
       <!-- IF NOTIFICATION IS MENTION -->
-      <ion-item *ngIf="notification.type == 'mention'" (click)="open_post(i);">
+      <ion-item no-lines *ngIf="notification.type == 'mention'" (click)="open_post(i);" id="notification-item">
         <ion-avatar item-start>
           <img [src]="render_image(notification.author)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
@@ -38,7 +38,7 @@
       </ion-item>
 
       <!-- IF NOTIFICATION IS REPLY -->
-      <ion-item *ngIf="notification.type == 'reply'" (click)="open_post(i);">
+      <ion-item no-lines *ngIf="notification.type == 'reply'" (click)="open_post(i);" id="notification-item">
         <ion-avatar item-start>
           <img [src]="render_image(notification.author)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
@@ -49,7 +49,7 @@
       </ion-item>
 
       <!-- IF NOTIFICATION IS TRANSFER -->
-      <ion-item *ngIf="notification.type == 'transfer'">
+      <ion-item no-lines *ngIf="notification.type == 'transfer'" id="notification-item">
         <ion-avatar item-start>
           <img [src]="render_image(notification.from)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
@@ -62,7 +62,7 @@
       </ion-item>
 
       <!-- IF NOTIFICATION IS REBLOG -->
-      <ion-item *ngIf="notification.type == 'reblog'" (click)="open_post(i);">
+      <ion-item no-lines *ngIf="notification.type == 'reblog'" (click)="open_post(i);" id="notification-item">
         <ion-avatar item-start>
           <img [src]="render_image(notification.account)" (error)="util.imgError('comment', $event)">
         </ion-avatar>

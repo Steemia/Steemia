@@ -1,6 +1,6 @@
 export const postSinglePage = `
 
-<ion-header>
+<ion-header id="header">
   <ion-navbar color="primary">
     <ion-title></ion-title>
     <ion-buttons end>
@@ -15,7 +15,7 @@ export const postSinglePage = `
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card id="content-single">
     <h2 class="title" padding>{{ post?.title }}</h2>
     <ion-card-header no-padding>
       <ion-item>
@@ -36,7 +36,7 @@ export const postSinglePage = `
         <ion-spinner *ngIf="is_voting == true" item-right></ion-spinner>
 
       </ion-item>
-      <hr />
+      <hr id="hr-separator" />
     </ion-card-header>
     <ion-card-content no-padding>
       <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="post?.full_body"></div>
@@ -58,8 +58,13 @@ export const postSinglePage = `
         </ion-row>
       </ion-grid>
       <div padding class="cancel-top-pd">
-        <ion-textarea [(ngModel)]="chatBox" rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
+        <ion-textarea #myInput (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);" [(ngModel)]="chatBox"
+          rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
         <button class="pull-right" ion-button mode="ios" (click)="comment()">Post a Comment</button>
+        <button class="pull-right" ion-fab mini (click)="presentActionSheet()">
+          <ion-icon name="images"></ion-icon>
+        </button>
+
       </div>
 
       <br />

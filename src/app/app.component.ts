@@ -1,4 +1,4 @@
-import { Component, ViewChild, NgZone } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -6,14 +6,14 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { FCM } from '@ionic-native/fcm';
 import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
-import { Socket } from 'ng-socket-io';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Storage } from '@ionic/storage';
+import { SettingsProvider } from '../providers/settings/settings';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp {
 
@@ -22,14 +22,12 @@ export class MyApp {
   rootPage = 'TabsPage';
   private isLoggedIn: boolean;
 
-  menuOptions: MaterialMenuOptions;
   private loggedInPages: MaterialMenuOptions;
   private loggedOutPages: MaterialMenuOptions;
   private profilePicture: string = "./assets/steemlogo.png";
   private profile;
-  private location: string;
-  private username: string;
-  private dispatch_menu: boolean = false;
+  private background: string = './assets/mb-bg-fb-03.jpg';
+  chosenTheme: string;
 
 
   constructor(private platform: Platform,
@@ -38,12 +36,12 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     public storage: Storage,
+    private _settings: SettingsProvider,
     private ga: GoogleTrackingProvider,
     private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
     private ws: WebsocketsProvider,
     private fcm: FCM,
-    private zone: NgZone,
     private steemiaProvider: SteemiaProvider) {
 
     // Check if the user has already seen the tutorial
@@ -82,7 +80,7 @@ export class MyApp {
   private initializeLoggedOutMenu(): void {
     this.loggedOutPages = {
       header: {
-        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
+        background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Steemia',
         email: 'steemia@steemia.io',
@@ -108,7 +106,7 @@ export class MyApp {
   private initializeLoggedInMenu(): void {
     this.loggedInPages = {
       header: {
-        background: '#ccc url(./assets/mb-bg-fb-03.jpg) no-repeat top left / cover',
+        background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
         email: this.profile.json_metadata.profile.location || '',
@@ -145,18 +143,29 @@ export class MyApp {
 
   private initializeApp() {
     this.platform.ready().then(() => {
+      
+      this.statusBar.styleBlackOpaque();
+      this.splashScreen.hide();
+      this._settings.getTheme().subscribe(val => {
+        if (val === 'dark-theme') {
+          this.background = './assets/menu_bg2.jpg';
+          this.statusBar.backgroundColorByHexString("#1d252c");
+        }
+  
+        else if (val === 'blue-theme') {
+          this.background = './assets/mb-bg-fb-03.jpg';
+          this.statusBar.backgroundColorByHexString("#488aff");
+        }
+        this.chosenTheme = val;
+      });
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleBlackOpaque();
-      this.statusBar.backgroundColorByHexString('#488aff');
-      this.splashScreen.hide();
+      
       this.ga.track_page('Loaded App');
       this.imageLoaderConfig.setBackgroundSize('cover');
       this.imageLoaderConfig.setHeight('200px');
       this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
       this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-      this.imageLoaderConfig.setConcurrency(25);
-      this.imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024);
       this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(

@@ -7,8 +7,8 @@ export const newTemplate = `
   </ion-refresher>
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
-  <ion-card *ngIf="!is_loading && is_logged" class="share-post card" (click)="openPage('PostPage')">
-    <ion-item>
+  <ion-card *ngIf="!is_loading && is_logged" class="share-post card" (click)="openPage('PostPage')" id="main-share-card">
+    <ion-item id="header">
       <ion-avatar item-start>
         <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
       </ion-avatar>

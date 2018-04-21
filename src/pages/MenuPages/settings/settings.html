@@ -1,42 +1,52 @@
-
-<ion-header>
+<ion-header id="header">
 
   <ion-navbar color="primary">
     <ion-title>Settings</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="saveSettings()">SAVE</button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content>
-  <ion-list>
-    <ion-list-header>
-      VOTE VALUE
+<ion-content id="settings-page">
+  <ion-list no-lines>
+    <ion-list-header no-lines>
+      Voting Value
     </ion-list-header>
-    <ion-item>
+    <ion-item no-lines>
       <ion-range range-dark max="100" min="1" [(ngModel)]="upvote" (ngModelChange)="onChangeUpvote($event)">
-        <ion-label range-left> {{ upvote }} </ion-label>
+        <ion-label range-left> {{ upvote }}% </ion-label>
       </ion-range>
     </ion-item>
-    <ion-list-header>
-      LANGUAGE
+    <ion-list-header no-lines>
+      Language
     </ion-list-header>
-    <ion-item>
+    <ion-item no-lines>
       <ion-icon name="globe" item-start></ion-icon>
       <ion-select [(ngModel)]="language[0]">
         <ion-option value="en_US">English</ion-option>
       </ion-select>
     </ion-item>
-    <ion-list-header>
-      CURRENCY
+    <!-- <ion-list-header no-lines>
+      Currency
     </ion-list-header>
-    <ion-item>
+    <ion-item no-lines>
       <ion-icon name="cash" item-start></ion-icon>
       <ion-select [(ngModel)]="currency[0]">
         <ion-option value="USD">USD</ion-option>
+      </ion-select>
+    </ion-item> -->
+    <ion-list-header no-lines>
+      Theme
+    </ion-list-header>
+    <ion-item no-lines>
+      <ion-icon name='brush' item-start></ion-icon>
+      <ion-label>
+        Choose Theme
+      </ion-label>
+      <ion-select item-end (ionChange)="setTheme($event)" [(ngModel)]="selected">
+        <ion-option *ngFor='let theme of availableThemes' [value]="theme.className">
+          {{theme.prettyName}}
+        </ion-option>
       </ion-select>
     </ion-item>
   </ion-list>

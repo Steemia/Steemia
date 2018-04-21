@@ -11,12 +11,10 @@ import {
   NavParams,
 } from 'ionic-angular';
 import marked from 'marked';
-import { TdTextEditorComponent } from '@covalent/text-editor';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { CameraProvider } from 'providers/camera/camera';
 
 @IonicPage()
 @Component({
@@ -24,7 +22,6 @@ import { AlertsProvider } from 'providers/alerts/alerts';
   templateUrl: 'edit-post.html',
 })
 export class EditPostPage {
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('myInput') myInput: ElementRef;
 
   private content: any;
@@ -51,9 +48,8 @@ export class EditPostPage {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private transfer: FileTransfer,
+    private camera: CameraProvider,
     private alerts: AlertsProvider,
-    private camera: Camera,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController) {
@@ -105,48 +101,6 @@ export class EditPostPage {
     }
   }
 
-  selectImage() {
-    const options: CameraOptions = {
-      quality: 100,
-      allowEdit: true,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      this.imageURI = imageData;
-    }, (err) => {
-      // Handle error
-      console.log(err);
-      this.presentToast(err);
-      alert(err);
-    }).then(data => {
-      this.uploadFile(this.imageURI);
-      alert(this.imageURI);
-    })
-  }
-
-  getImage() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: false,
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      this.cameraIMG = imageData;
-    }, (err) => {
-      // Handle error
-      console.log(err);
-      this.presentToast(err);
-      alert(err);
-    }).then(data => {
-      this.uploadFile(this.cameraIMG);
-      alert(this.cameraIMG);
-    })
-  }
-
   presentPrompt() {
     let alert = this.alertCtrl.create({
       title: 'Login',
@@ -175,43 +129,6 @@ export class EditPostPage {
       ]
     });
     alert.present();
-  }
-
-  uploadFile(image) {
-    let url = 'https://steemia.net/api/v0/add';
-    let loader = this.loadingCtrl.create({
-      content: "Uploading..."
-    });
-    loader.present();
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    let options: FileUploadOptions = {
-      fileKey: 'ionicfile',
-      fileName: 'ionicfile',
-      chunkedMode: false,
-      mimeType: "image/jpeg",
-    }
-
-    fileTransfer.upload(image, url, options)
-      .then((data) => {
-        console.log(data + " Uploaded Successfully");
-        this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
-        loader.dismiss();
-        this.presentToast("Image uploaded successfully");
-        this.imgdata = data;
-        this.response = this.imgdata.response;
-        this.parsedHash = JSON.parse(this.response);
-        this.hash = this.parsedHash.Hash;
-        this.URL = '![image](https://steemia.net/ipfs/' + this.hash + ')'
-        // alert(this.hash);
-      }, (err) => {
-        console.log(err);
-        loader.dismiss();
-        this.presentToast(err);
-      }).then(data => {
-        this.insertText(this.URL);
-      })
   }
 
   getCaretPos(oField) {
@@ -292,7 +209,74 @@ export class EditPostPage {
     event.preventDefault();
   }
 
-  presentActionSheet() {
+  insertLink() {
+    let alert = this.alertCtrl.create({
+      title: 'Insert URL',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Url to insert'
+        },
+        {
+          name: 'Text',
+          placeholder: 'Text to mask the url'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }  
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('[' + data.Text +'](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  /**
+   * Method to show insert URL actionsheet
+   */
+  presentInsertURL(): void {
+    let alert = this.alertCtrl.create({
+      title: 'Insert Image',
+      inputs: [
+        {
+          name: 'URL',
+          placeholder: 'Image URL'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.insertText('![image](' + data.URL + ')');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+
+  /**
+   * Method to present actionsheet with options
+   */
+  presentActionSheet(): void {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'How do you want to insert the image? 📷🌄',
       buttons: [
@@ -300,24 +284,25 @@ export class EditPostPage {
           text: 'Camera',
           icon: 'camera',
           handler: () => {
-            console.log('Destructive clicked');
-            //   this.getImage();
+            this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {
           text: 'Gallery',
           icon: 'albums',
           handler: () => {
-            console.log('Archive clicked');
-            this.selectImage()
+            this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
+              this.insertText(image);
+            });
           }
         },
         {
           text: 'Custom URL',
           icon: 'md-globe',
           handler: () => {
-            console.log('Archive clicked');
-            this.presentPrompt()
+            this.presentInsertURL()
           }
         },
         {
@@ -325,7 +310,6 @@ export class EditPostPage {
           icon: 'close',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
           }
         }
       ]
@@ -334,6 +318,10 @@ export class EditPostPage {
     actionSheet.present();
   }
 
+  /**
+   * Method to prevent focus change of an element
+   * @param e 
+   */
   preventFocusChange(e) {
     e.preventDefault();
   }
@@ -341,32 +329,6 @@ export class EditPostPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
-  }
-
-  convert(this) {
-    if (this.toggleVal == true) {
-      if (this.plainText && this.plainText != '') {
-        let plainText = this.plainText;
-
-        this.markdownText = marked(plainText.toString());
-        this.content = this.markdownText;
-      } else {
-        this.toggleVal = false
-      }
-    }
-  }
-
-  md2html(this) {
-    if (this.toggleVal == true) {
-      if (this.data.body) {
-        let plainText = this.data.body;
-
-        this.markdownText = marked(plainText.toString());
-        this.htmldata = this.markdownText;
-      } else {
-        this.toggleVal = false
-      }
-    }
   }
 }
 

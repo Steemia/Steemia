@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header no-border id="header">
   <ion-navbar color="primary">
     <ion-title>
       Submit a story
@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce padding>
+<ion-content no-bounce padding id="posting-page">
   <p *ngIf="is_preview == true" text-center>Preview Mode</p>
   <div *ngIf="is_preview == true" [innerHtml]="markdowntext"></div>
   <form *ngIf="is_preview == false" [formGroup]="storyForm">
@@ -34,7 +34,7 @@
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
         <ion-badge color="primary">Tags</ion-badge>
-        <ion-badge color="gray">separated by comma</ion-badge>  
+        <ion-badge color="gray">separated by comma or by space</ion-badge>  
       </ion-label>
       <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)"  (input)="adjustTextarea($event);" placeholder="You can choose up to 5 tags." 
         [formControl]="storyForm.controls['tags']"></ion-textarea>
@@ -58,7 +58,7 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer id="editor-toolbar">
   <ion-grid class="top-four">
     <ion-row>
       <ion-col tappable (click)="insertText('**bold**')" (mousedown)="preventFocusChange($event)">
