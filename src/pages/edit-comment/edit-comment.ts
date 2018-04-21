@@ -22,7 +22,7 @@ export class EditCommentPage {
   ) {
 
     this.comment = this.navParams.get('comment');
-    this.comment_body = this.comment.body;
+    this.comment_body = this.comment.raw_body;
   }
 
   ionViewDidEnter() {
@@ -38,7 +38,7 @@ export class EditCommentPage {
       content: 'Please wait...'
     });
     loading.present();
-    this.steemActions.dispatch_edit_comment(this.comment.author, this.comment.url, this.comment_body).then(res => {
+    this.steemActions.dispatch_edit_comment(this.comment.parent_author, this.comment.url, this.comment_body).then(res => {
       if (res === 'not-logged') {
         this.show_prompt(loading, 'NOT_LOGGED_IN');
         return;

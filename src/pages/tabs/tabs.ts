@@ -10,7 +10,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 @Component({
   selector: 'page-tabs',
   template: `
-    <ion-header>
+    <ion-header id="header">
       <ion-navbar color="primary">
         <button ion-button menuToggle>
           <ion-icon name="mdi-menu"></ion-icon>

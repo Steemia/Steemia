@@ -1,5 +1,5 @@
 // ENDPOINTS
-export const STEEMIA_API = 'http://steemia-api.herokuapp.com/';
+export const STEEMIA_API = 'https://steemia-api.herokuapp.com/';
 export const STEEMIA_SEARCH = STEEMIA_API + 'search/';
 export const STEEMIA_POSTS =  STEEMIA_API + 'posts/';
 export const STEEMIA_USERS = STEEMIA_API + 'users/'
@@ -54,6 +54,12 @@ export const ERRORS = {
   },
   EMPTY_TEXT: {
     message: 'A comment cannot be empty.'
+  },
+  TAGS_ERROR: {
+    message: 'You should include at least 1 tag.'
+  },
+  ALL_FIELDS: {
+    message: 'You need to fill all fields.'
   }
 };
 

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header id="header">
 
   <ion-navbar color="primary">
     <ion-title>Bookmarks</ion-title>
@@ -7,8 +7,8 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-list>
+<ion-content id="bookmarks">
+  <ion-list *ngIf="bookmarks?.length > 0" no-lines>
     
     <ion-item-sliding *ngFor="let bookmark of bookmarks">
       <ion-item (click)="openPost(bookmark)">
@@ -25,8 +25,18 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
-
-
   </ion-list>
+
+  <div *ngIf="bookmarks?.length == 0">
+    <ion-card>
+      <ion-card-header>
+          <img src="assets/welcome/3.png" />
+      </ion-card-header>
+      <ion-card-content>
+        
+        <p text-center>You have not bookmarked a post, YET!</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
 </ion-content>

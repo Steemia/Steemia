@@ -77,10 +77,17 @@ export class CameraProvider {
       fileTransfer.upload(image, IMG_SERVER, options)
       .then((data) => {
         loader.dismiss();
-        this.presentToast("Image uploaded successfully");
+        if (type === 'post' || type === 'profile') {
+          this.presentToast("Image uploaded successfully", 'bottom');
+        }
+
+        else if (type === 'comment') {
+          this.presentToast("Image uploaded successfully", 'top');
+        }
+        
         let hash = data.response;
 
-        if (type === 'comment') {
+        if (type === 'comment' || type === 'post') {
           resolve('![image](https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash + ')');
         }
 
@@ -90,7 +97,13 @@ export class CameraProvider {
         
       }, (err) => {
         loader.dismiss();
-        this.presentToast(err);
+        if (type === 'post' || type === 'profile') {
+          this.presentToast(err, 'bottom');
+        }
+
+        else if (type === 'comment') {
+          this.presentToast(err, 'top');
+        }
       });
     });
     
@@ -100,11 +113,11 @@ export class CameraProvider {
   * Method to show a toast message
   * @param {String} msg: message to show in the toast
   */
-  private presentToast(msg) {
+  private presentToast(msg: string, position: string) {
     let toast = this.toastCtrl.create({
       message: msg,
       duration: 1500,
-      position: 'bottom'
+      position: position
     });
 
     toast.present();

@@ -307,7 +307,7 @@ export class PostSinglePage {
             body: this.post.body });
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
-            this.presentAlert('saved')
+            this.displayToast('saved');
           });
         } else {
           this.bookmarks = [{ 
@@ -319,7 +319,7 @@ export class PostSinglePage {
           }];
           this.storage.set('bookmarks', this.bookmarks).then(data => { 
             this.is_bookmarked = true;
-            this.presentAlert('saved')
+            this.displayToast('saved');
           });
         }
       });
@@ -340,24 +340,25 @@ export class PostSinglePage {
             this.bookmarks.splice(index,1);
             this.storage.set('bookmarks', this.bookmarks).then(data => {
               this.is_bookmarked = false;
-              this.presentAlert('removed');
-            })
+              this.displayToast('removed');
+            });
           }
         }
-      })
+      });
     }
     else {
       this.alerts.display_alert('NOT_LOGGED_IN');
     }
   }
 
-  presentAlert(param) {
-    let alert = this.alertCtrl.create({
-      title: 'Bookmark '+param+' 😎',
-      subTitle: 'Bookmark '+param+' successfully',
-      buttons: ['OK']
-    });
-    alert.present();
+  displayToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: 'Bookmark ' + msg + ' sucessfully',
+      duration: 1500,
+      position: 'bottom'
+    }); 
+
+    toast.present();
   }
 
   containsObject(array) {

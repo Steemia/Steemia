@@ -15,7 +15,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
   templateUrl: 'bookmarks.html',
 })
 export class BookmarksPage {
-  public bookmarks;
+  public bookmarks = [];
 
   private profile_pc: string = 'assets/user.png';
 

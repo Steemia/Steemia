@@ -7,6 +7,8 @@ import { IonicPage,
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
+import { SettingsProvider } from 'providers/settings/settings';
+import { Subscription } from 'rxjs';
 
 @IonicPage({
   priority: 'medium'
@@ -25,13 +27,18 @@ export class VotesPage {
   private votes: any;
   private is_loading = true;
   private no_content = false;
+  chosenTheme: string;
+  subs: Subscription;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public util: UtilProvider,
+    private _settings: SettingsProvider,
     public menu: MenuController,
     public viewCtrl: ViewController,
     private steemia: SteemiaProvider) {
+
+      this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
   }
 
   ionViewDidLoad() {
@@ -62,6 +69,7 @@ export class VotesPage {
   }
 
   ionViewDidLeave() {
+    this.subs.unsubscribe();
     this.menu.enable(true);
   }
 

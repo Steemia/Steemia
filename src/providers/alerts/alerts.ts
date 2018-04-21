@@ -25,7 +25,15 @@ export class AlertsProvider {
       case 'NOT_LOGGED_IN':
         message = NOT_LOGGED_IN;
         break;
+
+      case 'NO_TAGS':
+        message = ERRORS.TAGS_ERROR.message;
+        break;
       
+      case 'ALL_FIELDS':
+        message = ERRORS.ALL_FIELDS.message;
+        break;
+        
       case 'REBLOGGED_CORRECTLY':
         message = REBLOGGED_CORRECTLY;
         break;

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header id="header">
   <ion-navbar color="primary">
     <ion-title></ion-title>
 
@@ -7,14 +7,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="search-page">
   <ion-spinner *ngIf="isSearching"></ion-spinner>
 
   <ion-grid class="noResults" *ngIf="!results && !isSearching">
     <ion-row>
       <ion-col text-center>
         <div class="ask-steem" text-center>
-          <ion-card text-center>
+          <ion-card text-center id="search-message">
               
               <ion-card-header>
                   <a href="https://www.asksteem.com">

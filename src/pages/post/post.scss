@@ -1,5 +1,9 @@
 page-post {
 
+      hr {
+            background-color: transparent !important;
+      }
+
       // Resolve width for general tablets
       @media only screen and (device-width: 768px) {
 
@@ -35,10 +39,6 @@ page-post {
 
       ion-select {
             max-width: 60% !important;
-      }
-
-      hr {
-            background-color: #f1f2f3 !important;
       }
 
       ion-item {

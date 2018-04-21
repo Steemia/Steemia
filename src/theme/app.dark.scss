@@ -1,0 +1,264 @@
+.dark-theme {
+
+    #header {
+        .toolbar-background {
+            background-color: $dark-menu !important;
+            border-bottom: 1px solid rgba(142, 140, 140, 0.10196078431372549) !important;
+        }
+    }
+
+    #post-card {
+        background-color: $dark-menu !important;
+        color: white !important;
+        border: none !important;
+
+        #header {
+            color: white !important;
+            background-color: $dark-menu !important;
+        }
+
+        #content {
+            h2 {
+                color: white !important;
+            }
+        }
+
+        #likes {
+            color: white !important;
+        }
+
+        #comment-icon, #comment {
+            color: white !important;
+        }
+
+        #payout {
+            color: white !important;
+        }
+
+        #category {
+            color: color($colors, primary) !important;
+        }
+    }
+
+    #main-share-card {
+        background-color: $dark-menu !important;
+        color: white !important;
+        border: none !important;
+
+        #header {
+            background-color: $dark-menu !important;
+        }
+
+    }
+
+    #menu-item {
+        background-color: $dark-bg !important;
+
+        #menu-title {
+            color: white !important;
+        }
+
+        ion-icon {
+            color: white !important;
+        }
+    }
+
+    #notification-item {
+        background-color: $dark-bg !important;
+
+        h2 {
+            color: white !important;
+        }
+    }
+
+    #voters-list {
+        ion-item {
+            background-color: $dark-bg !important;
+
+            h2 {
+                color: white !important;
+            }
+        }
+    }
+
+    #content-single {
+        background-color: $dark-menu !important;
+
+        h2, .h3-custom {
+            color: white !important;
+        }
+
+        #hr-separator {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        #content {
+            p, span, h1, h2, h3, h4, h5, h6, li, ul, div, em, strong, center, td {
+                color: white !important;
+            }
+            
+        }
+
+        ion-item {
+            background-color: $dark-menu !important;
+        }
+
+        .chat-bubble.left {
+            background-color: $dark-bg !important;
+
+            p {
+                color: white !important;
+            }
+            
+        }
+        
+    }
+
+    #bookmarks {
+        ion-item {
+            background-color: $dark-bg !important;
+
+            h2 {
+                color: white !important
+            }
+        }
+    }
+
+    #wallet-item {
+        .card {
+            background-color: $dark-menu !important;
+        }
+    }
+
+    #wallet-page {
+        #wallet-item {
+            .card {
+                background-color: $dark-menu !important;
+            }
+        }
+    }
+
+    #about-page {
+        p, ion-label, li, ul {
+            color: white !important;
+        }
+    }
+
+    #settings-page {
+
+        ion-list-header {
+            background-color: $dark-menu !important;
+        }
+
+        ion-item {
+            background-color: $dark-bg !important;
+        }
+
+        ion-label, ion-icon, .select-text {
+            color: white !important;
+        }
+    }
+
+    #search-page {
+        ion-item {
+            background-color: $dark-bg !important;
+        }
+
+        ion-label {
+            h2 {
+                color: white !important;
+            }
+        }
+    }
+
+    #editor-toolbar {
+
+    }
+
+    #no-data {
+        background-color: $dark-bg !important;
+
+        p {
+            color: white !important;
+        }
+    }
+    
+    #search-message, #not-logged {
+        background-color: $dark-menu !important;
+        -webkit-box-shadow: none !important;
+		box-shadow: none !important;
+
+        p {
+            color: white !important;
+        }
+    }
+
+    .card {
+        border: none !important;
+    }
+
+    .scroll-content {
+        background-color: $dark-bg !important;
+    }
+
+    .chat-bubble.left {
+        background-color: $dark-menu !important;
+    }
+
+    .message, .created_date {
+        color: white !important;
+    }
+
+    #comment-footer {
+        background-color: $dark-menu !important;
+        border-top: 1px solid rgba(142, 140, 140, 0.10196078431372549) !important;
+
+        ion-item {
+            background-color: $dark-menu !important;;
+        }
+
+        ion-textarea {
+            color: white !important;
+        }
+    }
+    .opaque {
+        background-color: $dark-menu !important;
+    
+        &:after {
+          height: 5px !important;
+        }
+    
+        .toolbar-background {
+          background-color: color($colors, primary);
+        }
+    }
+
+    ion-content {
+        background-color: $dark-bg !important;
+    }
+
+    ion-spinner * {
+        width: 28px;
+        height: 28px;
+        stroke: white !important;
+        fill: transparent !important;
+    }
+
+    .tabbar {
+        background-color: $dark-menu !important;
+        border-top: 1px solid rgba(142, 140, 140, 0.10196078431372549) !important;
+
+        a[aria-selected=true] {
+            ion-icon, span {
+                color: white !important;
+            }
+        }
+
+        a[aria-selected=false] {
+            ion-icon, span {
+                color: #8e8c8c !important;
+            }
+        }
+    }
+
+}

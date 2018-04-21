@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import { Component, Input, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { App, ModalController, PopoverController, NavController } from 'ionic-angular';
 // PROVIDERS
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
@@ -11,13 +11,11 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
   templateUrl: 'post-card.html'
 })
 export class PostCardComponent implements AfterViewInit {
-
   @Input('post') content: any;
   @Input('from') from: string;
   @Input('user') user: string;
   private is_voting: boolean = false;
   player = [];
-  private revealed: boolean = false;
   private reveal_trigger: boolean = false;
   private inner_rebblog: boolean = false;
 
@@ -31,9 +29,8 @@ export class PostCardComponent implements AfterViewInit {
     private steemConnect: SteemConnectProvider,
     private steemiaProvider: SteemiaProvider) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this.content.author !== this.user && this.from == 'PROFILE') {
-      console.log("got here")
       this.inner_rebblog = true;
       
       this.cdr.detectChanges();

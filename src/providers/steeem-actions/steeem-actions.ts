@@ -267,6 +267,7 @@ export class SteeemActionsProvider {
       tags = [];
     }
 
+    // Insert Steemia Promo
     description += STEEMIA_PROMO;
 
     // Push the tag Steemia to the post
