@@ -25,7 +25,7 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public steemData;
-  private access_token;
+  private access_token: string;
   public instance;
   public user: string;
   private login_status: boolean;

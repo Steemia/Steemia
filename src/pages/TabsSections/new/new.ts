@@ -67,6 +67,7 @@ export class NewPage {
         });
       }
     });
+
   }
 
   private clear_links(): void {

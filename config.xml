@@ -104,7 +104,7 @@
     <plugin name="cordova-plugin-google-analytics" spec="^1.8.3" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-fcm" spec="git+https://github.com/Steemia/cordova-plugin-fcm.git" />
-    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <engine name="browser" spec="~5.0.3" />
     <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
 </widget>

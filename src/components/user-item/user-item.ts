@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UtilProvider } from 'providers/util/util';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { NavController } from 'ionic-angular';
+import { AlertsProvider } from 'providers/alerts/alerts';
 
 /**
  * Class for user item
@@ -21,6 +22,7 @@ export class UserItemComponent {
 
   constructor(public util: UtilProvider,
   private steemActions: SteeemActionsProvider,
+  private alerts: AlertsProvider,
   private navCtrl: NavController) {}
 
   /**
@@ -30,7 +32,13 @@ export class UserItemComponent {
     this.is_loading = true;
     this.steemActions.dispatch_follow(this.item.name).then(data => {
       this.is_loading = false;
-      this.item.has_followed = true;
+      if (data === 'not-logged') {
+        this.alerts.display_alert('NOT_LOGGED_IN');
+      }
+
+      else {
+        this.item.has_followed = true;
+      }
     });
   }
 
@@ -41,7 +49,12 @@ export class UserItemComponent {
     this.is_loading = true;
     this.steemActions.dispatch_unfollow(this.item.name).then(data => {
       this.is_loading = false;
-      this.item.has_followed = false;
+      if (data === 'not-logged') {
+        this.alerts.display_alert('NOT_LOGGED_IN');
+      }
+      else {
+        this.item.has_followed = false;
+      }
     });
   }
 
