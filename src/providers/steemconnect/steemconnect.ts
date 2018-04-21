@@ -8,6 +8,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http } from '@angular/http';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
+import { SettingsProvider } from 'providers/settings/settings';
+import { StatusBar } from '@ionic-native/status-bar';
 
 /**
  * 
@@ -23,7 +25,7 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public steemData;
-  private access_token: string;
+  private access_token;
   public instance;
   public user: string;
   private login_status: boolean;
@@ -41,7 +43,9 @@ export class SteemConnectProvider {
   constructor(public storage: Storage,
     public platform: Platform,
     private iab: InAppBrowser,
+    private statusBar: StatusBar,
     private loading: LoadingController,
+    private _settings: SettingsProvider,
     private http: Http,
     private secureStorage: SecureStorage) {
 
@@ -237,6 +241,9 @@ export class SteemConnectProvider {
             status: this.login_status,
             logged_out: true
           });
+          this._settings.setTheme('blue-theme');
+          this.storage.set('theme', 'blue-theme');
+          this.statusBar.backgroundColorByHexString("#488aff");
           loading.dismiss();
           resolve('done');
         }

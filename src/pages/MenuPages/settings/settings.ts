@@ -56,7 +56,9 @@ export class SettingsPage {
     this.menu.enable(true);
   }
 
-  onChangeUpvote(value) { }
+  onChangeUpvote(value) {
+    this.util.setVoteValue(this.upvote);
+  }
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -65,10 +67,6 @@ export class SettingsPage {
       buttons: ['OK']
     });
     alert.present();
-  }
-  saveSettings() {
-    this.util.setVoteValue(this.upvote);
-    this.presentAlert();
   }
 
   // We're finally wiring in some change communication, which will allow us to
@@ -95,10 +93,6 @@ export class SettingsPage {
       toast.present();
 
     });
-
-
-
-
   }
 
 }
