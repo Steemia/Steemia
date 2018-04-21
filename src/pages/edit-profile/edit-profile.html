@@ -13,7 +13,7 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-avatar>
+      <ion-avatar tappable (tap)="presentActionSheet()">
         <img src="{{ account_data?.profile.profile_image }}" (error)="util.imgError('profile',$event)">
       </ion-avatar>
     </ion-item>
