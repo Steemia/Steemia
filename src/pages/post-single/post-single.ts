@@ -20,6 +20,7 @@ import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
 import { CameraProvider } from 'providers/camera/camera';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage({
   priority: 'high'
@@ -45,11 +46,13 @@ export class PostSinglePage {
   private ref;
   private bookmarks;
   private caret: number = 0;
+  private parsed_body;
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private dom: DomSanitizer,
     public menu: MenuController,
     private camera: CameraProvider,
     private actionSheetCtrl: ActionSheetController,
@@ -69,6 +72,8 @@ export class PostSinglePage {
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
 
+    this.parsed_body= this.getPostBody();
+    
     this.current_user = (this.steemConnect.user_temp as any).user;
 
     if (this.current_user === this.post.author) {
@@ -87,6 +92,10 @@ export class PostSinglePage {
         
       });
     });
+  }
+
+  getPostBody() {
+    return this.dom.bypassSecurityTrustHtml(this.post.full_body);
   }
 
   ionViewDidEnter() {

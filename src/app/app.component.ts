@@ -163,10 +163,11 @@ export class MyApp {
       
       this.ga.track_page('Loaded App');
       this.imageLoaderConfig.setBackgroundSize('cover');
+      this.imageLoaderConfig.setImageReturnType('base64');
       this.imageLoaderConfig.setHeight('200px');
       this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
       this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-      this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
+      this.imageLoaderConfig.setMaximumCacheAge(24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {

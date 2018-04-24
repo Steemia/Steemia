@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, ViewController, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { Subscription } from 'rxjs';
+import { SettingsProvider } from 'providers/settings/settings';
+
 
 @IonicPage()
 @Component({
@@ -12,14 +15,19 @@ export class EditCommentPage {
 
   private comment: any;
   private comment_body: string;
+  chosenTheme: string;
+  subs: Subscription;
 
   constructor(public viewCtrl: ViewController,
     public navParams: NavParams,
     private alerts: AlertsProvider,
     public menu: MenuController,
+    private _settings: SettingsProvider,
     private loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
   ) {
+
+    this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
 
     this.comment = this.navParams.get('comment');
     this.comment_body = this.comment.raw_body;
@@ -30,6 +38,7 @@ export class EditCommentPage {
   }
 
   ionViewDidLeave() {
+    this.subs.unsubscribe();
     this.menu.enable(true);
   }
 

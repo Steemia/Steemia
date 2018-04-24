@@ -10,15 +10,15 @@
 <ion-content id="bookmarks">
   <ion-list *ngIf="bookmarks?.length > 0" no-lines>
     
-    <ion-item-sliding *ngFor="let bookmark of bookmarks">
-      <ion-item (click)="openPost(bookmark)">
+    <ion-item-sliding *ngFor="let bookmark of bookmarks" no-lines>
+      <ion-item (click)="openPost(bookmark)" no-lines>
         <ion-thumbnail item-start>
           <img [src]="bookmark.body" (error)="util.imgError('post', $event)">
         </ion-thumbnail>
         <h2> {{ bookmark.title }} </h2>
         <p> @{{ bookmark.author }} </p>
       </ion-item>
-      <ion-item-options side="right">
+      <ion-item-options side="right" no-lines>
         <button ion-button color="danger" (click)="removeBookmark(bookmark)">
           <ion-icon name="trash"></ion-icon>
           Remove

@@ -1,5 +1,5 @@
 import { UtilProvider } from 'providers/util/util';
-import { Component, NgZone, ChangeDetectorRef, } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
@@ -11,7 +11,8 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 })
 @Component({
   selector: 'section-scss',
-  template: feedTemplate
+  template: feedTemplate,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedPage {
 
@@ -49,12 +50,14 @@ export class FeedPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchFeed();
         });
+        this.cdr.detectChanges();
       }
 
       else if (res.status === false) {
         this.is_loading = false;
         this.username = '';
         this.logged_in = false;
+        this.cdr.detectChanges();
       }
 
       else if (res.logged_out === true) {
@@ -62,6 +65,7 @@ export class FeedPage {
         this.username = '';
         this.is_loading = false;
         this.reinitialize();
+        this.cdr.detectChanges();
       }
     });
   }

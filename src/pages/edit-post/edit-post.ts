@@ -16,7 +16,9 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { CameraProvider } from 'providers/camera/camera';
 
-@IonicPage()
+@IonicPage({
+  priority: 'medium'
+})
 @Component({
   selector: 'page-edit-post',
   templateUrl: 'edit-post.html',

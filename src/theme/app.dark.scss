@@ -84,7 +84,7 @@
     #content-single {
         background-color: $dark-menu !important;
 
-        h2, .h3-custom, ion-textarea {
+        h2, .h3-custom, ion-textarea, .selectable-text{
             color: white !important;
         }
 
@@ -97,7 +97,7 @@
                 color: white !important;
             }
 
-            blockquote {
+            blockquote, pre{
                 background-color: $dark-bg !important;
             }
             
@@ -161,6 +161,14 @@
                 background-color: $dark-menu !important;
             }
         }
+
+        .card, ion-item {
+            background-color: $dark-menu !important;
+        }
+
+        p {
+            color: white !important;
+        }
     }
 
     #about-page {
@@ -211,6 +219,10 @@
         background-color: $dark-menu !important;
         border-top: 1px solid #293036 !important;
 
+        .toolbar-background-md {
+            background-color: $dark-menu !important;
+        }
+
         i {
             color: white !important;
         }
@@ -240,6 +252,44 @@
                 }
             }
         }
+    }
+
+    #stats-profile {
+        ion-segment {
+            background-color: $dark-menu !important;
+
+            ion-icon, p {
+                color: white !important;
+            }
+        }
+    }
+
+    .opaque {
+        background-color: $dark-menu !important;
+    }
+
+    #profile-sections {
+        ion-list {
+            ion-item {
+                background-color: $dark-bg !important;
+
+                ion-icon, ion-label, h2, p {
+                    color: white !important;
+                }
+            }
+        }
+    }
+
+    #edit-comment-box {
+
+        ion-item {
+            background-color: $dark-bg !important;
+
+            ion-textarea {
+                color: white !important;
+            }
+        }
+
     }
 
     #no-data {

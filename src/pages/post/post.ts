@@ -207,24 +207,27 @@ export class PostPage {
         let tags;
 
         if (this.storyForm.controls.tags.value.indexOf(',') > -1) {
-          tags = this.storyForm.controls.tags.value.split(',')
+          tags = this.storyForm.controls.tags.value.trim().split(',')
         }
 
         else if (this.storyForm.controls.tags.value.indexOf(' ') > -1) {
-          tags = this.storyForm.controls.tags.value.split(' ');
+          tags = this.storyForm.controls.tags.value.trim().split(' ');
         }
 
-        else if (this.storyForm.controls.tags.value === '') {
+        else if (this.storyForm.controls.tags.value.trim() === '') {
           this.alerts.display_alert('NO_TAGS');
           return;
         }
-        console.log(tags)
+
+        else {
+          tags = [this.storyForm.controls.tags.value.trim()]
+        }
+        
         tags = tags.map(v => v.toLowerCase());
         this.steemActions.dispatch_post(
           this.storyForm.controls.title.value,
           this.storyForm.controls.description.value,
           tags, this.upvote, this.rewards).then(res => {
-            console.log(res)
 
             if (res === 'not-logged-in') {
               // Show alert telling the user that needs to login
