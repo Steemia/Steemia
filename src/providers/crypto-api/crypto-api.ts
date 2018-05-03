@@ -84,7 +84,7 @@ export class CryptoProvider {
    */
   public get_prices() {
     return new Promise(resolve => {
-      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
+      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
         .toPromise().then((data: any) => {
           resolve({
             steem: data.STEEM.USD,
