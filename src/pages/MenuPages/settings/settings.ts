@@ -13,7 +13,7 @@ import { Storage } from '@ionic/storage';
 })
 export class SettingsPage {
   public upvote = 1;
-  public language;
+  public language = [];
   private currency;
   selected: String;
   availableThemes: { className: string, prettyName: string }[];
@@ -25,7 +25,9 @@ export class SettingsPage {
     private statusBar: StatusBar,
     public menu: MenuController,
     private _settings: SettingsProvider,
-    public util: UtilProvider) {
+    public util: UtilProvider) { }
+
+  ionViewDidLoad() {
 
     // now we're setting the selected property asynchronously, based
     // on the behavior of our observable theme in SettingsService
@@ -36,23 +38,22 @@ export class SettingsPage {
 
     this.language = [
       'en_US'
-    ]
+    ];
+
     this.currency = [
       'USD'
-    ]
-  }
+    ];
 
-  ionViewDidLoad() {
     this.util.getVoteValue().then(data => {
       this.upvote = (data as any) || 1;
-    })
+    });
   }
 
   ionViewDidEnter() {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.menu.enable(true);
   }
 

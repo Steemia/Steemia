@@ -39,6 +39,7 @@ import { GoogleTrackingProvider } from '../providers/google-tracking/google-trac
 import { WebsocketsProvider } from '../providers/websockets/websockets';
 import { CameraProvider } from '../providers/camera/camera';
 import { SettingsProvider } from '../providers/settings/settings';
+import { SharedServiceProvider } from '../providers/shared-service/shared-service';
 
 
 @NgModule({
@@ -89,11 +90,12 @@ import { SettingsProvider } from '../providers/settings/settings';
     Camera,
     CryptoProvider,
     GoogleTrackingProvider,
-    //GoogleAnalytics,
-    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
+    GoogleAnalytics,
+    //{ provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
     WebsocketsProvider,
     FCM,
-    CameraProvider
+    CameraProvider,
+    SharedServiceProvider
   ]
 })
 export class AppModule {}

@@ -13,9 +13,17 @@
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
   <ion-list style="margin-bottom: 25%;">
-    <div *ngFor="let comment of comments | slice:0:slice;" class="message-wrapper">
-      <render-comment [comment]="comment"></render-comment>
-    </div>
+    <ul class="pad">
+      <ng-template #recursiveList let-commentsTree>
+        <li *ngFor="let item of commentsTree">
+          <render-comment [comment]="item"></render-comment>
+          <ul *ngIf="item.replies.length > 0">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.replies }"></ng-container>
+          </ul>
+        </li>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: commentsTree }"></ng-container>
+    </ul>
   </ion-list>
 
   <no-data *ngIf="no_content == true" icon="chatbubbles" title="This post does not have any comments, YET!">

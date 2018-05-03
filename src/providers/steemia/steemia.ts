@@ -330,4 +330,9 @@ export class SteemiaProvider {
     return this.http.get(STEEMIA_USERS + 'voting_power?username=' + username).retry(3).toPromise();
   }
 
+  public get_comments_tree(author: string, permlink: string, username: string) {
+    return this.http.get('http://localhost:3000/posts/comments-new?author=' + author + 
+                         '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
+  }
+
 }

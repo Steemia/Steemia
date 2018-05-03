@@ -18,8 +18,12 @@ export const trendTemplate = `
     </ion-item>
   </ion-card>
 
-  <post-render *ngIf="!is_loading" [posts]="contents" [from]="'NORMAL'" [user]="'null'"></post-render>
-
+  <div *ngIf="!is_loading">
+    <div *ngFor="let content of contents; trackBy: trackById">
+      <post-card [post]="content" [from]="'NORMAL'" [user]="'null'"></post-card>
+    </div>
+  </div>
+  
   <div *ngIf="is_more_post == false">
     <p text-center>There are not more posts to load</p>
   </div>

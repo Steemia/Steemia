@@ -57,18 +57,17 @@ export class ProfilePage {
     public modalCtrl: ModalController,
     private steemConnect: SteemConnectProvider,
     private alerts: AlertsProvider,
-    private steemActions: SteeemActionsProvider) {
-
-    this.username = this.navParams.get('author');
-
-    this.current_user = (this.steemConnect.user_temp as any).user;
-  }
+    private steemActions: SteeemActionsProvider) { }
 
   private render_image() {
     return 'https://steemitimages.com/u/' + this.username + '/avatar/small';
   }
 
   ionViewDidLoad() {
+
+    this.username = this.navParams.get('author');
+
+    this.current_user = (this.steemConnect.user_temp as any).user;
 
     this.zone.runOutsideAngular(() => {
       this.dispatchPosts();
@@ -153,7 +152,10 @@ export class ProfilePage {
    */
   private get_account() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
   
     loading.present();
@@ -243,4 +245,9 @@ export class ProfilePage {
       Username: this.username
     });
   }
+
+  trackById(index, post) {
+    return post.title;
+  }
+  
 }

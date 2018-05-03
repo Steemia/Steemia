@@ -180,4 +180,8 @@ export class FeedPage {
     this.appCtrl.getRootNavs()[0].push(str);
   }
 
+  trackById(index, post) {
+    return post.title;
+  }
+
 }

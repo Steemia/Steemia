@@ -1,0 +1,21 @@
+<ion-header [class]="chosenTheme">
+  <ion-navbar color="primary" id="header">
+    <ion-buttons>
+      <button ion-button (tap)="dismiss()">
+        <ion-icon class="custom-close" name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Reply To Comment</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content [class]="chosenTheme" padding>
+  <div id="edit-comment-box">
+    <ion-item no-lines>
+      <ion-textarea type="text" rows="20" placeholder="Type your reply here" [(ngModel)]="reply"></ion-textarea>
+    </ion-item>
+  </div>
+
+  <button ion-button round block (click)="save()">Submit</button>
+</ion-content>

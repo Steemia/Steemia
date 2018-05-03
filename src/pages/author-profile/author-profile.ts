@@ -155,7 +155,10 @@ export class AuthorProfilePage {
    */
   private get_account() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
   
     loading.present();
@@ -223,7 +226,10 @@ export class AuthorProfilePage {
 
   private follow() {
     let loading = this.loadingCtrl.create({
-      content: "Please wait until the user is followed"
+      content: "Please wait until the user is followed",
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
 
     loading.present();
@@ -248,7 +254,10 @@ export class AuthorProfilePage {
 
   private unfollow() {
     let loading = this.loadingCtrl.create({
-      content: "Please wait until the user is unfollowed"
+      content: "Please wait until the user is unfollowed",
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
 
     loading.present();
@@ -290,4 +299,9 @@ export class AuthorProfilePage {
       Username: this.username
     });
   }
+
+  trackById(index, post) {
+    return post.title;
+  }
+  
 }

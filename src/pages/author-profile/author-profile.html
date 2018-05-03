@@ -83,7 +83,11 @@
 
         <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-        <post-render *ngIf="!is_loading" [posts]="contents" [from]="'PROFILE'" [user]="username"></post-render>
+        <div *ngIf="!is_loading">
+          <div *ngFor="let content of contents; trackBy: trackById">
+            <post-card [post]="content" [from]="'PROFILE'" [user]="username"></post-card>
+          </div>
+        </div>
 
         <no-data *ngIf="no_post == true" icon="chatbubbles" title="This user has not posts, YET!">
         </no-data>

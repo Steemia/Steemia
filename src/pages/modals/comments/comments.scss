@@ -56,6 +56,14 @@ page-comments {
 	.notFound {
 		font-size: 7.5em !important;
 		color: gainsboro !important;
-	}
+      }
+      
+      ul {
+            list-style-type: none;
+      }
+    
+      .pad {
+            padding: 0 !important;
+      }
 
 }
