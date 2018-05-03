@@ -21,11 +21,21 @@ export class ReplyCommentPage {
       this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
   }
 
-  ionViewDidLeave() {
+  ionViewDidLeave(): void {
     this.subs.unsubscribe();
   }
 
+  /**
+   * Method to dismiss the current modal
+   */
   private dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  /**
+   * Method to close modal with data passed to last component
+   */
+  private save() {
     this.viewCtrl.dismiss({
       status: true,
       reply: this.reply

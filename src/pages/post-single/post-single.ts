@@ -1,14 +1,16 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, 
-         NavController, 
-         NavParams, 
-         LoadingController, 
-         ActionSheetController,
-         MenuController,
-         ToastController,
-         AlertController,
-         PopoverController,
-         Navbar } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  LoadingController,
+  ActionSheetController,
+  MenuController,
+  ToastController,
+  AlertController,
+  PopoverController,
+  Navbar
+} from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -48,7 +50,7 @@ export class PostSinglePage {
   private bookmarks;
   private caret: number = 0;
   private parsed_body;
-  
+
   private commentsTree: Array<any> = [];
 
   constructor(private zone: NgZone,
@@ -68,17 +70,17 @@ export class PostSinglePage {
     public util: UtilProvider,
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
-    private steemConnect: SteemConnectProvider) { 
+    private steemConnect: SteemConnectProvider) {
 
-      this.user = (this.steemConnect.user_temp as any);
+    this.user = (this.steemConnect.user_temp as any);
 
-  } 
+  }
 
-  ionViewDidLoad() {
+  ionViewDidLoad(): void {
     this.post = this.navParams.get('post');
 
-    this.parsed_body= this.getPostBody();
-    
+    this.parsed_body = this.getPostBody();
+
     this.current_user = (this.steemConnect.user_temp as any).user;
 
     if (this.current_user === this.post.author) {
@@ -94,24 +96,32 @@ export class PostSinglePage {
         if (data) {
           this.containsObject(data);
         }
-        
+
       });
     });
   }
 
+  ionViewDidEnter(): void {
+    this.navbar.backButtonClick = () => this.navCtrl.pop({ animate: false });
+    this.menu.enable(false);
+  }
+
+  ionViewDidLeave(): void {
+    this.menu.enable(true);
+  }
+
+  /**
+   * Method to return a sanitized post body
+   * @returns a string with the body of the post
+   */
   getPostBody() {
     return this.dom.bypassSecurityTrustHtml(this.post.full_body);
   }
 
-  ionViewDidEnter() {
-    this.navbar.backButtonClick = () => this.navCtrl.pop({animate: false});
-    this.menu.enable(false);
-  }
-
-  ionViewDidLeave() {
-    this.menu.enable(true);
-  }
-
+  /**
+   * Method to load comments as tree
+   * @param action 
+   */
   private load_comments(action?: string) {
     this.steemia.get_comments_tree(this.post.author, encodeURIComponent(this.post.url), this.current_user).then((data: any) => {
       // Check if the action is to refresh. If so, we need to 
@@ -132,6 +142,9 @@ export class PostSinglePage {
     });
   }
 
+  /**
+   * Method to initialize comments back to an empty array
+   */
   private reinitialize() {
     this.commentsTree = [];
   }
@@ -196,7 +209,7 @@ export class PostSinglePage {
         }
         this.refreshPost();
       }
-      
+
     });
   }
 
@@ -230,7 +243,7 @@ export class PostSinglePage {
         setTimeout(() => {
           this.alerts.display_alert('FLAG_ERROR');
         }, 200);
-        
+
       }
     });
   }
@@ -252,7 +265,10 @@ export class PostSinglePage {
     });
   }
 
-  private reblog() {
+  /**
+   * Method to reblog the post
+   */
+  private reblog(): void {
 
     let loading = this.loadingCtrl.create({
       content: 'Hang on while we reblog this post 😎'
@@ -277,6 +293,12 @@ export class PostSinglePage {
     });
   }
 
+  /**
+   * Method to display a delayed alert to prevent two alerts
+   * oppening at the same time
+   * @param loader 
+   * @param msg 
+   */
   private show_prompt(loader, msg) {
     loader.dismiss();
     setTimeout(() => {
@@ -284,9 +306,12 @@ export class PostSinglePage {
     }, 500);
   }
 
+  /**
+   * Method to socially share the post
+   */
   private share() {
     this.steemActions.dispatch_share(this.post.url).then(res => {
-      
+
     })
   }
 
@@ -316,7 +341,7 @@ export class PostSinglePage {
         });
         loading.dismiss();
       }
-      
+
       else if (res === 'COMMENT_INTERVAL') {
         this.show_prompt(loading, 'COMMENT_INTERVAL');
       }
@@ -324,36 +349,43 @@ export class PostSinglePage {
     });
   }
 
+  /**
+   * Method to open page to edit the current post
+   */
   editPost() {
     this.navCtrl.push("EditPostPage", {
       post: this.post
     });
   }
 
+  /**
+   * Method to add a post to the bookmarks
+   */
   addBookmark() {
     if ((this.steemConnect.user_temp as any).user) {
       this.storage.get('bookmarks').then(data => {
-        if(data) {
+        if (data) {
           this.bookmarks = data;
-          this.bookmarks.push({ 
-            author: this.post.author, 
-            permlink: this.post.root_permlink, 
+          this.bookmarks.push({
+            author: this.post.author,
+            permlink: this.post.root_permlink,
             url: this.post.url,
             title: this.post.title,
-            body: this.post.body });
-          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+            body: this.post.body
+          });
+          this.storage.set('bookmarks', this.bookmarks).then(data => {
             this.is_bookmarked = true;
             this.displayToast('saved');
           });
         } else {
-          this.bookmarks = [{ 
-            author: this.post.author, 
-            permlink: this.post.root_permlink, 
+          this.bookmarks = [{
+            author: this.post.author,
+            permlink: this.post.root_permlink,
             url: this.post.url,
             title: this.post.title,
-            body: this.post.body 
+            body: this.post.body
           }];
-          this.storage.set('bookmarks', this.bookmarks).then(data => { 
+          this.storage.set('bookmarks', this.bookmarks).then(data => {
             this.is_bookmarked = true;
             this.displayToast('saved');
           });
@@ -363,17 +395,20 @@ export class PostSinglePage {
     else {
       this.alerts.display_alert('NOT_LOGGED_IN');
     }
-    
+
   }
 
-  removeBookmark() {
+  /**
+   * Method to remove post from bookmarks
+   */
+  removeBookmark(): void {
     if ((this.steemConnect.user_temp as any).user) {
       this.storage.get('bookmarks').then(data => {
         this.bookmarks = data;
-        for(let object of data) {
+        for (let object of data) {
           if (object.author === this.post.author && object.url === this.post.url) {
             let index = this.bookmarks.indexOf(object);
-            this.bookmarks.splice(index,1);
+            this.bookmarks.splice(index, 1);
             this.storage.set('bookmarks', this.bookmarks).then(data => {
               this.is_bookmarked = false;
               this.displayToast('removed');
@@ -387,24 +422,37 @@ export class PostSinglePage {
     }
   }
 
+  /**
+   * Toast helper for bookmark state
+   * @param msg 
+   */
   displayToast(msg) {
     let toast = this.toastCtrl.create({
       message: 'Bookmark ' + msg + ' sucessfully',
       duration: 1500,
       position: 'bottom'
-    }); 
+    });
 
     toast.present();
   }
 
+  /**
+   * Method to check if the post is currently bookmarked
+   * @param array
+   */
   containsObject(array) {
-    for(let object of array) {
+    for (let object of array) {
       if (object.author === this.post.author && object.url === this.post.url) {
         this.is_bookmarked = true;
       }
     }
-  } 
+  }
 
+  /**
+   * Method to adjust textarea based on the user input so input does
+   * not get hidden
+   * @param event 
+   */
   protected adjustTextarea(event?: any): void {
     this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
     this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].scrollHeight + 'px';
@@ -465,7 +513,7 @@ export class PostSinglePage {
           }
         ]
       });
-  
+
       actionSheet.present();
 
     }
@@ -473,7 +521,7 @@ export class PostSinglePage {
     else {
       this.alerts.display_alert('NOT_LOGGED_IN');
     }
-    
+
   }
 
   /**

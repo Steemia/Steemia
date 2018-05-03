@@ -44,6 +44,7 @@ export class SteemiaProvider {
   }
 
   /**
+   * Method to dispatch the debounced search
    * @method dispatch_search: Method to dispatch the search
    * @param {Observable<string>} term 
    */
@@ -53,6 +54,7 @@ export class SteemiaProvider {
   }
 
   /**
+   * Method to prepare the search operation
    * @method get_search: Prepare the http call for the search
    * @param {String} term: String with the search term
    */
@@ -128,7 +130,12 @@ export class SteemiaProvider {
 
   }
 
-  isEmpty(value) {
+  /**
+   * Helper method to determine whether a string is empty
+   * @param value: String to check
+   * @returns a boolean statement determining whether it is empty or not
+   */
+  private isEmpty(value): boolean {
     return value === '' || value === ' ' || value === null || value === undefined
   }
 
@@ -219,7 +226,7 @@ export class SteemiaProvider {
   * @method dispatch_votes
   * @param {Query} query: Object with data for query
   */
-  public dispatch_votes(query: Query) {
+  public dispatch_votes(query: Query): Promise<any> {
     query.permlink = query.permlink.split('/')[3];
     return this.http.get(STEEMIA_POSTS + 'votes?' + this.util.encodeQueryData(query)).retry(3)
       .share().toPromise();
@@ -232,7 +239,7 @@ export class SteemiaProvider {
    * @method dispatch_account
    * @param {string} account: Username of the user
    */
-  public dispatch_account(account) {
+  public dispatch_account(account): Promise<any> {
     return this.http.get(STEEM_API + 'get_accounts?names[]=%5B%22' + account + '%22%5D')
       .share().toPromise();
   }
@@ -243,7 +250,7 @@ export class SteemiaProvider {
    * @method dispatch_post_single
    * @param {Query} query: Object with data for query
    */
-  public dispatch_post_single(query: Query) {
+  public dispatch_post_single(query: Query): Promise<any> {
     query.permlink = query.permlink.split('/')[3];
     query.username = this.username;
     return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).retry(3).share().toPromise();
@@ -255,7 +262,7 @@ export class SteemiaProvider {
    * @method dispatch_post_single
    * @param {Query} query: Object with data for query
    */
-  public dispatch_post_single_notifications(query: Query) {
+  public dispatch_post_single_notifications(query: Query): Promise<any> {
     query.username = this.username;
     return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).retry(3).share().toPromise();
   }
@@ -264,12 +271,12 @@ export class SteemiaProvider {
    * Method to dispatch comment single data
    * 
    * @method dispatch_comment_single
-   * @param {String} author 
-   * @param {String} permlink 
+   * @param {String} author: Author of the comment
+   * @param {String} permlink: Permlink of the comment
    */
-  public dispatch_comment_single(author: string, permlink: string) {
+  public dispatch_comment_single(author: string, permlink: string): Promise<any> {
 
-    let url = permlink.split('/')[4];
+    let url = permlink.split('/')[4]; // Split the url in order to get the desired permlink
 
     return this.http.get(STEEM_API + 'get_content?' + this.util.encodeQueryData({ author: author, permlink: url }))
       .retry(3).share().toPromise();
@@ -277,11 +284,13 @@ export class SteemiaProvider {
 
   /**
    * Method to dispatch followers of an user
-   * @param {String} username 
-   * @param {Number} limit 
-   * @param {String} start_follower 
+   * @param {String} username: Username to get followers for
+   * @param {Number} limit: How many will be loaded
+   * @param {String} start_following: From where it should start querying
    */
-  public dispatch_followers(username: string, limit: number, start_follower?: string) {
+  public dispatch_followers(username: string, limit: number, start_follower?: string): Promise<any> {
+
+     // If not pagination is indicated, start from 0 (A.K.A empty string)
     if (!start_follower) {
       start_follower = '';
     }
@@ -292,11 +301,13 @@ export class SteemiaProvider {
 
   /**
    * Method to dispatch following of an user
-   * @param {String} username 
-   * @param {Number} limit 
-   * @param {String} start_following 
+   * @param {String} username: Username to get following for
+   * @param {Number} limit: How many will be loaded
+   * @param {String} start_following: From where it should start querying
    */
-  public dispatch_following(username: string, limit: number, start_following?: string) {
+  public dispatch_following(username: string, limit: number, start_following?: string): Promise<any> {
+
+    // If not pagination is indicated, start from 0 (A.K.A empty string)
     if (!start_following) {
       start_following = '';
     }
@@ -307,31 +318,37 @@ export class SteemiaProvider {
 
   /**
    * Method to dispatch user stats data
-   * @param username 
+   * @param {String} username: Username to get stats for
    */
-  public dispatch_stats(username: string) {
+  public dispatch_stats(username: string): Promise<any> {
     return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({user: username})).retry(3).toPromise();
   }
 
   /**
    * Method to see if a user is following you or vice versa.
-   * @param username 
-   * @param target 
+   * @param {String} username: Your username or other user username
+   * @param {String} target: Username to compare against
    */
-  public is_following(username: string, target: string) {
+  public is_following(username: string, target: string): Promise<any> {
     return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({username: username, user: target})).retry(3).toPromise();
   }
 
   /**
    * Method to get voting power
-   * @param username
+   * @param {String} username: Username to get voting power
    */
-  public get_voting_power(username: string) {
+  public get_voting_power(username: string): Promise<any> {
     return this.http.get(STEEMIA_USERS + 'voting_power?username=' + username).retry(3).toPromise();
   }
 
-  public get_comments_tree(author: string, permlink: string, username: string) {
-    return this.http.get('http://localhost:3000/posts/comments-new?author=' + author + 
+  /**
+   * Method to get comments as tree nodes
+   * @param {String} author: Author of the post 
+   * @param {String} permlink: Permlink of the post
+   * @param {String} username: Current user logged in 
+   */
+  public get_comments_tree(author: string, permlink: string, username: string): Promise<any> {
+    return this.http.get(STEEMIA_POSTS + 'comments-new?author=' + author + 
                          '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
   }
 
