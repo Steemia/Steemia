@@ -88,7 +88,7 @@ export class CryptoProvider {
         .toPromise().then((data: any) => {
           resolve({
             steem: data.STEEM.USD,
-            sbd: data.SBD.USD,
+            sbd: data['SBD*'].USD,
             btc: data.BTC.USD.toFixed(2),
             eth: data.ETH.USD.toFixed(2),
             ltc: data.LTC.USD.toFixed(2)
