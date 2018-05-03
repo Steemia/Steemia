@@ -3,7 +3,7 @@ import { LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
-const IMG_SERVER = 'https://steemia.net/api/v0/add';
+const IMG_SERVER = 'img_server';
 
 /**
  * Class/provider to take images from camera/gallery and upload it to IPFS
