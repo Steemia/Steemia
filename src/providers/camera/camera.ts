@@ -3,10 +3,10 @@ import { LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
-const IMG_SERVER = 'img_server';
+const IMG_SERVER = 'https://api.pixelhosting.co/upload';
 
 /**
- * Class/provider to take images from camera/gallery and upload it to IPFS
+ * Class/provider to take images from camera/gallery and upload it to image server
  * 
  * @author Jayser Mendez
  */
