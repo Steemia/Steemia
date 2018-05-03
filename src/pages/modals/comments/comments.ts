@@ -13,7 +13,8 @@ import { ERRORS } from '../../../constants/constants';
 import { CameraProvider } from 'providers/camera/camera';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SettingsProvider } from 'providers/settings/settings';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 
 @IonicPage({
@@ -33,7 +34,7 @@ export class CommentsPage {
 
   private author: string;
   private permlink: string;
-  private comments: Array<any> = [];
+  private commentsTree: Array<any> = [];
   private is_loading = true;
   private is_voting: boolean = false;
   private logged_in: boolean = false;
@@ -54,6 +55,7 @@ export class CommentsPage {
     private formBuilder: FormBuilder,
     private alertCtrl: AlertController,
     private _settings: SettingsProvider,
+    private service: SharedServiceProvider,
     private actionSheetCtrl: ActionSheetController,
     public viewCtrl: ViewController,
     private camera: CameraProvider,
@@ -70,6 +72,14 @@ export class CommentsPage {
 
       this.commentForm = this.formBuilder.group({
         comment: ['', Validators.required],
+      });
+      
+      this.service.reply_status.subscribe(status => {
+        if (status === true) {
+          this.zone.runOutsideAngular(() => {
+            this.load_comments('refresh');
+          });
+        }
       });
   }
 
@@ -92,38 +102,23 @@ export class CommentsPage {
     this.menu.enable(true);
   }
 
-  /**
-   * Method to load the comments of the post
-   * @param action 
-   */
-  private load_comments(action?: string): void {
-    this.steemia.dispatch_comments({
-      permlink: encodeURIComponent(this.permlink),
-      username: this.username
-    }).then((comments: PostsRes) => {
-
+  private load_comments(action?: string) {
+    this.steemia.get_comments_tree(this.author, encodeURIComponent(this.permlink), this.username).then((data: any) => {
       // Check if the action is to refresh. If so, we need to 
       // reinitialize all the data after initializing the query
       // to avoid the data to dissapear
       if (action === "refresh") {
-        console.log('refresh')
         this.reinitialize();
       }
 
-      if (comments.results.length < 1) {
-        this.no_content = true;
-      }
-
-      if (this.slice > comments.results.length) {
-        this.is_more = false;
-      }
-      this.comments = comments.results.reverse();
+      this.commentsTree = data.results;
 
       // Set the loading spinner to false
       this.is_loading = false;
 
       // Tell Angular that changes were made since we detach the auto check
       this.cdr.detectChanges();
+
     });
   }
 
@@ -134,7 +129,7 @@ export class CommentsPage {
   private load_more(infiniteScroll) {
     setTimeout(() => {
       this.slice += 25;
-      if (this.slice > this.comments.length) {
+      if (this.slice > this.commentsTree.length) {
         this.is_more = false;
       }
       infiniteScroll.complete();
@@ -147,7 +142,7 @@ export class CommentsPage {
    */
   private reinitialize() {
     this.no_content = false;
-    this.comments = [];
+    this.commentsTree = [];
   }
 
   /**

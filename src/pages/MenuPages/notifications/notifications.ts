@@ -22,6 +22,10 @@ export class NotificationsPage {
     private steemiaProvider: SteemiaProvider,
     private steemConnect: SteemConnectProvider,
     public util: UtilProvider) {
+    
+  }
+
+  ionViewDidLoad() {
     this.ws.notifications.subscribe(data => {
       if (data) {
         this.notifications = data;

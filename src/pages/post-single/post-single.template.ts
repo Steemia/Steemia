@@ -39,7 +39,7 @@ export const postSinglePage = `
       <hr id="hr-separator" />
     </ion-card-header>
     <ion-card-content no-padding>
-      <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="post?.full_body"></div>
+      <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="parsed_body"></div>
 
       <ion-grid padding>
         <ion-row>
@@ -74,9 +74,21 @@ export const postSinglePage = `
 
       <ion-spinner *ngIf="is_loading"></ion-spinner>
     </ion-card-content>
-    <div *ngFor="let comment of comments" class="message-wrapper">
+
+    <ul class="pad">
+      <ng-template #recursiveList let-commentsTree>
+        <li *ngFor="let item of commentsTree">
+          <render-comment [comment]="item"></render-comment>
+          <ul *ngIf="item.replies.length > 0">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.replies }"></ng-container>
+          </ul>
+        </li>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: commentsTree }"></ng-container>
+    </ul>
+    <!-- <div *ngFor="let comment of comments" class="message-wrapper">
       <render-comment [comment]="comment"></render-comment>
-    </div>
+    </div> -->
 
     <br />
     <br />

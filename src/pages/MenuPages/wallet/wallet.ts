@@ -72,8 +72,8 @@ export class WalletPage {
     private iab: InAppBrowser,
     private cryptoProvider: CryptoProvider) {}
 
-  ionViewWillLoad() {
-
+  
+  ionViewDidLoad() {
     this.account = this.navParams.get("author");
 
     this.getAccount().then(() => {
@@ -99,7 +99,7 @@ export class WalletPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.menu.enable(true);
   }
 

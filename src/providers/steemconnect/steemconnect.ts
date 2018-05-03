@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http } from '@angular/http';
-import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 import { SettingsProvider } from 'providers/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -46,8 +45,7 @@ export class SteemConnectProvider {
     private statusBar: StatusBar,
     private loading: LoadingController,
     private _settings: SettingsProvider,
-    private http: Http,
-    private secureStorage: SecureStorage) {
+    private http: Http) {
 
     this.platform.ready().then(() => {
       // Save a reference of the steemconnect instance for later use
@@ -151,13 +149,10 @@ export class SteemConnectProvider {
    */
   private getToken(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.secureStorage.create('steemia_secure')
-        .then((storage: SecureStorageObject) => {
-          storage.get('access_token').then(
-            data => resolve(data),
-            error => resolve(null)
-          )
-        });
+      this.storage.get('access_token').then(
+        data => resolve(data),
+        error => resolve(null)
+      );
     })
   }
 
@@ -166,12 +161,7 @@ export class SteemConnectProvider {
    * @param {String} token 
    */
   private setToken(token: string): void {
-    this.secureStorage.create('steemia_secure')
-      .then((storage: SecureStorageObject) => {
-
-        storage.set('access_token', token)
-          .then(() => { });
-      });
+    this.storage.set('access_token', token).then(() => {});
   }
 
   /**
@@ -231,10 +221,7 @@ export class SteemConnectProvider {
       SteemConnect.revokeToken((err, res) => {
         if (err) reject(err);
         else {
-          this.secureStorage.create('steemia_secure')
-            .then((storage: SecureStorageObject) => {
-              storage.remove('access_token').then(() => {});
-            });
+          this.storage.remove('access_token').then(() => {});
           this.login_status = false;
           this.user_temp = {};
           this.status.next({

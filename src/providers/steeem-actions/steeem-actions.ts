@@ -202,7 +202,7 @@ export class SteeemActionsProvider {
    * @param {String} permlink 
    * @param {String} body 
    */
-  public dispatch_comment(author, permlink, body) {
+  public dispatch_comment(author: string, permlink: string, body: string) {
 
     if (this.username === '' || this.username === null || this.username === undefined) {
       return Promise.resolve('not-logged');
@@ -215,6 +215,35 @@ export class SteeemActionsProvider {
       this.steemConnect.instance.comment(author, url, this.username, permUrl, '', body, METADATA).then(data => {
         if (data) {
           this.ga.track_event('Comment', 'comment', 'post', 1);
+          resolve("Correct")
+        }
+      }).catch(e => {
+        let include = e.error_description.includes(ERRORS.COMMENT_INTERVAL.error);
+        if (include) {
+          resolve('COMMENT_INTERVAL');
+        }
+      });
+    });
+  }
+
+  /**
+   * Method to dispatch a reply
+   * @param {String} author 
+   * @param {String} permlink 
+   * @param {String} body 
+   */
+  public dispatch_reply(author: string, permlink: string, body: string) {
+
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      return Promise.resolve('not-logged');
+    }
+
+    let permUrl = this.commentPermlink('', permlink);
+
+    return new Promise(resolve => {
+      this.steemConnect.instance.comment(author, permlink, this.username, permUrl, '', body, METADATA).then(data => {
+        if (data) {
+          this.ga.track_event('Comment', 'reply', 'post', 1);
           resolve("Correct")
         }
       }).catch(e => {
@@ -434,7 +463,7 @@ export class SteeemActionsProvider {
 
     return JSON.stringify({
       tags: tags,
-      app: 'steemia/0.0.1'
+      app: 'steemia/0.0.4'
     });
   }
 

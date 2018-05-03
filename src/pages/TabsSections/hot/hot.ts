@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { hotTemplate } from './hot.template';
@@ -10,7 +10,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 })
 @Component({
   selector: 'section-scss',
-  template: hotTemplate
+  template: hotTemplate,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HotPage {
@@ -49,6 +50,7 @@ export class HotPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchHot('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (res.logged_out === true) {
@@ -59,6 +61,7 @@ export class HotPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchHot('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (this.triggered == false) {
@@ -66,6 +69,7 @@ export class HotPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchHot();
         });
+        this.cdr.detectChanges();
       }
     });
   }
@@ -136,11 +140,12 @@ export class HotPage {
    * 
    * @param {Event} refresher
    */
-  private doRefresh(refresher): void {
+  private doRefresh(refresher: Event): void {
     this.clear_links();
     this.zone.runOutsideAngular(() => {
       this.dispatchHot("refresh", refresher);
     });
+    this.cdr.detectChanges();
   }
 
   /**
@@ -149,10 +154,11 @@ export class HotPage {
    * 
    * @param {Event} infiniteScroll
    */
-  private doInfinite(infiniteScroll): void {
+  private doInfinite(infiniteScroll: Event): void {
     this.zone.runOutsideAngular(() => {
       this.dispatchHot("inifinite", infiniteScroll);
     });
+    this.cdr.detectChanges();
   }
 
   private reinitialize() {
@@ -168,6 +174,10 @@ export class HotPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  trackById(index, post) {
+    return post.title;
   }
 
 }

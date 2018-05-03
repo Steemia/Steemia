@@ -45,7 +45,7 @@ export class PostCardComponent implements AfterViewInit {
    * @param {String} url 
    * @returns Returns a string with the id of the video
    */
-  private getId(url): string {
+  private getId(url: string): string {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.match(regExp);
 
@@ -57,7 +57,7 @@ export class PostCardComponent implements AfterViewInit {
    * Method to save all the players into an array
    * @param {Event} player 
    */
-  savePlayer(player): void {
+  savePlayer(player: Event): void {
     this.player.push(player);
   }
 
@@ -163,17 +163,21 @@ export class PostCardComponent implements AfterViewInit {
   private castVote(author: string, permlink: string, weight: number = 1000): void {
     // Set the is voting value of the post to true
     this.is_voting = true;
+    this.cdr.detectChanges();
     this.steemActions.dispatch_vote('posts', author, permlink, weight).then((data: any) => {
       this.is_voting = false; // remove the spinner
+      this.cdr.detectChanges();
       if (data.msg == 'not-logged') return;
 
       if (data.msg === 'correct') {
         if (data.type === 'vote') {
           this.content.vote = true;
+          this.cdr.detectChanges();
         }
 
         else if (data.type === 'unvote') {
           this.content.vote = false;
+          this.cdr.detectChanges();
         }
         this.refreshPost();
       }
@@ -195,6 +199,7 @@ export class PostCardComponent implements AfterViewInit {
       this.content.top_likers_avatars = (data as any).top_likers_avatars;
       this.content.total_payout_reward = (data as any).total_payout_reward;
       this.content.children = (data as any).children;
+      this.cdr.detectChanges();
     });
   }
 

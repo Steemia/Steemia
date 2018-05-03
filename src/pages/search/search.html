@@ -33,8 +33,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <post-render *ngIf="results && !isSearching && is_tag" [posts]="results"></post-render>
+  
+  <div *ngIf="results && !isSearching && is_tag">
+    <div *ngFor="let content of contents; trackBy: trackById">
+      <post-card [post]="results"></post-card>
+    </div>
+  </div>
 
   <ion-list *ngIf="results && !isSearching && is_user">
     <user-item *ngFor="let user of results" [item]="user"></user-item>

@@ -1,18 +1,20 @@
 import { UtilProvider } from 'providers/util/util';
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { SettingsProvider } from 'providers/settings/settings';
+import { Subscription } from 'rxjs';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'page-author-profile',
-  templateUrl: 'author-profile.html',
+  templateUrl: 'author-profile.html'
 })
 export class AuthorProfilePage {
 
@@ -35,12 +37,14 @@ export class AuthorProfilePage {
   private stats = {};
   private following: boolean = false;
   private voting_power: number = 0;
-
+  chosenTheme: string;
+  subs: Subscription;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private zone: NgZone,
     public util: UtilProvider,
+    private _settings: SettingsProvider,
     public menu: MenuController,
     private cdr: ChangeDetectorRef,
     private steemia: SteemiaProvider,
@@ -52,6 +56,8 @@ export class AuthorProfilePage {
     this.username = this.navParams.get('author');
 
     this.current_user = (this.steemConnect.user_temp as any).user;
+
+    this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
   }
 
   private render_image() {
@@ -85,6 +91,7 @@ export class AuthorProfilePage {
   }
 
   ionViewDidLeave() {
+    this.subs.unsubscribe();
     this.menu.enable(true);
   }
 
@@ -148,7 +155,10 @@ export class AuthorProfilePage {
    */
   private get_account() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
   
     loading.present();
@@ -216,7 +226,10 @@ export class AuthorProfilePage {
 
   private follow() {
     let loading = this.loadingCtrl.create({
-      content: "Please wait until the user is followed"
+      content: "Please wait until the user is followed",
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
 
     loading.present();
@@ -241,7 +254,10 @@ export class AuthorProfilePage {
 
   private unfollow() {
     let loading = this.loadingCtrl.create({
-      content: "Please wait until the user is unfollowed"
+      content: "Please wait until the user is unfollowed",
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
 
     loading.present();
@@ -283,4 +299,9 @@ export class AuthorProfilePage {
       Username: this.username
     });
   }
+
+  trackById(index, post) {
+    return post.title;
+  }
+  
 }

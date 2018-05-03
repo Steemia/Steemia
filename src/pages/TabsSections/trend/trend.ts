@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { trendTemplate } from './trend.template';
@@ -10,7 +10,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 })
 @Component({
   selector: 'section-scss',
-  template: trendTemplate
+  template: trendTemplate,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class TrendPage {
@@ -49,6 +50,7 @@ export class TrendPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchTrending('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (res.logged_out === true) {
@@ -59,6 +61,7 @@ export class TrendPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchTrending('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (this.triggered == false) {
@@ -66,6 +69,7 @@ export class TrendPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchTrending();
         });
+        this.cdr.detectChanges();
       }
     });
   }
@@ -141,6 +145,7 @@ export class TrendPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchTrending("refresh", refresher);
     });
+    this.cdr.detectChanges();
   }
 
   /**
@@ -153,6 +158,7 @@ export class TrendPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchTrending("inifinite", infiniteScroll);
     });
+    this.cdr.detectChanges();
   }
 
   private reinitialize() {
@@ -168,6 +174,10 @@ export class TrendPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  trackById(index, post) {
+    return post.title;
   }
 
 }

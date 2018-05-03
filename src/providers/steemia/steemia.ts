@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpInterceptor } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query, PostsRes } from 'models/models';
 import {
@@ -15,6 +15,8 @@ import "rxjs/add/operator/debounceTime";
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/retry';
+import 'rxjs/operator/shareReplay';
 
 /**
  * 
@@ -32,8 +34,8 @@ export class SteemiaProvider {
   private username: string = '';
 
   constructor(public http: HttpClient,
-    public util: UtilProvider,
-    private steemConnect: SteemConnectProvider) {
+              public util: UtilProvider,
+              private steemConnect: SteemConnectProvider) {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
         this.username = res.userObject.user;
@@ -75,7 +77,7 @@ export class SteemiaProvider {
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      result = this.http.get(STEEMIA_SEARCH + 'users?' + this.util.encodeQueryData(que));
+      result = this.http.get(STEEMIA_SEARCH + 'users?' + this.util.encodeQueryData(que)).retry(3);
     }
 
     // If the search is for a tag
@@ -95,7 +97,7 @@ export class SteemiaProvider {
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      result = this.http.get(STEEMIA_SEARCH + 'tags?' + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_SEARCH + 'tags?' + this.util.encodeQueryData(que)).retry(3)
     }
 
     else if (this.isEmpty(value) === true) {
@@ -117,7 +119,7 @@ export class SteemiaProvider {
         que.username = this.username;
       }
       
-      result = this.http.get(STEEMIA_SEARCH + 'posts?' + this.util.encodeQueryData(que))
+      result = this.http.get(STEEMIA_SEARCH + 'posts?' + this.util.encodeQueryData(que)).retry(3)
         .share()
     }
 
@@ -138,7 +140,7 @@ export class SteemiaProvider {
    */
   public dispatch_feed(query: Query): Promise<any> {
 
-    return this.http.get(STEEMIA_POSTS + 'feed?' + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + 'feed?' + this.util.encodeQueryData(query)).retry(3)
       .share().toPromise();
   }
 
@@ -152,7 +154,7 @@ export class SteemiaProvider {
    * @param {String} category 
    */
   public get_posts(type: string, query: Query, category?: string) {
-    return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query)).retry(3)
         .share();
   }
 
@@ -174,7 +176,7 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_profile_posts(query: Query): Promise<any> {
-    return this.http.get(STEEMIA_POSTS + 'blog?' + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + 'blog?' + this.util.encodeQueryData(query)).retry(3)
       .share().toPromise()
   }
 
@@ -186,7 +188,7 @@ export class SteemiaProvider {
    */
   public dispatch_profile_info(query: Query): Promise<any> {
 
-    return this.http.get(STEEMIA_USERS + 'info?' + this.util.encodeQueryData(query)).toPromise();
+    return this.http.get(STEEMIA_USERS + 'info?' + this.util.encodeQueryData(query)).retry(3).toPromise();
 
   }
 
@@ -197,7 +199,7 @@ export class SteemiaProvider {
    * @param {Query} query: Object with data for query
    */
   public dispatch_comments(query: Query) {
-    return this.http.get(STEEMIA_POSTS + 'comments?' + this.util.encodeQueryData(query)).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'comments?' + this.util.encodeQueryData(query)).retry(3).toPromise();
   }
 
 
@@ -208,7 +210,7 @@ export class SteemiaProvider {
    * @param {string} account: Username of the user
    */
   public dispatch_menu_profile(username: string): Promise<any> {
-    return this.http.get(STEEMIA_USERS + 'info?user=' + username).share().toPromise();
+    return this.http.get(STEEMIA_USERS + 'info?user=' + username).retry(3).share().toPromise();
   }
 
   /**
@@ -219,7 +221,7 @@ export class SteemiaProvider {
   */
   public dispatch_votes(query: Query) {
     query.permlink = query.permlink.split('/')[3];
-    return this.http.get(STEEMIA_POSTS + 'votes?' + this.util.encodeQueryData(query))
+    return this.http.get(STEEMIA_POSTS + 'votes?' + this.util.encodeQueryData(query)).retry(3)
       .share().toPromise();
 
   }
@@ -244,7 +246,7 @@ export class SteemiaProvider {
   public dispatch_post_single(query: Query) {
     query.permlink = query.permlink.split('/')[3];
     query.username = this.username;
-    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
+    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).retry(3).share().toPromise();
   }
 
   /**
@@ -255,7 +257,7 @@ export class SteemiaProvider {
    */
   public dispatch_post_single_notifications(query: Query) {
     query.username = this.username;
-    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).share().toPromise();
+    return this.http.get(STEEMIA_POSTS + 'info?' + this.util.encodeQueryData(query)).retry(3).share().toPromise();
   }
 
   /**
@@ -270,7 +272,7 @@ export class SteemiaProvider {
     let url = permlink.split('/')[4];
 
     return this.http.get(STEEM_API + 'get_content?' + this.util.encodeQueryData({ author: author, permlink: url }))
-      .share().toPromise();
+      .retry(3).share().toPromise();
   }
 
   /**
@@ -284,7 +286,8 @@ export class SteemiaProvider {
       start_follower = '';
     }
 
-    return this.http.get(STEEMIA_USERS + 'followers?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_follower})).toPromise();
+    return this.http.get(STEEMIA_USERS + 'followers?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_follower}))
+      .retry(3).toPromise();
   }
 
   /**
@@ -298,7 +301,8 @@ export class SteemiaProvider {
       start_following = '';
     }
 
-    return this.http.get(STEEMIA_USERS + 'following?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_following})).toPromise();
+    return this.http.get(STEEMIA_USERS + 'following?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_following}))
+      .retry(3).toPromise();
   }
 
   /**
@@ -306,7 +310,7 @@ export class SteemiaProvider {
    * @param username 
    */
   public dispatch_stats(username: string) {
-    return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({user: username})).toPromise();
+    return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({user: username})).retry(3).toPromise();
   }
 
   /**
@@ -315,7 +319,7 @@ export class SteemiaProvider {
    * @param target 
    */
   public is_following(username: string, target: string) {
-    return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({username: username, user: target})).toPromise();
+    return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({username: username, user: target})).retry(3).toPromise();
   }
 
   /**
@@ -323,7 +327,12 @@ export class SteemiaProvider {
    * @param username
    */
   public get_voting_power(username: string) {
-    return this.http.get(STEEMIA_USERS + 'voting_power?username=' + username).toPromise();
+    return this.http.get(STEEMIA_USERS + 'voting_power?username=' + username).retry(3).toPromise();
+  }
+
+  public get_comments_tree(author: string, permlink: string, username: string) {
+    return this.http.get('http://localhost:3000/posts/comments-new?author=' + author + 
+                         '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
   }
 
 }

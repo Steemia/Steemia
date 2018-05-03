@@ -4,8 +4,6 @@ render-comment {
             width: 20px !important;
             height: 20px !important;
             display: -webkit-inline-box !important;
-            position: absolute !important;
-            top: 40% !important;
       }
 
       .meta {
@@ -28,15 +26,17 @@ render-comment {
       .like-button {
             font-size: 1.8em !important;
             position: absolute;
-            top: 40%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
       }
       
       img.profile-pic {
-            width: 40px;
-            height: 40px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             position: absolute;
-            top: 11px;
+            //top: 11px;
             bottom: auto;
             object-fit: cover;
             background-position: 50% 50%;
@@ -44,7 +44,7 @@ render-comment {
       }
       
       img.profile-pic.left {
-            left: 10px;
+            left: -45px;
       }
       
       img.profile-pic.right {
@@ -73,7 +73,7 @@ render-comment {
             padding: 10px 10px;
             position: relative;
             margin: 10px;
-            max-width: 70%;
+            max-width: 80%;
       }
       
       .chat-bubble.left {
@@ -112,6 +112,10 @@ render-comment {
       a.autolinker {
             color: #3b88c3;
             text-decoration: none;
+      }
+
+      .custom-like {
+            font-size: 2.2em !important;
       }
 
 }

@@ -1,13 +1,13 @@
 <div [attr.id]="comment.permlink" (press)="show_options()">
-  <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)" (error)="util.imgError('comment', $event)"
-  />
+
   <!--  wave-->
   <div class="chat-bubble left slide-left">
-
+    <img class="profile-pic left" [src]="comment.avatar" tappable (click)="openProfile(comment.author)" (error)="util.imgError('comment', $event)"
+    />
     <div>
+
       <ion-badge color="light" style="border: 1px solid #dbdbdb" tappable (click)="openProfile(comment.author)"> {{ comment.author }}</ion-badge>
       <ion-badge color="light2" style="color:black"> {{ comment.author_reputation }} </ion-badge>
-      <!-- <strong>{{ comment.author }} ({{ comment.author_reputation }})</strong> -->
       &nbsp;&nbsp;
       <span class="created_date">{{ util.parse_date(comment.created) }}</span>
       <div class="message" [innerHTML]="comment.body" autolinker></div>
@@ -19,16 +19,18 @@
 
   </div>
 
-  <i *ngIf="!comment?.vote && is_voting == false" class="like-button fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event);"></i>
-
-  <i *ngIf="comment?.vote && is_voting == false" class="like-button fa fa-thumbs-up fa-2x unvote" item-right (tap)="castVote(comment?.author, comment?.url, 0);"></i>
-
-  <ion-spinner *ngIf="is_voting == true"></ion-spinner>
-
   <div class="meta">
+    <ion-note>
+      <ion-spinner *ngIf="is_voting == true"></ion-spinner>
+      <ion-icon *ngIf="!comment?.vote && is_voting == false" class="custom-like" name="ios-arrow-dropup" (tap)="presentPopover($event);"></ion-icon>
+      <ion-icon *ngIf="comment?.vote && is_voting == false" class="custom-like" name="ios-arrow-dropup-circle" (tap)="castVote(comment?.author, comment?.url, 0);"></ion-icon>
+    </ion-note>
+    &nbsp;
     <ion-note>{{ comment.net_votes }} likes</ion-note>
     &nbsp;&nbsp; &nbsp;
     <ion-note>${{ comment.pending_payout_value }}</ion-note>
+    &nbsp;&nbsp; &nbsp;
+    <ion-note tappable (click)="reply();">Reply</ion-note>
   </div>
 </div>
 

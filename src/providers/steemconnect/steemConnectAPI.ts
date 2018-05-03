@@ -4,8 +4,7 @@ const api = sc2.Initialize({
       app: 'steemia.app',
       callbackURL: 'http://localhost:8100',
       scope: ['login', 'vote', 'offline',
-                  'comment', 'comment_delete', 
-                  'comment_options', 'custom_json',
+                  'comment', 'comment_options', 'custom_json',
                   'claim_reward_balance'],
 });
 

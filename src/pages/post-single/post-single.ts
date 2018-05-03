@@ -7,7 +7,8 @@ import { IonicPage,
          MenuController,
          ToastController,
          AlertController,
-         PopoverController } from 'ionic-angular';
+         PopoverController,
+         Navbar } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -20,6 +21,7 @@ import { ERRORS } from '../../constants/constants';
 import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
 import { CameraProvider } from 'providers/camera/camera';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage({
   priority: 'high'
@@ -30,11 +32,11 @@ import { CameraProvider } from 'providers/camera/camera';
 })
 export class PostSinglePage {
   @ViewChild('myInput') myInput: ElementRef;
+  @ViewChild(Navbar) navbar: Navbar;
 
   private post: any;
   private is_voting: boolean = false;
   private is_bookmarked: boolean = false;
-  private comments: Array<any> = [];
   private is_loading: boolean = true;
   private is_logged_in: boolean = false;
   private profile: any;
@@ -45,11 +47,15 @@ export class PostSinglePage {
   private ref;
   private bookmarks;
   private caret: number = 0;
+  private parsed_body;
+  
+  private commentsTree: Array<any> = [];
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private dom: DomSanitizer,
     public menu: MenuController,
     private camera: CameraProvider,
     private actionSheetCtrl: ActionSheetController,
@@ -63,12 +69,16 @@ export class PostSinglePage {
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
     private steemConnect: SteemConnectProvider) { 
+
       this.user = (this.steemConnect.user_temp as any);
-    } 
+
+  } 
 
   ionViewDidLoad() {
     this.post = this.navParams.get('post');
 
+    this.parsed_body= this.getPostBody();
+    
     this.current_user = (this.steemConnect.user_temp as any).user;
 
     if (this.current_user === this.post.author) {
@@ -89,7 +99,12 @@ export class PostSinglePage {
     });
   }
 
+  getPostBody() {
+    return this.dom.bypassSecurityTrustHtml(this.post.full_body);
+  }
+
   ionViewDidEnter() {
+    this.navbar.backButtonClick = () => this.navCtrl.pop({animate: false});
     this.menu.enable(false);
   }
 
@@ -98,29 +113,27 @@ export class PostSinglePage {
   }
 
   private load_comments(action?: string) {
-    this.steemia.dispatch_comments({
-      permlink: encodeURIComponent(this.post.url),
-      username: this.current_user
-    }).then((comments: PostsRes) => {
-
+    this.steemia.get_comments_tree(this.post.author, encodeURIComponent(this.post.url), this.current_user).then((data: any) => {
       // Check if the action is to refresh. If so, we need to 
       // reinitialize all the data after initializing the query
       // to avoid the data to dissapear
       if (action === "refresh") {
         this.reinitialize();
       }
-      this.comments = comments.results.reverse();
+
+      this.commentsTree = data.results;
 
       // Set the loading spinner to false
       this.is_loading = false;
 
       // Tell Angular that changes were made since we detach the auto check
       this.cdr.detectChanges();
+
     });
   }
 
   private reinitialize() {
-    this.comments = [];
+    this.commentsTree = [];
   }
 
   /**

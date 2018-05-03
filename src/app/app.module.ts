@@ -9,10 +9,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ErrorHandler, NgModule } from '@angular/core';
 
-//import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-// Socket IO Server
-//const config: SocketIoConfig = { url: 'http://192.168.0.11:3001', options: {} };
-
 // IONIC NATIVE / PROVIDERS
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -22,7 +18,6 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
-import { SecureStorage } from '@ionic-native/secure-storage';
 import { SecureStorageMock } from '@ionic-native-mocks/secure-storage';
 import { GoogleAnalyticsMock } from '@ionic-native-mocks/google-analytics';
 import { LocalNotifications } from '@ionic-native/local-notifications';
@@ -44,6 +39,7 @@ import { GoogleTrackingProvider } from '../providers/google-tracking/google-trac
 import { WebsocketsProvider } from '../providers/websockets/websockets';
 import { CameraProvider } from '../providers/camera/camera';
 import { SettingsProvider } from '../providers/settings/settings';
+import { SharedServiceProvider } from '../providers/shared-service/shared-service';
 
 
 @NgModule({
@@ -61,7 +57,6 @@ import { SettingsProvider } from '../providers/settings/settings';
       scrollAssist: true,
       autoFocusAssist: true,
       preloadModules: true,
-      pageTransition: 'wp-transition',
       modalLeave: 'modal-slide-out',
       popoverEnter: 'popover-pop-in',
       popoverLeave: 'popover-pop-out',
@@ -94,14 +89,13 @@ import { SettingsProvider } from '../providers/settings/settings';
     File,
     Camera,
     CryptoProvider,
-    //SecureStorage, // Only for prod build
-    { provide: SecureStorage, useClass: SecureStorageMock }, // Only for dev build
     GoogleTrackingProvider,
-    //GoogleAnalytics,
-    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
+    GoogleAnalytics,
+    //{ provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
     WebsocketsProvider,
     FCM,
-    CameraProvider
+    CameraProvider,
+    SharedServiceProvider
   ]
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { newTemplate } from './new.template';
@@ -10,7 +10,8 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 })
 @Component({
   selector: 'section-scss',
-  template: newTemplate
+  template: newTemplate,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class NewPage {
@@ -49,6 +50,7 @@ export class NewPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchNew('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (res.logged_out === true) {
@@ -58,6 +60,7 @@ export class NewPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchNew('refresh');
         });
+        this.cdr.detectChanges();
       }
 
       else if (this.triggered == false) {
@@ -65,6 +68,7 @@ export class NewPage {
         this.zone.runOutsideAngular(() => {
           this.dispatchNew();
         });
+        this.cdr.detectChanges();
       }
     });
 
@@ -141,6 +145,7 @@ export class NewPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchNew("refresh", refresher);
     });
+    this.cdr.detectChanges();
   }
 
   /**
@@ -153,6 +158,7 @@ export class NewPage {
     this.zone.runOutsideAngular(() => {
       this.dispatchNew("inifinite", infiniteScroll);
     });
+    this.cdr.detectChanges();
   }
 
   private reinitialize() {
@@ -168,6 +174,10 @@ export class NewPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  trackById(index, post) {
+    return post.title;
   }
 
 }

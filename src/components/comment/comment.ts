@@ -12,6 +12,7 @@ import { UtilProvider } from 'providers/util/util';
 import { Clipboard } from '@ionic-native/clipboard';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 /**
  * @author Jayser Mendez
@@ -32,6 +33,7 @@ export class CommentComponent {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
+    private service: SharedServiceProvider,
     private clipboard: Clipboard,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
@@ -205,6 +207,46 @@ export class CommentComponent {
 
     actionSheet.present();
 
+  }
+
+  /**
+   * Method to reply a comment
+   */
+  private reply() {
+    let replies = this.modalCtrl.create('ReplyCommentPage');
+    replies.present();
+
+    replies.onDidDismiss((data) => {
+      if (data) {
+        let loading = this.loadingCtrl.create({
+          content: 'Please wait...'
+        });
+        loading.present();
+        this.steemActions.dispatch_reply(this.comment.author, this.comment.permlink, data.reply).then(res => {
+          if (res === 'not-logged') {
+            this.show_prompt(loading, 'NOT_LOGGED_IN');
+            return;
+          }
+  
+          else if (res === 'Correct') {
+            this.service.reply_status.next(true);
+            loading.dismiss();
+          }
+  
+          else if (res === 'COMMENT_INTERVAL') {
+            this.show_prompt(loading, 'COMMENT_INTERVAL');
+          }
+        })
+        this.service.reply_status.next(true);
+      }
+    });
+  }
+
+  private show_prompt(loader, msg) {
+    loader.dismiss();
+    setTimeout(() => {
+      this.alerts.display_alert(msg);
+    }, 500);
   }
 
 }
