@@ -96,4 +96,19 @@ export class CryptoProvider {
         });
     }).catch(e => console.log(e))
   }
+
+    /**
+   * Method to get crypto prices
+   */
+  public get_steem_price(local) {
+    return new Promise(resolve => {
+      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*&tsyms='+ local)
+        .toPromise().then((data: any) => {
+          resolve({
+            data
+          });
+        });
+    }).catch(e => console.log(e))
+  }
+  
 }
