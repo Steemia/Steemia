@@ -97,12 +97,12 @@ export class CryptoProvider {
     }).catch(e => console.log(e))
   }
 
-    /**
+  /**
    * Method to get crypto prices
-   */
-  public get_steem_price(local) {
+   **/
+  public get_steem_price(curreny) {
     return new Promise(resolve => {
-      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*&tsyms='+ local)
+      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*&tsyms='+ curreny)
         .toPromise().then((data: any) => {
           resolve({
             data

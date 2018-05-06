@@ -99,5 +99,30 @@
       </ion-label>
       <button ion-button clear item-end (click)="showPrompt('youtube')">Edit</button>
     </ion-item>
+    <ion-list-header>
+      CRYPTOCURRENCY ADDRESSES
+    </ion-list-header>
+    <ion-item>
+      <h2>Bitcoin</h2>
+      <p>
+        {{ account_data?.profile.bitcoin }}
+      </p>
+      <button ion-button clear item-end (click)="showPrompt('twitter')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <h2>Ethereum</h2>
+      <p>
+        {{ account_data?.profile.ethereum }}
+      </p>
+
+      <button ion-button clear item-end (click)="showPrompt('instagram')">Edit</button>
+    </ion-item>
+    <ion-item>
+      <h2>Litecoin</h2>
+      <p>
+        {{ account_data?.profile.litecoin }}
+      </p>
+      <button ion-button clear item-end (click)="showPrompt('youtube')">Edit</button>
+    </ion-item>
   </ion-list>
 </ion-content>

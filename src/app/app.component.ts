@@ -123,6 +123,7 @@ export class MyApp {
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
+        { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
