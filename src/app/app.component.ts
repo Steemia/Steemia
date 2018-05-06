@@ -106,7 +106,7 @@ export class MyApp {
   private initializeLoggedInMenu(): void {
     this.loggedInPages = {
       header: {
-        background: '#ccc url(' + this.background + ') no-repeat top left / cover',
+        background: 'url('+this.profile.json_metadata.profile.cover_image+')',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
         email: this.profile.json_metadata.profile.location || '',
@@ -123,6 +123,7 @@ export class MyApp {
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
+        { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
@@ -148,12 +149,12 @@ export class MyApp {
       this.splashScreen.hide();
       this._settings.getTheme().subscribe(val => {
         if (val === 'dark-theme') {
-          this.background = './assets/menu_bg2.jpg';
+         // this.background = './assets/menu_bg2.jpg';
           this.statusBar.backgroundColorByHexString("#1d252c");
         }
   
         else if (val === 'blue-theme') {
-          this.background = './assets/mb-bg-fb-03.jpg';
+         // this.background = './assets/mb-bg-fb-03.jpg';
           this.statusBar.backgroundColorByHexString("#488aff");
         }
         this.chosenTheme = val;
@@ -163,11 +164,10 @@ export class MyApp {
       
       this.ga.track_page('Loaded App');
       this.imageLoaderConfig.setBackgroundSize('cover');
-      this.imageLoaderConfig.setImageReturnType('base64');
       this.imageLoaderConfig.setHeight('200px');
       this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
       this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-      this.imageLoaderConfig.setMaximumCacheAge(24 * 60 * 60 * 1000); // 7 days
+      this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {
@@ -197,4 +197,3 @@ export class MyApp {
     });
   }
 }
-

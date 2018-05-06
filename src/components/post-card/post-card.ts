@@ -77,6 +77,18 @@ export class PostCardComponent implements AfterViewInit {
   }
 
   /**
+   * Method to open the pending payout popover
+   */
+  presentPayoutPopover(myEvent) {
+    let payout = { payout: this.content.total_payout_reward }
+    let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
+    console.log(payout)
+    popover.present({
+      ev: myEvent
+    });
+  }
+
+  /**
    * Method to open the single page of a post
    * @param post 
    */

@@ -84,11 +84,11 @@ export class CryptoProvider {
    */
   public get_prices() {
     return new Promise(resolve => {
-      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
+      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*,BTC,ETH,LTC,BCH,DASH&tsyms=USD')
         .toPromise().then((data: any) => {
           resolve({
             steem: data.STEEM.USD,
-            sbd: data.SBD.USD,
+            sbd: data['SBD*'].USD,
             btc: data.BTC.USD.toFixed(2),
             eth: data.ETH.USD.toFixed(2),
             ltc: data.LTC.USD.toFixed(2)
@@ -96,4 +96,19 @@ export class CryptoProvider {
         });
     }).catch(e => console.log(e))
   }
+
+  /**
+   * Method to get crypto prices
+   **/
+  public get_steem_price(curreny) {
+    return new Promise(resolve => {
+      this.http.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=STEEM,SBD*&tsyms='+ curreny)
+        .toPromise().then((data: any) => {
+          resolve({
+            data
+          });
+        });
+    }).catch(e => console.log(e))
+  }
+  
 }
