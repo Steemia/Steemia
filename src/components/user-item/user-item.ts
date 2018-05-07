@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { UtilProvider } from 'providers/util/util';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
-import { NavController } from 'ionic-angular';
+import { App, NavController } from 'ionic-angular';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 /**
  * Class for user item
@@ -20,9 +21,11 @@ export class UserItemComponent {
   @Input('item') private item: any;
   private is_loading: boolean = false;
 
-  constructor(public util: UtilProvider,
+  constructor(private app: App,
+    public util: UtilProvider,
   private steemActions: SteeemActionsProvider,
   private alerts: AlertsProvider,
+  private steemConnect: SteemConnectProvider,
   private navCtrl: NavController) {}
 
   /**
@@ -62,10 +65,25 @@ export class UserItemComponent {
    * Method to open author profile page
    * @param {String} author: author of the post
    */
-  private openProfile(): void {
-    this.navCtrl.push('AuthorProfilePage', {
-      author: this.item.name
-    })
+  private openProfile(author: string): void {
+    if (this.steemConnect.user_object !== undefined) {
+      if ((this.steemConnect.user_object as any).user == author) {
+        this.app.getRootNav().push('ProfilePage', {
+          author: (this.steemConnect.user_object as any).user
+        });
+      }
+      else {
+        this.app.getRootNav().push('AuthorProfilePage', {
+          author: author
+        });
+      }
+    }
+    else {
+      this.app.getRootNav().push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
 
 }

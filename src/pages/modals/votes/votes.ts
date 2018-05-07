@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, 
+import { App,
+         IonicPage, 
          ViewController, 
          NavController, 
          NavParams,
@@ -9,6 +10,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { SettingsProvider } from 'providers/settings/settings';
 import { Subscription } from 'rxjs';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 @IonicPage({
   priority: 'medium'
@@ -30,7 +32,9 @@ export class VotesPage {
   chosenTheme: string;
   subs: Subscription;
 
-  constructor(public navCtrl: NavController,
+  constructor(private app: App,
+    private steemConnect: SteemConnectProvider,
+    public navCtrl: NavController,
     public navParams: NavParams,
     public util: UtilProvider,
     private _settings: SettingsProvider,
@@ -97,14 +101,29 @@ export class VotesPage {
     this.viewCtrl.dismiss();
   }
 
-  /**
+    /**
    * Method to open author profile page
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.navCtrl.push('AuthorProfilePage', {
-      author: author
-    })
+    if (this.steemConnect.user_object !== undefined) {
+      if ((this.steemConnect.user_object as any).user == author) {
+        this.app.getRootNav().push('ProfilePage', {
+          author: (this.steemConnect.user_object as any).user
+        });
+      }
+      else {
+        this.app.getRootNav().push('AuthorProfilePage', {
+          author: author
+        });
+      }
+    }
+    else {
+      this.app.getRootNav().push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
 
 }

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
+import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 
 /**
  * Following/followers page
@@ -24,10 +25,12 @@ export class FollowListPage {
   private loading: boolean = true;
   private is_more_post: boolean = true;
 
-  constructor(public navCtrl: NavController, 
+  constructor(private app: App,
+    public navCtrl: NavController, 
     public navParams: NavParams,
     public menu: MenuController,
     private util: UtilProvider,
+    private steemConnect: SteemConnectProvider,
     private steemiaProvider: SteemiaProvider) {
 
   }
@@ -81,13 +84,23 @@ export class FollowListPage {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.navCtrl.push('AuthorProfilePage', {
-      author: author
-    });
+    if (this.steemConnect.user_object !== undefined) {
+      if ((this.steemConnect.user_object as any).user == author) {
+        this.app.getRootNav().push('ProfilePage', {
+          author: (this.steemConnect.user_object as any).user
+        });
+      }
+      else {
+        this.app.getRootNav().push('AuthorProfilePage', {
+          author: author
+        });
+      }
+    }
+    else {
+      this.app.getRootNav().push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
-
-  doInfinite(event) {
-    this.fetchData(event);
-  }
-
 }
