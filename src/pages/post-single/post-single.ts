@@ -1,5 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import {
+import { 
+  App,
   IonicPage,
   NavController,
   NavParams,
@@ -53,7 +54,8 @@ export class PostSinglePage {
 
   private commentsTree: Array<any> = [];
 
-  constructor(private zone: NgZone,
+  constructor(private app: App,
+    private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -162,11 +164,27 @@ export class PostSinglePage {
 
   /**
    * Method to open author profile page
+   * @param {String} author: author of the post
    */
-  private openProfile(): void {
-    this.navCtrl.push(AuthorProfilePage, {
-      author: this.post.author
-    });
+  private openProfile(author: string): void {
+    if (this.steemConnect.user_object !== undefined) {
+      if ((this.steemConnect.user_object as any).user == author) {
+        this.app.getRootNav().push('ProfilePage', {
+          author: (this.steemConnect.user_object as any).user
+        });
+      }
+      else {
+        this.app.getRootNav().push('AuthorProfilePage', {
+          author: author
+        });
+      }
+    }
+    else {
+      this.app.getRootNav().push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
 
   /**
