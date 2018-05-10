@@ -39,4 +39,21 @@ page-tabs {
                   }
             }
       }
+
+      ion-select {
+            max-width: 60% !important;
+      }
+
+      .custom-item {
+            background-color: transparent;
+            color: white !important;
+            font-size: 20px;
+            padding: 0 !important;
+      }
+
+      .select-md .select-icon .select-icon-inner, 
+      .select-ios .select-icon .select-icon-inner {
+            color: white !important;
+      }
+
 }

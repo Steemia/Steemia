@@ -1,7 +1,7 @@
 <ion-header id="header">
 
   <ion-navbar color="primary">
-    <ion-title>Bookmarks</ion-title>
+    <ion-title>{{ 'pages.bookmarks.page_title' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -21,7 +21,7 @@
       <ion-item-options side="right" no-lines>
         <button ion-button color="danger" (click)="removeBookmark(bookmark)">
           <ion-icon name="trash"></ion-icon>
-          Remove
+          {{ 'pages.bookmarks.remove' | translate }}
         </button>
       </ion-item-options>
     </ion-item-sliding>
@@ -34,7 +34,7 @@
       </ion-card-header>
       <ion-card-content>
         
-        <p text-center>You have not bookmarked a post, YET!</p>
+        <p text-center>{{ 'pages.bookmarks.no_bookmarks' | translate }}</p>
       </ion-card-content>
     </ion-card>
   </div>

@@ -68,7 +68,7 @@ export class VotesPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.subs.unsubscribe();
     this.menu.enable(true);
   }

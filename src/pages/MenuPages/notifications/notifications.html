@@ -1,7 +1,7 @@
 <ion-header id="header">
 
   <ion-navbar color="primary">
-    <ion-title>Notifications</ion-title>
+    <ion-title>{{ 'pages.notifications.page_title' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -19,7 +19,7 @@
         </ion-avatar>
 
         <h2>
-          <strong>{{ notification.follower }}</strong> started following you
+          <strong>{{ notification.follower }}</strong> {{ 'pages.notifications.started_following' | translate }}
         </h2>
 
         <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
@@ -32,7 +32,7 @@
         </ion-avatar>
 
         <h2>
-          <strong>{{ notification.author }}</strong> mentioned you in a post
+          <strong>{{ notification.author }}</strong> {{ 'pages.notifications.mentioned_you' | translate }}
         </h2>
         <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
       </ion-item>
@@ -43,7 +43,7 @@
           <img [src]="render_image(notification.author)" (error)="util.imgError('comment', $event)">
         </ion-avatar>
         <h2>
-          <strong>{{ notification.author }}</strong> commented on your post
+          <strong>{{ notification.author }}</strong> {{ 'pages.notifications.commented' | translate }}
         </h2>
         <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
       </ion-item>
@@ -55,7 +55,7 @@
         </ion-avatar>
 
         <h2>
-          <strong>{{ notification.from }}</strong> sent you {{ notification.amount }}
+          <strong>{{ notification.from }}</strong> {{ 'pages.notifications.sent_you' | translate }} {{ notification.amount }}
         </h2>
 
         <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>
@@ -68,7 +68,7 @@
         </ion-avatar>
 
         <h2>
-          <strong>{{ notification.account }}</strong> reblogged your post
+          <strong>{{ notification.account }}</strong> {{ 'pages.notifications.reblogged' | translate }}
         </h2>
 
         <p>{{ util.parse_date(parse_date(notification.timestamp)) }}</p>

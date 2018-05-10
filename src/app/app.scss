@@ -29,12 +29,21 @@
 }
 
 ion-content {
-  background-color: #fcfcff !important;
+  background-color: #ebecec !important;
 }
 
 ion-menu {
   ion-content {
     background-color: #ffffff !important;
+  }
+}
+
+.platform-android {
+  .ion-page {
+    ion-header {
+      padding-top: 24px;
+      background-color: #488aff;
+    }
   }
 }
 
@@ -48,7 +57,7 @@ ion-menu {
 
 .tabbar {
   background: #ffffff !important;
-  border-top: 1px solid #e9e7e7;
+  //border-top: 1px solid #e9e7e7;
 }
 
 .tabbar::before {
@@ -91,16 +100,6 @@ ion-spinner {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.title.title-md, .title.title-wp {
-  position: absolute !important;
-  left: 50% !important;
-  top: 0 !important;
-  transform: translateX(-50%) !important;
-  height: 100% !important;
-  width: 70% !important;
-  text-align: center !important;
 }
 
 // .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {

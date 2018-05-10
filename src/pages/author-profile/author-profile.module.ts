@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { AuthorProfilePage } from './author-profile';
 import { ComponentsModule } from '../../components/components.module';
 import { MomentModule } from 'angular2-moment';
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { MomentModule } from 'angular2-moment';
       MomentModule,
       ComponentsModule,
       IonicPageModule.forChild(AuthorProfilePage),
+      TranslateModule.forChild()
   ],
 })
 export class AuthorProfilePageModule {}

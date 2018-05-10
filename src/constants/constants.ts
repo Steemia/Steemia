@@ -45,7 +45,7 @@ export const ERRORS = {
     message: 'You may only post once every 5 minutes.'
   },
   COMMENT_INTERVAL: {
-    error: '(now - auth.last_post) > STEEMIT_MIN_REPLY_INTERVAL: You may only comment once every 20 seconds.',
+    error: '(now - auth.last_post) > STEEM_MIN_REPLY_INTERVAL: You may only comment once every 20 seconds.',
     message: 'You may only comment once every 20 seconds.'
   },
   POST_TOO_BIG: {

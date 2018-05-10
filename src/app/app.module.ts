@@ -23,6 +23,9 @@ import { GoogleAnalyticsMock } from '@ionic-native-mocks/google-analytics';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { FCM } from '@ionic-native/fcm';
 import { Clipboard } from '@ionic-native/clipboard';
+import { NativePageTransitions } from '@ionic-native/native-page-transitions';
+import { Keyboard } from '@ionic-native/keyboard';
+
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -42,6 +45,16 @@ import { SettingsProvider } from '../providers/settings/settings';
 import { SharedServiceProvider } from '../providers/shared-service/shared-service';
 
 
+// NGX-TRANSLATE
+import { HttpClient } from "@angular/common/http";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+
 @NgModule({
   declarations: [
     MaterialMenuComponent,
@@ -55,12 +68,19 @@ import { SharedServiceProvider } from '../providers/shared-service/shared-servic
       tabsPlacement: 'bottom',
       scrollPadding: true,
       scrollAssist: true,
-      autoFocusAssist: true,
+      autoFocusAssist: false,
       preloadModules: true,
       modalLeave: 'modal-slide-out',
       popoverEnter: 'popover-pop-in',
       popoverLeave: 'popover-pop-out',
       tabsHideOnSubPages: true
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (HttpLoaderFactory),
+        deps: [HttpClient]
+      }
     }),
     IonicStorageModule.forRoot({ name: '__mydb', driverOrder: ['sqlite', 'websql', 'indexeddb'] }),
     IonicImageLoader.forRoot(),
@@ -70,6 +90,8 @@ import { SharedServiceProvider } from '../providers/shared-service/shared-servic
     MyApp
   ],
   providers: [
+    Keyboard,
+    NativePageTransitions,
     SettingsProvider,
     Clipboard,
     LocalNotifications,
@@ -78,7 +100,7 @@ import { SharedServiceProvider } from '../providers/shared-service/shared-servic
     InAppBrowser,
     BrowserTab,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     SteemConnectProvider,
     SteemiaProvider,
     SteeemActionsProvider,
@@ -98,4 +120,4 @@ import { SharedServiceProvider } from '../providers/shared-service/shared-servic
     SharedServiceProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

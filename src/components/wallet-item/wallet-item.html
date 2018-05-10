@@ -3,31 +3,31 @@
     <ion-chip item-start>
       <ion-icon [name]="icon"></ion-icon>
     </ion-chip>
-    <h2 class="coin-name">{{ name }} Wallet</h2>
+    <h2 class="coin-name">{{ 'pages.wallet.title' | translate:{wallet: name} }}</h2>
     <div item-end>
-        <ion-note>Current Price ${{ price }}</ion-note>
+        <ion-note>{{ 'pages.wallet.current_price' | translate }} ${{ price }}</ion-note>
     </div>
   </ion-item>
   <ion-card-content no-padding>
-    <p class="custom-padding">Balance: {{ balance }} {{ coinAb }}</p>
+    <p class="custom-padding">{{ 'pages.wallet.balance' | translate }}: {{ balance }} {{ coinAb }}</p>
   </ion-card-content>
   <ion-row *ngIf="native == 'true'">
     <ion-col col-4>
       <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('buy')">
         <ion-icon name="add"></ion-icon>
-        Buy
+        {{ 'pages.wallet.buy' | translate }}
       </button>
     </ion-col>
     <ion-col col-4 center text-center>
       <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('sell')">
         <ion-icon name="remove"></ion-icon>
-        Sell
+        {{ 'pages.wallet.sell' | translate }}
       </button>
     </ion-col>
     <ion-col col-4>
       <button mode="ios" block round color="light" icon-left ion-button small (click)="emit_data('transfer')">
         <ion-icon name="send"></ion-icon>
-        Transfer
+        {{ 'pages.wallet.transfer' | translate }}
       </button>
     </ion-col>
   </ion-row>

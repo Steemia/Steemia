@@ -7,6 +7,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { CryptoProvider } from 'providers/crypto-api/crypto-api';
 import { Address } from 'models/models';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  *
@@ -65,6 +66,7 @@ export class WalletPage {
     public alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public menu: MenuController,
+    private translate: TranslateService,
     private loadingCtrl: LoadingController,
     private steeemActions: SteeemActionsProvider,
     private steemiaProvider: SteemiaProvider,
@@ -109,27 +111,27 @@ export class WalletPage {
    */
   showPrompt(coin) {
     let prompt = this.alertCtrl.create({
-      title: 'Transfer to Account',
-      subTitle: 'Move funds to another Steemit account.',
-      message: "Click the button below to be redirected to SteemConnect to complete your transaction.",
+      title: this.translate.instant('pages.wallet.prompts.transfer.title'),
+      subTitle: this.translate.instant('pages.wallet.prompts.transfer.subtitle'),
+      message: this.translate.instant('pages.wallet.prompts.transfer.message'),
       cssClass: 'alert-center',
       enableBackdropDismiss: true,
       inputs: [{
         name: 'username',
-        placeholder: 'Payment recipient'
+        placeholder: this.translate.instant('pages.wallet.prompts.transfer.inputs.recipient'),
       }, {
         name: 'amount',
-        placeholder: 'How much do you want to send?'
+        placeholder: this.translate.instant('pages.wallet.prompts.transfer.inputs.amount'),
       }, {
         name: 'memo',
-        placeholder: 'This memo is public!'
+        placeholder: this.translate.instant('pages.wallet.prompts.transfer.inputs.memo'),
       }],
       buttons: [{
-        text: 'Cancel',
+        text: this.translate.instant('generic_messages.cancel'),
         cssClass: 'block round dark ion-button'
       },
       {
-        text: 'Send',
+        text: this.translate.instant('pages.wallet.prompts.transfer.send'),
         handler: data => {
           this.browserTab.isAvailable()
             .then((isAvailable: boolean) => {
@@ -154,8 +156,8 @@ export class WalletPage {
    */
   private addAddress() {
     let prompt = this.alertCtrl.create({
-      title: 'Add an Adresss',
-      message: 'Save Your Cryptocurrency Addresses ',
+      title: this.translate.instant('pages.wallet.prompts.add_crypto.title'),
+      message: this.translate.instant('pages.wallet.prompts.add_crypto.message'),
       inputs: [{
         type: 'radio',
         label: 'Bitcoin',
@@ -170,9 +172,9 @@ export class WalletPage {
         value: 'litecoin'
       }],
       buttons: [{
-        text: "Cancel"
+        text: this.translate.instant('generic_messages.cancel'),
       }, {
-        text: "Continue",
+        text: this.translate.instant('pages.wallet.prompts.add_crypto.continue'),
         handler: data => {
           this.SaveAdress(data);
         }
@@ -187,17 +189,17 @@ export class WalletPage {
    */
   private SaveAdress(coin): void {
     let alert = this.alertCtrl.create({
-      title: `Save Your ${coin} Address`,
+      title: this.translate.instant('pages.wallet.prompts.save_address.title', { coin: coin }),
       inputs: [{
         name: 'address',
-        placeholder: `${coin} Address`
+        placeholder: this.translate.instant('pages.wallet.prompts.save_address.inputs.address', { coin: coin }),
       }],
       buttons: [{
-        text: 'Cancel',
+        text: this.translate.instant('generic_messages.cancel'),
         role: 'cancel'
       },
       {
-        text: 'Save',
+        text: this.translate.instant('pages.wallet.prompts.save_address.save'),
         handler: data => {
           this.browserTab.isAvailable()
             .then((isAvailable: boolean) => {
@@ -262,7 +264,6 @@ export class WalletPage {
   private eventListener(event) {
 
     if (event.type === 'transfer') {
-      console.log("transfer triggered")
       this.showPrompt(event.name)
     }
 
@@ -365,14 +366,14 @@ export class WalletPage {
     const sbd = this.rewards.sbd.toFixed(3).toString() + ' SBD';
     const sp = this.rewards.vesting_steem.toFixed(6).toString() + ' VESTS';
     let loader = this.loadingCtrl.create({
-      content: "Collecting rewards 💰💵💸🤑"
+      content: this.translate.instant('generic_messages.collecting_rewards')
     });
     loader.present();
     this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
       loader.dismiss();
       this.getAccount();
       let toast = this.toastCtrl.create({
-        message: 'Your rewards are now in your account 😎',
+        message: this.translate.instant('generic_messages.rewards_collected'),
         duration: 1500
       });
 

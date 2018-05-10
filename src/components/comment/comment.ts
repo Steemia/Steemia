@@ -13,6 +13,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { SharedServiceProvider } from 'providers/shared-service/shared-service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * @author Jayser Mendez
@@ -33,6 +34,7 @@ export class CommentComponent {
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
+    private translate: TranslateService,
     private service: SharedServiceProvider,
     private clipboard: Clipboard,
     private loadingCtrl: LoadingController,
@@ -106,7 +108,7 @@ export class CommentComponent {
    */
   private castFlag(author: string, permlink: string, weight: number = -10000): void {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait until the post is being flag.'
+      content: this.translate.instant('generic_messages.flagging')
     });
     loading.present();
     this.steemActions.dispatch_vote('comment', author, permlink, weight).then(data => {
@@ -119,7 +121,7 @@ export class CommentComponent {
 
       else if (data === 'Correct') {
         this.toastCtrl.create({
-          message: 'Post was flagged correctly!'
+          message: this.translate.instant('generic_messages.flag_correct')
         });
 
         this.refresh_comment();
@@ -161,7 +163,7 @@ export class CommentComponent {
       title: 'Options',
       buttons: [
         {
-          text: 'Copy',
+          text: this.translate.instant('modals.comments.options.copy'),
           icon: 'md-clipboard',
           role: 'destructive',
           handler: () => {
@@ -169,14 +171,14 @@ export class CommentComponent {
           }
         },
         {
-          text: 'Flag',
+          text: this.translate.instant('modals.comments.options.flag'),
           icon: 'flag',
           handler: () => {
             this.castFlag(this.comment.author, this.comment.url);
           }
         },
         {
-          text: 'Cancel',
+          text: this.translate.instant('modals.comments.options.cancel'),
           icon: 'close',
           role: 'cancel',
           handler: () => {
@@ -188,7 +190,7 @@ export class CommentComponent {
 
     if (this.current_user === this.comment.author) {
       options.buttons.unshift({
-        text: 'Edit',
+        text: this.translate.instant('modals.comments.options.edit'),
         icon: 'md-create',
         handler: () => {
           let editModal = this.modalCtrl.create('EditCommentPage', { comment: this.comment}, { cssClass:"full-modal" });
@@ -219,10 +221,11 @@ export class CommentComponent {
     replies.onDidDismiss((data) => {
       if (data) {
         let loading = this.loadingCtrl.create({
-          content: 'Please wait...'
+          content: this.translate.instant('generic_messages.please_wait')
         });
         loading.present();
         this.steemActions.dispatch_reply(this.comment.author, this.comment.permlink, data.reply).then(res => {
+          console.log(res)
           if (res === 'not-logged') {
             this.show_prompt(loading, 'NOT_LOGGED_IN');
             return;

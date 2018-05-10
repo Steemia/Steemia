@@ -10,6 +10,7 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage({
   priority: 'high'
@@ -50,6 +51,7 @@ export class ProfilePage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private zone: NgZone,
+    private translate: TranslateService,
     private cdr: ChangeDetectorRef,
     public menu: MenuController,
     private steemia: SteemiaProvider,
@@ -152,7 +154,7 @@ export class ProfilePage {
    */
   private get_account() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: this.translate.instant('generic_messages.please_wait'),
       dismissOnPageChange: true,
       showBackdrop: true,
       enableBackdropDismiss: true

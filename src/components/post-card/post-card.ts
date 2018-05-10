@@ -5,6 +5,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
 @Component({
   selector: 'post-card',
@@ -22,6 +23,7 @@ export class PostCardComponent implements AfterViewInit {
   constructor(private app: App,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
+    private nativePageTransitions: NativePageTransitions,
     public popoverCtrl: PopoverController,
     private steemActions: SteeemActionsProvider,
     private cdr: ChangeDetectorRef,
@@ -97,12 +99,21 @@ export class PostCardComponent implements AfterViewInit {
       if (this.from === 'PROFILE') {
         this.navCtrl.push('PostSinglePage', {
           post: post
-        });
+        },{animate:false});
       }
       else {
+        let options: NativeTransitionOptions = {
+          direction: 'left',
+          duration: 250,
+          slidePixels: 0,
+          slowdownfactor: -1,
+          iosdelay: 50
+         };
+     
+        this.nativePageTransitions.slide(options);
         this.app.getRootNav().push('PostSinglePage', {
           post: post
-        });
+        },{animate:false});
       }
       
     }

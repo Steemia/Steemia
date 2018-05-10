@@ -8,16 +8,6 @@ export const feedTemplate = `
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-  <ion-card *ngIf="!is_loading && logged_in == true" class="share-post card" (click)="openPage('PostPage')" id="main-share-card">
-    <ion-item id="header">
-      <ion-avatar item-start>
-        <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
-      </ion-avatar>
-      <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
-      </ion-searchbar>
-    </ion-item>
-  </ion-card>
-
   <div *ngIf="logged_in == false" class="vertical-align h-100">
     <ion-card id="not-logged">
       <ion-card-content>
@@ -27,18 +17,17 @@ export const feedTemplate = `
     </ion-card>
 
   </div>
-  
+
   <div *ngIf="!is_loading && logged_in == true">
     <div *ngFor="let content of contents; trackBy: trackById">
       <post-card [post]="content" [from]="'NORMAL'" [user]="'null'"></post-card>
     </div>
   </div>
-
   <div *ngIf="is_more_post == false">
-    <p text-center>There are not more posts to load</p>
+    <p text-center>{{ 'generic_messages.not_more_posts' | translate }}</p>
   </div>
 
-  <ion-infinite-scroll *ngIf="contents.length > 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
+  <ion-infinite-scroll *ngIf="contents.length > 1 && is_more_post == true" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

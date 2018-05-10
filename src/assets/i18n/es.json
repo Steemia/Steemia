@@ -1,0 +1,12 @@
+{
+	"menu": {
+		"home": "Inicio",
+		"wallet": "Billetera",
+		"notifications": "Notificationes",
+		"my_profile": "Mi Perfil",
+		"bookmarks": "Marcadores",
+		"settings": "Opciones",
+		"about": "Acerca De",
+		"logout": "Cerrar Sesión"
+	}
+}

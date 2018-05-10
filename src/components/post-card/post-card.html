@@ -3,14 +3,14 @@
     <div style="margin-top: 10px;" *ngIf="content.reblogged_by != null">
       <ion-note class="reblog" *ngIf="from == 'NORMAL'">
         <ion-icon name="md-repeat"></ion-icon>
-        Reblogged by @{{ content.reblogged_by }}
+        {{ 'generic_messages.reblogged_by' | translate }} @{{ content.reblogged_by }}
       </ion-note>
     </div>
 
     <div style="margin-top: 10px;" *ngIf="inner_rebblog == true">
         <ion-note class="reblog" *ngIf="from == 'PROFILE'">
           <ion-icon name="md-repeat"></ion-icon>
-          Reblogged
+          {{ 'generic_messages.reblogged' | translate }}
         </ion-note>
       </div>
 
@@ -19,11 +19,13 @@
         <img [src]="content.avatar" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
       <div>
-        <ion-badge color="primary" tappable (click)="openProfile(content.author)"> {{ content.author }}</ion-badge>
-        <ion-badge color="gray"> {{ content.author_reputation }} </ion-badge>
+       <p class="post-user">{{ content.author }} ({{ content.author_reputation }})</p>
+        <!-- <ion-badge color="primary" tappable (click)="openProfile(content.author)"> {{ content.author }}</ion-badge> -->
+        <!-- <ion-badge color="gray"> {{ content.author_reputation }}() </ion-badge> -->
       </div>
       <div class="mt4">
-        <ion-note end>In <span id="category" Text-Capitalize>{{content.category }}</span> {{ util.parse_date(content.created) }}</ion-note>
+        <ion-note end>{{content.category }} - {{ util.parse_date(content.created) }}</ion-note>
+        <p></p>
       </div>
       <i *ngIf="!content.vote && is_voting == false" class="fa fa-thumbs-o-up fa-2x upvote" item-right (tap)="presentPopover($event)"></i>
 
@@ -34,23 +36,37 @@
   </ion-card-header>
 
   <ion-card-content no-padding tappable (click)="postOpen(content)" id="content">
-    <h2 padding>{{ content.title }}</h2>
+
+    <!-- TITLE OF THE POST -->
+    <h2 class="post-title">{{ content.title }}</h2>
+
+    <!-- DISPLAY VIDEO -->
     <div *ngIf="content.video_only">
       <youtube-player protocol="https" [videoId]="getId(content.videos[0])" (ready)="savePlayer($event)"></youtube-player>
+    </div>
 
-    </div>
+    <!-- DISPLAY IMAGE -->
     <div *ngIf="!content.video_only">
-      <img-loader class="img" [src]="util.renderImage('cover', content.body)" (error)="util.imgError('post', $event)">
-        <div class="nsfw-overlay" *ngIf="content.is_nsfw == true">
-          <div class="nsfw-text">
-            <p>NOT SAFE FOR WORK</p>
-            <button ion-button color="primary" mode="ios" (click)="reveal_image();">
-              <ion-icon name="eye" color="white"></ion-icon>&nbsp;&nbsp;Show Image
-            </button>
-          </div>
-        </div>
-      </img-loader>
+
+      <!-- COVER IMAAGE -->
+      <img *ngIf="content.is_nsfw == false" style="width: 100%; height: 250px; object-fit: cover;" 
+           [src]="util.renderImage('cover', content.body)" (error)="util.imgError('post', $event)" />
+
+      <!-- NSFW OVERLAY -->
+      <div class="nsfw-overlay" *ngIf="content.is_nsfw == true">
+
+        <div class="nsfw-text">
+          <p>{{ 'generic_messages.nsfw_message' | translate }}</p>
+
+          <!-- REVEAL BUTTON -->
+          <button ion-button color="primary" mode="ios" (click)="reveal_image();">
+            <ion-icon name="eye" color="white"></ion-icon>&nbsp;&nbsp;{{ 'generic_messages.show_images' | translate }}
+          </button>
+
+         </div>
+      </div>
     </div>
+    
   </ion-card-content>
 
   <ion-row>

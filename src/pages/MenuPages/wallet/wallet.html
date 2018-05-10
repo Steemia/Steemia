@@ -1,6 +1,6 @@
 <ion-header id="header">
   <ion-navbar color="primary">
-    <ion-title>Wallet</ion-title>
+    <ion-title>{{ 'pages.wallet.page_title' | translate }}</ion-title>
     <ion-buttons end item-end>
       <button class="ion-button" ion-button icon-only (click)="addAddress()">
         <ion-icon name="add"></ion-icon>
@@ -13,14 +13,14 @@
   <ion-card *ngIf="rewards?.sbd > 0 || rewards?.vesting_steem > 0 || rewards?.steem > 0">
     <ion-item>
       <p style="font-size: 14px;" text-center>
-        Your current rewards: {{ rewards?.sbd }} SBD, {{ rewards?.vesting_steem_balance }} SP, {{ rewards?.steem }} STEEM
+        {{ 'pages.wallet.current_rewards' | translate }}: {{ rewards?.sbd }} SBD, {{ rewards?.vesting_steem_balance }} SP, {{ rewards?.steem }} STEEM
       </p>
     </ion-item>
     <ion-row>
       <ion-col>
         <button mode="ios" block round color="light" icon-left ion-button small (click)="claim_rewards()">
           <ion-icon name="ribbon"></ion-icon>
-          Claim Rewards
+          {{ 'pages.wallet.claim_rewards' | translate }}
         </button>
       </ion-col>
     </ion-row>

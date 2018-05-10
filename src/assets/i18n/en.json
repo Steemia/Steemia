@@ -1,0 +1,214 @@
+{
+	"menu": {
+		"home": "Home",
+		"wallet": "Wallet",
+		"notifications": "Notifications",
+		"my_profile": "My Profile",
+		"bookmarks": "Bookmarks",
+		"settings": "Settings",
+		"about": "About",
+		"logout": "Logout"
+	},
+
+	"tabs": {
+		"feed": "Feed",
+		"new": "New",
+		"hot": "Hot",
+		"trending": "Trending"
+	},
+
+	"pages": {
+		"wallet": {
+			"page_title": "Wallet",
+			"title": "{{ wallet }} Wallet",
+			"balance": "Balance",
+			"buy": "Buy",
+			"sell": "Sell",
+			"transfer": "Transfer",
+			"wallet": "Wallet",
+			"current_price": "Current Price",
+			"claim_rewards": "Claim Rewards",
+			"current_rewards": "Your current rewards",
+			"prompts": {
+				"transfer": {
+					"title": "Transfer to Account",
+					"subtitle": "Move funds to another Steemit account.",
+					"message": "Click the button below to be redirected to SteemConnect to complete your transaction.",
+					"inputs": {
+						"recipient": "Payment recipient",
+						"amount": "How much do you want to send?",
+						"memo": "This memo is public!"
+					},
+					"send": "Send"
+				},
+				"add_crypto": {
+					"title": "Add an Adresss",
+					"message": "Save Your Cryptocurrency Addresses",
+					"continue": "Continue"
+				},
+				"save_address": {
+					"title": "Save Your {{ coin }} Address",
+					"inputs": {
+						"address": "{{ coin }} Address"
+					},
+					"save": "Save"
+				}
+			}
+		},
+		"notifications": {
+			"page_title": "Notifications",
+			"started_following": "started following you",
+			"mentioned_you": "mentioned you in a post",
+			"commented": "commented on your post",
+			"sent_you": "sent you",
+			"reblogged": "reblogged your post"
+		},
+		"bookmarks": {
+			"page_title": "Bookmarks",
+			"no_bookmarks": "You have not bookmarked a post, YET!",
+			"remove": "Remove"
+		},
+		"profile": {
+			"edit_profile": "Edit Profile",
+			"joined": "Joined",
+			"account_value": "Account Value",
+			"posts": "Posts",
+			"activity": "Activity",
+			"info": "Info",
+			"wallet": "Wallet",
+			"followers": "Followers",
+			"following": "Following",
+			"location": "Location",
+			"website": "Website"
+		},
+		"edit_comment": {
+			"page_title": "Edit Comment"
+		}
+	},
+
+	"modals": {
+		"comments": {
+			"page_title": "Comments",
+			"no_comments": "This post does not have any comments, YET!",
+			"write_comment": "Write your comment here",
+			"options": {
+				"title": "Options",
+				"copy": "Copy",
+				"flag": "Flag",
+				"cancel": "Cancel",
+				"edit": "Edit"
+			}
+		},
+		"votes": {
+			"page_title": "Likers",
+			"no_votes": "This post does not have any votes, YET!"
+		},
+		"edit_post": {
+			"page_title": "Edit your Story",
+			"insert_url": "Insert URL",
+			"url_placeholder": "Url to insert",
+			"mask_url": "Text to mask the url"
+		},
+		"edit_profile": {
+			"page_title": "Edit Profile",
+			"name": "Name",
+			"edit": "Edit",
+			"about": "About",
+			"location": "Location",
+			"website": "Website",
+			"social_accounts": "Social Accounts",
+			"prompts": {
+				"submit_your": "Submit Your ",
+				"redirect_msg": "Click the Save button below to be redirected to SteemConnect to complete your transaction.",
+				"here": " here",
+				"save": "Save"
+			}
+		},
+		"reply_comment": {
+			"page_title": "Reply To Comment",
+			"type_reply": "Type your reply in here"
+		}
+	},
+
+	"general": {
+		"camera_options": {
+			"title": "How do you want to insert the image? 📷🌄",
+			"camera": "Camera",
+			"gallery": "Gallery",
+			"custom_url": "Custom URL"
+		},
+		"insert_image": {
+			"title": "Insert Image",
+			"url": "Image URL",
+			"cancel": "Cancel"
+		}
+	},
+
+	"generic_messages": {
+		"cancel": "Cancel",
+		"flag_error": "You have already flag this post with the same percentage.",
+		"reblogged_error": "You have already reblogged this post",
+		"post_interval": "You may only post once every 5 minutes.",
+		"comment_interval": "You may only comment once every 20 seconds.",
+		"post_big": "Your post is too big.",
+		"empty_message": "A comment cannot be empty.",
+		"tag_error": "You should include at least 1 tag.",
+		"all_fields": "You need to fill all fields.",
+		"not_logged_in": "This action requires you to be logged in. Please, login and try again.",
+		"reblogged_correctly": "This post has been reblogged correctly. 😏",
+		"already_reblogged": "You've already reblogged this post. 😂",
+		"alert_title": "Alert",
+		"dismiss": "Dismiss",
+		"please_wait": "Please wait...",
+		"submit": "Submit",
+		"flagging": "Please wait until the post is being flag.",
+		"flag_correct": "Post was flagged correctly!",
+		"not_more_posts": "There are not more posts to load",
+		"working_feature": "We are still working in this feature 👷‍♀️",
+		"likes": "Likes",
+		"reply": "Reply",
+		"nsfw_message": "NOT SAFE FOR WORK",
+		"show_images": "Show Image",
+		"reblogged_by": "Reblogged By",
+		"reblogged": "Reblogged",
+		"follow": "Follow",
+		"unfollow": "Unfollow",
+		"preview_mode": "Preview Mode",
+		"title": "Title",
+		"description": "Description",
+		"tags": "Tags",
+		"separated_by": "separated by comma or by space",
+		"title_post": "Type here the title of your post",
+		"title_tags": "You can choose up to 5 tags.",
+		"post_placeholder": "Write your story in here.",
+		"editing_post": "We are editing your amazing story 💯",
+		"post_edited": "Post was edited correctly!",
+		"collecting_rewards": "Collecting rewards 💰💵💸🤑",
+		"rewards_collected": "Your rewards are now in your account 😎",
+		"upvote": "Upvote",
+		"rewards": "Rewards",
+		"default_rewards": "Default 50% / 50%",
+		"100_rewards": "Power Up 100%",
+		"no_payout": "Decline Payout",
+		"creating_post": "We are posting your amazing story 💯",
+		"posted_correctly": "Post was posted correctly!",
+		"submit_post": "Submit a story",
+		"what_is_on_your": "What's on your mind today?"
+	},
+
+	"Followers": "Followers",
+	"Following": "Following",
+	"name": "name",
+	"about": "about",
+	"location": "location",
+	"facebook": "facebook",
+	"website": "website",
+	"github": "github",
+	"twitter": "twitter",
+	"instagram": "instagram",
+	"youtube": "youtube",
+	"image_success": "Image uploaded successfully",
+	"uploading": "Uploading...",
+	"locating_post": "Please wait until we locate your post 💯"
+
+}

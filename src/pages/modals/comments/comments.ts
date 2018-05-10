@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { SettingsProvider } from 'providers/settings/settings';
 import { Subscription } from 'rxjs/Subscription';
 import { SharedServiceProvider } from 'providers/shared-service/shared-service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage({
   priority: 'high',
@@ -53,6 +53,7 @@ export class CommentsPage {
     private cdr: ChangeDetectorRef,
     private app: App,
     private formBuilder: FormBuilder,
+    private translate: TranslateService,
     private alertCtrl: AlertController,
     private _settings: SettingsProvider,
     private service: SharedServiceProvider,
@@ -97,7 +98,7 @@ export class CommentsPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.subs.unsubscribe();
     this.menu.enable(true);
   }
@@ -109,6 +110,10 @@ export class CommentsPage {
       // to avoid the data to dissapear
       if (action === "refresh") {
         this.reinitialize();
+      }
+
+      if (data.results.length == 0) {
+        this.no_content = true;
       }
 
       this.commentsTree = data.results;
@@ -151,12 +156,11 @@ export class CommentsPage {
   private comment() {
     if (/\S/.test(this.commentForm.value.comment.toString())) {
       let loading = this.loadingCtrl.create({
-        content: 'Please wait...'
+        content: this.translate.instant('generic_messages.please_wait'),
       });
       loading.present();
 
       this.steemActions.dispatch_comment(this.author, this.permlink, this.commentForm.value.comment.toString()).then(res => {
-        console.log(res)
         if (res === 'not-logged') {
           this.show_prompt(loading, 'NOT_LOGGED_IN');
           return;
@@ -176,6 +180,10 @@ export class CommentsPage {
         }
 
       });
+    }
+
+    else {
+      this.alerts.display_alert('EMPTY_TEXT');
     }
 
   }
@@ -225,10 +233,10 @@ export class CommentsPage {
    */
   presentActionSheet(): void {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'How do you want to insert the image? 📷🌄',
+      title: this.translate.instant('general.camera_options.title'),
       buttons: [
         {
-          text: 'Camera',
+          text: this.translate.instant('general.camera_options.camera'),
           icon: 'camera',
           handler: () => {
             this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
@@ -237,7 +245,7 @@ export class CommentsPage {
           }
         },
         {
-          text: 'Gallery',
+          text: this.translate.instant('general.camera_options.gallery'),
           icon: 'albums',
           handler: () => {
             this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
@@ -246,14 +254,14 @@ export class CommentsPage {
           }
         },
         {
-          text: 'Custom URL',
+          text: this.translate.instant('general.camera_options.custom_url'),
           icon: 'md-globe',
           handler: () => {
             this.presentInsertURL()
           }
         },
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           icon: 'close',
           role: 'cancel',
           handler: () => {
@@ -270,16 +278,16 @@ export class CommentsPage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Insert Image',
+      title: this.translate.instant('general.insert_image.title'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Image URL'
+          placeholder: this.translate.instant('general.insert_image.url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');

@@ -10,33 +10,45 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 @Component({
   selector: 'page-tabs',
   template: `
-    <ion-header id="header">
-      <ion-navbar color="primary">
-        <button ion-button menuToggle>
-          <ion-icon name="mdi-menu"></ion-icon>
-        </button>
-        <ion-title>
-          Steemia
-        </ion-title>
-        <ion-buttons end>
-          <button ion-button icon-only (click)="openPage('SearchPage', false)">
-            <ion-icon name="mdi-magnify"></ion-icon>
+      <ion-header id="header">
+        <ion-navbar color="primary">
+          <button ion-button menuToggle>
+            <ion-icon name="mdi-menu"></ion-icon>
           </button>
-          <button id="notification-button" ion-button icon-only (click)="openPage('NotificationsPage', true)">
-            <ion-badge color="danger" *ngIf="notifications != 0">{{ notifications }}</ion-badge>
-            <ion-icon name="mdi-bell"></ion-icon>              
-          </button>
-        </ion-buttons>
-      </ion-navbar>
-    </ion-header>
+          <ion-title>
+            <ion-item class="custom-item" no-lines>
+              <ion-select [(ngModel)]="tags" interface="popover">
+                <ion-option value="all_tags">All Tags</ion-option>
+                <ion-option>Today</ion-option>
+                <ion-option>Next 7 Days</ion-option>
+                <ion-option>Overdue</ion-option>
+                <ion-option>Watching</ion-option>
+                <ion-option>Favourites</ion-option>
+                <ion-option>Tasks assigned to</ion-option>
+                <ion-option>Tasks I've assigned</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-title>
+          <ion-buttons end>
+            <button ion-button icon-only (click)="openPage('SearchPage', false)">
+              <ion-icon name="mdi-magnify"></ion-icon>
+            </button>
+            <button id="notification-button" ion-button icon-only (click)="openPage('NotificationsPage', true)">
+              <ion-badge color="danger" *ngIf="notifications != 0">{{ notifications }}</ion-badge>
+              <ion-icon name="mdi-bell"></ion-icon>              
+            </button>
+          </ion-buttons>
+        </ion-navbar>
+      </ion-header>
+
     <ion-content>
-    <ion-tabs>
-      <ion-tab [root]="feedRoot" tabIcon="mdi-file-document-box" tabTitle="Feed"></ion-tab>
-      <ion-tab [root]="newRoot" tabIcon="mdi-flash-circle" tabTitle="New"></ion-tab>
-      <ion-tab></ion-tab>
-      <ion-tab [root]="hotRoot" tabIcon="mdi-flame" tabTitle="Hot"></ion-tab>
-      <ion-tab [root]="trendRoot" tabIcon="mdi-elevation-rise" tabTitle="Trending"></ion-tab>
-    </ion-tabs>
+      <ion-tabs mode="wp">
+        <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="mdi-file-document-box"></ion-tab>
+        <ion-tab [root]="newRoot" tabTitle="New" tabIcon="mdi-flash-circle" ></ion-tab>
+        <ion-tab></ion-tab>
+        <ion-tab [root]="hotRoot" tabTitle="Hot" tabIcon="mdi-flame"></ion-tab>
+        <ion-tab [root]="trendRoot" tabTitle="Trending" tabIcon="mdi-elevation-rise" ></ion-tab>
+      </ion-tabs>
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage', true)">
           <ion-icon name="mdi-message-draw"></ion-icon>
@@ -52,6 +64,8 @@ export class TabsPage {
   private hotRoot = 'HotPage';
   private newRoot = 'NewPage';
   private notifications: number = 0;
+
+  private tags: string = "all_tags";
 
   constructor(private appCtrl: App,
     private ws: WebsocketsProvider,

@@ -7,12 +7,12 @@ export const newTemplate = `
   </ion-refresher>
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
-  <ion-card *ngIf="!is_loading && is_logged" class="share-post card" (click)="openPage('PostPage')" id="main-share-card">
+  <ion-card *ngIf="!is_loading && is_logged" class="share-post card custom-card" (click)="openPage('PostPage')" id="main-share-card">
     <ion-item id="header">
       <ion-avatar item-start>
         <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
-      <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
+      <ion-searchbar mode="ios" placeholder="{{ 'generic_messages.what_is_on_your' | translate }}" disabled="true">
       </ion-searchbar>
     </ion-item>
   </ion-card>
@@ -24,7 +24,7 @@ export const newTemplate = `
   </div>
 
   <div *ngIf="is_more_post == false">
-    <p text-center>There are not more posts to load</p>
+    <p text-center>{{ 'generic_messages.not_more_posts' | translate }}</p>
   </div>
 
   <ion-infinite-scroll *ngIf="contents.length > 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
