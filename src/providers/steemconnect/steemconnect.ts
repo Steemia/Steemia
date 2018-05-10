@@ -69,7 +69,6 @@ export class SteemConnectProvider {
         // Otherwise if the token is not null, undefined nor an empty string, the user
         // is logged in
         else if (token !== null && token !== undefined && token !== '') {
-
           // Save the access token for a later reference
           this.access_token = token.toString();
           // set the access token to the instance
