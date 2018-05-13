@@ -40,12 +40,13 @@ export class SettingsPage {
       'en_US'
     ];
 
-    this.currency = [
-      'USD'
-    ];
 
     this.util.getVoteValue().then(data => {
       this.upvote = (data as any) || 1;
+    });
+
+    this.storage.get('currency').then(data => {
+      this.currency = data;
     });
   }
 
@@ -94,6 +95,12 @@ export class SettingsPage {
       toast.present();
 
     });
+  }
+
+  updateCurrencyValue(event) {
+    this.storage.set('currency', event).then(() => {
+      console.log(event);
+    })
   }
 
 }
