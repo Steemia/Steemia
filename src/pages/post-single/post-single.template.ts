@@ -104,7 +104,7 @@ export const postSinglePage = `
         <ion-icon name="share"></ion-icon>
         <ion-label>Share</ion-label>
       </button>
-      <button ion-fab (click)="reblog()">
+      <button ion-fab *ngIf="!is_owner" (click)="reblog()">
         <ion-icon name="share-alt"></ion-icon>
         <ion-label>Reblog</ion-label>
       </button>
