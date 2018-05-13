@@ -1,9 +1,9 @@
 <ion-content padding>
-  <ion-label>
-    Potential payout: {{ author }} USD
+  <ion-spinner *ngIf='is_loading'></ion-spinner>
+<ion-label *ngIf='!is_loading'>
+  Potential payout: {{ author }} {{ local }}
+</ion-label>  
+<ion-label *ngIf='!boolean && !is_loading'>
+    Will release in {{ cashout }}
   </ion-label>  
 </ion-content>
-
-
-
-
