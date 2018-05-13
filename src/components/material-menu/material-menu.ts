@@ -45,6 +45,7 @@ export interface MaterialMenuOptions {
     background?: string,
     picture: string,
     username: string,
+    voting_power: string,
     email?: string,
     onClick?: Function
   },

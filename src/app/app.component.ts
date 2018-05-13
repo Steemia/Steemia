@@ -83,6 +83,7 @@ export class MyApp {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Steemia',
+        voting_power: '',
         email: 'steemia@steemia.io',
 
       },
@@ -109,6 +110,7 @@ export class MyApp {
         background: 'url('+this.profile.json_metadata.profile.cover_image+')',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
+        voting_power: (this.profile.voting_power/100).toFixed(0),
         email: this.profile.json_metadata.profile.location || '',
         onClick: () => {
           this.openPage('ProfilePage', 'profile');
@@ -123,7 +125,7 @@ export class MyApp {
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
-        { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
+        // { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
