@@ -20,13 +20,16 @@ export class UserItemComponent {
 
   @Input('item') private item: any;
   private is_loading: boolean = false;
+  private user: string;
 
   constructor(private app: App,
     public util: UtilProvider,
-  private steemActions: SteeemActionsProvider,
-  private alerts: AlertsProvider,
-  private steemConnect: SteemConnectProvider,
-  private navCtrl: NavController) {}
+    private steemActions: SteeemActionsProvider,
+    private alerts: AlertsProvider,
+    private steemConnect: SteemConnectProvider,
+    private navCtrl: NavController) {
+    this.user = (this.steemConnect.user_temp as any);
+  }
 
   /**
    * Method to follow the current user
