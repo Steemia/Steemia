@@ -11,6 +11,7 @@ import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../providers/settings/settings';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 
 @Component({
   templateUrl: 'app.html',
@@ -29,6 +30,13 @@ export class MyApp {
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
 
+    // Rewards Data
+    private rewards = {
+      steem: null,
+      sbd: null,
+      vesting_steem: null,
+      vesting_steem_balance: null
+    };  
 
   constructor(private platform: Platform,
     private statusBar: StatusBar,
@@ -36,6 +44,7 @@ export class MyApp {
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
     public storage: Storage,
+    private steeemActions: SteeemActionsProvider,
     private _settings: SettingsProvider,
     private ga: GoogleTrackingProvider,
     private imageLoaderConfig: ImageLoaderConfig,
@@ -65,12 +74,27 @@ export class MyApp {
         this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
           this.profile = data[0];
           this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
+
+          this.rewards = {
+            sbd: parseFloat(data[0].reward_sbd_balance),
+            steem: parseFloat(data[0].reward_steem_balance),
+            vesting_steem: parseFloat(data[0].reward_vesting_balance),
+            vesting_steem_balance: parseFloat(data[0].reward_vesting_steem)
+          }
+    
           // this.socket.connect();
           // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
           this.ws.sendAsync('get_notifications', this.profile.name, 0);
+          this.storage.get('auto_claim').then(data => {
+            if (data === true) {
+              if (this.rewards.sbd > 0 || this.rewards.steem > 0 || this.rewards.vesting_steem > 0 || this.rewards.vesting_steem_balance > 0) {
+                this.claim_rewards();
+              }
+            }
+          });        
         });
       }
     });
@@ -83,6 +107,7 @@ export class MyApp {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Steemia',
+        voting_power: '',
         email: 'steemia@steemia.io',
 
       },
@@ -109,6 +134,7 @@ export class MyApp {
         background: 'url('+this.profile.json_metadata.profile.cover_image+')',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
+        voting_power: (this.profile.voting_power/100).toFixed(0),
         email: this.profile.json_metadata.profile.location || '',
         onClick: () => {
           this.openPage('ProfilePage', 'profile');
@@ -123,7 +149,7 @@ export class MyApp {
         { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
         // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
-        { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
+        // { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
         { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
@@ -194,6 +220,18 @@ export class MyApp {
       else {
         this.nav.push(page);
       }
+    });
+  }
+
+    /**
+   * Method to claim rewards
+   */
+  private claim_rewards(): void {
+    const steem = this.rewards.steem.toFixed(3).toString() + ' STEEM';
+    const sbd = this.rewards.sbd.toFixed(3).toString() + ' SBD';
+    const sp = this.rewards.vesting_steem.toFixed(6).toString() + ' VESTS';
+
+    this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
     });
   }
 }

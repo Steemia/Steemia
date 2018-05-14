@@ -10,6 +10,10 @@ material-menu {
     color: white;
   }
 
+  .badge-ios-light {
+    top: 100px !important;
+  }
+
   .ion-material-sidemenu-header {
     height: 165px;
     padding: 16px 16px 8px 16px;
@@ -33,6 +37,7 @@ material-menu {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    font-weight: bolder;
   }
     
   .ion-material-sidemenu-header div.subtitle h1, h2 {
@@ -43,10 +48,11 @@ material-menu {
     overflow: hidden;
     text-overflow: ellipsis;
     color: white;
+    font-weight: bolder;
   }
     
   .ion-material-sidemenu-header div.subtitle h2 {
-    font-weight: 400;
+    font-weight: bolder;
   }
     
   .ion-material-sidemenu-container .menu-item {
@@ -70,6 +76,16 @@ material-menu {
   .ion-material-sidemenu-container .list-separator {
     margin: 8px auto;
     border-bottom: 1px solid #dedede;
+  }
+
+  .voting_power {
+    border-radius: 20%;
+    position: absolute;
+    top: 82px;
+    color: black;
+    left: 9.5%;
+    font-weight: bold;
+    padding: 3px 5px;
   }
     
 }

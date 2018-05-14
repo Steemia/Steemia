@@ -26,15 +26,28 @@
         <ion-option value="en_US">English</ion-option>
       </ion-select>
     </ion-item>
-    <!-- <ion-list-header no-lines>
+
+    <ion-list-header no-lines>
       Currency
     </ion-list-header>
     <ion-item no-lines>
       <ion-icon name="cash" item-start></ion-icon>
-      <ion-select [(ngModel)]="currency[0]">
+      <ion-select [(ngModel)]='currency' (ngModelChange)="updateCurrencyValue($event)">
         <ion-option value="USD">USD</ion-option>
+        <ion-option value="EUR">EUR</ion-option>
+        <ion-option value="GBP">GBP</ion-option>
+        <ion-option value="JPY">JPY</ion-option>
+        <ion-option value="TRY">TRY</ion-option>
+        <ion-option value="KRW">KRW</ion-option>
+        <ion-option value="INR">INR</ion-option>
+        <ion-option value="IDR">IDR</ion-option>
+        <ion-option value="CNY">CNY</ion-option>
+        <ion-option value="NGN">NGN</ion-option>
+        <ion-option value="PLN">PLN</ion-option>
+        <ion-option value="AUD">AUD</ion-option>
       </ion-select>
-    </ion-item> -->
+    </ion-item>
+
     <ion-list-header no-lines>
       Theme
     </ion-list-header>
@@ -49,5 +62,14 @@
         </ion-option>
       </ion-select>
     </ion-item>
+
+    <ion-list-header no-lines>
+      Auto Claim Rewards
+    </ion-list-header>
+    <ion-item>
+      <ion-label> Claim Rewards Auto </ion-label>
+      <ion-toggle [(ngModel)]="claim" (ngModelChange)="autoClaim()"></ion-toggle>
+    </ion-item>
+
   </ion-list>
 </ion-content>
