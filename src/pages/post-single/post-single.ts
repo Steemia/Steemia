@@ -10,6 +10,7 @@ import {
   ToastController,
   AlertController,
   PopoverController,
+  ModalController,
   Navbar
 } from 'ionic-angular';
 import { PostsRes } from 'models/models';
@@ -70,6 +71,7 @@ export class PostSinglePage {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public util: UtilProvider,
+    private modalCtrl: ModalController,
     public loadingCtrl: LoadingController,
     private steemActions: SteeemActionsProvider,
     private steemConnect: SteemConnectProvider) {
@@ -80,6 +82,7 @@ export class PostSinglePage {
 
   ionViewDidLoad(): void {
     this.post = this.navParams.get('post');
+    console.log(this.post)
 
     this.parsed_body = this.getPostBody();
 
@@ -572,5 +575,27 @@ export class PostSinglePage {
     });
     alert.present();
   }
+
+  /**
+   * Method to open the pending payout popover
+   */
+  presentPayoutPopover(myEvent) {
+    let payout = { payout: this.post.total_payout_reward, created: this.post.created }
+    let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
+    console.log(payout)
+    popover.present({
+      ev: myEvent
+    });
+  }
+
+  /**
+   * Method to open a modal with the votes of the post
+   * @param post 
+   */
+  private openVotes(url: string, author: string): void {
+    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
+    votesModal.present();
+  }
+
 
 }

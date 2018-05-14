@@ -42,11 +42,46 @@ export const postSinglePage = `
       <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="parsed_body"></div>
 
       <ion-grid padding>
+
+      <ion-row>
+      <ion-col col-5 text-center>
+          <div style="float: left;" *ngIf="post?.top_likers_avatars" (click)="openVotes(post?.url, post?.author)">
+            <div class="voters">
+              <span class="voters_image" *ngFor="let voter of post?.top_likers_avatars">
+                <img [src]="voter" (error)="util.imgError('comment',$event)" />
+              </span>
+            </div>
+            <div class="likes">
+              <p id="likes">{{ util.renderLikes(post?.net_likes) }}</p>
+            </div>
+        </div>
+      </ion-col>
+  
+      <ion-col col-4 text-center>
+        <button ion-button clear small left>
+          <ion-icon name="ios-text" id="comment-icon"></ion-icon>
+          &nbsp;
+          <div class="info" id="comment">{{ post?.children }}</div>
+        </button>
+      </ion-col>
+  
+      <ion-col col-3 text-center>
+        <button end ion-button icon-right clear small (click)="presentPayoutPopover($event)">
+          <div class="info top-4">
+            <del *ngIf="post?.max_accepted_payout == 0" id="payout">{{ post?.total_payout_reward | currency:'USD': 'symbol' }}</del>
+            <p *ngIf="post?.max_accepted_payout == 1000000" id="payout">{{ post?.total_payout_reward | currency:'USD': 'symbol' }}</p>
+          </div>
+        </button>
+      </ion-col>
+  
+    </ion-row>
+
         <ion-row>
           <ion-col no-padding>
             <div *ngFor="let tag of post?.tags" style="float: left !important; margin: 5px 5px 0px 0px">
               <ion-badge class="custom-chip" color="light">
-                {{ tag }}
+              <ion-icon style='color: black !important' name="attach"></ion-icon>
+              {{ tag }}
               </ion-badge>
             </div>
           </ion-col>

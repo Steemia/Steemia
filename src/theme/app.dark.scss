@@ -396,4 +396,22 @@
         }
     }
 
+    page-post-single {
+        .likes p {
+            color: white !important;
+        }
+
+        ion-icon {
+            color: white !important;
+        }
+
+        .info {
+            color: white !important;
+        }
+
+        #payout {
+            color: white !important;
+        }
+    }
+
 }
