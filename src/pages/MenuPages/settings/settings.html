@@ -62,5 +62,14 @@
         </ion-option>
       </ion-select>
     </ion-item>
+
+    <ion-list-header no-lines>
+      Auto Claim Rewards
+    </ion-list-header>
+    <ion-item>
+      <ion-label> Claim Rewards Auto </ion-label>
+      <ion-toggle [(ngModel)]="claim" (ngModelChange)="autoClaim()"></ion-toggle>
+    </ion-item>
+
   </ion-list>
 </ion-content>

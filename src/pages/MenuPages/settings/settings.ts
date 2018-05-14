@@ -14,6 +14,7 @@ import { Storage } from '@ionic/storage';
 export class SettingsPage {
   public upvote = 1;
   public language = [];
+  public claim: boolean = false;
   private currency;
   selected: String;
   availableThemes: { className: string, prettyName: string }[];
@@ -46,7 +47,19 @@ export class SettingsPage {
     });
 
     this.storage.get('currency').then(data => {
-      this.currency = data;
+      if (data) {
+        this.currency = data;
+      } else {
+        this.currency = 'USD'
+      }
+    });
+  
+    this.storage.get('auto_claim').then(data => {
+      if (data) {
+        this.claim = data;
+      } else {
+        this.claim = false;
+      }     
     });
   }
 
@@ -101,6 +114,10 @@ export class SettingsPage {
     this.storage.set('currency', event).then(() => {
       console.log(event);
     })
+  }
+
+  autoClaim() {
+    this.storage.set('auto_claim', this.claim);
   }
 
 }
