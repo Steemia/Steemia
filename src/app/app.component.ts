@@ -90,7 +90,9 @@ export class MyApp {
           this.ws.sendAsync('get_notifications', this.profile.name, 0);
           this.storage.get('auto_claim').then(data => {
             if (data === true) {
-              this.claim_rewards();
+              if (this.rewards.sbd > 0 || this.rewards.steem > 0 || this.rewards.vesting_steem > 0 || this.rewards.vesting_steem_balance > 0) {
+                this.claim_rewards();
+              }
             }
           });        
         });

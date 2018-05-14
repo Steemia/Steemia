@@ -39,7 +39,11 @@ export class PendingPayoutPage {
   getCurrency() {
     this.is_loading = true;
     this.storage.get('currency').then(data => {
-      this.local = data;
+      if (data) {
+        this.local = data;
+      } else {
+        this.local = 'USD';
+      }
     }).then(() => {
       this.getLocalPrice();
     })
