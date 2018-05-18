@@ -4,7 +4,6 @@ import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http'
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
-import { IonicImageLoader } from 'ionic-image-loader';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -83,7 +82,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     IonicStorageModule.forRoot({ name: '__mydb', driverOrder: ['sqlite', 'websql', 'indexeddb'] }),
-    IonicImageLoader.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

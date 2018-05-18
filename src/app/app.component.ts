@@ -8,7 +8,6 @@ import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
-import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../providers/settings/settings';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +39,6 @@ export class MyApp {
     public storage: Storage,
     private _settings: SettingsProvider,
     private ga: GoogleTrackingProvider,
-    private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
     private ws: WebsocketsProvider,
     private fcm: FCM,
@@ -182,12 +180,6 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
 
       this.ga.track_page('Loaded App');
-      this.imageLoaderConfig.setBackgroundSize('cover');
-      this.imageLoaderConfig.setImageReturnType('base64');
-      this.imageLoaderConfig.setHeight('200px');
-      this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
-      this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-      this.imageLoaderConfig.setMaximumCacheAge(24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {

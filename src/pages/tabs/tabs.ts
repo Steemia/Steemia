@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, App, Tabs } from 'ionic-angular';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { IonicPage, App, Tabs, Tab } from 'ionic-angular';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { AlertsProvider } from 'providers/alerts/alerts';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 @IonicPage({
   priority: 'high'
@@ -15,17 +16,13 @@ import { AlertsProvider } from 'providers/alerts/alerts';
           <button ion-button menuToggle>
             <ion-icon name="mdi-menu"></ion-icon>
           </button>
-          <ion-title>
-            <ion-item class="custom-item" no-lines>
-              <ion-select [(ngModel)]="tags" interface="popover">
-                <ion-option value="all_tags">All Tags</ion-option>
-                <ion-option>Today</ion-option>
-                <ion-option>Next 7 Days</ion-option>
-                <ion-option>Overdue</ion-option>
-                <ion-option>Watching</ion-option>
-                <ion-option>Favourites</ion-option>
-                <ion-option>Tasks assigned to</ion-option>
-                <ion-option>Tasks I've assigned</ion-option>
+          <ion-title [ngClass]="{'title-centered': (selectedIndex == 0)}">
+            <div *ngIf="selectedIndex == 0">Steemia</div>
+            <ion-item *ngIf="selectedIndex != 0" class="custom-item" no-lines (click)="openPage('TagsPage', false)">
+              <ion-select [(ngModel)]="current_tag" disabled="true">
+                <ion-option *ngFor="let tag of tags" [value]="tag">
+                 {{ tag }}
+                </ion-option>
               </ion-select>
             </ion-item>
           </ion-title>
@@ -42,7 +39,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
       </ion-header>
 
     <ion-content>
-      <ion-tabs mode="wp">
+      <ion-tabs mode="wp" (ionChange)="tabChange($event)">
         <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="mdi-file-document-box"></ion-tab>
         <ion-tab [root]="newRoot" tabTitle="New" tabIcon="mdi-flash-circle" ></ion-tab>
         <ion-tab></ion-tab>
@@ -65,16 +62,40 @@ export class TabsPage {
   private newRoot = 'NewPage';
   private notifications: number = 0;
 
-  private tags: string = "all_tags";
+  private current_tag: string = "All Tags";
+  private tags: Array<string> = ["All Tags"];
+  selectedIndex: number = 0;
 
   constructor(private appCtrl: App,
     private ws: WebsocketsProvider,
+    private sharedProvider: SharedServiceProvider,
+    private cdr: ChangeDetectorRef,
     private alerts: AlertsProvider,
     private steemConnect: SteemConnectProvider) {
 
     this.ws.counter.subscribe(count => {
       this.notifications = count;
     });
+
+    
+  }
+
+  ionViewDidLoad(): void {
+
+    this.sharedProvider.current_tag.subscribe(tag => {
+
+      if (tag === "") {
+        this.current_tag = "All Tags";
+        this.tags = ["All Tags"]
+      }
+
+      else {
+        this.current_tag = tag;
+        this.tags = [tag];
+      }
+      
+    });
+
   }
 
   /**
@@ -95,6 +116,10 @@ export class TabsPage {
     else {
       this.appCtrl.getRootNavs()[0].push(str);
     }
+  }
+
+  tabChange(tab: Tab){
+    this.selectedIndex = tab.index;
   }
 
 }

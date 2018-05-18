@@ -8,6 +8,16 @@ export const feedTemplate = `
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
+  <ion-card class="share-post card custom-card" *ngIf="!is_loading && logged_in == true" (click)="openPage('PostPage')" id="main-share-card">
+    <ion-item id="header">
+      <ion-avatar item-start>
+        <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
+      </ion-avatar>
+      <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
+      </ion-searchbar>
+    </ion-item>
+  </ion-card>
+
   <div *ngIf="logged_in == false" class="vertical-align h-100">
     <ion-card id="not-logged">
       <ion-card-content>

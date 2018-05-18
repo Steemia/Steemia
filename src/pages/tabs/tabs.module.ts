@@ -4,12 +4,12 @@ import { TabsPage } from './tabs';
 import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-      TabsPage,
-  ],
-  imports: [
-      IonicPageModule.forChild(TabsPage),
-      TranslateModule.forChild()
-  ],
+    declarations: [
+        TabsPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(TabsPage),
+        TranslateModule.forChild()
+    ],
 })
-export class TabsPageModule {}
+export class TabsPageModule { }

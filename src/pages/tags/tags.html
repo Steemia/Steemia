@@ -1,0 +1,28 @@
+<ion-header id="header">
+
+  <ion-navbar color="primary">
+    <ion-title>Pick a tag</ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top color="primary">
+    <ion-searchbar [(ngModel)]="term" [formControl]="searchControl" (ionInput)="onSearchInput()" placeholder="Search Tag">
+    </ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list [virtualScroll]="tags" radio-group>
+    <ion-item *virtualItem="let item">
+        <ion-label>{{item.name}}</ion-label>
+        <ion-radio value="{{item.name}}" (ionSelect)="selectTag(item.name)"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

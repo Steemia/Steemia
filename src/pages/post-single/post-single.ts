@@ -24,9 +24,6 @@ import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
 import { CameraProvider } from 'providers/camera/camera';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
-
-
 
 @IonicPage({
   priority: 'high'
@@ -62,7 +59,6 @@ export class PostSinglePage {
     public navParams: NavParams,
     private dom: DomSanitizer,
     public menu: MenuController,
-    private nativePageTransitions: NativePageTransitions,
     private camera: CameraProvider,
     private actionSheetCtrl: ActionSheetController,
     public storage: Storage,
@@ -81,25 +77,6 @@ export class PostSinglePage {
   }
 
   ionViewDidLoad(): void {
-
-    // Override backbutton at navbar to have a custom animation
-    this.navbar.backButtonClick = (e:UIEvent) => {
-
-      // Create the option for the native right transition
-      let options: NativeTransitionOptions = {
-        direction: 'right',
-        duration: 250,
-        slidePixels: 0,
-        slowdownfactor: -1,
-        iosdelay: 50
-       };
-       
-      // Add the animation to the queue
-      this.nativePageTransitions.slide(options);
-
-      // Pop the page without Ionic animation
-      this.navCtrl.pop({animate:false});
-     }
 
     this.post = this.navParams.get('post');
 
