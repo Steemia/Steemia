@@ -597,5 +597,26 @@ export class PostSinglePage {
     votesModal.present();
   }
 
-
+  private reblogAlert() {
+    let confirm = this.alertCtrl.create({
+      title: 'Reblog this post?',
+      message: 'This post will appear on your personal feed. This action cannot be reversed!',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Reblog',
+          handler: () => {
+            this.reblog();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  
 }
