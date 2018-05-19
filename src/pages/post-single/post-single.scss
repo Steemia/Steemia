@@ -4,8 +4,8 @@ page-post-single {
         display:inline-block;
         
         img {
-              height: 25px;
-              width: 25px;
+              height: 25px !important;
+              width: 25px !important;
               border-radius: 50%;
               background-position: 50% 50%;
               border-radius: 50%;
@@ -33,6 +33,13 @@ page-post-single {
         }
     }
 
+    #comment-icon {
+        color: gray;
+    }
+
+    .info {
+        color: gray;
+    }
 
     ion-spinner {
         top: 0 !important;
