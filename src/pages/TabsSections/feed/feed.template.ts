@@ -19,7 +19,7 @@ export const feedTemplate = `
   </ion-card>
 
   <div *ngIf="logged_in == false" class="vertical-align h-100">
-    <ion-card id="not-logged">
+    <ion-card id="not-logged" class="card custom-card">
       <ion-card-content>
         <p text-center> You need to log in to see this page</p>
         <button ion-button block mode="ios" (click)="openPage('LoginPage')">Login Now!</button>

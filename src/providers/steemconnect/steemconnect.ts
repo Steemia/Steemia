@@ -24,7 +24,7 @@ export class SteemConnectProvider {
 
   public loginUrl: string;
   public steemData;
-  private access_token: string ;
+  private access_token: string;
   public instance;
   public user: string;
   private login_status: boolean;
@@ -63,7 +63,6 @@ export class SteemConnectProvider {
             status: this.login_status,
             logged_out: false
           });
-          
         }
 
         // Otherwise if the token is not null, undefined nor an empty string, the user

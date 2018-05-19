@@ -59,7 +59,7 @@ export class PostPage {
 
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad(): void {
     this.storage.get('title').then((title) => {
       if (title) {
         this.insertTitle(title);
@@ -79,15 +79,18 @@ export class PostPage {
     });
   }
 
-  ionViewDidLeave() {
+  ionViewDidLeave(): void {
     this.storage.set('title', this.storyForm.controls['title'].value).then(() => { });
     this.storage.set('description', this.storyForm.controls['description'].value).then(() => { });
     this.storage.set('tags', this.storyForm.controls['tags'].value).then(() => { });
-    this.menu.enable(true);
   }
 
-  ionViewDidEnter() {
+  ionViewDidEnter(): void {
     this.menu.enable(false);
+  }
+
+  ionViewWillLeave(): void {
+    this.menu.enable(true);
   }
 
   public deleteDraft() {

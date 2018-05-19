@@ -1,11 +1,19 @@
 <ion-header id="header">
 
   <ion-navbar color="primary">
-    <ion-title>Pick a tag</ion-title>
+    <ion-title>
+      {{ 'pick_tag' | translate }}
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="resetTag()">
+        <ion-icon name="refresh"></ion-icon>&nbsp;&nbsp;{{ 'reset' | translate }}
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
   <ion-toolbar no-border-top color="primary">
-    <ion-searchbar [(ngModel)]="term" [formControl]="searchControl" (ionInput)="onSearchInput()" placeholder="Search Tag">
+    <ion-searchbar [(ngModel)]="term" placeholder="{{ 'search_tag' | translate }}">
     </ion-searchbar>
   </ion-toolbar>
 
@@ -18,10 +26,11 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list [virtualScroll]="tags" radio-group>
+  <ion-list [virtualScroll]="tags | search : term" radio-group>
     <ion-item *virtualItem="let item">
-        <ion-label>{{item.name}}</ion-label>
-        <ion-radio value="{{item.name}}" (ionSelect)="selectTag(item.name)"></ion-radio>
+      <ion-label *ngIf="item.name == 'All Tags'">{{ 'all_tags' | translate }}</ion-label>
+      <ion-label *ngIf="item.name != 'All Tags'">{{item?.name}}</ion-label>
+      <ion-radio value="{{item?.name}}" (ionSelect)="selectTag(item?.name)"></ion-radio>
     </ion-item>
   </ion-list>
 

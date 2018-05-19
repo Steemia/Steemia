@@ -69,12 +69,9 @@ export class SearchPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
-    this.menu.enable(true);
-  }
-
   ionViewWillLeave() {
     this.sub.unsubscribe(); // Remove subscription of the search observable
+    this.menu.enable(true);
   }
 
   performSearch(event) {

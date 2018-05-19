@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, App, Tabs, Tab } from 'ionic-angular';
+import { IonicPage, App, Tabs, Tab, NavController } from 'ionic-angular';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { AlertsProvider } from 'providers/alerts/alerts';
@@ -39,7 +39,7 @@ import { SharedServiceProvider } from 'providers/shared-service/shared-service';
       </ion-header>
 
     <ion-content>
-      <ion-tabs mode="wp" (ionChange)="tabChange($event)">
+      <ion-tabs #navTabs mode="wp" (ionChange)="tabChange($event)">
         <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="mdi-file-document-box"></ion-tab>
         <ion-tab [root]="newRoot" tabTitle="New" tabIcon="mdi-flash-circle" ></ion-tab>
         <ion-tab></ion-tab>
@@ -55,6 +55,7 @@ import { SharedServiceProvider } from 'providers/shared-service/shared-service';
   `
 })
 export class TabsPage {
+  @ViewChild("navTabs") navTabs: Tabs;
 
   private feedRoot = 'FeedPage';
   private trendRoot = 'TrendPage';
@@ -65,18 +66,20 @@ export class TabsPage {
   private current_tag: string = "All Tags";
   private tags: Array<string> = ["All Tags"];
   selectedIndex: number = 0;
+  calledOnce: boolean = false;
+
 
   constructor(private appCtrl: App,
     private ws: WebsocketsProvider,
     private sharedProvider: SharedServiceProvider,
     private cdr: ChangeDetectorRef,
+    private navCtrl: NavController,
     private alerts: AlertsProvider,
     private steemConnect: SteemConnectProvider) {
 
     this.ws.counter.subscribe(count => {
       this.notifications = count;
     });
-
     
   }
 
@@ -95,7 +98,26 @@ export class TabsPage {
       }
       
     });
+  }
 
+  ionViewWillEnter() {
+    this.steemConnect.status.subscribe(res => {
+
+      if (this.calledOnce === false) {
+        if (res.status === true) {
+          // set feed tab as active
+          this.changeTab(0);
+          this.calledOnce = true;
+        }
+  
+        else {
+          // set trending tab as active
+          this.changeTab(4);
+          this.calledOnce = true;
+        }
+      }
+      
+    });
   }
 
   /**
@@ -110,7 +132,7 @@ export class TabsPage {
       }
 
       else {
-        this.alerts.display_alert('NOT_LOGGED_IN');
+        this.appCtrl.getRootNavs()[0].push('LoginPage');
       }
     }
     else {
@@ -118,8 +140,12 @@ export class TabsPage {
     }
   }
 
-  tabChange(tab: Tab){
+  tabChange(tab: Tab): void {
     this.selectedIndex = tab.index;
+  }
+
+  changeTab(tabIndex: number): void {
+    this.navTabs.select(tabIndex);
   }
 
 }

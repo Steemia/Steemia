@@ -1,5 +1,15 @@
 page-profile {
 
+  .title.title-md, .title.title-wp {
+    position: absolute !important;
+    left: 50% !important;
+    top: 0 !important;
+    transform: translateX(-50%) !important;
+    height: 100% !important;
+    width: 70% !important;
+    text-align: center !important;
+  } 
+
   .card {
     -webkit-box-shadow:  none !important;
     -moz-box-shadow:  none !important;

@@ -1,4 +1,15 @@
 page-settings {
+
+    .title.title-md, .title.title-wp {
+        position: absolute !important;
+        left: 50% !important;
+        top: 0 !important;
+        transform: translateX(-50%) !important;
+        height: 100% !important;
+        width: 70% !important;
+        text-align: center !important;
+    }
+
     .list-header-md {
         background-color: #F1F2F3;
         margin-bottom: 0px;

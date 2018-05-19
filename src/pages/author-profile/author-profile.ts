@@ -90,7 +90,7 @@ export class AuthorProfilePage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.subs.unsubscribe();
     this.menu.enable(true);
   }

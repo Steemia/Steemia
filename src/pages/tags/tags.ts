@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, MenuController } from 'ionic-angular';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SharedServiceProvider } from 'providers/shared-service/shared-service';
-import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
@@ -15,65 +14,57 @@ export class TagsPage {
 
   private tags = [];
   private term: string = '';
-  private searchControl: FormControl;
   searching: boolean = false;
 
   constructor(public navCtrl: NavController,
     private steemia: SteemiaProvider,
+    private menu: MenuController,
     private sharedService: SharedServiceProvider) {
-
-      this.searchControl = new FormControl();
   }
 
   ionViewDidLoad() {
     this.steemia.dispatch_tags().then((data: any) => {
       this.tags = data.results;
-      
-      this.initializeTags();
-      
-      this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
-        this.searching = false;
-        this.initializeTags();
+
+      // Manually unshift the Steemia tag
+      this.tags.unshift({
+        name: "Steemia"
       });
 
+      // Manually unshift the All Tags tag
+      this.tags.unshift({
+        name: "All Tags"
+      });
     });
   }
 
-  /**
-   * Method to initialize the set of tags
-   */
-  initializeTags() {
-    this.tags = this.searchTag(this.term);
+  ionViewDidEnter() {
+    this.menu.enable(false);
   }
 
-  /**
-   * Method to filter the array of tags based on search
-   * @param term 
-   */
-  searchTag(term: string) {
-
-    if (term === "" || term === null || term === undefined) {
-      return this.tags
-    }
-
-    return this.tags.filter((item) => {
-      return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
-    });  
-  }
-
-  /**
-   * Event method for onSearch input
-   */
-  onSearchInput(){
-    this.searching = true;
+  ionViewWillLeave() {
+    this.menu.enable(true);
   }
 
   /**
    * Method to select tag and pop the pafe
    * @param tag 
-   */
+   */0
   selectTag(tag: string): void {
-    this.sharedService.current_tag.next(tag);
+    if (tag === "All Tags")
+      this.sharedService.current_tag.next('');
+  
+    else
+      this.sharedService.current_tag.next(tag);
+    
+    this.navCtrl.pop();
+  }
+
+  /**
+   * Method to reset tags to all tags
+   */
+  resetTag(): void {
+    this.sharedService.current_tag.next('');
     this.navCtrl.pop();
   }
 

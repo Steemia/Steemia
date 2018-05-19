@@ -196,6 +196,10 @@
 		"what_is_on_your": "What's on your mind today?"
 	},
 
+	"all_tags": "All Tags",
+	"search_tag": "Search for a tag",
+	"reset": "Reset",
+	"pick_tag": "Pick a Tag",
 	"Followers": "Followers",
 	"Following": "Following",
 	"name": "name",
