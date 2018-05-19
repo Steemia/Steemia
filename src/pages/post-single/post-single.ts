@@ -580,7 +580,7 @@ export class PostSinglePage {
    * Method to open the pending payout popover
    */
   presentPayoutPopover(myEvent) {
-    let payout = { payout: this.post.total_payout_reward, created: this.post.created }
+    let payout = { payout: this.post.total_payout_reward, created: this.post.created, beneficiaries: this.post.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
     console.log(payout)
     popover.present({
