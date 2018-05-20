@@ -82,7 +82,6 @@ export class PostSinglePage {
 
   ionViewDidLoad(): void {
     this.post = this.navParams.get('post');
-    console.log(this.post)
 
     this.parsed_body = this.getPostBody();
 
@@ -582,7 +581,6 @@ export class PostSinglePage {
   presentPayoutPopover(myEvent) {
     let payout = { payout: this.post.total_payout_reward, created: this.post.created, beneficiaries: this.post.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
-    console.log(payout)
     popover.present({
       ev: myEvent
     });

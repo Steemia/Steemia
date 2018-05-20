@@ -180,8 +180,15 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ voting_power }} SP </p>
-
+            <p>{{ voting_power }} SP <span *ngIf='account_data?.exact_delegation != 0'>({{ account_data?.exact_delegation }} Delegated SP)</span> </p>
+          </ion-item>
+          <ion-item no-lines>
+            <ion-avatar item-start>
+              <img src="assets/steem.png">
+            </ion-avatar>
+            <h2>Saving Balance</h2>
+            <p>{{ account_data?.savings_balance }}</p>
+            <p>{{ account_data?.savings_sbd_balance }}</p>
           </ion-item>
         </ion-list>
       </div>
