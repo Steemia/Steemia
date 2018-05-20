@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { AlertController,
+import { App,
+         AlertController,
          NavController, 
          ActionSheetController, 
          LoadingController, 
@@ -30,7 +31,8 @@ export class CommentComponent {
   private is_voting: boolean = false;
   private current_user: string = '';
 
-  constructor(private alerts: AlertsProvider,
+  constructor(private app: App,
+    private alerts: AlertsProvider,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -149,9 +151,24 @@ export class CommentComponent {
    * @param {String} author: author of the post
    */
   private openProfile(author: string): void {
-    this.navCtrl.push('AuthorProfilePage', {
-      author: author
-    });
+    if (this.steemConnect.user_object !== undefined) {
+      if ((this.steemConnect.user_object as any).user == author) {
+        this.app.getRootNav().push('ProfilePage', {
+          author: (this.steemConnect.user_object as any).user
+        });
+      }
+      else {
+        this.app.getRootNav().push('AuthorProfilePage', {
+          author: author
+        });
+      }
+    }
+    else {
+      this.app.getRootNav().push('AuthorProfilePage', {
+        author: author
+      });
+    }
+    
   }
 
   /**

@@ -11,6 +11,7 @@ import { WebsocketsProvider } from 'providers/websockets/websockets';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../providers/settings/settings';
 import { TranslateService } from '@ngx-translate/core';
+import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 
 @Component({
   templateUrl: 'app.html',
@@ -28,7 +29,14 @@ export class MyApp {
   private profile;
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
-
+  // Rewards Data
+  private rewards = {
+    steem: null,
+    sbd: null,
+    vesting_steem: null,
+    vesting_steem_balance: null
+  };
+  
   constructor(private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -36,6 +44,7 @@ export class MyApp {
     private menuCtrl: MenuController,
     private translate: TranslateService,
     public storage: Storage,
+    private steeemActions: SteeemActionsProvider,
     private _settings: SettingsProvider,
     private ga: GoogleTrackingProvider,
     private events: Events,
@@ -65,10 +74,23 @@ export class MyApp {
         this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
           this.profile = data[0];
           this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
+          this.rewards = {
+            sbd: parseFloat(data[0].reward_sbd_balance),
+            steem: parseFloat(data[0].reward_steem_balance),
+            vesting_steem: parseFloat(data[0].reward_vesting_balance),
+            vesting_steem_balance: parseFloat(data[0].reward_vesting_steem)
+          };
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
           this.ws.sendAsync('get_notifications', this.profile.name, 0);
+          this.storage.get('auto_claim').then(data => {
+            if (data === true) {
+              if (this.rewards.sbd > 0 || this.rewards.steem > 0 || this.rewards.vesting_steem > 0 || this.rewards.vesting_steem_balance > 0) {
+                this.claim_rewards();
+              }
+            }
+          });        
         });
       }
     });
@@ -81,8 +103,8 @@ export class MyApp {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
         username: 'Hey,',
+        voting_power: '',
         email: 'Welcome to Steemia!',
-
       },
       entries: [
         { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
@@ -104,9 +126,10 @@ export class MyApp {
   private initializeLoggedInMenu(): void {
     this.loggedInPages = {
       header: {
-        background: '#ccc url(' + this.background + ') no-repeat top left / cover',
+        background: 'url('+this.profile.json_metadata.profile.cover_image+')',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
+        voting_power: (this.profile.voting_power/100).toFixed(0),
         email: this.profile.json_metadata.profile.location || '',
         onClick: () => {
           this.openPage('ProfilePage', 'profile');
@@ -119,7 +142,6 @@ export class MyApp {
         },
         { title: this.translate.instant('menu.notifications'), leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
         { title: this.translate.instant('menu.my_profile'), leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
-        // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
         { title: this.translate.instant('menu.bookmarks'), leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
         { title: this.translate.instant('menu.settings'), leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
         { title: this.translate.instant('menu.about'), leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
@@ -147,15 +169,12 @@ export class MyApp {
       this.splashScreen.hide();
       this._settings.getTheme().subscribe(val => {
         if (val === 'dark-theme') {
-          
-          this.background = './assets/menu_bg2.jpg';
-          
+         // this.background = './assets/menu_bg2.jpg';
           this.statusBar.backgroundColorByHexString("#1d252c");
         }
 
         else if (val === 'blue-theme') {
-
-          this.background = './assets/mb-bg-fb-03.jpg';
+         // this.background = './assets/mb-bg-fb-03.jpg';
           this.statusBar.backgroundColorByHexString("#488aff");
         }
         this.chosenTheme = val;
@@ -211,6 +230,15 @@ export class MyApp {
     }
 
   }
+  /**
+   * Method to claim rewards
+   */
+  private claim_rewards(): void {
+    const steem = this.rewards.steem.toFixed(3).toString() + ' STEEM';
+    const sbd = this.rewards.sbd.toFixed(3).toString() + ' SBD';
+    const sp = this.rewards.vesting_steem.toFixed(6).toString() + ' VESTS';
 
+    this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
+    });
+  }
 }
-

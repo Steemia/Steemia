@@ -316,6 +316,7 @@
 
     .scroll-content {
         background-color: $dark-bg !important;
+        color: white !important;
     }
 
     .chat-bubble.left {
@@ -406,7 +407,23 @@
       
     .unvote {
         font-size: 1.8em;
-        color: #488aff !important;
+        color: #488aff !important;  
     }
+    page-post-single {
+        .likes p {
+            color: white !important;
+        }
 
+        ion-icon {
+            color: white !important;
+        }
+
+        .info {
+            color: white !important;
+        }
+
+        #payout {
+            color: white !important;
+        }
+    }
 }

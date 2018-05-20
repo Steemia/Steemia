@@ -4,11 +4,11 @@
   </ion-avatar>
   <div item-end>
     <ion-spinner text-center *ngIf="is_loading == true"></ion-spinner>
-    <button (click)="follow()" ion-button color="primary" round mode="ios" *ngIf="item.has_followed == false && is_loading == false">
+    <button (click)="follow()" ion-button color="primary" round mode="ios" *ngIf="item.has_followed == false && is_loading == false && user != item.name">
       <i class="fa fa-user-plus"></i>
       &nbsp;&nbsp;{{ 'generic_messages.follow' | translate }}
     </button>
-    <button (click)="unfollow()" ion-button color="primary" round mode="ios" *ngIf="item.has_followed == true && is_loading == false">
+    <button (click)="unfollow()" ion-button color="primary" round mode="ios" *ngIf="item.has_followed == true && is_loading == false && user != item.name">
       <i class="fa fa-user-times"></i>
       &nbsp;&nbsp;{{ 'generic_messages.unfollow' | translate }}
     </button>

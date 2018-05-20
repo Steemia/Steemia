@@ -3,6 +3,8 @@
     class="ion-material-sidemenu-header" 
     [ngStyle]="_options.header.background && {'background': _options.header.background}"
   >
+  <ion-badge *ngIf="_options.header.voting_power" color='light' class="voting_power" item-right>{{ _options.header.voting_power }}% </ion-badge>
+
     <img (click)="_options.header.onClick && _options.header.onClick()" [src]="_options.header.picture" (error)="util.imgError('profile',$event)" class="picture"/>
     <div class="subtitle">
       <h1>{{ _options.header.username }}</h1>

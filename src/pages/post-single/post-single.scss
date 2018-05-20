@@ -4,8 +4,45 @@ page-post-single {
         color: white !important;
     }
 
+    .voters_image {
+        display:inline-block;
+        
+        img {
+              height: 25px;
+              width: 25px;
+              border-radius: 50%;
+              background-position: 50% 50%;
+              border-radius: 50%;
+              border: 1.5px solid white;
+              object-fit: cover;
+        }
+    }
+
+    .voters_image:not(:first-of-type) {
+            margin-left: -6px;
+    }
+
+    .voters {
+            float: left;
+            padding: 5px;
+    }
+
+    .likes {
+        float: left;
+        padding: 10px 10px 10px 0;
+
+        p {
+            font-weight: 500;
+            font-size: 12px;
+        }
+    }
+  
     ion-spinner {
         top: 0 !important;
+    }
+
+    ion-badge {
+        text-transform: lowercase !important;
     }
 
     ion-card-content img {

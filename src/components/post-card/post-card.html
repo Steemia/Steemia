@@ -92,7 +92,7 @@
     </ion-col>
 
     <ion-col col-3 text-center>
-      <button end ion-button icon-right clear small>
+      <button end ion-button icon-right clear small (click)="presentPayoutPopover($event)">
         <div class="info top-4">
           <del *ngIf="content.max_accepted_payout == 0" id="payout">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</del>
           <p *ngIf="content.max_accepted_payout == 1000000" id="payout">{{ content.total_payout_reward | currency:'USD': 'symbol' }}</p>

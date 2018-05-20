@@ -1,0 +1,41 @@
+<ion-header id="header">
+
+  <ion-navbar color="primary">
+    <ion-title>Favorites</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content>
+
+  <ion-list *ngIf="favorites?.length > 0" no-lines>
+    
+    <ion-item-sliding *ngFor="let favorite of favorites" no-lines>
+      <ion-item (click)="openProfile(favorite)" no-lines>
+        <ion-avatar item-start>
+          <img [src]="WILL_ADD" (error)="util.imgError('post', $event)">
+        </ion-avatar>
+        <h2> {{ favorite }} </h2>
+      </ion-item>
+      <ion-item-options side="right" no-lines>
+        <button ion-button color="danger" (click)="removeUser(favorite)">
+          <ion-icon name="trash"></ion-icon>
+          Remove
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <div *ngIf="favorites?.length == 0">
+    <ion-card>
+
+      <ion-card-content>
+        
+        <p text-center>You have not favorited a user, YET! </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
