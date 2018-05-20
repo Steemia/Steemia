@@ -160,7 +160,7 @@ export class PostCardComponent implements AfterViewInit {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.content.votes }, { cssClass:"full-modal" });
     votesModal.present();
   }
 

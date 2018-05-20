@@ -593,9 +593,9 @@ export class PostSinglePage {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass:"full-modal" });
     votesModal.present();
-  }
+  } 
 
   private reblogAlert() {
     let confirm = this.alertCtrl.create({
