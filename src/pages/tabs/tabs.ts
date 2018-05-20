@@ -80,7 +80,7 @@ export class TabsPage {
     this.ws.counter.subscribe(count => {
       this.notifications = count;
     });
-    
+
   }
 
   ionViewDidLoad(): void {
@@ -96,27 +96,32 @@ export class TabsPage {
         this.current_tag = tag;
         this.tags = [tag];
       }
-      
+
     });
   }
 
   ionViewWillEnter() {
     this.steemConnect.status.subscribe(res => {
 
-      if (this.calledOnce === false) {
+      if (this.calledOnce == false) {
         if (res.status === true) {
           // set feed tab as active
-          this.changeTab(0);
+          setTimeout(() => {
+            this.changeTab(0);
+          }, 10)
+
           this.calledOnce = true;
         }
-  
-        else {
+
+        else if (res.status === false) {
           // set trending tab as active
-          this.changeTab(4);
+          setTimeout(() => {
+            this.changeTab(4);
+          }, 10)
           this.calledOnce = true;
         }
       }
-      
+
     });
   }
 
