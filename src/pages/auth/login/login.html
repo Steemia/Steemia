@@ -12,65 +12,22 @@
     <ion-row>
       <ion-col col-12 text-center>
         <img width="20%" src="assets/icon.png" />
-        <p>Welcome to Steemia!</p>
+        <p>{{ 'pages.login.welcome' | translate }}</p>
       </ion-col>
       <ion-col col-12 text-center>
         <button color="white" ion-button (click)="doLogin()">
           <ion-icon name="cc-steem"></ion-icon>
-          &nbsp;&nbsp;Login With SteemConnect
+          &nbsp;&nbsp;{{ 'pages.login.login' | translate }}
         </button>
       </ion-col>
       <ion-col col-12 text-center>
         <p text-center>
           <a href="https://signup.steemit.com/?ref=steemia">
-            Don't have an account?
-            <strong>SIGN UP</strong>
+            {{ 'pages.login.signup_1' | translate }}
+            <strong>{{ 'pages.login.signup_2' | translate }}</strong>
           </a>
         </p>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <div class="header-container">
-    <ion-slides pager="true">
-      <ion-slide>
-        <img src="assets/login1.png">
-      </ion-slide>
-      <ion-slide>
-          <img src="assets/login2.png">
-      </ion-slide>
-      <ion-slide>
-          <img src="assets/login3.png">
-      </ion-slide>
-    </ion-slides>
-  </div>
-  <div class="container vertical-align-content">
-    <div id="child" padding>
-      <button mode="ios" ion-button block (click)="doLogin()">
-        <ion-icon name="cc-steem"></ion-icon>
-        &nbsp;&nbsp;Login With SteemConnect*
-      </button>
-      <p>*You will be redirected to SteemConnect v2 to authenticate in the Steem Blockchain.</p>
-      <p><i>Steemia will never access nor save your private key.</i></p>
-    </div>
-    <!-- <ion-grid>
-      <ion-row>
-        <ion-col text-center col-12>
-          <button mode="ios" ion-button block>
-            <ion-icon name="cc-steem"></ion-icon>
-            &nbsp;&nbsp;Login With SteemConnect
-          </button>
-        </ion-col>
-        <ion-col text-center col-12>
-          Don't have an account? <strong>SIGN UP</strong>
-        </ion-col>
-      </ion-row>
-    </ion-grid> 
-  </div>-->
 </ion-content>
-
-<!-- <ion-footer>
-  <p text-center>
-      <a href="https://signup.steemit.com/?ref=steemia">
-        Don't have an account? <strong>SIGN UP</strong></a>
-  </p> 
-</ion-footer>-->

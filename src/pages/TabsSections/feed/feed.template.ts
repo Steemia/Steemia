@@ -13,7 +13,7 @@ export const feedTemplate = `
       <ion-avatar item-start>
         <img [src]="profile_pc" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
-      <ion-searchbar mode="ios" placeholder="What's on your mind today?" disabled="true">
+      <ion-searchbar mode="ios" placeholder="{{ 'generic_messages.what_is_on_your' | translate }}" disabled="true">
       </ion-searchbar>
     </ion-item>
   </ion-card>
@@ -21,8 +21,8 @@ export const feedTemplate = `
   <div *ngIf="logged_in == false" class="vertical-align h-100">
     <ion-card id="not-logged" class="card custom-card">
       <ion-card-content>
-        <p text-center> You need to log in to see this page</p>
-        <button ion-button block mode="ios" (click)="openPage('LoginPage')">Login Now!</button>
+        <p text-center>{{ 'need_to_login' | translate }}</p>
+        <button ion-button block mode="ios" (click)="openPage('LoginPage')">{{ 'login_now' | translate }}</button>
       </ion-card-content>
     </ion-card>
 

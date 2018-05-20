@@ -38,15 +38,6 @@ ion-menu {
   }
 }
 
-.platform-android {
-  .ion-page {
-    ion-header {
-      padding-top: 24px;
-      background-color: #488aff;
-    }
-  }
-}
-
 .ios ion-tab > .ion-page > ion-content.statusbar-padding:first-child .scroll-content {
   padding-top: 0 !important;
 }

@@ -3,7 +3,6 @@ import { IonicPageModule } from 'ionic-angular';
 import { CommentsPage } from './comments';
 import { ComponentsModule } from '../../../components/components.module';
 import { TranslateModule } from "@ngx-translate/core";
-import { DirectivesModule } from '../../../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +10,6 @@ import { DirectivesModule } from '../../../directives/directives.module';
   ],
   imports: [
       ComponentsModule,
-      DirectivesModule,
       IonicPageModule.forChild(CommentsPage),
       TranslateModule.forChild()
   ],

@@ -83,6 +83,36 @@
 		},
 		"edit_comment": {
 			"page_title": "Edit Comment"
+		},
+		"search": {
+			"placeholder": "What are you looking for?",
+			"examples": {
+				"tags": "- Tags: For example, #photography",
+				"users": "- Users: For example, @jaysermendez",
+				"text": "- Text: For example, photography" 
+			}
+		},
+		"post_single": {
+			"flag_loading": "Please wait until the post is being flag.",
+			"flag_correctly": "Post was flagged correctly!",
+			"reblog_action": "Hang on while we reblog this post 😎",
+			"post_comment": "Post a Comment",
+			"post_comment_placeholder": "What do you think about this story?",
+			"comments_title": "Comments",
+			"share": "Share",
+			"reblog": "Reblog",
+			"flag_post": "Flag Post",
+			"edit_post": "Edit Post"
+		},
+		"about": {
+			"title": "About Us",
+			"header": "ABOUT US"
+		},
+		"login": {
+			"welcome": "Welcome to Steemia!",
+			"login": "Login With SteemConnect",
+			"signup_1": "Don't have an account?",
+			"signup_2": "SIGN UP"
 		}
 	},
 
@@ -196,6 +226,9 @@
 		"what_is_on_your": "What's on your mind today?"
 	},
 
+	"bookmark_action": "Bookmark {{ action }} sucessfully",
+	"login_now": "Login Now!",
+	"need_to_login": "You need to log in to see this page",
 	"all_tags": "All Tags",
 	"search_tag": "Search for a tag",
 	"reset": "Reset",

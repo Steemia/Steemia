@@ -2,7 +2,7 @@
   <ion-navbar color="primary">
     <ion-title></ion-title>
 
-    <ion-searchbar (ionInput)="performSearch($event.target.value)" placeholder="What are you looking for?">
+    <ion-searchbar (ionInput)="performSearch($event.target.value)" placeholder="{{ 'pages.search.placeholder' | translate }}">
     </ion-searchbar>
   </ion-navbar>
 </ion-header>
@@ -15,25 +15,25 @@
       <ion-col text-center>
         <div class="ask-steem" text-center>
           <ion-card text-center id="search-message">
-              
-              <ion-card-header>
-                  <a href="https://www.asksteem.com">
-                    <img src="https://cdn.hoxly.com/asksteem/attribution.png" style="display: block;margin-left: auto;margin-right: auto;">
-                  </a>
-              </ion-card-header>
-    
-              <ion-card-content>
-                <p>- Tags: For example, #photography</p>
-                <p>- Users: For example, @jaysermendez</p>
-                <p>- Text: For example, photography</p>
-              </ion-card-content>
-    
-            </ion-card>
+
+            <ion-card-header>
+              <a href="https://www.asksteem.com">
+                <img src="https://cdn.hoxly.com/asksteem/attribution.png" style="display: block;margin-left: auto;margin-right: auto;">
+              </a>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p>{{ 'pages.search.examples.tags' | translate }}</p>
+              <p>{{ 'pages.search.examples.users' | translate }}</p>
+              <p>{{ 'pages.search.examples.text' | translate }}</p>
+            </ion-card-content>
+
+          </ion-card>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
-  
+
   <div *ngIf="results && !isSearching && is_tag">
     <div *ngFor="let content of contents; trackBy: trackById">
       <post-card [post]="results"></post-card>

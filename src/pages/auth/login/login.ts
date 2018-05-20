@@ -26,7 +26,7 @@ export class LoginPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.menu.enable(true);
   }
 

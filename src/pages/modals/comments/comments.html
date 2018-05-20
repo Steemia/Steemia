@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [class]="chosenTheme" #content>
+<ion-content [class]="chosenTheme">
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
   <ion-list *ngIf="no_content == false" style="margin-bottom: 25%;">
@@ -35,7 +35,7 @@
 
 </ion-content>
 <div [class]="chosenTheme">
-  <ion-footer id="comment-footer" [keyboardAttach]="content">
+  <ion-footer id="comment-footer">
     <ion-item no-lines>
       <button ion-button clear item-start (click)="presentActionSheet()">
         <ion-icon class="footer-btn" name="camera"></ion-icon>
@@ -46,8 +46,6 @@
             placeholder="{{ 'modals.comments.write_comment' | translate }}" [formControl]="commentForm.controls['comment']"></ion-textarea>
         </ion-item>
       </form>
-      <!-- <ion-textarea #myInput id="myInput" rows="1" (input)="adjustTextarea($event);" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-textarea> -->
-      <!-- <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input> -->
       <button ion-button clear (click)="comment()" item-end>
         <ion-icon class="footer-btn" name="send"></ion-icon>
       </button>
