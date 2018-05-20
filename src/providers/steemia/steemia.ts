@@ -27,7 +27,6 @@ import 'rxjs/operator/shareReplay';
  * 
  */
 
-
 @Injectable()
 export class SteemiaProvider {
 
@@ -350,6 +349,13 @@ export class SteemiaProvider {
   public get_comments_tree(author: string, permlink: string, username: string): Promise<any> {
     return this.http.get(STEEMIA_POSTS + 'comments-new?author=' + author + 
                          '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
+  }
+
+  /**
+   * Method to dipatch all tags (up to 1000)
+   */
+  public dispatch_tags(): Promise<any> {
+    return this.http.get(STEEMIA_TAGS + '/all').retry(3).toPromise();
   }
 
 }

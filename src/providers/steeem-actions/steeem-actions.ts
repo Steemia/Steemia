@@ -57,6 +57,7 @@ export class SteeemActionsProvider {
   public dispatch_vote(type: string, author: string, permlink: string, weight: number = 10000) {
 
     if (this.username === '' || this.username === null || this.username === undefined) {
+      this
       this.alerts.display_alert('NOT_LOGGED_IN');
       return Promise.resolve({
         msg: 'not-logged'

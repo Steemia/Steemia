@@ -1,11 +1,20 @@
 section-scss {
 
   ion-content {
-    -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
-       -moz-animation: fadein 0.5s; /* Firefox < 16 */
-        -ms-animation: fadein 0.5s; /* Internet Explorer */
-         -o-animation: fadein 0.5s; /* Opera < 12.1 */
-            animation: fadein 0.5s;
+    -webkit-animation: fadein 0.4s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 0.4s; /* Firefox < 16 */
+        -ms-animation: fadein 0.4s; /* Internet Explorer */
+         -o-animation: fadein 0.4s; /* Opera < 12.1 */
+            animation: fadein 0.4s;
+  }
+
+  .searchbar-input {
+    background: rgba(255, 253, 253, 0.99) !important;
+  }
+
+  .full-width { 
+    width: 100% !important;
+    
   }
 
   .vertical-align {
@@ -116,7 +125,7 @@ section-scss {
     margin-left: -8px !important;
   }
 
-  .card {
+  .custom-card {
     -webkit-box-shadow:  none !important;
     -moz-box-shadow:  none !important;
     box-shadow: none !important;

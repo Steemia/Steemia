@@ -26,11 +26,11 @@
       <ion-icon *ngIf="comment?.vote && is_voting == false" class="custom-like" name="ios-arrow-dropup-circle" (tap)="castVote(comment?.author, comment?.url, 0);"></ion-icon>
     </ion-note>
     &nbsp;
-    <ion-note>{{ comment.net_votes }} likes</ion-note>
+    <ion-note>{{ comment.net_votes }} {{ 'generic_messages.likes' | translate }}</ion-note>
     &nbsp;&nbsp; &nbsp;
     <ion-note>${{ comment.pending_payout_value }}</ion-note>
     &nbsp;&nbsp; &nbsp;
-    <ion-note tappable (click)="reply();">Reply</ion-note>
+    <ion-note tappable (click)="reply();">{{ 'generic_messages.reply' | translate }}</ion-note>
   </div>
 </div>
 

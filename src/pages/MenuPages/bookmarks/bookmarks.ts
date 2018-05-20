@@ -8,6 +8,8 @@ import { Storage } from '@ionic/storage';
 import { PostsRes } from 'models/models';
 import { UtilProvider } from 'providers/util/util';
 import { SteemiaProvider } from 'providers/steemia/steemia';
+import { TranslateService } from "@ngx-translate/core";
+
 
 @IonicPage()
 @Component({
@@ -23,6 +25,7 @@ export class BookmarksPage {
     public navParams: NavParams,
     public menu: MenuController,
     private loading: LoadingController,
+    private translate: TranslateService,
     public util: UtilProvider,
     private steemiaProvider: SteemiaProvider,
     public storage: Storage) {
@@ -40,13 +43,13 @@ export class BookmarksPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.menu.enable(true);
   }
 
   openPost(post) {
     let loading = this.loading.create({
-      content: 'Please wait until we locate your post 💯'
+      content: this.translate.instant('locating_post')
     });
 
     loading.present();

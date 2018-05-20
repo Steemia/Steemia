@@ -17,7 +17,7 @@
   <ion-list no-lines>
     <div *ngFor="let entry of _options.entries">  
       <ion-list-header *ngIf="isDividerEntry(entry) && entry.title">
-        {{entry.title}}
+        {{ entry.title }}
       </ion-list-header>
       <div class="list-separator" *ngIf="isDividerEntry(entry) && !entry.title"></div>
       <button id="menu-item"

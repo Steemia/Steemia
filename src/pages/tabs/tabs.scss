@@ -39,4 +39,40 @@ page-tabs {
                   }
             }
       }
+
+      ion-select {
+            max-width: 80% !important;
+      }
+
+      .custom-item {
+            background-color: transparent;
+            color: white !important;
+            font-size: 20px;
+            padding: 0 !important;
+      }
+
+      .select-md .select-icon .select-icon-inner, 
+      .select-ios .select-icon .select-icon-inner {
+            color: white !important;
+      }
+
+      .select-disabled, .item-select-disabled ion-label {
+            opacity: 1 !important;
+      }
+
+      .select-text {
+            text-transform: capitalize !important;
+            font-size: 17px !important;
+      }
+
+      .title-centered {
+            position: absolute !important;
+            left: 50% !important;
+            top: 0 !important;
+            transform: translateX(-50%) !important;
+            height: 100% !important;
+            width: 70% !important;
+            text-align: center !important;
+      }
+
 }

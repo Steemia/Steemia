@@ -6,7 +6,7 @@
         <ion-icon class="custom-close" name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Edit Comment</ion-title>
+    <ion-title>{{ 'pages.edit_comment.page_title' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,10 +16,10 @@
 
   <div id="edit-comment-box">
     <ion-item no-lines>
-      <ion-textarea type="text" rows="20" placeholder="Type here the title of your post" [(ngModel)]="comment_body"></ion-textarea>
+      <ion-textarea type="text" rows="20" placeholder="{{ 'modals.comments.write_comment' | translate }}" [(ngModel)]="comment_body"></ion-textarea>
     </ion-item>
   </div>
 
-  <button ion-button round block (click)="save()">Submit</button>
+  <button ion-button round block (click)="save()">{{ 'generic_messages.submit' | translate }}</button>
 
 </ion-content>

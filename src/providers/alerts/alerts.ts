@@ -3,15 +3,23 @@ import { AlertController, ToastController } from 'ionic-angular';
 import { NOT_LOGGED_IN, 
          REBLOGGED_CORRECTLY,
          ERRORS } from '../../constants/constants';
+import { TranslateService } from '@ngx-translate/core';
 
+         
+/**
+ * 
+ * Class to generate alerts and toast messages
+ * @author Jayser Mendez
+ * @version 0.0.1
+ * 
+ */
 
 @Injectable()
 export class AlertsProvider {
 
   constructor(private alertCtrl: AlertController, 
-  private toastCtrl: ToastController) {
-
-  }
+  private toastCtrl: ToastController,
+  private translate: TranslateService) {}
 
   /**
    * Method to display an alert with the corresponding message
@@ -23,39 +31,39 @@ export class AlertsProvider {
     switch (type) {
 
       case 'NOT_LOGGED_IN':
-        message = NOT_LOGGED_IN;
+        message = this.translate.instant('generic_messages.not_logged_in');
         break;
 
       case 'NO_TAGS':
-        message = ERRORS.TAGS_ERROR.message;
+        message = this.translate.instant('generic_messages.tag_error');
         break;
       
       case 'ALL_FIELDS':
-        message = ERRORS.ALL_FIELDS.message;
+        message = this.translate.instant('generic_messages.all_fields');
         break;
         
       case 'REBLOGGED_CORRECTLY':
-        message = REBLOGGED_CORRECTLY;
+        message = this.translate.instant('generic_messages.reblogged_correctly');
         break;
       
       case 'ALREADY_REBLOGGED':
-        message = ERRORS.DUPLICATE_REBLOG.message;
+        message = this.translate.instant('generic_messages.already_reblogged');
         break;
 
       case 'COMMENT_INTERVAL':
-        message = ERRORS.COMMENT_INTERVAL.message;
+        message = this.translate.instant('generic_messages.comment_interval');
         break;
 
       case 'POST_INTERVAL':
-        message = ERRORS.POST_INTERVAL.message;
+        message = this.translate.instant('generic_messages.post_interval');
         break;
         
       case 'EMPTY_TEXT':
-        message = ERRORS.EMPTY_TEXT.message;
+        message = this.translate.instant('generic_messages.empty_message');
         break;
 
       case 'FLAG_ERROR':
-        message = ERRORS.FLAG_ERROR.message;
+        message = this.translate.instant('generic_messages.flag_error');
         break;
 
       default:
@@ -64,9 +72,9 @@ export class AlertsProvider {
     }
 
     let alert = this.alertCtrl.create({
-      title: 'Alert',
+      title: this.translate.instant('generic_messages.alert_title'),
       subTitle: message,
-      buttons: ['Dismiss']
+      buttons: [this.translate.instant('generic_messages.dismiss')]
     });
     alert.present();
   }

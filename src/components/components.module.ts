@@ -4,10 +4,9 @@ import { PostCardComponent } from './post-card/post-card';
 import { NoDataComponent } from './no-data/no-data';
 import { WalletItemComponent } from './wallet-item/wallet-item';
 import { UserItemComponent } from './user-item/user-item';
-
-import { IonicImageLoader } from 'ionic-image-loader';
 import { IonicModule } from 'ionic-angular';
 import { YoutubePlayerModule } from 'ngx-youtube-player';
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
 	declarations: [
@@ -15,13 +14,13 @@ import { YoutubePlayerModule } from 'ngx-youtube-player';
 		PostCardComponent,
 		NoDataComponent,
 		WalletItemComponent,
-    	UserItemComponent
+		UserItemComponent
 	],
 
 	imports: [
 		YoutubePlayerModule,
 		IonicModule,
-		IonicImageLoader
+		TranslateModule.forChild()
 	],
 
 	exports: [
@@ -29,7 +28,7 @@ import { YoutubePlayerModule } from 'ngx-youtube-player';
 		PostCardComponent,
 		NoDataComponent,
 		WalletItemComponent,
-    	UserItemComponent
+		UserItemComponent
 	]
 })
 export class ComponentsModule { }

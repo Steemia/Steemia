@@ -8,9 +8,9 @@ import { MaterialMenuOptions } from '../components/material-menu/material-menu';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { GoogleTrackingProvider } from 'providers/google-tracking/google-tracking';
 import { WebsocketsProvider } from 'providers/websockets/websockets';
-import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../providers/settings/settings';
+import { TranslateService } from '@ngx-translate/core';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 
 @Component({
@@ -25,29 +25,28 @@ export class MyApp {
 
   private loggedInPages: MaterialMenuOptions;
   private loggedOutPages: MaterialMenuOptions;
-  private profilePicture: string = "./assets/steemlogo.png";
+  private profilePicture: string = "./assets/icon.png";
   private profile;
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
-
-    // Rewards Data
-    private rewards = {
-      steem: null,
-      sbd: null,
-      vesting_steem: null,
-      vesting_steem_balance: null
-    };  
-
+  // Rewards Data
+  private rewards = {
+    steem: null,
+    sbd: null,
+    vesting_steem: null,
+    vesting_steem_balance: null
+  };
+  
   constructor(private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
+    private translate: TranslateService,
     public storage: Storage,
     private steeemActions: SteeemActionsProvider,
     private _settings: SettingsProvider,
     private ga: GoogleTrackingProvider,
-    private imageLoaderConfig: ImageLoaderConfig,
     private events: Events,
     private ws: WebsocketsProvider,
     private fcm: FCM,
@@ -61,9 +60,10 @@ export class MyApp {
         } else {
           this.rootPage = 'WalkthroughPage';
         }
-        this.initializeApp()
+        this.initializeApp();
+        
       });
-      
+
     this.steemConnect.status.subscribe(res => {
       if (res.status === false || res.status === null) {
         this.isLoggedIn = false;
@@ -74,16 +74,12 @@ export class MyApp {
         this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
           this.profile = data[0];
           this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
-
           this.rewards = {
             sbd: parseFloat(data[0].reward_sbd_balance),
             steem: parseFloat(data[0].reward_steem_balance),
             vesting_steem: parseFloat(data[0].reward_vesting_balance),
             vesting_steem_balance: parseFloat(data[0].reward_vesting_steem)
-          }
-    
-          // this.socket.connect();
-          // this.socket.emit('set-nickname', this.profile.username);
+          };
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
@@ -106,10 +102,9 @@ export class MyApp {
       header: {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
-        username: 'Steemia',
+        username: 'Hey,',
         voting_power: '',
-        email: 'steemia@steemia.io',
-
+        email: 'Welcome to Steemia!',
       },
       entries: [
         { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
@@ -141,19 +136,17 @@ export class MyApp {
         }
       },
       entries: [
-        { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
+        { title: this.translate.instant('menu.home'), leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
         {
-          title: 'Wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
+          title: this.translate.instant('menu.wallet'), leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
         },
-        { title: 'Notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
-        { title: 'My Profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
-        // { title: 'Messages', leftIcon: 'chatbubbles', onClick: () => { this.openPage('MessagesPage', 'chat') } },
-        { title: 'Bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
-        // { title: 'Favorites', leftIcon: 'heart', onClick: () => { this.openPage('FavoritesPage') } },
-        { title: 'Settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
-        { title: 'About', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
+        { title: this.translate.instant('menu.notifications'), leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
+        { title: this.translate.instant('menu.my_profile'), leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
+        { title: this.translate.instant('menu.bookmarks'), leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
+        { title: this.translate.instant('menu.settings'), leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
+        { title: this.translate.instant('menu.about'), leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
-          title: 'Logout', leftIcon: 'log-out', onClick: () => {
+          title: this.translate.instant('menu.logout'), leftIcon: 'log-out', onClick: () => {
             this.steemConnect.doLogout().then(data => {
               if (data === 'done') {
                 this.menuCtrl.close().then(() => {
@@ -170,7 +163,8 @@ export class MyApp {
 
   private initializeApp() {
     this.platform.ready().then(() => {
-      
+      this.initTranslate();
+
       this.statusBar.styleBlackOpaque();
       this.splashScreen.hide();
       this._settings.getTheme().subscribe(val => {
@@ -178,7 +172,7 @@ export class MyApp {
          // this.background = './assets/menu_bg2.jpg';
           this.statusBar.backgroundColorByHexString("#1d252c");
         }
-  
+
         else if (val === 'blue-theme') {
          // this.background = './assets/mb-bg-fb-03.jpg';
           this.statusBar.backgroundColorByHexString("#488aff");
@@ -187,23 +181,21 @@ export class MyApp {
       });
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      
+
       this.ga.track_page('Loaded App');
-      this.imageLoaderConfig.setBackgroundSize('cover');
-      this.imageLoaderConfig.setHeight('200px');
-      this.imageLoaderConfig.setFallbackUrl('assets/placeholder2.png');
-      this.imageLoaderConfig.enableFallbackAsPlaceholder(true);
-      this.imageLoaderConfig.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000); // 7 days
 
       this.fcm.onNotification().subscribe(
         (data) => {
           if (data.wasTapped) {
+            // TODO: Open corresponding page from the notification
             console.log("Received in background", JSON.stringify(data))
           } else {
-
+            // TODO: Open corresponding page from the notification
             console.log("Received in foreground", JSON.stringify(data))
           }
         }, error => {
+          // Should do nothing on error, so it is okay to leave it empty
+          // but it is necessary to avoid any crash.
           console.error("Error in notification", error)
         }
       );
@@ -223,7 +215,22 @@ export class MyApp {
     });
   }
 
-    /**
+  initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang('en');
+
+
+    if (this.translate.getBrowserLang() !== undefined) {
+      
+      this.translate.use(this.translate.getBrowserLang()); 
+      
+    } else {
+
+      this.translate.use('en'); // Set your language here
+    }
+
+  }
+  /**
    * Method to claim rewards
    */
   private claim_rewards(): void {

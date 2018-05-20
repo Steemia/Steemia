@@ -4,6 +4,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { Subscription } from 'rxjs';
 import { SettingsProvider } from 'providers/settings/settings';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @IonicPage()
@@ -20,6 +21,7 @@ export class EditCommentPage {
 
   constructor(public viewCtrl: ViewController,
     public navParams: NavParams,
+    private translate: TranslateService,
     private alerts: AlertsProvider,
     public menu: MenuController,
     private _settings: SettingsProvider,
@@ -44,7 +46,7 @@ export class EditCommentPage {
 
   private save() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: this.translate.instant('generic_messages.please_wait')
     });
     loading.present();
     this.steemActions.dispatch_edit_comment(this.comment.parent_author, this.comment.url, this.comment_body).then(res => {

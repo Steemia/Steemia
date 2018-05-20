@@ -15,6 +15,7 @@ import { IonicPage,
          MenuController } from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -31,6 +32,7 @@ export class EditProfilePage {
     public util: UtilProvider,
     public toastCtrl: ToastController,
     private actionSheetCtrl: ActionSheetController,
+    private translate: TranslateService,
     private transfer: FileTransfer,
     private camera: Camera,
     private steemia: SteemiaProvider,
@@ -59,7 +61,6 @@ export class EditProfilePage {
           // open URL with InAppBrowser instead or SafariViewController
 
         }
-
       });
   }
 
@@ -78,26 +79,24 @@ export class EditProfilePage {
 
   public showPrompt(input) {
     let prompt = this.alertCtrl.create({
-      title: 'Submit your ' + input,
-      message: "Click the Save button below to be redirected to SteemConnect to complete your transaction.",
+      title: this.translate.instant('modals.edit_profile.prompts.submit_your') + input,
+      message: this.translate.instant('modals.edit_profile.prompts.redirect_msg'),
       inputs: [
         {
           name: 'title',
-          placeholder: 'Submit your ' + input + ' here'
+          placeholder: this.translate.instant('modals.edit_profile.prompts.submit_your') + input + this.translate.instant('modals.edit_profile.prompts.here')
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           handler: data => {
-            console.log('Cancel clicked');
+            //console.log('Cancel clicked');
           }
         },
         {
-          text: 'Save',
+          text: this.translate.instant('modals.edit_profile.prompts.save'),
           handler: data => {
-            console.log('Saved clicked');
-            console.log(data);
             this.saveInfo(input, data.title);
           }
         }
@@ -111,31 +110,31 @@ export class EditProfilePage {
    */
   presentActionSheet(): void {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'How do you want to insert the image? 📷🌄',
+      title: this.translate.instant('general.camera_options.title'),
       buttons: [
         {
-          text: 'Camera',
+          text: this.translate.instant('general.camera_options.camera'),
           icon: 'camera',
           handler: () => {
             this.choose_image(this.camera.PictureSourceType.CAMERA, false);
           }
         },
         {
-          text: 'Gallery',
+          text: this.translate.instant('general.camera_options.gallery'),
           icon: 'albums',
           handler: () => {
             this.choose_image(this.camera.PictureSourceType.PHOTOLIBRARY, true);
           }
         },
         {
-          text: 'Custom URL',
+          text: this.translate.instant('general.camera_options.custom_url'),
           icon: 'md-globe',
           handler: () => {
             this.presentInsertURL()
           }
         },
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           icon: 'close',
           role: 'cancel',
           handler: () => {
@@ -181,19 +180,18 @@ export class EditProfilePage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Insert Image',
+      title: this.translate.instant('general.insert_image.title'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Image URL'
+          placeholder: this.translate.instant('general.insert_image.url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
@@ -214,7 +212,7 @@ export class EditProfilePage {
   uploadFile(image): void {
     let url = 'https://steemia.net/api/v0/add';
     let loader = this.loadingCtrl.create({
-      content: "Uploading..."
+      content: this.translate.instant('uploading')
     });
     loader.present();
 
@@ -230,7 +228,7 @@ export class EditProfilePage {
     fileTransfer.upload(image, url, options)
       .then((data) => {
         loader.dismiss();
-        this.presentToast("Image uploaded successfully");
+        this.presentToast(this.translate.instant('image_success'));
         let hash = data.response;
         this.saveInfo('profile_image', ('https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash) );
       }, (err) => {

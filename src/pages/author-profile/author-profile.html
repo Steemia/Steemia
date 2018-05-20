@@ -22,21 +22,20 @@
 
         <!-- If you have not follow this user -->
         <ion-badge *ngIf="following == false" tappable (click)="follow()">
-          <i class="fa fa-user-plus"></i> Follow
+          <i class="fa fa-user-plus"></i> {{ 'generic_messages.follow' | translate }}
         </ion-badge>
 
         <!-- If you have follow this user -->
         <ion-badge *ngIf="following == true" tappable (click)="unfollow()">
-          <i class="fa fa-user-times"></i> Unfollow
+          <i class="fa fa-user-times"></i> {{ 'generic_messages.unfollow' | translate }}
         </ion-badge>
-
       </span>
       <span class="infos_nick">
         <span class="joined-date">
-          Joined: {{ account_data?.created | amTimeAgo }}
+          {{ 'pages.profile.joined' | translate }}: {{ account_data?.created | amTimeAgo }}
         </span> |
         <span class="joined-date">
-          Account Value: $ {{ account_data?.estimated_balance}}
+          {{ 'pages.profile.account_value' | translate }}: $ {{ account_data?.estimated_balance}}
         </span>
 
         <!-- {{ account_data?.about }} -->
@@ -50,25 +49,25 @@
         <ion-segment-button icon-top value="blog">
           <ion-icon name="paper"></ion-icon>
           <div style="margin-top: -35px;">
-            <p>Posts</p>
+            <p>{{ 'pages.profile.posts' | translate }}</p>
           </div>
         </ion-segment-button>
         <ion-segment-button icon-top value="activity">
           <ion-icon name="analytics"></ion-icon>
           <div style="margin-top: -35px;">
-            <p>Activity</p>
+            <p>{{ 'pages.profile.activity' | translate }}</p>
           </div>
         </ion-segment-button>
         <ion-segment-button icon-top value="about">
           <ion-icon name="person"></ion-icon>
           <div style="margin-top: -35px;">
-            <p>Info</p>
+            <p>{{ 'pages.profile.info' | translate }}</p>
           </div>
         </ion-segment-button>
         <ion-segment-button icon-top value="wallet">
           <ion-icon name="card"></ion-icon>
           <div style="margin-top: -35px;">
-            <p>Wallet</p>
+            <p>{{ 'pages.profile.wallet' | translate }}</p>
           </div>
         </ion-segment-button>
       </ion-segment>
@@ -90,7 +89,7 @@
         </no-data>
 
         <div *ngIf="is_more_post == false">
-          <p text-center>There are not more posts to load</p>
+          <p text-center>{{ 'generic_messages.not_more_posts' | translate }}</p>
         </div>
 
         <ion-infinite-scroll *ngIf="contents.length >= 1 && is_more_post == true" (ionInfinite)="doInfinite($event)" distance="1%">
@@ -101,7 +100,7 @@
         <ion-card>
           <ion-card-content text-center>
             <img src="assets/img1.png" />
-            <p>We are still working in this feature 👷‍♀️</p>
+            <p>{{ 'generic_messages.working_feature' | translate }}</p>
           </ion-card-content>
         </ion-card>
       </div>
@@ -109,27 +108,27 @@
         <ion-list no-lines>
           <ion-item no-lines tappable (click)="open_followers();">
             <ion-icon name="people" item-start></ion-icon>
-            Followers
+            {{ 'pages.profile.followers' | translate }}
             <ion-badge color="light" item-end>{{ stats?.followers_count }}</ion-badge>
           </ion-item>
           <ion-item no-lines tappable (click)="open_following();">
             <ion-icon name="person-add" item-start></ion-icon>
-            Following
+            {{ 'pages.profile.following' | translate }}
             <ion-badge color="light" item-end>{{ stats?.following_count }}</ion-badge>
           </ion-item>
           <ion-item no-lines>
             <ion-icon name="paper" item-start></ion-icon>
-            Posts
+            {{ 'pages.profile.posts' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.post_count }}</ion-badge>
           </ion-item>
           <ion-item no-lines>
             <ion-icon name="pin" item-start></ion-icon>
-            Location
+            {{ 'pages.profile.location' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>
           </ion-item>
           <ion-item no-lines>
             <ion-icon name="globe" item-start></ion-icon>
-            Website
+            {{ 'pages.profile.website' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.website }}</ion-badge>
           </ion-item>
         </ion-list>

@@ -1,5 +1,9 @@
 page-post-single {
 
+    .button-clear-md {
+        color: white !important;
+    }
+
     .voters_image {
         display:inline-block;
         
@@ -32,8 +36,7 @@ page-post-single {
             font-size: 12px;
         }
     }
-
-
+  
     ion-spinner {
         top: 0 !important;
     }

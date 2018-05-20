@@ -1,17 +1,17 @@
-import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { newTemplate } from './new.template';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
   selector: 'section-scss',
-  template: newTemplate,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: newTemplate
 })
 
 export class NewPage {
@@ -31,14 +31,29 @@ export class NewPage {
 
   private start_author: string = null;
   private start_permlink: string = null;
+  private tag: string = '';
 
   constructor(private steemia: SteemiaProvider,
     private zone: NgZone,
+    private sharedService: SharedServiceProvider,
     private appCtrl: App,
     private cdr: ChangeDetectorRef,
     private steemConnect: SteemConnectProvider) {}
 
   ionViewDidLoad() {
+
+    // Subscribe to the current selected tag
+    this.sharedService.current_tag.subscribe(tag =>{
+      this.tag = tag;
+      this.zone.runOutsideAngular(() => {
+        this.reinitialize();
+        this.is_loading = true;
+        this.dispatchNew();
+      });
+      this.cdr.detectChanges();
+    });
+
+    // Subscribe to steem connect status
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
         this.user = this.steemConnect.user_object;
@@ -91,7 +106,8 @@ export class NewPage {
         username: this.username,
         limit: this.limit,
         start_author: this.start_author,
-        start_permlink: this.start_permlink
+        start_permlink: this.start_permlink,
+        tag: this.tag
       }
     }
 
@@ -99,7 +115,8 @@ export class NewPage {
       que = {
         type: "new",
         username: this.username,
-        limit: this.limit
+        limit: this.limit,
+        tag: this.tag
       }
     }
     // Call the API

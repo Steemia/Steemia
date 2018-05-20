@@ -5,28 +5,28 @@
         <ion-icon class="custom-close" name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Comments</ion-title>
+    <ion-title>{{ 'modals.comments.page_title' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content [class]="chosenTheme">
 
   <ion-spinner *ngIf="is_loading"></ion-spinner>
-  <ion-list style="margin-bottom: 25%;">
+  <ion-list *ngIf="no_content == false" style="margin-bottom: 25%;">
     <ul class="pad">
-      <ng-template #recursiveList let-commentsTree>
+      <ng-template #recursiveComments let-commentsTree>
         <li *ngFor="let item of commentsTree">
           <render-comment [comment]="item"></render-comment>
           <ul *ngIf="item.replies.length > 0">
-            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.replies }"></ng-container>
+            <ng-container *ngTemplateOutlet="recursiveComments; context:{ $implicit: item.replies }"></ng-container>
           </ul>
         </li>
       </ng-template>
-      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: commentsTree }"></ng-container>
+      <ng-container *ngTemplateOutlet="recursiveComments; context:{ $implicit: commentsTree }"></ng-container>
     </ul>
   </ion-list>
 
-  <no-data *ngIf="no_content == true" icon="chatbubbles" title="This post does not have any comments, YET!">
+  <no-data *ngIf="no_content == true" icon="chatbubbles" title="{{ 'modals.comments.no_comments' | translate }}">
   </no-data>
 
   <ion-infinite-scroll *ngIf="is_more == true" (ionInfinite)="load_more($event)">
@@ -43,11 +43,9 @@
       <form [formGroup]="commentForm">
         <ion-item no-lines>
           <ion-textarea #myInput type="text" rows="1" (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);"
-            placeholder="Write a comment..." [formControl]="commentForm.controls['comment']"></ion-textarea>
+            placeholder="{{ 'modals.comments.write_comment' | translate }}" [formControl]="commentForm.controls['comment']"></ion-textarea>
         </ion-item>
       </form>
-      <!-- <ion-textarea #myInput id="myInput" rows="1" (input)="adjustTextarea($event);" [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-textarea> -->
-      <!-- <ion-input [(ngModel)]="chatBox" placeholder="Write a comment..."></ion-input> -->
       <button ion-button clear (click)="comment()" item-end>
         <ion-icon class="footer-btn" name="send"></ion-icon>
       </button>

@@ -1,6 +1,6 @@
 import { UtilProvider } from 'providers/util/util';
 import { Component, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { IonicPage, App } from 'ionic-angular';
+import { IonicPage, App, VirtualScroll } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { feedTemplate } from './feed.template';
@@ -12,10 +12,8 @@ import { SteemiaProvider } from 'providers/steemia/steemia';
 @Component({
   selector: 'section-scss',
   template: feedTemplate,
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedPage {
-
   private contents: Array<any> = [];
   private username: string = '';
   private is_loading = true;
@@ -49,8 +47,10 @@ export class FeedPage {
         this.clear_links();
         this.zone.runOutsideAngular(() => {
           this.dispatchFeed();
+          this.dispatchFeed('refresh');
         });
-        this.cdr.detectChanges();
+        
+        //this.cdr.detectChanges();
       }
 
       else if (res.status === false) {
@@ -72,12 +72,12 @@ export class FeedPage {
 
   ionViewWillLeave() {
     let listaFrames = document.getElementsByTagName("iframe");
- 
+
     for (var index = 0; index < listaFrames.length; index++) {
-     let iframe = listaFrames[index].contentWindow;
-     iframe.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-   }
- }
+      let iframe = listaFrames[index].contentWindow;
+      iframe.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    }
+  }
 
   private clear_links(): void {
     this.start_author = null;
@@ -122,7 +122,6 @@ export class FeedPage {
       }
 
       this.contents = this.contents.concat(res.results);
-
       this.start_author = (res as any).offset_author;
       this.start_permlink = (res as any).offset;
 

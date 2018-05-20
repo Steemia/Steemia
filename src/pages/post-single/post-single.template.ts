@@ -88,14 +88,14 @@ export const postSinglePage = `
         </ion-row>
         <ion-row>
           <ion-col no-padding class="top-33">
-            <h3 class="h3-custom">Comments</h3>
+            <h3 class="h3-custom">{{ 'pages.post_single.comments_title' | translate }}</h3>
           </ion-col>
         </ion-row>
       </ion-grid>
       <div padding class="cancel-top-pd">
         <ion-textarea #myInput (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);" [(ngModel)]="chatBox"
-          rows="6" placeholder="What do you think about this story?" style="margin-bottom: 7px;"></ion-textarea>
-        <button class="pull-right" ion-button mode="ios" (click)="comment()">Post a Comment</button>
+          rows="6" placeholder="{{ 'pages.post_single.post_comment_placeholder' | translate }}" style="margin-bottom: 7px;"></ion-textarea>
+        <button class="pull-right" ion-button mode="ios" (click)="comment()">{{ 'pages.post_single.post_comment' | translate }}</button>
         <button class="pull-right" ion-fab mini (click)="presentActionSheet()">
           <ion-icon name="images"></ion-icon>
         </button>
@@ -121,10 +121,6 @@ export const postSinglePage = `
       </ng-template>
       <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: commentsTree }"></ng-container>
     </ul>
-    <!-- <div *ngFor="let comment of comments" class="message-wrapper">
-      <render-comment [comment]="comment"></render-comment>
-    </div> -->
-
     <br />
     <br />
     <br />
@@ -137,19 +133,19 @@ export const postSinglePage = `
     <ion-fab-list side="top">
       <button ion-fab (click)="share()">
         <ion-icon name="share"></ion-icon>
-        <ion-label>Share</ion-label>
+        <ion-label>{{ 'pages.post_single.share' | translate }}</ion-label>
       </button>
       <button ion-fab *ngIf="!is_owner" (click)="reblog()">
         <ion-icon name="share-alt"></ion-icon>
-        <ion-label>Reblog</ion-label>
+        <ion-label>{{ 'pages.post_single.reblog' | translate }}</ion-label>
       </button>
       <button ion-fab (click)="castFlag(post?.author, post?.url)">
         <ion-icon name="flag"></ion-icon>
-        <ion-label>Flag Post</ion-label>
+        <ion-label>{{ 'pages.post_single.flag_post' | translate }}</ion-label>
       </button>
       <button ion-fab *ngIf="is_owner" (click)="editPost()">
         <ion-icon name="md-create"></ion-icon>
-        <ion-label>Edit Post</ion-label>
+        <ion-label>{{ 'pages.post_single.edit_post' | translate }}</ion-label>
       </button>
     </ion-fab-list>
   </ion-fab>

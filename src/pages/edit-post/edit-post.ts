@@ -15,6 +15,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { CameraProvider } from 'providers/camera/camera';
+import { SettingsProvider } from 'providers/settings/settings';
+import { Subscription } from 'rxjs/Subscription';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage({
   priority: 'medium'
@@ -30,7 +33,7 @@ export class EditPostPage {
   private caret: number = 0;
   private is_preview: boolean = false;
   private markdowntext;
-  
+
   private storyForm: FormGroup;
 
   imageURI: any;
@@ -43,18 +46,25 @@ export class EditPostPage {
   hash: any;
   URL: any;
 
+  chosenTheme: string;
+  subs: Subscription;
+
   constructor(public viewCtrl: ViewController,
     public actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     public menu: MenuController,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
+    private translate: TranslateService,
     private navParams: NavParams,
+    private _settings: SettingsProvider,
     private camera: CameraProvider,
     private alerts: AlertsProvider,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController) {
+
+    this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
 
     this.content = this.navParams.get('post');
 
@@ -105,16 +115,16 @@ export class EditPostPage {
 
   presentPrompt() {
     let alert = this.alertCtrl.create({
-      title: 'Login',
+      title: this.translate.instant('general.insert_image.title'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Image URL'
+          placeholder: this.translate.instant('general.insert_image.url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
@@ -148,17 +158,13 @@ export class EditPostPage {
       position: 'bottom'
     });
 
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
     toast.present();
   }
 
   private post() {
     if (this.storyForm.valid) {
       let loading = this.loadingCtrl.create({
-        content: 'We are editing your amazing story 💯'
+        content: this.translate.instant('generic_messages.editing_post')
       });
 
       loading.present();
@@ -176,10 +182,8 @@ export class EditPostPage {
 
           if (res === 'Correct') {
             loading.dismiss();
-            this.presentToast('Post was edited correctly!');
+            this.presentToast(this.translate.instant('generic_messages.post_edited'));
             this.navCtrl.pop();
-            // Close page and tell the user that it was posted correctly
-            console.log('posted correctly')
           }
 
           else {
@@ -213,29 +217,29 @@ export class EditPostPage {
 
   insertLink() {
     let alert = this.alertCtrl.create({
-      title: 'Insert URL',
+      title: this.translate.instant('modals.edit_post.insert_url'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Url to insert'
+          placeholder: this.translate.instant('modals.edit_post.url_placeholder'),
         },
         {
           name: 'Text',
-          placeholder: 'Text to mask the url'
+          placeholder: this.translate.instant('modals.edit_post.mask_url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
-          }  
+          }
         },
         {
           text: 'OK',
           handler: data => {
-            this.insertText('[' + data.Text +'](' + data.URL + ')');
+            this.insertText('[' + data.Text + '](' + data.URL + ')');
           }
         }
       ]
@@ -248,16 +252,16 @@ export class EditPostPage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Insert Image',
+      title: this.translate.instant('general.insert_image.title'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Image URL'
+          placeholder: this.translate.instant('general.insert_image.url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
@@ -280,10 +284,10 @@ export class EditPostPage {
    */
   presentActionSheet(): void {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'How do you want to insert the image? 📷🌄',
+      title: this.translate.instant('general.camera_options.title'),
       buttons: [
         {
-          text: 'Camera',
+          text: this.translate.instant('general.camera_options.camera'),
           icon: 'camera',
           handler: () => {
             this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
@@ -292,7 +296,7 @@ export class EditPostPage {
           }
         },
         {
-          text: 'Gallery',
+          text: this.translate.instant('general.camera_options.gallery'),
           icon: 'albums',
           handler: () => {
             this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
@@ -301,14 +305,14 @@ export class EditPostPage {
           }
         },
         {
-          text: 'Custom URL',
+          text: this.translate.instant('general.camera_options.custom_url'),
           icon: 'md-globe',
           handler: () => {
             this.presentInsertURL()
           }
         },
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           icon: 'close',
           role: 'cancel',
           handler: () => {

@@ -1,49 +1,49 @@
-<ion-header no-border id="header">
-  <ion-navbar color="primary">
+<ion-header no-border [class]="chosenTheme">
+  <ion-navbar color="primary" id="header">
     <ion-title>
-      Edit your Story
+      {{ 'modals.edit_post.page_title' | translate }}
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="post()">
-        Submit
+        {{ 'generic_messages.submit' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce padding>
-  <p *ngIf="is_preview == true" text-center>Preview Mode</p>
+<ion-content no-bounce padding [class]="chosenTheme">
+  <p *ngIf="is_preview == true" text-center>{{ 'generic_messages.preview_mode' | translate }}</p>
   <div *ngIf="is_preview == true" [innerHtml]="markdowntext"></div>
   <form *ngIf="is_preview == false" [formGroup]="storyForm">
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
-        <ion-badge color="primary">Title</ion-badge>
+        <ion-badge color="primary">{{ 'generic_messages.title' | translate }}</ion-badge>
       </ion-label>
-      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="Type here the title of your post"
+      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="{{ 'generic_messages.title_post' | translate }}"
         maxlength="100" [formControl]="storyForm.controls['title']"></ion-textarea>
     </ion-item>
     <hr />
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
-        <ion-badge color="primary">Description</ion-badge>
+        <ion-badge color="primary">{{ 'generic_messages.description' | translate }}</ion-badge>
       </ion-label>
       <ion-textarea #myInput *ngIf="is_preview == false" (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" type="text"
-        rows="15" placeholder="Write your story in here." [formControl]="storyForm.controls['description']"></ion-textarea>
+        rows="15" placeholder="{{ 'generic_messages.post_placeholder' | translate }}" [formControl]="storyForm.controls['description']"></ion-textarea>
     </ion-item>
     <hr />
     <ion-item no-lines>
       <ion-label class="label-title" color="primary" stacked>
-        <ion-badge color="primary">Tags</ion-badge>
-        <ion-badge color="gray">separated by comma</ion-badge>
+        <ion-badge color="primary">{{ 'generic_messages.tags' | translate }}</ion-badge>
+        <ion-badge color="gray">{{ 'generic_messages.separated_by' | translate }}</ion-badge>
       </ion-label>
-      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="You can choose up to 5 tags."
+      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="{{ 'generic_messages.title_tags' | translate }}"
         [formControl]="storyForm.controls['tags']"></ion-textarea>
     </ion-item>
     <hr />
   </form>
 </ion-content>
 
-<ion-footer>
+<ion-footer [class]="chosenTheme">
   <ion-grid class="top-four">
     <ion-row>
       <ion-col tappable (click)="insertText('**bold**')" (mousedown)="preventFocusChange($event)">

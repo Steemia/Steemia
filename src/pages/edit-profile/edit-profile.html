@@ -5,7 +5,7 @@
         <ion-icon class="custom-close" name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Edit Profile</ion-title>
+    <ion-title>{{ 'modals.edit_profile.page_title' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,86 +18,86 @@
       </ion-avatar>
     </ion-item>
     <ion-list-header>
-      NAME
+      {{ 'modals.edit_profile.name' |  translate }}
     </ion-list-header>
     <ion-item>
       <ion-icon name="contact" item-start></ion-icon>
       <ion-label>
         {{ account_data?.profile.name }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('name')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('name')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
 
     <ion-list-header>
-      ABOUT
+      {{ 'modals.edit_profile.about' |  translate }}
     </ion-list-header>
     <ion-item>
       <ion-icon name="information-circle" item-start></ion-icon>
       <ion-label>
         {{ account_data?.profile.about }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('about')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('about')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
 
     <ion-list-header>
-      LOCATION
+      {{ 'modals.edit_profile.location' |  translate }}
     </ion-list-header>
     <ion-item>
       <ion-icon name="pin" item-start></ion-icon>
       <ion-label>
         {{ account_data?.profile.location }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('location')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('location')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
 
     <ion-list-header>
-      WEBSITE
+      {{ 'modals.edit_profile.website' |  translate }}
     </ion-list-header>
     <ion-item>
       <ion-icon name="globe" item-start></ion-icon>
       <ion-label>
         {{ account_data?.profile.website }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('website')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('website')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
 
     <ion-list-header>
-      SOCIAL ACCOUNTS
+      {{ 'modals.edit_profile.social_accounts' |  translate }}
     </ion-list-header>
     <ion-item>
       <ion-icon name="logo-facebook" item-start></ion-icon>
       <ion-label>
         @{{ account_data?.profile.facebook }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('facebook')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('facebook')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-github" item-start></ion-icon>
       <ion-label>
         @{{ account_data?.profile.github }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('github')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('github')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-twitter" item-start></ion-icon>
       <ion-label item-right>
         @{{ account_data?.profile.twitter }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('twitter')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('twitter')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-instagram" item-start></ion-icon>
       <ion-label item-end>
         @{{ account_data?.profile.instagram }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('instagram')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('instagram')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
     <ion-item>
       <ion-icon name="logo-youtube" item-start></ion-icon>
       <ion-label end>
         @{{ account_data?.profile.youtube }}
       </ion-label>
-      <button ion-button clear item-end (click)="showPrompt('youtube')">Edit</button>
+      <button ion-button clear item-end (click)="showPrompt('youtube')">{{ 'modals.edit_profile.edit' |  translate }}</button>
     </ion-item>
     <ion-list-header>
       CRYPTOCURRENCY ADDRESSES

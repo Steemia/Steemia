@@ -15,7 +15,7 @@ export class AboutPage {
     this.menu.enable(false);
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.menu.enable(true);
   }
 

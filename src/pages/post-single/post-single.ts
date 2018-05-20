@@ -26,6 +26,7 @@ import { UtilProvider } from 'providers/util/util';
 import { Storage } from '@ionic/storage';
 import { CameraProvider } from 'providers/camera/camera';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage({
   priority: 'high'
@@ -60,6 +61,7 @@ export class PostSinglePage {
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private translate: TranslateService,
     private dom: DomSanitizer,
     public menu: MenuController,
     private camera: CameraProvider,
@@ -81,6 +83,7 @@ export class PostSinglePage {
   }
 
   ionViewDidLoad(): void {
+
     this.post = this.navParams.get('post');
     console.log(this.post)
 
@@ -101,17 +104,15 @@ export class PostSinglePage {
         if (data) {
           this.containsObject(data);
         }
-
       });
     });
   }
 
   ionViewDidEnter(): void {
-    this.navbar.backButtonClick = () => this.navCtrl.pop({ animate: false });
     this.menu.enable(false);
   }
 
-  ionViewDidLeave(): void {
+  ionViewWillLeave(): void {
     this.menu.enable(true);
   }
 
@@ -243,7 +244,7 @@ export class PostSinglePage {
    */
   private castFlag(author: string, permlink: string, weight: number = -10000): void {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait until the post is being flag.'
+      content: this.translate.instant('pages.post_single.flag_loading')
     });
     loading.present();
     this.steemActions.dispatch_vote('posts', author, permlink, weight).then(data => {
@@ -256,7 +257,7 @@ export class PostSinglePage {
 
       else if (data === 'Correct') {
         this.toastCtrl.create({
-          message: 'Post was flagged correctly!'
+          message: this.translate.instant('pages.post_single.flag_correctly')
         });
       }
 
@@ -277,7 +278,6 @@ export class PostSinglePage {
       author: this.post.author,
       permlink: this.post.url
     }).then(data => {
-      //this.post.vote = (data as any).vote;
       this.post.net_likes = (data as any).net_likes;
       this.post.net_votes = (data as any).net_votes;
       this.post.top_likers_avatars = (data as any).top_likers_avatars;
@@ -292,7 +292,7 @@ export class PostSinglePage {
   private reblog(): void {
 
     let loading = this.loadingCtrl.create({
-      content: 'Hang on while we reblog this post 😎'
+      content: this.translate.instant('pages.post_single.reblog_action')
     });
     loading.present();
     this.steemActions.dispatch_reblog(this.post.author, this.post.url).then(data => {
@@ -346,7 +346,7 @@ export class PostSinglePage {
     }
 
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: this.translate.instant('generic_messages.please_wait')
     });
     loading.present();
     this.steemActions.dispatch_comment(this.post.author, this.post.url, this.chatBox).then(res => {
@@ -449,7 +449,7 @@ export class PostSinglePage {
    */
   displayToast(msg) {
     let toast = this.toastCtrl.create({
-      message: 'Bookmark ' + msg + ' sucessfully',
+      message: this.translate.instant('bookmark_action', { action: msg}),
       duration: 1500,
       position: 'bottom'
     });
@@ -476,7 +476,14 @@ export class PostSinglePage {
    */
   protected adjustTextarea(event?: any): void {
     this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
-    this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].scrollHeight + 'px';
+    this.myInput['_elementRef']
+        .nativeElement
+        .getElementsByClassName("text-input")[0]
+        .style
+        .height = this.myInput['_elementRef']
+                            .nativeElement
+                            .getElementsByClassName("text-input")[0]
+                            .scrollHeight + 'px';
     return;
   }
 
@@ -498,10 +505,10 @@ export class PostSinglePage {
     if ((this.steemConnect.user_temp as any).user) {
 
       let actionSheet = this.actionSheetCtrl.create({
-        title: 'How do you want to insert the image? 📷🌄',
+        title: this.translate.instant('general.camera_options.title'),
         buttons: [
           {
-            text: 'Camera',
+            text: this.translate.instant('general.camera_options.camera'),
             icon: 'camera',
             handler: () => {
               this.camera.choose_image(this.camera.FROM_CAMERA, false, 'comment').then((image: any) => {
@@ -510,7 +517,7 @@ export class PostSinglePage {
             }
           },
           {
-            text: 'Gallery',
+            text: this.translate.instant('general.camera_options.gallery'),
             icon: 'albums',
             handler: () => {
               this.camera.choose_image(this.camera.FROM_GALLERY, true, 'comment').then((image: any) => {
@@ -519,14 +526,14 @@ export class PostSinglePage {
             }
           },
           {
-            text: 'Custom URL',
+            text: this.translate.instant('general.camera_options.custom_url'),
             icon: 'md-globe',
             handler: () => {
               this.presentInsertURL()
             }
           },
           {
-            text: 'Cancel',
+            text: this.translate.instant('generic_messages.cancel'),
             icon: 'close',
             role: 'cancel',
             handler: () => {
@@ -550,16 +557,16 @@ export class PostSinglePage {
    */
   presentInsertURL(): void {
     let alert = this.alertCtrl.create({
-      title: 'Insert Image',
+      title: this.translate.instant('general.insert_image.title'),
       inputs: [
         {
           name: 'URL',
-          placeholder: 'Image URL'
+          placeholder: this.translate.instant('general.insert_image.url'),
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');

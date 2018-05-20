@@ -1,5 +1,19 @@
 page-edit-post {
 
+      .title.title-md, .title.title-wp {
+            position: absolute !important;
+            left: 50% !important;
+            top: 0 !important;
+            transform: translateX(-50%) !important;
+            height: 100% !important;
+            width: 70% !important;
+            text-align: center !important;
+      }
+
+      hr {
+            background-color: transparent !important;
+      }
+
     // Resolve width for general tablets
     @media only screen and (device-width: 768px) {
 
@@ -35,10 +49,6 @@ page-edit-post {
 
     ion-select {
           max-width: 60% !important;
-    }
-
-    hr {
-          background-color: #f1f2f3 !important;
     }
 
     ion-item {

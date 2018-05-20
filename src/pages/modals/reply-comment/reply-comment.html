@@ -5,7 +5,7 @@
         <ion-icon class="custom-close" name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Reply To Comment</ion-title>
+    <ion-title>{{ 'modals.reply_comment.page_title' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,9 +13,9 @@
 <ion-content [class]="chosenTheme" padding>
   <div id="edit-comment-box">
     <ion-item no-lines>
-      <ion-textarea type="text" rows="20" placeholder="Type your reply here" [(ngModel)]="reply"></ion-textarea>
+      <ion-textarea type="text" rows="20" placeholder="{{ 'modals.reply_comment.type_reply' | translate }}" [(ngModel)]="reply"></ion-textarea>
     </ion-item>
   </div>
 
-  <button ion-button round block (click)="save()">Submit</button>
+  <button ion-button round block (click)="save()">{{ 'generic_messages.submit' | translate }}</button>
 </ion-content>

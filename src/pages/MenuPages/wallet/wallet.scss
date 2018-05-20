@@ -1,5 +1,15 @@
 page-wallet {
 
+      .title.title-md, .title.title-wp {
+            position: absolute !important;
+            left: 50% !important;
+            top: 0 !important;
+            transform: translateX(-50%) !important;
+            height: 100% !important;
+            width: 70% !important;
+            text-align: center !important;
+      }
+
       // Resolve width for general tablets
       @media only screen and (device-width: 768px) {
 

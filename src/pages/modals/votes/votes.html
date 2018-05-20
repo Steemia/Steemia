@@ -5,14 +5,14 @@
         <ion-icon class="custom-close" name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Likers</ion-title>
+    <ion-title>{{ 'modals.votes.page_title' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content [class]="chosenTheme">
   <ion-spinner *ngIf="is_loading"></ion-spinner>
 
-  <no-data *ngIf="no_content == true" icon="thumbs-up" title="This post does not have any votes, YET!">
+  <no-data *ngIf="no_content == true" icon="thumbs-up" title="{{ 'modals.votes.no_votes' | translate }}">
   </no-data>
   <ion-list no-lines id="voters-list">  
     <ion-item *ngFor="let voter of votes | slice:0:slice;" no-lines>
