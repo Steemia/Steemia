@@ -24,7 +24,6 @@
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
-    <preference name="StatusBarBackgroundColor" value="#33000000" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />

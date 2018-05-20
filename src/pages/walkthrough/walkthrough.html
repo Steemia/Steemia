@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-navbar>
     <ion-buttons end *ngIf="showSkip">
-      <button ion-button (click)="startApp()" color="primary">Skip</button>
+      <button ion-button (click)="startApp()" color="primary">{{ 'pages.walkthrough.skip' | translate }}</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -12,49 +12,46 @@
     <ion-slide>
       <img src="assets/welcome/1.png" class="slide-image" />
       <h2 class="slide-title">
-        Welcome to
+        {{ 'pages.walkthrough.welcome' | translate }}
         <b>Steemia</b>
       </h2>
       <p>
-        <b>Steemia</b> is a social networking app built on the decentralized Steem Blockchain, that reward users in Steem or
-        Steem Dollars Cryptocurrencies.
+        <b>Steemia </b> {{ 'pages.walkthrough.slides.1.description' | translate }}
       </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/welcome/2.png" class="slide-image" />
-      <h2 class="slide-title">Notifications</h2>
+      <h2 class="slide-title">{{ 'pages.walkthrough.slides.2.title' | translate }}</h2>
       <p>
-        Get notifications regarding transfers and/or discussions (comments) you are involved in as well as notifications when someone
-        follows you.
+        {{ 'pages.walkthrough.slides.2.description' | translate }}
       </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/welcome/3.png" class="slide-image" />
-      <h2 class="slide-title">Bookmarks</h2>
+      <h2 class="slide-title">{{ 'pages.walkthrough.slides.3.title' | translate }}</h2>
       <p>
-        Saw an article of your interest but want to save it for later? We got you! Save it in your bookmark and access it at any
-        time.
+          {{ 'pages.walkthrough.slides.3.description' | translate }}
       </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/welcome/4.png" class="slide-image" />
-      <h2 class="slide-title">Wallet</h2>
+      <h2 class="slide-title">{{ 'pages.walkthrough.slides.4.title' | translate }}</h2>
       <p>
-        Keep track of all your Steem and Steem dollars and also feel free to watch your BTC, LTC, and ETH wallets as well!
+          {{ 'pages.walkthrough.slides.4.description' | translate }}
       </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/welcome/5.png" class="slide-image" />
-      <h2 class="slide-title">Ready to get started?</h2>
+      <h2 class="slide-title">{{ 'pages.walkthrough.slides.5.title' | translate }}</h2>
       <p>
-        Start getting rewards for your effort in good content. Post and vote articles of your interest and earn rewards from them.
+          {{ 'pages.walkthrough.slides.5.description' | translate }}
       </p>
       <button ion-button icon-end large round (click)="startApp()" color="primary" mode="ios">
-        Get Started
+          {{ 'pages.walkthrough.get_started' | translate }}
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </ion-slide>

@@ -29,7 +29,6 @@ export class MyApp {
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
 
-
   constructor(private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -153,26 +152,13 @@ export class MyApp {
           
           this.background = './assets/menu_bg2.jpg';
           
-          if (this.platform.is('android')) {
-            this.statusBar.backgroundColorByHexString("#33000000");
-          }
-
-          else {
-            this.statusBar.backgroundColorByHexString("#1d252c");
-          }
+          this.statusBar.backgroundColorByHexString("#1d252c");
         }
 
         else if (val === 'blue-theme') {
 
           this.background = './assets/mb-bg-fb-03.jpg';
-
-          if (this.platform.is('android')) {
-            this.statusBar.backgroundColorByHexString("#33000000");
-          }
-
-          else {
-            this.statusBar.backgroundColorByHexString("#488aff");
-          }
+          this.statusBar.backgroundColorByHexString("#488aff");
         }
         this.chosenTheme = val;
       });
@@ -184,12 +170,15 @@ export class MyApp {
       this.fcm.onNotification().subscribe(
         (data) => {
           if (data.wasTapped) {
+            // TODO: Open corresponding page from the notification
             console.log("Received in background", JSON.stringify(data))
           } else {
-
+            // TODO: Open corresponding page from the notification
             console.log("Received in foreground", JSON.stringify(data))
           }
         }, error => {
+          // Should do nothing on error, so it is okay to leave it empty
+          // but it is necessary to avoid any crash.
           console.error("Error in notification", error)
         }
       );

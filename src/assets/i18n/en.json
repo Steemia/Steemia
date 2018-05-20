@@ -113,6 +113,32 @@
 			"login": "Login With SteemConnect",
 			"signup_1": "Don't have an account?",
 			"signup_2": "SIGN UP"
+		},
+		"walkthrough": {
+			"welcome": "Welcome to",
+			"slides": {
+				"1": {
+					"description": "is a social networking app built on the decentralized Steem Blockchain, that reward users in Steem or Steem Dollars Cryptocurrencies."
+				},
+				"2": {
+					"title": "Notifications",
+					"description": "Get notifications regarding transfers and/or discussions (comments) you are involved in as well as notifications when someone follows you."
+				},
+				"3": {
+					"title": "Bookmarks",
+					"description": "Saw an article of your interest but want to save it for later? We got you! Save it in your bookmark and access it at any time."
+				},
+				"4": {
+					"title": "Wallet",
+					"description": "Keep track of all your Steem and Steem dollars and also feel free to watch your BTC, LTC, and ETH wallets as well!"
+				},
+				"5": {
+					"title": "Ready to get started?",
+					"description": "Start getting rewards for your effort in good content. Post and vote articles of your interest and earn rewards from them."
+				}
+			},
+			"get_started": "Get Started",
+			"skip": "Skip"
 		}
 	},
 
