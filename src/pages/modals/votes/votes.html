@@ -16,12 +16,12 @@
   </no-data>
   <ion-list no-lines id="voters-list">  
     <ion-item *ngFor="let voter of votes | slice:0:slice;" no-lines>
-      <ion-avatar item-start tappable (click)="openProfile(voter.username)">
+      <ion-avatar item-start tappable (click)="openProfile(voter.voter)">
         <img [src]="voter.profile_image" (error)="util.imgError('profile',$event)" />
       </ion-avatar>
-      <h2 tappable (click)="openProfile(voter.username)">{{ voter.username }}</h2>
-      <p>{{ voter.name }}</p>
-      <ion-note item-end>{{ voter.percent }}%</ion-note>
+      <h2 tappable (click)="openProfile(voter.voter)">{{ voter.voter }}</h2>
+
+      <ion-note item-end> ${{ voter.value }} &nbsp; | &nbsp; {{ voter.percent }}%</ion-note>
     </ion-item>
   </ion-list>
 

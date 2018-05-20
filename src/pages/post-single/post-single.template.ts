@@ -44,7 +44,7 @@ export const postSinglePage = `
       <ion-grid padding>
 
       <ion-row>
-      <ion-col col-5 text-center>
+      <ion-col col-6 text-center>
           <div style="float: left;" *ngIf="post?.top_likers_avatars" (click)="openVotes(post?.url, post?.author)">
             <div class="voters">
               <span class="voters_image" *ngFor="let voter of post?.top_likers_avatars">
@@ -57,7 +57,7 @@ export const postSinglePage = `
         </div>
       </ion-col>
   
-      <ion-col col-4 text-center>
+      <ion-col col-3 text-center>
         <button ion-button clear small left>
           <ion-icon name="ios-text" id="comment-icon"></ion-icon>
           &nbsp;
@@ -135,7 +135,7 @@ export const postSinglePage = `
         <ion-icon name="share"></ion-icon>
         <ion-label>{{ 'pages.post_single.share' | translate }}</ion-label>
       </button>
-      <button ion-fab *ngIf="!is_owner" (click)="reblog()">
+      <button ion-fab *ngIf="!is_owner" (click)="reblogAlert()">
         <ion-icon name="share-alt"></ion-icon>
         <ion-label>{{ 'pages.post_single.reblog' | translate }}</ion-label>
       </button>

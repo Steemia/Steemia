@@ -80,7 +80,7 @@ export class PostCardComponent implements AfterViewInit {
    * Method to open the pending payout popover
    */
   presentPayoutPopover(myEvent) {
-    let payout = { payout: this.content.total_payout_reward, created: this.content.created }
+    let payout = { payout: this.content.total_payout_reward, created: this.content.created, beneficiaries: this.content.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
     console.log(payout)
     popover.present({
@@ -160,7 +160,7 @@ export class PostCardComponent implements AfterViewInit {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.content.votes }, { cssClass:"full-modal" });
     votesModal.present();
   }
 

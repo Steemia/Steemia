@@ -46,26 +46,21 @@ export class VotesPage {
   }
 
   ionViewDidLoad() {
-    this.permlink = this.navParams.get('permlink');
-    this.author = this.navParams.get('author');
-    this.steemia.dispatch_votes({
-      permlink: this.permlink,
-      author: this.author
-    }).then((votes: PostsRes) => {
+    this.votes = this.navParams.get('votes');
 
-      if (votes.results.length < 1) {
-        this.no_content = true;
-      }
+    if (this.votes.length < 1) {
+      this.no_content = true;
+    }
 
-      if (this.slice > votes.results.length) {
-        this.is_more = false;
-      }
+    if (this.slice > this.votes.length) {
+      this.is_more = false;
+    }
 
-      this.votes = votes.results;
+    this.votes = this.votes;
 
-      // Set the loading spinner to false
-      this.is_loading = false
-    });
+    // Set the loading spinner to false
+    this.is_loading = false
+    
   }
 
   ionViewDidEnter() {

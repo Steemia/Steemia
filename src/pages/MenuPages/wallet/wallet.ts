@@ -221,6 +221,15 @@ export class WalletPage {
    * Method to get account data
    */
   private getAccount() {
+
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
+    });
+  
+    loading.present();
     return new Promise(resolve => {
       this.steemiaProvider.dispatch_account(this.account).then(data => {
 
@@ -252,9 +261,9 @@ export class WalletPage {
         }
       }).then(() => {
         resolve();
+        loading.dismiss();
       });
-    })
-    
+    }) 
   }
 
   /**
