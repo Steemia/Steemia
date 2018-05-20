@@ -24,7 +24,7 @@ export class MyApp {
 
   private loggedInPages: MaterialMenuOptions;
   private loggedOutPages: MaterialMenuOptions;
-  private profilePicture: string = "./assets/steemlogo.png";
+  private profilePicture: string = "./assets/icon.png";
   private profile;
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
@@ -65,8 +65,6 @@ export class MyApp {
         this.steemiaProvider.dispatch_account(res.userObject.user).then(data => {
           this.profile = data[0];
           this.profile.json_metadata = JSON.parse(this.profile.json_metadata);
-          // this.socket.connect();
-          // this.socket.emit('set-nickname', this.profile.username);
           this.initializeLoggedInMenu();
           this.isLoggedIn = true;
           this.ws.sendAsync('login', this.steemConnect.get_token, 1);
@@ -82,8 +80,8 @@ export class MyApp {
       header: {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
-        username: 'Steemia',
-        email: 'steemia@steemia.io',
+        username: 'Hey,',
+        email: 'Welcome to Steemia!',
 
       },
       entries: [
