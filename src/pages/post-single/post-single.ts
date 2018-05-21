@@ -85,7 +85,6 @@ export class PostSinglePage {
   ionViewDidLoad(): void {
 
     this.post = this.navParams.get('post');
-    console.log(this.post)
 
     this.parsed_body = this.getPostBody();
 
@@ -587,9 +586,8 @@ export class PostSinglePage {
    * Method to open the pending payout popover
    */
   presentPayoutPopover(myEvent) {
-    let payout = { payout: this.post.total_payout_reward, created: this.post.created }
+    let payout = { payout: this.post.total_payout_reward, created: this.post.created, beneficiaries: this.post.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
-    console.log(payout)
     popover.present({
       ev: myEvent
     });
@@ -600,9 +598,30 @@ export class PostSinglePage {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { permlink: url, author: author }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass:"full-modal" });
     votesModal.present();
+  } 
+
+  private reblogAlert() {
+    let confirm = this.alertCtrl.create({
+      title: 'Reblog this post?',
+      message: 'This post will appear on your personal feed. This action cannot be reversed!',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Reblog',
+          handler: () => {
+            this.reblog();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
-
-
+  
 }

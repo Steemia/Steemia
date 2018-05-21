@@ -20,6 +20,7 @@ export class PendingPayoutPage {
   public cryptos;
   public STEEM;
   public SBD;
+  public beneficiaries;
 
   private is_loading: boolean = false;
 
@@ -28,6 +29,7 @@ export class PendingPayoutPage {
     public storage: Storage,
     public crypto: CryptoProvider) {
       this.payout = navParams.get('payout');
+      this.beneficiaries = navParams.get('beneficiaries');
       this.created = moment(navParams.get('created')).toDate();
   }
 
