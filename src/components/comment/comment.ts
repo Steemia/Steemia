@@ -158,13 +158,13 @@ export class CommentComponent {
         });
       }
       else {
-        this.app.getRootNav().push('AuthorProfilePage', {
+        this.app.getActiveNavs()[0].push('AuthorProfilePage', {
           author: author
         });
       }
     }
     else {
-      this.app.getRootNav().push('AuthorProfilePage', {
+      this.app.getActiveNavs()[0].push('AuthorProfilePage', {
         author: author
       });
     }
