@@ -1,18 +1,7 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { 
-  App,
-  IonicPage,
-  NavController,
-  NavParams,
-  LoadingController,
-  ActionSheetController,
-  MenuController,
-  ToastController,
-  AlertController,
-  PopoverController,
-  ModalController,
-  Navbar
-} from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, LoadingController,
+         ActionSheetController, MenuController, ToastController, AlertController,
+         PopoverController, ModalController, Navbar } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -27,6 +16,8 @@ import { Storage } from '@ionic/storage';
 import { CameraProvider } from 'providers/camera/camera';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage({
   priority: 'high'
@@ -55,6 +46,7 @@ export class PostSinglePage {
   private parsed_body;
 
   private commentsTree: Array<any> = [];
+  subs: Array<Subscription> = [];
 
   constructor(private app: App,
     private zone: NgZone,
@@ -66,6 +58,7 @@ export class PostSinglePage {
     public menu: MenuController,
     private camera: CameraProvider,
     private actionSheetCtrl: ActionSheetController,
+    private service: SharedServiceProvider,
     public storage: Storage,
     private steemia: SteemiaProvider,
     private alerts: AlertsProvider,
@@ -98,6 +91,14 @@ export class PostSinglePage {
       this.load_comments();
     });
 
+    this.subs.push(this.service.reply_status.subscribe(status => {
+      if (status === true) {
+        this.zone.runOutsideAngular(() => {
+          this.load_comments('refresh');
+        });
+      }
+    }));
+
     this.storage.ready().then(() => {
       this.storage.get('bookmarks').then(data => {
         if (data) {
@@ -112,6 +113,9 @@ export class PostSinglePage {
   }
 
   ionViewWillLeave(): void {
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
     this.menu.enable(true);
   }
 

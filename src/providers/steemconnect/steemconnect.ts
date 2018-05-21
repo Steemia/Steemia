@@ -173,8 +173,8 @@ export class SteemConnectProvider {
           .create(this.loginUrl, '_blank', 'location=yes,clearsessioncache=yes,clearcache=yes');
 
         const exitSubscription: Subscription = browserRef.on("exit").subscribe((event) => {
-          browserRef.close()
-          resolve("The Steemconnect sign in flow was canceled")
+          browserRef.close();
+          resolve("The Steemconnect sign in flow was canceled");
         });
 
         browserRef.on("loadstart").subscribe((event) => {

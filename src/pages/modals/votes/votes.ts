@@ -86,7 +86,7 @@ export class VotesPage {
       }
       infiniteScroll.complete();
 
-    }, 1000);
+    }, 50);
   }
 
   /**

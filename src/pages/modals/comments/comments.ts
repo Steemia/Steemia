@@ -47,7 +47,7 @@ export class CommentsPage {
   private caret: number = 0;
   chosenTheme: string;
 
-  subs: Subscription;
+  subs: Array<Subscription> = [];
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
@@ -69,19 +69,12 @@ export class CommentsPage {
     public loadingCtrl: LoadingController,
     private steemConnect: SteemConnectProvider) {
 
-      this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
+      this.subs.push(this._settings.getTheme().subscribe(val => this.chosenTheme = val));
 
       this.commentForm = this.formBuilder.group({
         comment: ['', Validators.required],
       });
-      
-      this.service.reply_status.subscribe(status => {
-        if (status === true) {
-          this.zone.runOutsideAngular(() => {
-            this.load_comments('refresh');
-          });
-        }
-      });
+
   }
 
   ionViewDidLoad() {
@@ -92,6 +85,14 @@ export class CommentsPage {
     this.zone.runOutsideAngular(() => {
       this.load_comments();
     });
+
+    this.subs.push(this.service.reply_status.subscribe(status => {
+      if (status === true) {
+        this.zone.runOutsideAngular(() => {
+          this.load_comments('refresh');
+        });
+      }
+    }));
   }
 
   ionViewDidEnter() {
@@ -99,7 +100,9 @@ export class CommentsPage {
   }
 
   ionViewWillLeave() {
-    this.subs.unsubscribe();
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
     this.menu.enable(true);
   }
 
