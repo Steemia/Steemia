@@ -3,7 +3,6 @@ Steemia is a social network app running over the Steem Blockchain. This app will
  
 ![](http://i.hizliresim.com/G9N3R7.png)
 ![](http://i.hizliresim.com/8Y58ZV.png)
-a
 
 
 You can download and try the application.  (NodeJS and NPM must be installed.)
@@ -16,9 +15,6 @@ $ cd Steemia
 $ npm install
 $ ionic serve --l
 ```
-
-
-
 
 
 ## Maintainers
@@ -37,7 +33,9 @@ Most of the images used on this project are property of [Sndbox](https://sndbox.
 If you have any question or want to contact us, we can be contacted via Discord.
 [<img src="https://tridentoutfit.com/assets/discord_logo.png">](https://discord.gg/webyZPB)
 
+
 Available on Google Play Store
+
 [<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png">](https://play.google.com/store/apps/details?id=com.steemia.steemia)
 
 
