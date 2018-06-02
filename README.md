@@ -35,14 +35,9 @@ Most of the images used on this project are property of [Sndbox](https://sndbox.
 
 ## Communication
 If you have any question or want to contact us, we can be contacted via Discord.
-![](https://tridentoutfit.com/assets/discord_logo.png)
-
-
-
+[<img src="https://tridentoutfit.com/assets/discord_logo.png">](https://discord.gg/webyZPB)
 
 Available on Google Play Store
-
-
-![](https://play.google.com/intl/en_us/badges/images/badge_new.png)
+[<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png">](https://play.google.com/store/apps/details?id=com.steemia.steemia)
 
 
