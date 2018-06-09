@@ -20,7 +20,6 @@ $ ionic serve --l
 
 ## Technology Stack
 Steemia application is built with the following technologies:
-- Front-end
 - Ionic Framework
 - Angular 5
 - JavaScript / TypeScript
