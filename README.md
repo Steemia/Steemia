@@ -2,7 +2,7 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png">](https://play.google.com/store/apps/details?id=com.steemia.steemia)
 
-*Not available for iOS. Yet!
+***Not available for iOS. Yet!**
 
 ## What Is Steemia?
 Steemia is a social network app running over the Steem Blockchain. This app will provide the users an enriched user experience plus features commonly encountered in a casually used social media. The goal of this project is to give the community a mobile app where they can do their daily activity in the blockchain.
