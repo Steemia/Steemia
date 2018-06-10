@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController } from 'ionic-angular';
-import { NOT_LOGGED_IN, 
-         REBLOGGED_CORRECTLY,
-         ERRORS } from '../../constants/constants';
+import {
+  NOT_LOGGED_IN,
+  REBLOGGED_CORRECTLY,
+  ERRORS
+} from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 
-         
 /**
  * 
  * Class to generate alerts and toast messages
@@ -17,9 +18,9 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable()
 export class AlertsProvider {
 
-  constructor(private alertCtrl: AlertController, 
-  private toastCtrl: ToastController,
-  private translate: TranslateService) {}
+  constructor(private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
+    private translate: TranslateService) { }
 
   /**
    * Method to display an alert with the corresponding message
@@ -37,15 +38,15 @@ export class AlertsProvider {
       case 'NO_TAGS':
         message = this.translate.instant('generic_messages.tag_error');
         break;
-      
+
       case 'ALL_FIELDS':
         message = this.translate.instant('generic_messages.all_fields');
         break;
-        
+
       case 'REBLOGGED_CORRECTLY':
         message = this.translate.instant('generic_messages.reblogged_correctly');
         break;
-      
+
       case 'ALREADY_REBLOGGED':
         message = this.translate.instant('generic_messages.already_reblogged');
         break;
@@ -57,7 +58,7 @@ export class AlertsProvider {
       case 'POST_INTERVAL':
         message = this.translate.instant('generic_messages.post_interval');
         break;
-        
+
       case 'EMPTY_TEXT':
         message = this.translate.instant('generic_messages.empty_message');
         break;
@@ -97,7 +98,7 @@ export class AlertsProvider {
       message: message,
       duration: 3500,
       position: 'bottom'
-    }); 
+    });
 
     return toast;
   }

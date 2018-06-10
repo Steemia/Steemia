@@ -4,7 +4,7 @@ import { IonicPage, ToastController, NavParams, AlertController, MenuController,
 import { SettingsProvider } from 'providers/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -24,6 +24,7 @@ export class SettingsPage {
     private platform: Platform,
     private storage: Storage,
     private statusBar: StatusBar,
+    private translate: TranslateService,
     public menu: MenuController,
     private _settings: SettingsProvider,
     public util: UtilProvider) { }
@@ -100,7 +101,7 @@ export class SettingsPage {
 
       this._settings.setTheme(e);
       let toast = this.toastCtrl.create({
-        message: 'Theme was changed successfully 😎',
+        message: this.translate.instant('generic_messages.theme-saved'),
         duration: 2000,
         position: 'bottom'
       });

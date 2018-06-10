@@ -608,17 +608,17 @@ export class PostSinglePage {
 
   private reblogAlert() {
     let confirm = this.alertCtrl.create({
-      title: 'Reblog this post?',
-      message: 'This post will appear on your personal feed. This action cannot be reversed!',
+      title: this.translate.instant('reblog.title'),
+      message: this.translate.instant('reblog.message'),
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('generic_messages.cancel'),
           handler: () => {
             console.log('Disagree clicked');
           }
         },
         {
-          text: 'Reblog',
+          text: this.translate.instant('reblog.reblog_action'),
           handler: () => {
             this.reblog();
           }

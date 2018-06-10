@@ -63,7 +63,7 @@ export class SharedServiceProvider {
       menu: {
         wwwImage: 'assets/show-more.png',
         imagePressed: 'menu_pressed',
-        title: 'Test',
+        title: 'Options',
         cancel: 'Cancel',
         align: 'right',
         items: [

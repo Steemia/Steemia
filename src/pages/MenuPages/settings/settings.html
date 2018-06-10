@@ -1,16 +1,15 @@
 <ion-header id="header">
 
   <ion-navbar color="primary">
-    <ion-title>Settings</ion-title>
+    <ion-title>{{ 'pages.settings.title' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content id="settings-page">
   <ion-list no-lines>
     <ion-list-header no-lines>
-      Voting Value
+        {{ 'pages.settings.voting-value' | translate }}
     </ion-list-header>
     <ion-item no-lines>
       <ion-range range-dark max="100" min="1" [(ngModel)]="upvote" (ngModelChange)="onChangeUpvote($event)">
@@ -18,20 +17,22 @@
       </ion-range>
     </ion-item>
     <ion-list-header no-lines>
-      Language
+        {{ 'pages.settings.language' | translate }}
     </ion-list-header>
     <ion-item no-lines>
       <ion-icon name="globe" item-start></ion-icon>
+      <ion-label>{{ 'pages.settings.select-language' | translate }}</ion-label>
       <ion-select [(ngModel)]="language[0]">
         <ion-option value="en_US">English</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-list-header no-lines>
-      Currency
+        {{ 'pages.settings.currency' | translate }}
     </ion-list-header>
     <ion-item no-lines>
       <ion-icon name="cash" item-start></ion-icon>
+      <ion-label>{{ 'pages.settings.select-currency' | translate }}</ion-label>
       <ion-select [(ngModel)]='currency' (ngModelChange)="updateCurrencyValue($event)">
         <ion-option value="USD">USD</ion-option>
         <ion-option value="EUR">EUR</ion-option>
@@ -49,12 +50,12 @@
     </ion-item>
 
     <ion-list-header no-lines>
-      Theme
+        {{ 'pages.settings.theme' | translate }}
     </ion-list-header>
     <ion-item no-lines>
       <ion-icon name='brush' item-start></ion-icon>
       <ion-label>
-        Choose Theme
+          {{ 'pages.settings.select-theme' | translate }}
       </ion-label>
       <ion-select item-end (ionChange)="setTheme($event)" [(ngModel)]="selected">
         <ion-option *ngFor='let theme of availableThemes' [value]="theme.className">
@@ -64,10 +65,10 @@
     </ion-item>
 
     <ion-list-header no-lines>
-      Auto Claim Rewards
+        {{ 'pages.settings.auto-claim' | translate }}
     </ion-list-header>
     <ion-item>
-      <ion-label> Claim Rewards Auto </ion-label>
+      <ion-label> {{ 'pages.settings.claim-option' | translate }} </ion-label>
       <ion-toggle [(ngModel)]="claim" (ngModelChange)="autoClaim()"></ion-toggle>
     </ion-item>
 

@@ -26,7 +26,7 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list [virtualScroll]="tags | search : term" radio-group>
+  <ion-list [virtualScroll]="tags | search : term" radio-group no-lines>
     <ion-item *virtualItem="let item">
       <ion-label *ngIf="item.name == 'All Tags'">{{ 'all_tags' | translate }}</ion-label>
       <ion-label *ngIf="item.name != 'All Tags'">{{item?.name}}</ion-label>

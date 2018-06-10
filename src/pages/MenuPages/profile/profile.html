@@ -114,7 +114,7 @@
             {{ 'pages.profile.location' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>
           </ion-item>
-          <ion-item no-lines (*ngIf='account_data?.website' click)="sharedService.openBrowser(account_data?.website)">
+          <ion-item no-lines *ngIf='account_data?.website' (click)="sharedService.openBrowser(account_data?.website)">
             <ion-icon name="globe" item-start></ion-icon>
             {{ 'pages.profile.website' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.website }}</ion-badge>

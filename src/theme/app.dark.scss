@@ -12,6 +12,10 @@
         color: white !important;
         border: none !important;
 
+        .post-user {
+            color: white !important;
+        }
+
         #header {
             color: white !important;
             background-color: $dark-menu !important;
@@ -250,6 +254,16 @@
                 ion-icon, ion-label, h2, p {
                     color: white !important;
                 }
+            }
+        }
+    }
+
+    page-tags {
+        ion-item {
+            background-color: $dark-bg !important;
+
+            ion-icon, ion-label, h2, p {
+                color: white !important;
             }
         }
     }

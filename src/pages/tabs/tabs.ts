@@ -40,11 +40,11 @@ import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
     <ion-content>
       <ion-tabs #navTabs mode="wp" (ionChange)="tabChange($event)">
-        <ion-tab [root]="feedRoot" tabTitle="Feed" tabIcon="mdi-file-document-box"></ion-tab>
-        <ion-tab [root]="newRoot" tabTitle="New" tabIcon="mdi-flash-circle" ></ion-tab>
+        <ion-tab [root]="feedRoot" [tabTitle]="'tabs.feed' | translate" tabIcon="mdi-file-document-box"></ion-tab>
+        <ion-tab [root]="newRoot" [tabTitle]="'tabs.new' | translate" tabIcon="mdi-flash-circle" ></ion-tab>
         <ion-tab></ion-tab>
-        <ion-tab [root]="hotRoot" tabTitle="Hot" tabIcon="mdi-flame"></ion-tab>
-        <ion-tab [root]="trendRoot" tabTitle="Trending" tabIcon="mdi-elevation-rise" ></ion-tab>
+        <ion-tab [root]="hotRoot" [tabTitle]="'tabs.hot' | translate" tabIcon="mdi-flame"></ion-tab>
+        <ion-tab [root]="trendRoot" [tabTitle]="'tabs.trending' | translate" tabIcon="mdi-elevation-rise" ></ion-tab>
       </ion-tabs>
       <ion-fab center bottom>
         <button ion-fab color="primary" (click)="openPage('PostPage', true)">

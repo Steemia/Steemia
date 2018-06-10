@@ -39,10 +39,10 @@ export class UtilProvider {
   public getVoteValue() {
     return new Promise((resolve, reject) => {
       this.storage.get('vote_value').then((vote) => {
-        if (vote) resolve(vote)
-        else resolve(null)
-      })
-    })
+        if (vote) resolve(vote);
+        else resolve(null);
+      });
+    });
   }
 
   /**
@@ -72,13 +72,11 @@ export class UtilProvider {
     }
 
     else if (type === 'cover') {
-      
       return IMG_SERVER + '850x500/' + img;
-      
     }
 
     else if (type === 'votes') {
-      return IMG_SERVER + '50x50/' + img
+      return IMG_SERVER + '50x50/' + img;
     }
   }
 

@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http } from '@angular/http';
 import { SettingsProvider } from 'providers/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * 
@@ -43,6 +44,7 @@ export class SteemConnectProvider {
     public platform: Platform,
     private iab: InAppBrowser,
     private statusBar: StatusBar,
+    private translate: TranslateService,
     private loading: LoadingController,
     private _settings: SettingsProvider,
     private http: Http) {
@@ -55,7 +57,7 @@ export class SteemConnectProvider {
         // If the token is null, undefined or empty string, the user is not logged in
         if (token === null || token === undefined || token === '') {
 
-          //Set a null access token to the instance
+          // Set a null access token to the instance
           this.instance.setAccessToken(null);
           // Set login status to false
           this.login_status = false;
@@ -213,7 +215,7 @@ export class SteemConnectProvider {
    */
   public doLogout(): Promise<any> {
     let loading = this.loading.create({
-      content: 'Please wait until we clear your information 😔'
+      content: this.translate.instant('generic_messages.clear_data')
     });
     loading.present();
     return new Promise((resolve, reject) => {

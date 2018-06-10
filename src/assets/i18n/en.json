@@ -17,6 +17,12 @@
 		"trending": "Trending"
 	},
 
+	"reblog": {
+		"title": "Reblog this post?",
+		"message": "This post will appear on your personal feed. This action cannot be reversed!",
+		"reblog_action": "Reblog"
+	},
+
 	"pages": {
 		"wallet": {
 			"page_title": "Wallet",
@@ -139,6 +145,22 @@
 			},
 			"get_started": "Get Started",
 			"skip": "Skip"
+		},
+		"pending-payout": {
+			"potential": "Potential payout",
+			"beneficiares": "Beneficiaries"
+		},
+		"settings": {
+			"title": "Settings",
+			"voting-value": "Voting Value",
+			"language": "Language",
+			"currency": "Currency",
+			"theme": "Theme",
+			"select-currency": "Select Currency",
+			"select-theme": "Choose Theme",
+			"select-language": "Select Language",
+			"auto-claim": "Auto Claim Rewards",
+			"claim-option": "Claim Rewards Auto"
 		}
 	},
 
@@ -249,7 +271,10 @@
 		"creating_post": "We are posting your amazing story 💯",
 		"posted_correctly": "Post was posted correctly!",
 		"submit_post": "Submit a story",
-		"what_is_on_your": "What's on your mind today?"
+		"what_is_on_your": "What's on your mind today?",
+		"clear_data": "Please wait until we clear your information 😔",
+		"theme-saved": "Theme was changed successfully 😎",
+		"crypto-address": "CRYPTOCURRENCY ADDRESSES"
 	},
 
 	"bookmark_action": "Bookmark {{ action }} sucessfully",
@@ -272,6 +297,7 @@
 	"youtube": "youtube",
 	"image_success": "Image uploaded successfully",
 	"uploading": "Uploading...",
-	"locating_post": "Please wait until we locate your post 💯"
+	"locating_post": "Please wait until we locate your post 💯",
+	"in": "in"
 
 }

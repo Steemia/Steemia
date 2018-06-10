@@ -94,8 +94,8 @@ export const postSinglePage = `
       </ion-grid>
       <div padding class="cancel-top-pd">
         <ion-item no-lines no-padding>
-        <ion-textarea #myInput (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);" [(ngModel)]="chatBox"
-          rows="6" placeholder="{{ 'pages.post_single.post_comment_placeholder' | translate }}" style="margin-bottom: 7px;"></ion-textarea>
+          <ion-textarea #myInput (click)="getCaretPos(myInput)" (keyup)="getCaretPos(myInput)" (input)="adjustTextarea($event);" [(ngModel)]="chatBox"
+            rows="6" placeholder="{{ 'pages.post_single.post_comment_placeholder' | translate }}" style="margin-bottom: 7px;"></ion-textarea>
         </ion-item>
         
         <button class="pull-right" ion-button mode="ios" (click)="comment()">{{ 'pages.post_single.post_comment' | translate }}</button>
