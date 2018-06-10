@@ -22,8 +22,9 @@
     <ion-item no-lines>
       <ion-icon name="globe" item-start></ion-icon>
       <ion-label>{{ 'pages.settings.select-language' | translate }}</ion-label>
-      <ion-select [(ngModel)]="language[0]">
-        <ion-option value="en_US">English</ion-option>
+      <ion-select [(ngModel)]="language" (ngModelChange)="updateLanguage($event)">
+        <ion-option value="en">English</ion-option>
+        <ion-option value="es">Spanish</ion-option>
       </ion-select>
     </ion-item>
 

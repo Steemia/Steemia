@@ -273,7 +273,9 @@
 		"submit_post": "Presentar una historia",
 		"what_is_on_your": "¿Qué tienes en mente hoy?",
 		"clear_data": "Por favor, espere hasta que borremos su información 😔",
-		"theme-saved": "El tema fue cambiado exitosamente 😎",
+        "theme-saved": "El tema fue cambiado exitosamente 😎",
+        "currency-saved": "La moneda fue cambiada exitosamente 😎",
+		"language-saved": "El idioma fue cambiado exitosamente 😎",
 		"crypto-address": "DIRECCIONES DE CRIPTOMONEDAS"
 	},
 

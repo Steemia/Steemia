@@ -3,7 +3,7 @@
     <name>Steemia</name>
     <description>A mobile app on Steem blockchain.</description>
     <author email="" href="http://steemia.io/">Steemia-io</author>
-    <content original-src="index.html" src="http://192.168.1.61:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -104,10 +104,10 @@
     <plugin name="cordova-plugin-google-analytics" spec="^1.8.3" />
     <plugin name="cordova-plugin-fcm" spec="git+https://github.com/Steemia/cordova-plugin-fcm.git" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
+    <engine name="ios" spec="4.5.4" />
+    <engine name="browser" spec="5.0.3" />
+    <engine name="android" spec="7.0.0" />
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="^0.6.5" />
     <plugin name="cordova-plugin-themeablebrowser" spec="^0.2.17" />
     <allow-navigation href="http://192.168.1.61:8100" />
-    <engine name="ios" spec="4.5.4" />
-    <engine name="browser" spec="5.0.3" />
-    <engine name="android" spec="^7.1.0" />
 </widget>

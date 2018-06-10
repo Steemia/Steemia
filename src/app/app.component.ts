@@ -36,7 +36,7 @@ export class MyApp {
     vesting_steem: null,
     vesting_steem_balance: null
   };
-  
+
   constructor(private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -61,7 +61,7 @@ export class MyApp {
           this.rootPage = 'WalkthroughPage';
         }
         this.initializeApp();
-        
+
       });
 
     this.steemConnect.status.subscribe(res => {
@@ -90,7 +90,7 @@ export class MyApp {
                 this.claim_rewards();
               }
             }
-          });        
+          });
         });
       }
     });
@@ -126,10 +126,10 @@ export class MyApp {
   private initializeLoggedInMenu(): void {
     this.loggedInPages = {
       header: {
-        background: 'url('+this.profile.json_metadata.profile.cover_image+')',
+        background: 'url(' + this.profile.json_metadata.profile.cover_image + ')',
         picture: this.profile.json_metadata.profile.profile_image,
         username: this.profile.name,
-        voting_power: (this.profile.voting_power/100).toFixed(0),
+        voting_power: (this.profile.voting_power / 100).toFixed(0),
         email: this.profile.json_metadata.profile.location || '',
         onClick: () => {
           this.openPage('ProfilePage', 'profile');
@@ -169,12 +169,12 @@ export class MyApp {
       this.splashScreen.hide();
       this._settings.getTheme().subscribe(val => {
         if (val === 'dark-theme') {
-         // this.background = './assets/menu_bg2.jpg';
+          // this.background = './assets/menu_bg2.jpg';
           this.statusBar.backgroundColorByHexString("#1d252c");
         }
 
         else if (val === 'blue-theme') {
-         // this.background = './assets/mb-bg-fb-03.jpg';
+          // this.background = './assets/mb-bg-fb-03.jpg';
           this.statusBar.backgroundColorByHexString("#488aff");
         }
         this.chosenTheme = val;
@@ -217,17 +217,25 @@ export class MyApp {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('es');
+    this.translate.setDefaultLang('en');
 
+    this.storage.get('language').then(language => {
+      if (language !== null) {
+        this.translate.use(language);
+      }
 
-    // if (this.translate.getBrowserLang() !== undefined) {
-      
-    //   this.translate.use(this.translate.getBrowserLang()); 
-      
-    // } else {
+      else {
+        
+        if (this.translate.getBrowserLang() !== undefined) {
 
-    //   this.translate.use('es'); // Set your language here
-    // }
+          this.translate.use(this.translate.getBrowserLang());
+
+        } else {
+
+          this.translate.use('en'); // Set your language here
+        }
+      }
+    });
 
   }
   /**

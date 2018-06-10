@@ -13,9 +13,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SettingsPage {
   public upvote = 1;
-  public language = [];
+  public language = 'en';
   public claim: boolean = false;
-  private currency;
+  private currency = 'USD';
   selected: String;
   availableThemes: { className: string, prettyName: string }[];
 
@@ -37,11 +37,6 @@ export class SettingsPage {
     // similarly, as promised, we've moved availableThemes to SettingsService,
     // and therefore need to call that property here
     this.availableThemes = this._settings.availableThemes;
-
-    this.language = [
-      'en_US'
-    ];
-
 
     this.util.getVoteValue().then(data => {
       this.upvote = (data as any) || 1;
@@ -111,14 +106,45 @@ export class SettingsPage {
     });
   }
 
-  updateCurrencyValue(event) {
+  /**
+   * Method to update the current selected currency
+   * @param event 
+   */
+  updateCurrencyValue(event): void {
     this.storage.set('currency', event).then(() => {
-      console.log(event);
-    })
+      let toast = this.toastCtrl.create({
+        message: this.translate.instant('generic_messages.currency-saved'),
+        duration: 2000,
+        position: 'bottom'
+      });
+
+      toast.present();
+    });
   }
 
-  autoClaim() {
+  /**
+   * Method to auto-claim rewards
+   */
+  autoClaim(): void {
     this.storage.set('auto_claim', this.claim);
+  }
+
+  /**
+   * Method to update language
+   * @param event  
+   */
+  updateLanguage(event): void {
+    this.storage.set('language', event).then(() => {
+      let toast = this.toastCtrl.create({
+        message: this.translate.instant('generic_messages.language-saved'),
+        duration: 2000,
+        position: 'bottom'
+      });
+
+      this.translate.use(this.language);
+
+      toast.present();
+    })
   }
 
 }
