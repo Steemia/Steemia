@@ -1,0 +1,306 @@
+{
+	"menu": {
+		"home": "Inicio",
+		"wallet": "Billetera",
+		"notifications": "Notificaciones",
+		"my_profile": "Mi Perfil",
+		"bookmarks": "Marcadores",
+		"settings": "Configuraciones",
+		"about": "Acerca de",
+		"logout": "Cerrar sesión"
+	},
+
+	"tabs": {
+		"feed": "Blog",
+		"new": "Nuevas",
+		"hot": "Calientes",
+		"trending": "Tendencias"
+	},
+
+	"reblog": {
+		"title": "¿Compartir esta publicacion?",
+		"message": "Esta publicación aparecerá en tu blog personal. ¡Esta acción no se puede revertir!",
+		"reblog_action": "Compartir"
+	},
+
+	"pages": {
+		"wallet": {
+			"page_title": "Billetera",
+			"title": "Billetera de {{ wallet }}",
+			"balance": "Saldo",
+			"buy": "Comprar",
+			"sell": "Vender",
+			"transfer": "Transferir",
+			"wallet": "Billetera",
+			"current_price": "Precio actual",
+			"claim_rewards": "Reclamar premios",
+			"current_rewards": "Tus recompensas actuales",
+			"prompts": {
+				"transfer": {
+					"title": "Transferir a cuenta",
+					"subtitle": "Mueva los fondos a otra cuenta de Steemit.",
+					"message": "Haga clic en el botón de abajo para ser redirigido a SteemConnect para completar su transacción.",
+					"inputs": {
+						"recipient": "Destinatario del pago",
+						"amount": "¿Cuánto quieres enviar?",
+						"memo": "¡Este memo es público!"
+					},
+					"send": "Enviar"
+				},
+				"add_crypto": {
+					"title": "Añadir una dirección",
+					"message": "Guarde sus direcciones de criptomonedas",
+					"continue": "Continuar"
+				},
+				"save_address": {
+					"title": "Guarde su direccion de {{ coin }}",
+					"inputs": {
+						"address": "Direccion de {{ coin }}"
+					},
+					"save": "Salvar"
+				}
+			}
+		},
+		"notifications": {
+			"page_title": "Notificaciones",
+			"started_following": "empezo a seguirte",
+			"mentioned_you": "te mencionó en una publicación",
+			"commented": "comentó tu publicación",
+			"sent_you": "te envió",
+			"reblogged": "compartió tu publicación"
+		},
+		"bookmarks": {
+			"page_title": "Marcadores",
+			"no_bookmarks": "¡No has marcado una publicación, AÚN!",
+			"remove": "Eliminar"
+		},
+		"profile": {
+			"edit_profile": "Editar perfil",
+			"joined": "Unido",
+			"account_value": "Valor de la cuenta",
+			"posts": "Publicaciones",
+			"activity": "Actividad",
+			"info": "Info",
+			"wallet": "Billetera",
+			"followers": "Seguidores",
+			"following": "Siguiendo",
+			"location": "Ubicación",
+			"website": "Sitio web"
+		},
+		"edit_comment": {
+			"page_title": "Editar comentario"
+		},
+		"search": {
+			"placeholder": "¿Qué estás buscando?",
+			"examples": {
+				"tags": "- Etiquetas: por ejemplo, #fotografía",
+				"users": "- Usuarios: por ejemplo, @jaysermendez",
+				"text": "- Texto: por ejemplo, fotografía" 
+			}
+		},
+		"post_single": {
+			"flag_loading": "Espere hasta que se reporte la publicación.",
+			"flag_correctly": "¡La publicación se reporto correctamente!",
+			"reblog_action": "Espera mientras compartimos esta publicación 😎",
+			"post_comment": "Publicar un comentario",
+			"post_comment_placeholder": "¿Que piensas sobre esta historia?",
+			"comments_title": "Comentarios",
+			"share": "Compartir",
+			"reblog": "Re-publicar",
+			"flag_post": "Reportar",
+			"edit_post": "Editar Publicacion"
+		},
+		"about": {
+			"title": "Sobre nosotros",
+			"header": "SOBRE NOSOTROS"
+		},
+		"login": {
+			"welcome": "Bienvenido a Steemia!",
+			"login": "Iniciar sesión con SteemConnect",
+			"signup_1": "¿No tienes una cuenta?",
+			"signup_2": "REGÍSTRATE"
+		},
+		"walkthrough": {
+			"welcome": "Bienvenido a",
+			"slides": {
+				"1": {
+					"description": "es una red social construida en el Blockchain de Steem que premia a los usuarios en criptomonedas Steem y Steem Dollars."
+				},
+				"2": {
+					"title": "Notificaciones",
+					"description": "Recibe notificaciones sobre transferencias y / o discusiones (comentarios) en las que estás involucrado, así como notificaciones cuando alguien te sigue."
+				},
+				"3": {
+					"title": "Marcadores",
+					"description": "¿Vio un artículo de su interés pero quiere guardarlo para más tarde? ¡Te tenemos! Guárdelo en su marcador y acceda a él en cualquier momento."
+				},
+				"4": {
+					"title": "Billetera",
+					"description": "Mantenga un registro de todos sus dólares de Steem y Steem y también siéntase libre de mirar sus carteras BTC, LTC y ETH."
+				},
+				"5": {
+					"title": "¿Listo para comenzar?",
+					"description": "Comience a obtener recompensas por su esfuerzo en buen contenido. Publique y vote artículos de su interés y gane recompensas de ellos."
+				}
+			},
+			"get_started": "Empezar",
+			"skip": "Omitir"
+		},
+		"pending-payout": {
+			"potential": "Pago potencial",
+			"beneficiares": "Beneficiarios"
+		},
+		"settings": {
+			"title": "Configuraciones",
+			"voting-value": "Valor de votación",
+			"language": "Idioma",
+			"currency": "Moneda",
+			"theme": "Tema",
+			"select-currency": "Escoge una moneda",
+			"select-theme": "Escoge un tema",
+			"select-language": "Escoge un idioma",
+			"auto-claim": "Reclamar Recompensas Automaticamente",
+			"claim-option": "Reclamar Automaticamente"
+		}
+	},
+
+	"modals": {
+		"comments": {
+			"page_title": "Comentarios",
+			"no_comments": "¡Esta publicación no tiene ningún comentario, AÚN!",
+			"write_comment": "Escribe tu comentario aqui",
+			"options": {
+				"title": "Opciones",
+				"copy": "Copiar",
+				"flag": "Reportar",
+				"cancel": "Cancelar",
+				"edit": "Editar"
+			}
+		},
+		"votes": {
+			"page_title": "Votos",
+			"no_votes": "¡Esta publicación no tiene votos, AÚN!"
+		},
+		"edit_post": {
+			"page_title": "Edita tu historia",
+			"insert_url": "Insertar URL",
+			"url_placeholder": "URL para insertar",
+			"mask_url": "Texto para enmascarar la url"
+		},
+		"edit_profile": {
+			"page_title": "Editar perfil",
+			"name": "Nombre",
+			"edit": "Editar",
+			"about": "Acerca de",
+			"location": "Ubicación",
+			"website": "Sitio web",
+			"social_accounts": "Redes sociales",
+			"prompts": {
+				"submit_your": "Envía tu ",
+				"redirect_msg": "Haga clic en el botón Guardar a continuación para ser redirigido a SteemConnect para completar su transacción.",
+				"here": " aquí",
+				"save": "Salvar"
+			}
+		},
+		"reply_comment": {
+			"page_title": "Responder a un comentario",
+			"type_reply": "Escriba su respuesta aquí"
+		}
+	},
+
+	"general": {
+		"camera_options": {
+			"title": "¿Cómo quieres insertar la imagen? 📷🌄",
+			"camera": "Cámara",
+			"gallery": "Galería",
+			"custom_url": "URL personalizada"
+		},
+		"insert_image": {
+			"title": "Insertar imagen",
+			"url": "URL de la imagen",
+			"cancel": "Cancelar"
+		}
+	},
+
+	"generic_messages": {
+		"cancel": "Cancelar",
+		"flag_error": "Ya has reportado esta publicación con el mismo porcentaje.",
+		"reblogged_error": "Ya has compartido esta publicación",
+		"post_interval": "Solo puede publicar una vez cada 5 minutos.",
+		"comment_interval": "Solo puede comentar una vez cada 20 segundos.",
+		"post_big": "Tu publicación es demasiado grande.",
+		"empty_message": "Un comentario no puede estar vacío.",
+		"tag_error": "Debe incluir al menos 1 etiqueta.",
+		"all_fields": "Debes completar todos los campos.",
+		"not_logged_in": "Esta acción requiere que haya iniciado sesión. Por favor, inicie sesión y vuelva a intentarlo.",
+		"reblogged_correctly": "Esta publicación se ha compartido correctamente. 😏",
+		"already_reblogged": "Ya has compartido esta publicación. 😂",
+		"alert_title": "Alerta",
+		"dismiss": "Ignorar",
+		"please_wait": "Por favor espera...",
+		"submit": "Enviar",
+		"flagging": "Espere hasta que se reporte la publicación.",
+		"flag_correct": "¡La publicación fue reportada correctamente!",
+		"not_more_posts": "No hay más publicaciones para cargar",
+		"working_feature": "Todavía estamos trabajando en esta característica 👷‍♀️",
+		"likes": "Votos",
+		"reply": "Responder",
+		"nsfw_message": "NO SEGURO PARA EL TRABAJO",
+		"show_images": "Mostrar imagen",
+		"reblogged_by": "Compartido Por",
+		"reblogged": "Compartido",
+		"follow": "Seguir",
+		"unfollow": "Dejar de seguir",
+		"preview_mode": "Modo de vista previa",
+		"title": "Título",
+		"description": "Descripción",
+		"tags": "Etiquetas",
+		"separated_by": "separados por coma o por espacio",
+		"title_post": "Escribe aquí el título de tu publicación",
+		"title_tags": "Puedes elegir hasta 5 etiquetas.",
+		"post_placeholder": "Escribe tu historia aquí.",
+		"editing_post": "Estamos editando tu increíble historia 💯",
+		"post_edited": "¡La publicación fue editada correctamente!",
+		"collecting_rewards": "Recolectando recompensas 💰💵💸🤑",
+		"rewards_collected": "Tus recompensas ahora están en tu cuenta 😎",
+		"upvote": "Votaciones",
+		"rewards": "Recompensas",
+		"default_rewards": "Defecto 50% / 50%",
+		"100_rewards": "Power Up 100%",
+		"no_payout": "Rechazo de pago",
+		"creating_post": "Estamos publicando tu increíble historia 💯",
+		"posted_correctly": "¡La publicación se publicó correctamente!",
+		"submit_post": "Presentar una historia",
+		"what_is_on_your": "¿Qué tienes en mente hoy?",
+		"clear_data": "Por favor, espere hasta que borremos su información 😔",
+		"theme-saved": "El tema fue cambiado exitosamente 😎",
+		"crypto-address": "DIRECCIONES DE CRIPTOMONEDAS"
+	},
+
+	"bookmark_action": "Marcador {{ action }} correctamente",
+	"login_now": "¡Inicia sesión ahora!",
+	"need_to_login": "Necesita iniciar sesión para ver esta página",
+	"all_tags": "Todas las etiquetas",
+	"search_tag": "Busque una etiqueta",
+	"reset": "Reiniciar",
+	"pick_tag": "Elige una etiqueta",
+	"Followers": "Seguidores",
+	"Following": "Siguiendo",
+	"name": "nombre",
+	"about": "acerca de",
+	"location": "ubicación",
+	"facebook": "facebook",
+	"website": "sitio web",
+	"github": "github",
+	"twitter": "twitter",
+	"instagram": "instagram",
+	"youtube": "youtube",
+	"image_success": "La imagen ha sido cargada con éxito",
+	"uploading": "Cargando...",
+	"locating_post": "Espere hasta que busquemos su publicación 💯",
+    "in": "en",
+    "days": " dias",
+	"hours": " horas",
+	"minutes": " minutos"
+
+}

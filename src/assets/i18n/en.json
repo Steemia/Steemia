@@ -48,7 +48,7 @@
 					"send": "Send"
 				},
 				"add_crypto": {
-					"title": "Add an Adresss",
+					"title": "Add an Address",
 					"message": "Save Your Cryptocurrency Addresses",
 					"continue": "Continue"
 				},
@@ -99,8 +99,8 @@
 			}
 		},
 		"post_single": {
-			"flag_loading": "Please wait until the post is being flag.",
-			"flag_correctly": "Post was flagged correctly!",
+			"flag_loading": "Please wait until the post is being flagged.",
+			"flag_correctly": "The post was flagged correctly!",
 			"reblog_action": "Hang on while we reblog this post 😎",
 			"post_comment": "Post a Comment",
 			"post_comment_placeholder": "What do you think about this story?",
@@ -124,7 +124,7 @@
 			"welcome": "Welcome to",
 			"slides": {
 				"1": {
-					"description": "is a social networking app built on the decentralized Steem Blockchain, that reward users in Steem or Steem Dollars Cryptocurrencies."
+					"description": "is a social networking app built on the decentralized Steem Blockchain that reward users in Steem and Steem Dollars Cryptocurrencies."
 				},
 				"2": {
 					"title": "Notifications",
@@ -224,7 +224,7 @@
 
 	"generic_messages": {
 		"cancel": "Cancel",
-		"flag_error": "You have already flag this post with the same percentage.",
+		"flag_error": "You have already flagged this post with the same percentage.",
 		"reblogged_error": "You have already reblogged this post",
 		"post_interval": "You may only post once every 5 minutes.",
 		"comment_interval": "You may only comment once every 20 seconds.",
@@ -240,8 +240,8 @@
 		"please_wait": "Please wait...",
 		"submit": "Submit",
 		"flagging": "Please wait until the post is being flag.",
-		"flag_correct": "Post was flagged correctly!",
-		"not_more_posts": "There are not more posts to load",
+		"flag_correct": "The post was flagged correctly!",
+		"not_more_posts": "There are no more posts to load",
 		"working_feature": "We are still working in this feature 👷‍♀️",
 		"likes": "Likes",
 		"reply": "Reply",
@@ -260,7 +260,7 @@
 		"title_tags": "You can choose up to 5 tags.",
 		"post_placeholder": "Write your story in here.",
 		"editing_post": "We are editing your amazing story 💯",
-		"post_edited": "Post was edited correctly!",
+		"post_edited": "The post was edited correctly!",
 		"collecting_rewards": "Collecting rewards 💰💵💸🤑",
 		"rewards_collected": "Your rewards are now in your account 😎",
 		"upvote": "Upvote",
@@ -269,17 +269,17 @@
 		"100_rewards": "Power Up 100%",
 		"no_payout": "Decline Payout",
 		"creating_post": "We are posting your amazing story 💯",
-		"posted_correctly": "Post was posted correctly!",
+		"posted_correctly": "The post was posted correctly!",
 		"submit_post": "Submit a story",
 		"what_is_on_your": "What's on your mind today?",
 		"clear_data": "Please wait until we clear your information 😔",
-		"theme-saved": "Theme was changed successfully 😎",
+		"theme-saved": "The theme was changed successfully 😎",
 		"crypto-address": "CRYPTOCURRENCY ADDRESSES"
 	},
 
 	"bookmark_action": "Bookmark {{ action }} sucessfully",
 	"login_now": "Login Now!",
-	"need_to_login": "You need to log in to see this page",
+	"need_to_login": "You need to login to see this page",
 	"all_tags": "All Tags",
 	"search_tag": "Search for a tag",
 	"reset": "Reset",
@@ -298,6 +298,9 @@
 	"image_success": "Image uploaded successfully",
 	"uploading": "Uploading...",
 	"locating_post": "Please wait until we locate your post 💯",
-	"in": "in"
+	"in": "in",
+	"days": " days",
+	"hours": " hours",
+	"minutes": " minutes"
 
 }

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CryptoProvider } from 'providers/crypto-api/crypto-api'
 import { Storage } from '@ionic/storage';
 import moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -26,6 +27,7 @@ export class PendingPayoutPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    private translate: TranslateService,
     public storage: Storage,
     public crypto: CryptoProvider) {
       this.payout = navParams.get('payout');
@@ -56,13 +58,13 @@ export class PendingPayoutPage {
       this.cryptos = data;
       this.cryptos = this.cryptos.data;
 
-      this.STEEM =this.cryptos.STEEM.USD;
+      this.STEEM = this.cryptos.STEEM.USD;
  
       this.SBD = this.cryptos['SBD*'];
       this.SBD = this.SBD[this.local];
 
     }).then(() => {
-      this.author = (((this.payout*37.5)/100)*this.SBD).toFixed(2);
+      this.author = (((this.payout * 37.5) / 100) * this.SBD).toFixed(2);
       this.is_loading = false;
     })
   }
@@ -76,14 +78,14 @@ export class PendingPayoutPage {
     let days = moment(cashout_time).diff(now, 'days');
 
     if (hours > 24 ) {
-      this.cashout = moment(cashout_time).diff(now, 'days') + ' days'
-      this.boolean = false
+      this.cashout = moment(cashout_time).diff(now, 'days') + this.translate.instant('days');
+      this.boolean = false;
     } else if (hours < 24 && hours > 0) {
-      this.cashout = moment(cashout_time).diff(now, 'hours') + ' hours'
-      this.boolean = false
+      this.cashout = moment(cashout_time).diff(now, 'hours') + this.translate.instant('hours');
+      this.boolean = false;
     } else if (minutes < 60 && minutes > 0) {
-      this.cashout = moment(cashout_time).diff(now, 'minutes') + ' minutes'
-      this.boolean = false
+      this.cashout = moment(cashout_time).diff(now, 'minutes') + this.translate.instant('minutes');
+      this.boolean = false;
     }
   }
 
