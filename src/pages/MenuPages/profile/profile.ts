@@ -11,6 +11,7 @@ import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { TranslateService } from '@ngx-translate/core';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 @IonicPage({
   priority: 'high'
@@ -56,6 +57,7 @@ export class ProfilePage {
     public menu: MenuController,
     private steemia: SteemiaProvider,
     public loadingCtrl: LoadingController,
+    public sharedService: SharedServiceProvider,
     public modalCtrl: ModalController,
     private steemConnect: SteemConnectProvider,
     private alerts: AlertsProvider,

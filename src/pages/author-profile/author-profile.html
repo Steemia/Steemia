@@ -119,7 +119,7 @@
             {{ 'pages.profile.posts' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.post_count }}</ion-badge>
           </ion-item>
-          <ion-item no-lines  *ngIf='account_data?.location'>
+          <ion-item no-lines *ngIf='account_data?.location'>
             <ion-icon name="pin" item-start></ion-icon>
             {{ 'pages.profile.location' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>

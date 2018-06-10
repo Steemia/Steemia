@@ -109,12 +109,12 @@
             {{ 'pages.profile.posts' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.post_count }}</ion-badge>
           </ion-item>
-          <ion-item no-lines>
+          <ion-item no-lines *ngIf='account_data?.location'>
             <ion-icon name="pin" item-start></ion-icon>
             {{ 'pages.profile.location' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>
           </ion-item>
-          <ion-item no-lines>
+          <ion-item no-lines (*ngIf='account_data?.website' click)="sharedService.openBrowser(account_data?.website)">
             <ion-icon name="globe" item-start></ion-icon>
             {{ 'pages.profile.website' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.website }}</ion-badge>
@@ -124,22 +124,22 @@
             Facebook
             <ion-badge color="light" item-end> @{{ account_data?.json_metadata?.profile.facebook }} </ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf='account_data?.json_metadata?.profile.github'>
             <ion-icon name="logo-github" item-start></ion-icon>
             Github
             <ion-badge color="light" item-end> @{{ account_data?.json_metadata?.profile.github }} </ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf='account_data?.json_metadata?.profile.twitter'>
             <ion-icon name="logo-twitter" item-start></ion-icon>
             Twitter
             <ion-badge color="light" item-end> @{{ account_data?.json_metadata?.profile.twitter }} </ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf='account_data?.json_metadata?.profile.instagram'>
             <ion-icon name="logo-instagram" item-start></ion-icon>
             Instagram
             <ion-badge color="light" item-end> @{{ account_data?.json_metadata?.profile.instagram }} </ion-badge>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf='account_data?.json_metadata?.profile.youtube'>
             <ion-icon name="logo-youtube" item-start></ion-icon>
             Youtube
             <ion-badge color="light" item-end> @{{ account_data?.json_metadata?.profile.youtube }} </ion-badge>
