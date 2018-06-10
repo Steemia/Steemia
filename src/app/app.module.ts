@@ -70,7 +70,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       scrollAssist: true,
       autoFocusAssist: false,
       preloadModules: true,
-      modalEnter: 'modal-slide-in',
       modalLeave: 'modal-slide-out',
       popoverEnter: 'popover-pop-in',
       popoverLeave: 'popover-pop-out',
