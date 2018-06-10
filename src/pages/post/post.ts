@@ -349,6 +349,7 @@ export class PostPage {
           icon: 'albums',
           handler: () => {
             this.camera.choose_image(this.camera.FROM_GALLERY, true, 'post').then((image: any) => {
+              console.log(image);
               this.insertText(image);
             });
           }
