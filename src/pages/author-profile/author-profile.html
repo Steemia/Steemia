@@ -9,7 +9,6 @@
   </ion-header>
 </div>
 
-
 <ion-content (ionScroll)="onScroll($event)" [class]="chosenTheme">
 
   <div class="card-profile">
@@ -42,7 +41,6 @@
       </span>
 
     </div>
-
 
     <div class="card-profile_user-stats" id="stats-profile">
       <ion-segment [(ngModel)]="sections" mode="md" (ionChange)="segmentChanged()">
@@ -126,7 +124,7 @@
             {{ 'pages.profile.location' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.location }}</ion-badge>
           </ion-item>
-          <ion-item no-lines *ngIf='account_data?.website'>
+          <ion-item no-lines *ngIf='account_data?.website' (click)="sharedService.openBrowser(account_data?.website)">
             <ion-icon name="globe" item-start></ion-icon>
             {{ 'pages.profile.website' | translate }}
             <ion-badge color="light" item-end>{{ account_data?.website }}</ion-badge>

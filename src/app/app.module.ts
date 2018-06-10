@@ -1,5 +1,6 @@
 // ENTRY COMPONENT
 import { MyApp } from './app.component';
+
 // MODULES
 import { HttpModule } from '@angular/http'
 import { IonicStorageModule } from '@ionic/storage';
@@ -17,13 +18,13 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
-import { SecureStorageMock } from '@ionic-native-mocks/secure-storage';
 import { GoogleAnalyticsMock } from '@ionic-native-mocks/google-analytics';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { FCM } from '@ionic-native/fcm';
 import { Clipboard } from '@ionic-native/clipboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { Keyboard } from '@ionic-native/keyboard';
+import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 
 // COMPONENTS
@@ -69,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       scrollAssist: true,
       autoFocusAssist: false,
       preloadModules: true,
+      modalEnter: 'modal-slide-in',
       modalLeave: 'modal-slide-out',
       popoverEnter: 'popover-pop-in',
       popoverLeave: 'popover-pop-out',
@@ -110,12 +112,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     Camera,
     CryptoProvider,
     GoogleTrackingProvider,
-    GoogleAnalytics,
-    //{ provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
+    //GoogleAnalytics, // This should be enabled in production
+    { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock }, // This should be enabled only in development
     WebsocketsProvider,
     FCM,
     CameraProvider,
-    SharedServiceProvider
+    SharedServiceProvider,
+    ThemeableBrowser
   ]
 })
 export class AppModule { }

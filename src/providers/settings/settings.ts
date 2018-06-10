@@ -7,6 +7,7 @@ export class SettingsProvider {
     // typing our private Observable, which will store our chosen theme in-memory
     private theme: BehaviorSubject<string>;
     availableThemes: Array<{ className: string, prettyName: string }>;
+    public current_theme: string = 'blue-theme';
 
     constructor(private storage: Storage) {
         // initializing the chosen theme with a default.
@@ -27,6 +28,7 @@ export class SettingsProvider {
         // you would send it an updated theme value here.
         // for now we're just doing things in-memory
         this.theme.next(val);
+        this.current_theme = val;
     }
 
     // exposing a method to subscribe to changes in the theme,
@@ -37,6 +39,7 @@ export class SettingsProvider {
         this.storage.get('theme').then(color => {
             if (color != null) {
                 this.theme.next(color);
+                this.current_theme = color;
             }
         });
 

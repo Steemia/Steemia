@@ -381,7 +381,7 @@ export class SteeemActionsProvider {
     // Push the tag Steemia to the post
     tags.push('steemia');
 
-    let jsonMetadata = { tags: tags, app: `steemia/0.1`, format: 'markdown' };
+    let jsonMetadata = { tags: tags, app: `steemia`, format: 'markdown' };
 
     // Create empty array for the operations
     const operations = [];

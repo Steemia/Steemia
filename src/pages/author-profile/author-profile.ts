@@ -8,6 +8,7 @@ import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
 import { AlertsProvider } from 'providers/alerts/alerts';
 import { SettingsProvider } from 'providers/settings/settings';
 import { Subscription } from 'rxjs';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 @IonicPage({
   priority: 'high'
@@ -51,6 +52,7 @@ export class AuthorProfilePage {
     public loadingCtrl: LoadingController,
     private steemConnect: SteemConnectProvider,
     private alerts: AlertsProvider,
+    public sharedService: SharedServiceProvider,
     private steemActions: SteeemActionsProvider) {
 
     this.username = this.navParams.get('author');

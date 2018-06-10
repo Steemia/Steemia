@@ -54,9 +54,10 @@ export class CameraProvider {
 
   /**
    * Method to upload image to Steemia IPFS
-   * @param {String} image: Image path to be uploaded
+   * @param {any} image: Image path to be uploaded
+   * @param {String} type: Type of the image being uploaded
    */
-  private uploadFile(image, type: string): Promise<string> {
+  private uploadFile(image: any, type: string): Promise<string> {
 
     let loader = this.loadingCtrl.create({
       content: "Uploading..."
@@ -88,11 +89,11 @@ export class CameraProvider {
         let hash = data.response;
 
         if (type === 'comment' || type === 'post') {
-          resolve('![image](https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash + ')');
+          resolve('![image](https://steemia.net/ipfs/' + JSON.parse(hash).Hash + ')');
         }
 
         else if (type === 'profile') {
-          resolve('https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash);
+          resolve('https://steemia.net/ipfs/' + JSON.parse(hash).Hash);
         }
         
       }, (err) => {
