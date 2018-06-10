@@ -76,7 +76,9 @@ page-profile {
       height: 100%;
       overflow: hidden;
       position: relative;
-      background:#232a57!important;
+      background: #232a57;
+      background-size: cover !important;
+      box-shadow: inset 0px -117px 126px -73px rgba(0,0,0,0.75), inset 0px 117px 126px -73px rgba(0,0,0,0.75);
     }
 
     &_user-infos {

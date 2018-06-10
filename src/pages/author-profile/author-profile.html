@@ -12,7 +12,7 @@
 <ion-content (ionScroll)="onScroll($event)" [class]="chosenTheme">
 
   <div class="card-profile">
-    <div class="card-profile_visual"></div>
+    <div class="card-profile_visual" [ngStyle]="{'background-image': 'url(' + account_data?.json_metadata.profile.cover_image + ')'}"></div>
     <div class="card-profile_user-infos">
       <span class="info_picture">
         <img (error)="util.imgError('profile',$event)" [src]="render_image()" class="picture" />

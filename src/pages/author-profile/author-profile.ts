@@ -169,6 +169,7 @@ export class AuthorProfilePage {
       username: this.current_user,
     }).then(data => {
       this.account_data = data;
+      console.log(data)
       loading.dismiss();
     });
   }
