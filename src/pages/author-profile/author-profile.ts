@@ -20,13 +20,16 @@ import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 export class AuthorProfilePage {
 
   private skip: number = 0;
+  private lastItem = null;
 
   private sections: string = "blog";
   private account_data: Object;
   private username: string;
   private current_user: string;
-
+  
   private contents: Array<any> = [];
+  private activities: Array<any> = [];
+  private staging: Array<any> = [];
   private is_loading = true;
   private limit: number = 15;
   private is_more_post: boolean = true;
@@ -73,7 +76,8 @@ export class AuthorProfilePage {
     });
 
     this.get_account();
-    
+    this.dispatchAccountHistory();
+
     this.steemia.dispatch_stats(this.username).then((data: any) => {
       (this.stats as any).followers_count = data.followers_count;
       (this.stats as any).following_count = data.following_count;
@@ -152,6 +156,64 @@ export class AuthorProfilePage {
     });
   }
 
+  /**
+   * Method to dispatch account history(activity)
+   */
+  private dispatchAccountHistory() {
+    let query = {
+      account: this.username,
+      from: -1,
+      limit: 20
+    }
+
+    this.steemia.dispatch_activity(query).then(data => {
+      
+      // Assign last item to get more history
+      this.lastItem = data[0][0] - 1;
+      console.log(this.lastItem);
+
+      this.activities = data.reverse();
+
+      for(let activity of this.activities) {
+        if (activity[1].op[0] === 'custom_json') {
+          let json = activity[1].op[1].json;
+          activity.json = JSON.parse(json)
+        }
+      }
+
+    })
+  }
+
+  /**
+   * Method to dispatch more account history(activity)
+   */
+  private dispatchMoreAccountHistory(event) {
+    let query = {
+      account: this.username,
+      from: this.lastItem,
+      limit: 20
+    }
+    this.steemia.dispatch_activity(query).then(data => {
+      
+      // Assign last item to get more history
+      this.lastItem = data[0][0] - 1;
+      console.log(this.lastItem);
+
+      this.staging = data.reverse();
+
+
+      for(let activity of this.staging) {
+        if (activity[1].op[0] === 'custom_json') {
+          let json = activity[1].op[1].json;
+          activity.json = JSON.parse(json)
+        }
+        this.activities.push(activity)
+      }
+    }).then(() => {
+      event.complete();
+    })
+  }
+  
   /**
    * Method to get account data from API
    */
