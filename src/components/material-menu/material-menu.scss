@@ -79,13 +79,7 @@ material-menu {
   }
 
   .voting_power {
-    border-radius: 20%;
-    position: absolute;
-    top: 82px;
-    color: black;
-    left: 9.5%;
-    font-weight: bold;
-    padding: 3px 5px;
+    float: right !important;
   }
     
 }

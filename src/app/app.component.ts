@@ -102,9 +102,9 @@ export class MyApp {
       header: {
         background: '#ccc url(' + this.background + ') no-repeat top left / cover',
         picture: this.profilePicture,
-        username: 'Hey,',
+        name: 'Hey,',
         voting_power: '',
-        email: 'Welcome to Steemia!',
+        username: 'Welcome to Steemia!',
       },
       entries: [
         { title: 'Home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
@@ -128,9 +128,9 @@ export class MyApp {
       header: {
         background: 'url(' + this.profile.json_metadata.profile.cover_image + ')',
         picture: this.profile.json_metadata.profile.profile_image,
-        username: this.profile.name,
+        name: this.profile.json_metadata.profile.name || '',
         voting_power: (this.profile.voting_power / 100).toFixed(0),
-        email: this.profile.json_metadata.profile.location || '',
+        username: '@'+this.profile.name,
         onClick: () => {
           this.openPage('ProfilePage', 'profile');
         }

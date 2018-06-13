@@ -244,6 +244,16 @@ export class SteemiaProvider {
   }
 
   /**
+   * Public method to dispatch account activity data
+   * 
+   * @method dispatch_account
+   * @param {string} account: Username of the user
+   */
+  public dispatch_activity(query): Promise<any> {
+    return this.http.get(STEEM_API + 'get_account_history?' + this.util.encodeQueryData(query)).share().toPromise();
+  }
+
+  /**
    * Public method to dispatch post single data
    * 
    * @method dispatch_post_single

@@ -1,5 +1,5 @@
-<div [class]="chosenTheme"> 
-  <ion-header  [class.opaque]="showToolbar" no-lines>
+<div [class]="chosenTheme">
+  <ion-header [class.opaque]="showToolbar" no-lines>
     <ion-navbar>
       <ion-title>
         <ion-badge color="gray">{{ account_data?.username }}</ion-badge>
@@ -95,12 +95,165 @@
         </ion-infinite-scroll>
       </div>
       <div *ngSwitchCase="'activity'">
-        <ion-card>
-          <ion-card-content text-center>
-            <img src="assets/img1.png" />
-            <p>{{ 'generic_messages.working_feature' | translate }}</p>
-          </ion-card-content>
-        </ion-card>
+
+        <ion-list class="activity">
+          <div *ngFor="let activity of activities">
+
+            <ion-card *ngIf="activity[1].op[0] === 'vote'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].voter+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2>@{{activity[1].op[1].voter}}
+                  <span *ngIf="activity[1].op[1].weight > 0">Upvoted</span>
+                  <span *ngIf="activity[1].op[1].weight < 0">Downvoted</span>
+                  ({{ activity[1].op[1].weight/100 }}%)</h2>
+                <p>{{ activity[1].op[1].permlink }}</p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'curation_reward'">
+              <ion-item>
+                <ion-avatar class="reward" item-start>
+                  <ion-icon item-start name="trophy"></ion-icon>
+                </ion-avatar>
+                <h2> Curation Reward </h2>
+                <p>{{ activity[1].op[1].reward }}</p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'claim_reward_balance'">
+              <ion-item>
+                <ion-avatar class="reward" item-start>
+                  <ion-icon item-start name="trophy"></ion-icon>
+                </ion-avatar>
+                <h2> Claim Rewards</h2>
+                <p *ngIf="activity[1].op[1].reward_sbd !== '0.000 SBD'">{{ activity[1].op[1].reward_sbd }}</p>
+                <p *ngIf="activity[1].op[1].reward_steem !== '0.000 STEEM'">{{ activity[1].op[1].reward_steem }}</p>
+                <p *ngIf="activity[1].op[1].reward_vests">{{ activity[1].op[1].reward_vests }}</p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'account_witness_vote'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].account+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> @{{activity[1].op[1].account}}
+                  <span *ngIf="activity[1].op[1].approve">approved witness</span>
+                  <span *ngIf="!activity[1].op[1].approve">unapproved witness</span>
+                </h2>
+                <p>
+                  @{{activity[1].op[1].witness}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'comment'">
+              <ion-item *ngIf="activity[1].op[0] === 'comment'">
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].author+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> @{{activity[1].op[1].author}} replied to @{{activity[1].op[1].parent_author}} </h2>
+                <p>
+                  {{activity[1].op[1].permlink}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[1].title && activity[1].op[1].parent_author === ''">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].author+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> Authored a post </h2>
+                <p>
+                  {{activity[1].op[1].permlink}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'feed_publish'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].publisher+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> feed_publish</h2>
+                <p>
+                  {{activity[1].op[1].exchange_rate.base}}
+                </p>
+                <p>
+                  {{activity[1].op[1].exchange_rate.quote}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'producer_reward'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].producer+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> producer_reward</h2>
+                <p>
+                  {{activity[1].op[1].vesting_shares}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'account_update'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].account+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> Account updated</h2>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[0] === 'comment_options'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity[1].op[1].author+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2> comment_options</h2>
+                <p>
+                  {{activity[1].op[1].permlink}}
+                </p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="activity[1].op[1].id === 'follow'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img [src]="'https://steemitimages.com/u/'+activity.json[1].following+'/avatar/small'" (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2 *ngIf="activity.json[1].what[0]">Followed @{{ activity.json[1].following }}</h2>
+                <h2 *ngIf="!activity.json[1].what[0]">Unfollowed @{{ activity.json[1].following }}</h2>
+              </ion-item>
+            </ion-card>
+            <ion-card *ngIf="activity[1].op[0] === 'transfer'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img *ngIf="activity[1].op[1].from != username" src="https://steemitimages.com/u/{{ activity[1].op[1].from }}/avatar/small"
+                    (error)="util.imgError('profile',$event)">
+                  <img *ngIf="activity[1].op[1].from === username" src="https://steemitimages.com/u/{{ activity[1].op[1].to }}/avatar/small"
+                    (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2 *ngIf="activity[1].op[1].from != username" class="incoming">+ {{ activity[1].op[1].amount }}</h2>
+                <h2 *ngIf="activity[1].op[1].from === username" class="outgoing">- {{ activity[1].op[1].amount }}</h2>
+                <p *ngIf="activity[1].op[1].from != username"> @{{ activity[1].op[1].from }} </p>
+                <p *ngIf="activity[1].op[1].from === username"> @{{ activity[1].op[1].to }} </p>
+              </ion-item>
+              <div>
+                <p padding>
+                  <strong>Memo:</strong> {{ activity[1].op[1].memo }}
+                </p>
+              </div>
+            </ion-card>
+          </div>
+          <ion-infinite-scroll (ionInfinite)="dispatchMoreAccountHistory($event)" distance="1%">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-list>
       </div>
       <div *ngSwitchCase="'about'">
         <ion-list no-lines>
@@ -177,7 +330,9 @@
               <img src="assets/steem.png">
             </ion-avatar>
             <h2>STEEM POWER</h2>
-            <p>{{ voting_power }} SP <span *ngIf='account_data?.exact_delegation != 0'>({{ account_data?.exact_delegation }} Delegated SP)</span> </p>
+            <p>{{ voting_power }} SP
+              <span *ngIf='account_data?.exact_delegation != 0'>({{ account_data?.exact_delegation }} Delegated SP)</span>
+            </p>
           </ion-item>
           <ion-item no-lines>
             <ion-avatar item-start>

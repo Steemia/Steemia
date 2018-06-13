@@ -44,9 +44,9 @@ export interface MaterialMenuOptions {
   header: {
     background?: string,
     picture: string,
-    username: string,
+    name: string,
     voting_power: string,
-    email?: string,
+    username?: string,
     onClick?: Function
   },
   entries: Array<{
