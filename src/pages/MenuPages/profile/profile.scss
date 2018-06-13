@@ -297,4 +297,29 @@ page-profile {
           
   }
   
+  .reward {
+    padding: 10px;
+    ion-icon {
+      font-size: 1.2em;
+      margin: auto auto !important;
+    }
+  }
+
+	.outgoing {
+		color: red;
+		font-weight: bolder;
+	}
+
+	.incoming {
+		color: green;
+		font-weight: bolder;		
+  }
+  
+  .activity {
+    .card {
+      border-radius: 10px !important;
+		  box-shadow: 3px 3px 30px -10px rgba(0, 0, 0, 0.3) !important;
+    }
+  }
+  
 }
