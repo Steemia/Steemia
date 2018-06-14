@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { App,
-         IonicPage, 
-         ViewController, 
-         NavController, 
-         NavParams,
-         MenuController } from 'ionic-angular';
+import {
+  App,
+  IonicPage,
+  ViewController,
+  NavController,
+  NavParams,
+  Events,
+  MenuController
+} from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
 import { UtilProvider } from 'providers/util/util';
@@ -35,6 +38,7 @@ export class VotesPage {
   constructor(private app: App,
     private steemConnect: SteemConnectProvider,
     public navCtrl: NavController,
+    private events: Events,
     public navParams: NavParams,
     public util: UtilProvider,
     private _settings: SettingsProvider,
@@ -42,7 +46,14 @@ export class VotesPage {
     public viewCtrl: ViewController,
     private steemia: SteemiaProvider) {
 
-      this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
+    this.subs = this._settings.getTheme().subscribe(val => this.chosenTheme = val);
+
+    // Subscribe to an event to dismiss modals when event is fired
+    this.events.subscribe('dismiss-modals', () => {
+      this.navCtrl.popToRoot().then(() => {
+        this.viewCtrl.dismiss();
+      });
+    });
   }
 
   ionViewDidLoad() {
@@ -60,7 +71,7 @@ export class VotesPage {
 
     // Set the loading spinner to false
     this.is_loading = false
-    
+
   }
 
   ionViewDidEnter() {
@@ -96,10 +107,10 @@ export class VotesPage {
     this.viewCtrl.dismiss();
   }
 
-    /**
-   * Method to open author profile page
-   * @param {String} author: author of the post
-   */
+  /**
+ * Method to open author profile page
+ * @param {String} author: author of the post
+ */
   private openProfile(author: string): void {
     if (this.steemConnect.user_object !== undefined) {
       if ((this.steemConnect.user_object as any).user == author) {
@@ -118,7 +129,7 @@ export class VotesPage {
         author: author
       });
     }
-    
+
   }
 
 }

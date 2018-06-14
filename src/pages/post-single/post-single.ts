@@ -1,7 +1,9 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { App, IonicPage, NavController, NavParams, LoadingController,
-         ActionSheetController, MenuController, ToastController, AlertController,
-         PopoverController, ModalController, Navbar, Img } from 'ionic-angular';
+import {
+  App, IonicPage, NavController, NavParams, LoadingController,
+  ActionSheetController, MenuController, ToastController, AlertController,
+  PopoverController, ModalController, Events
+} from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -29,7 +31,6 @@ import { ImageViewerController } from 'ionic-img-viewer';
 })
 export class PostSinglePage {
   @ViewChild('myInput') myInput: ElementRef;
-  @ViewChild(Navbar) navbar: Navbar;
 
   private post: any;
   private is_voting: boolean = false;
@@ -56,6 +57,7 @@ export class PostSinglePage {
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private events: Events,
     private imageViewerCtrl: ImageViewerController,
     private translate: TranslateService,
     private dom: DomSanitizer,
@@ -124,7 +126,7 @@ export class PostSinglePage {
         this.presentImage(this.captured_images[i]);
       });
     }
-    
+
     this.menu.enable(false);
   }
 
@@ -140,7 +142,7 @@ export class PostSinglePage {
 
     // Remove click listener for the images when component is about to be destroyed
     for (let i = 0; i < this.captured_images.length; i++) {
-      this.captured_images[i].removeEventListener("click", () => {});
+      this.captured_images[i].removeEventListener("click", () => { });
     }
   }
 
@@ -226,7 +228,7 @@ export class PostSinglePage {
         author: author
       });
     }
-    
+
   }
 
   /**
@@ -487,7 +489,7 @@ export class PostSinglePage {
    */
   private displayToast(msg) {
     let toast = this.toastCtrl.create({
-      message: this.translate.instant('bookmark_action', { action: msg}),
+      message: this.translate.instant('bookmark_action', { action: msg }),
       duration: 1500,
       position: 'bottom'
     });
@@ -515,13 +517,13 @@ export class PostSinglePage {
   protected adjustTextarea(event?: any): void {
     this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
     this.myInput['_elementRef']
+      .nativeElement
+      .getElementsByClassName("text-input")[0]
+      .style
+      .height = this.myInput['_elementRef']
         .nativeElement
         .getElementsByClassName("text-input")[0]
-        .style
-        .height = this.myInput['_elementRef']
-                            .nativeElement
-                            .getElementsByClassName("text-input")[0]
-                            .scrollHeight + 'px';
+        .scrollHeight + 'px';
   }
 
   /**
@@ -636,9 +638,9 @@ export class PostSinglePage {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass: "full-modal" });
     votesModal.present();
-  } 
+  }
 
   /**
    * Method to show reblog alert with a detailed message of this action
@@ -652,7 +654,7 @@ export class PostSinglePage {
         {
           text: this.translate.instant('generic_messages.cancel'),
           handler: () => {
-            console.log('Disagree clicked');
+            //console.log('Disagree clicked');
           }
         },
         {
@@ -672,7 +674,12 @@ export class PostSinglePage {
    * @private
    */
   private assign_tag(tag: string): void {
+    // Publish event to dismiss all modals behind this page.
+    this.events.publish('dismiss-modals');
+    // Set the next tag to the global service.
+    this.service.current_tag.next(tag);
+    // Remove all the pages in the navigation stack until it is root.
     this.navCtrl.popToRoot();
   }
-  
+
 }

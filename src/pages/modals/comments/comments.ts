@@ -1,7 +1,7 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import {
-  IonicPage, App, ViewController, NavParams, ActionSheetController,
-  ModalController, LoadingController, MenuController, AlertController
+  IonicPage, App, ViewController, NavParams, ActionSheetController, NavController,
+  ModalController, LoadingController, MenuController, AlertController, Events
 } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -51,6 +51,7 @@ export class CommentsPage {
 
   constructor(private zone: NgZone,
     private cdr: ChangeDetectorRef,
+    private navCtrl: NavController,
     private app: App,
     private formBuilder: FormBuilder,
     private translate: TranslateService,
@@ -59,6 +60,7 @@ export class CommentsPage {
     private service: SharedServiceProvider,
     private actionSheetCtrl: ActionSheetController,
     public viewCtrl: ViewController,
+    private events: Events,
     private camera: CameraProvider,
     public menu: MenuController,
     public navParams: NavParams,
@@ -69,11 +71,18 @@ export class CommentsPage {
     public loadingCtrl: LoadingController,
     private steemConnect: SteemConnectProvider) {
 
-      this.subs.push(this._settings.getTheme().subscribe(val => this.chosenTheme = val));
+    this.subs.push(this._settings.getTheme().subscribe(val => this.chosenTheme = val));
 
-      this.commentForm = this.formBuilder.group({
-        comment: ['', Validators.required],
+    this.commentForm = this.formBuilder.group({
+      comment: ['', Validators.required],
+    });
+
+    // Subscribe to an event to dismiss modals when event is fired
+    this.events.subscribe('dismiss-modals', () => {
+      this.navCtrl.popToRoot().then(() => {
+        this.viewCtrl.dismiss();
       });
+    });
 
   }
 
