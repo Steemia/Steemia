@@ -676,10 +676,33 @@ export class PostSinglePage {
   private assign_tag(tag: string): void {
     // Publish event to dismiss all modals behind this page.
     this.events.publish('dismiss-modals');
+
     // Set the next tag to the global service.
     this.service.current_tag.next(tag);
-    // Remove all the pages in the navigation stack until it is root.
-    this.navCtrl.popToRoot();
+
+    // Closure to capitalize first letter in the string
+    const capitalize = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Display message to confirm that the tag was set correctly.
+    let toast = this.toastCtrl.create({
+      message: capitalize(tag) + " tag was set correctly!",
+      duration: 2000
+    });
+    toast.present();
+    
+    try {
+      // Remove all the pages in the navigation stack until it is root.
+      this.navCtrl.popToRoot().then(() => {
+        // Success
+      }).catch(() => {
+        // Free to ignore it
+      });
+    }
+
+    catch (e) {}
+    
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import {
   IonicPage, ViewController, AlertController, MenuController, ActionSheetController,
   LoadingController, NavController, ToastController
@@ -30,6 +30,8 @@ export class PostPage {
   constructor(private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone,
     private steemActions: SteeemActionsProvider,
     private navCtrl: NavController,
     public menu: MenuController,
@@ -51,6 +53,7 @@ export class PostPage {
   ionViewCanLeave(): boolean {
     if (this.is_preview === true) {
       this.showPreview();
+      this.cdr.detectChanges();
       return false;
     }
     else {
@@ -127,16 +130,21 @@ export class PostPage {
    * Method to switch view to preview mode
    */
   showPreview(): void {
-    if (this.is_preview == false) {
-      let plainText = this.storyForm.value.description;
-      this.markdowntext = marked(plainText.toString())
-      this.is_preview = true;
+    this.zone.run(() => {
+      if (this.is_preview == false) {
+        let plainText = this.storyForm.value.description;
+        this.markdowntext = marked(plainText.toString())
+        this.is_preview = true;
+      }
 
-    }
+      else {
+        this.is_preview = false;
 
-    else {
-      this.is_preview = false;
-    }
+      }
+
+      this.cdr.detectChanges();
+    })
+
   }
 
   /**
@@ -156,7 +164,7 @@ export class PostPage {
           text: this.translate.instant('general.insert_image.cancel'),
           role: 'cancel',
           handler: data => {
-           
+
           }
         },
         {
@@ -227,7 +235,7 @@ export class PostPage {
         else {
           tags = [this.storyForm.controls.tags.value.trim()]
         }
-        
+
         tags = tags.map(v => v.toLowerCase());
         this.steemActions.dispatch_post(
           this.storyForm.controls.title.value,
@@ -314,7 +322,7 @@ export class PostPage {
           text: this.translate.instant('generic_messages.cancel'),
           role: 'cancel',
           handler: data => {
-           
+
           }
         },
         {
@@ -380,6 +388,13 @@ export class PostPage {
    */
   preventFocusChange(e) {
     e.preventDefault();
+  }
+
+  /**
+   * Method to force angular to detect changes in the component
+   */
+  protected updateChanges(): void {
+    this.cdr.detectChanges();
   }
 
 }
