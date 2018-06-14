@@ -49,7 +49,7 @@
   <hr />
   <ion-item *ngIf="is_preview == false" no-lines>
     <ion-label color="primary">{{ 'generic_messages.rewards' | translate }}</ion-label>
-    <ion-select text-wrap [(ngModel)]="rewards">
+    <ion-select text-wrap [(ngModel)]="rewards" (ionChange)="updateChanges();">
       <ion-option text-wrap value="50%">{{ 'generic_messages.default_rewards' | translate }}</ion-option>
       <ion-option text-wrap value="100%">{{ 'generic_messages.100_rewards' | translate }}</ion-option>
       <ion-option text-wrap value="0%">{{ 'generic_messages.no_payout' | translate }}</ion-option>

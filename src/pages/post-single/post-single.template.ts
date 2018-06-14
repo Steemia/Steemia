@@ -39,8 +39,10 @@ export const postSinglePage = `
       <hr id="hr-separator" />
     </ion-card-header>
     <ion-card-content no-padding>
-      <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="parsed_body"></div>
-
+      <div id="card-content">
+          <div id="content" class="cancel-bottom-pd selectable-text" padding [innerHTML]="parsed_body"></div>
+      </div>
+      
       <ion-grid padding>
 
       <ion-row>
@@ -78,7 +80,7 @@ export const postSinglePage = `
 
         <ion-row>
           <ion-col no-padding>
-            <div *ngFor="let tag of post?.tags" style="float: left !important; margin: 5px 5px 0px 0px">
+            <div *ngFor="let tag of post?.tags" style="float: left !important; margin: 5px 5px 0px 0px" (click)="assign_tag(tag);">
               <ion-badge class="custom-chip" color="light">
               <ion-icon style='color: black !important' name="attach"></ion-icon>
               {{ tag }}

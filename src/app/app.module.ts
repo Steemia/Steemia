@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 // IONIC NATIVE / PROVIDERS
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -44,7 +45,6 @@ import { CameraProvider } from '../providers/camera/camera';
 import { SettingsProvider } from '../providers/settings/settings';
 import { SharedServiceProvider } from '../providers/shared-service/shared-service';
 
-
 // NGX-TRANSLATE
 import { HttpClient } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
@@ -61,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyApp
   ],
   imports: [
+    IonicImageViewerModule,
     HttpClientModule,
     BrowserModule,
     HttpModule,

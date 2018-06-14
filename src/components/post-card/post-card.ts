@@ -82,7 +82,7 @@ export class PostCardComponent implements AfterViewInit {
   presentPayoutPopover(myEvent) {
     let payout = { payout: this.content.total_payout_reward, created: this.content.created, beneficiaries: this.content.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
-    console.log(payout)
+    //console.log(payout)
     popover.present({
       ev: myEvent
     });

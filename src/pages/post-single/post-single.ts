@@ -1,7 +1,9 @@
 import { Component, NgZone, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { App, IonicPage, NavController, NavParams, LoadingController,
-         ActionSheetController, MenuController, ToastController, AlertController,
-         PopoverController, ModalController, Navbar } from 'ionic-angular';
+import {
+  App, IonicPage, NavController, NavParams, LoadingController,
+  ActionSheetController, MenuController, ToastController, AlertController,
+  PopoverController, ModalController, Events
+} from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { postSinglePage } from './post-single.template';
 import { AuthorProfilePage } from '../../pages/author-profile/author-profile';
@@ -18,6 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 import { Subscription } from 'rxjs/Subscription';
+import { ImageViewerController } from 'ionic-img-viewer';
 
 @IonicPage({
   priority: 'high'
@@ -28,7 +31,6 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class PostSinglePage {
   @ViewChild('myInput') myInput: ElementRef;
-  @ViewChild(Navbar) navbar: Navbar;
 
   private post: any;
   private is_voting: boolean = false;
@@ -43,16 +45,20 @@ export class PostSinglePage {
   private ref;
   private bookmarks;
   private caret: number = 0;
-  private parsed_body;
+  private parsed_body: any = '';
 
   private commentsTree: Array<any> = [];
-  subs: Array<Subscription> = [];
+  private subs: Array<Subscription> = [];
+  private _imageViewerCtrl: ImageViewerController;
+  private captured_images: any = [];
 
   constructor(private app: App,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private events: Events,
+    private imageViewerCtrl: ImageViewerController,
     private translate: TranslateService,
     private dom: DomSanitizer,
     public menu: MenuController,
@@ -72,6 +78,7 @@ export class PostSinglePage {
     private steemConnect: SteemConnectProvider) {
 
     this.user = (this.steemConnect.user_temp as any);
+    this._imageViewerCtrl = imageViewerCtrl;
 
   }
 
@@ -109,21 +116,51 @@ export class PostSinglePage {
   }
 
   ionViewDidEnter(): void {
+
+    // Grab all the images from the post and add a click event listener
+    this.captured_images = document.getElementById("card-content").getElementsByTagName("img");
+    for (let i = 0; i < this.captured_images.length; i++) {
+
+      // Listen for the click event and open the image when fired
+      this.captured_images[i].addEventListener("click", () => {
+        this.presentImage(this.captured_images[i]);
+      });
+    }
+
     this.menu.enable(false);
   }
 
   ionViewWillLeave(): void {
+
+    // Unsubscribe data from server
     this.subs.forEach(sub => {
       sub.unsubscribe();
     });
+
+    // Re-enable drawer menu
     this.menu.enable(true);
+
+    // Remove click listener for the images when component is about to be destroyed
+    for (let i = 0; i < this.captured_images.length; i++) {
+      this.captured_images[i].removeEventListener("click", () => { });
+    }
+  }
+
+  /**
+   * Method to present image in a modal
+   * @param {HTMLImageElement} image: Image object to re-draw 
+   * @private
+   */
+  private presentImage(image: HTMLImageElement): void {
+    const imageViewer = this._imageViewerCtrl.create(image);
+    imageViewer.present();
   }
 
   /**
    * Method to return a sanitized post body
    * @returns a string with the body of the post
    */
-  getPostBody() {
+  private getPostBody() {
     return this.dom.bypassSecurityTrustHtml(this.post.full_body);
   }
 
@@ -162,7 +199,7 @@ export class PostSinglePage {
    * Method to get caret position in a textfield
    * @param oField 
    */
-  getCaretPos(oField): void {
+  private getCaretPos(oField): void {
     let node = oField._elementRef.nativeElement.children[0];
     if (node.selectionStart || node.selectionStart == '0') {
       this.caret = node.selectionStart;
@@ -191,13 +228,13 @@ export class PostSinglePage {
         author: author
       });
     }
-    
+
   }
 
   /**
    * Method to open the voting-slider popover
    */
-  presentPopover(myEvent) {
+  private presentPopover(myEvent) {
     let popover = this.popoverCtrl.create('VotingSliderPage');
     popover.present({
       ev: myEvent
@@ -376,7 +413,7 @@ export class PostSinglePage {
   /**
    * Method to open page to edit the current post
    */
-  editPost() {
+  private editPost() {
     this.navCtrl.push("EditPostPage", {
       post: this.post
     });
@@ -385,7 +422,7 @@ export class PostSinglePage {
   /**
    * Method to add a post to the bookmarks
    */
-  addBookmark() {
+  private addBookmark() {
     if ((this.steemConnect.user_temp as any).user) {
       this.storage.get('bookmarks').then(data => {
         if (data) {
@@ -425,7 +462,7 @@ export class PostSinglePage {
   /**
    * Method to remove post from bookmarks
    */
-  removeBookmark(): void {
+  private removeBookmark(): void {
     if ((this.steemConnect.user_temp as any).user) {
       this.storage.get('bookmarks').then(data => {
         this.bookmarks = data;
@@ -450,9 +487,9 @@ export class PostSinglePage {
    * Toast helper for bookmark state
    * @param msg 
    */
-  displayToast(msg) {
+  private displayToast(msg) {
     let toast = this.toastCtrl.create({
-      message: this.translate.instant('bookmark_action', { action: msg}),
+      message: this.translate.instant('bookmark_action', { action: msg }),
       duration: 1500,
       position: 'bottom'
     });
@@ -464,7 +501,7 @@ export class PostSinglePage {
    * Method to check if the post is currently bookmarked
    * @param array
    */
-  containsObject(array) {
+  private containsObject(array) {
     for (let object of array) {
       if (object.author === this.post.author && object.url === this.post.url) {
         this.is_bookmarked = true;
@@ -480,21 +517,20 @@ export class PostSinglePage {
   protected adjustTextarea(event?: any): void {
     this.myInput['_elementRef'].nativeElement.getElementsByClassName("text-input")[0].style.height = 'auto';
     this.myInput['_elementRef']
+      .nativeElement
+      .getElementsByClassName("text-input")[0]
+      .style
+      .height = this.myInput['_elementRef']
         .nativeElement
         .getElementsByClassName("text-input")[0]
-        .style
-        .height = this.myInput['_elementRef']
-                            .nativeElement
-                            .getElementsByClassName("text-input")[0]
-                            .scrollHeight + 'px';
-    return;
+        .scrollHeight + 'px';
   }
 
   /**
    * Method to insert text at current pointer
    * @param {String} text: Text to insert 
    */
-  insertText(text: string): void {
+  private insertText(text: string): void {
     const current = this.chatBox;
     let final = current.substr(0, this.caret) + text + current.substr(this.caret);
     this.chatBox = final;
@@ -504,7 +540,7 @@ export class PostSinglePage {
   /**
    * Method to present actionsheet with options
    */
-  presentActionSheet(): void {
+  private presentActionSheet(): void {
     if ((this.steemConnect.user_temp as any).user) {
 
       let actionSheet = this.actionSheetCtrl.create({
@@ -558,7 +594,7 @@ export class PostSinglePage {
   /**
    * Method to show insert URL actionsheet
    */
-  presentInsertURL(): void {
+  private presentInsertURL(): void {
     let alert = this.alertCtrl.create({
       title: this.translate.instant('general.insert_image.title'),
       inputs: [
@@ -589,7 +625,7 @@ export class PostSinglePage {
   /**
    * Method to open the pending payout popover
    */
-  presentPayoutPopover(myEvent) {
+  private presentPayoutPopover(myEvent): void {
     let payout = { payout: this.post.total_payout_reward, created: this.post.created, beneficiaries: this.post.beneficiaries }
     let popover = this.popoverCtrl.create('PendingPayoutPage', payout);
     popover.present({
@@ -602,11 +638,15 @@ export class PostSinglePage {
    * @param post 
    */
   private openVotes(url: string, author: string): void {
-    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass:"full-modal" });
+    let votesModal = this.modalCtrl.create("VotesPage", { votes: this.post.votes }, { cssClass: "full-modal" });
     votesModal.present();
-  } 
+  }
 
-  private reblogAlert() {
+  /**
+   * Method to show reblog alert with a detailed message of this action
+   * @private
+   */
+  private reblogAlert(): void {
     let confirm = this.alertCtrl.create({
       title: this.translate.instant('reblog.title'),
       message: this.translate.instant('reblog.message'),
@@ -614,7 +654,7 @@ export class PostSinglePage {
         {
           text: this.translate.instant('generic_messages.cancel'),
           handler: () => {
-            console.log('Disagree clicked');
+            //console.log('Disagree clicked');
           }
         },
         {
@@ -627,5 +667,42 @@ export class PostSinglePage {
     });
     confirm.present();
   }
-  
+
+  /**
+   * Method to pop to root when a tag is tapped
+   * @param {String} tag: Tag to set in the app
+   * @private
+   */
+  private assign_tag(tag: string): void {
+    // Publish event to dismiss all modals behind this page.
+    this.events.publish('dismiss-modals');
+
+    // Set the next tag to the global service.
+    this.service.current_tag.next(tag);
+
+    // Closure to capitalize first letter in the string
+    const capitalize = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Display message to confirm that the tag was set correctly.
+    let toast = this.toastCtrl.create({
+      message: capitalize(tag) + " tag was set correctly!",
+      duration: 2000
+    });
+    toast.present();
+    
+    try {
+      // Remove all the pages in the navigation stack until it is root.
+      this.navCtrl.popToRoot().then(() => {
+        // Success
+      }).catch(() => {
+        // Free to ignore it
+      });
+    }
+
+    catch (e) {}
+    
+  }
+
 }
