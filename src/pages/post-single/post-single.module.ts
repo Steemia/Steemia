@@ -7,13 +7,13 @@ import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
     declarations: [
-        PostSinglePage,
+        PostSinglePage
     ],
     imports: [
         MomentModule,
         ComponentsModule,
         IonicPageModule.forChild(PostSinglePage),
         TranslateModule.forChild()
-    ],
+    ]
 })
 export class PostSinglePageModule { }
