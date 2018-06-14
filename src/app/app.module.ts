@@ -26,7 +26,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
-
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -118,7 +118,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FCM,
     CameraProvider,
     SharedServiceProvider,
-    ThemeableBrowser
+    ThemeableBrowser,
+    TextToSpeech
   ]
 })
 export class AppModule { }

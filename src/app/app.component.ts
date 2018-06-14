@@ -169,12 +169,10 @@ export class MyApp {
       this.splashScreen.hide();
       this._settings.getTheme().subscribe(val => {
         if (val === 'dark-theme') {
-          // this.background = './assets/menu_bg2.jpg';
           this.statusBar.backgroundColorByHexString("#1d252c");
         }
 
         else if (val === 'blue-theme') {
-          // this.background = './assets/mb-bg-fb-03.jpg';
           this.statusBar.backgroundColorByHexString("#488aff");
         }
         this.chosenTheme = val;

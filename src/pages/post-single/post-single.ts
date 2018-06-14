@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 import { Subscription } from 'rxjs/Subscription';
 import { ImageViewerController } from 'ionic-img-viewer';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 @IonicPage({
   priority: 'high'
@@ -51,6 +52,7 @@ export class PostSinglePage {
   private subs: Array<Subscription> = [];
   private _imageViewerCtrl: ImageViewerController;
   private captured_images: any = [];
+  private is_listening: boolean = false;
 
   constructor(private app: App,
     private zone: NgZone,
@@ -61,6 +63,7 @@ export class PostSinglePage {
     private imageViewerCtrl: ImageViewerController,
     private translate: TranslateService,
     private dom: DomSanitizer,
+    private tts: TextToSpeech,
     public menu: MenuController,
     private camera: CameraProvider,
     private actionSheetCtrl: ActionSheetController,
@@ -144,6 +147,9 @@ export class PostSinglePage {
     for (let i = 0; i < this.captured_images.length; i++) {
       this.captured_images[i].removeEventListener("click", () => { });
     }
+
+    // Stop any dictation
+    this.tts.speak('');
   }
 
   /**
@@ -688,10 +694,10 @@ export class PostSinglePage {
     // Display message to confirm that the tag was set correctly.
     let toast = this.toastCtrl.create({
       message: capitalize(tag) + " tag was set correctly!",
-      duration: 2000
+      duration: 1000
     });
     toast.present();
-    
+
     try {
       // Remove all the pages in the navigation stack until it is root.
       this.navCtrl.popToRoot().then(() => {
@@ -701,8 +707,46 @@ export class PostSinglePage {
       });
     }
 
-    catch (e) {}
-    
+    catch (e) { }
+
+  }
+
+  /**
+   * Method to text-to-speech the post
+   * @private
+   */
+  private listenPost(): void {
+    this.zone.run(() => {
+      this.is_listening = true;
+      let toast = this.toastCtrl.create({
+        message: "Now you can listen to this post",
+        duration: 1000
+      });
+      toast.present();
+      // Reading Post
+      this.tts.speak({ text: this.post.only_text, rate: 0.90 }).then(() => {
+        // Dictation is done, set is_listening to false
+        this.is_listening = false;
+      });
+    });
+
+  }
+
+  /**
+   * Method to text-to-speech the post
+   * @private
+   */
+  private stopListening(): void {
+    this.zone.run(() => {
+      this.is_listening = false;
+      let toast = this.toastCtrl.create({
+        message: "Dictation stoped",
+        duration: 1000
+      });
+      toast.present();
+      this.tts.speak('');
+    });
+
   }
 
 }
