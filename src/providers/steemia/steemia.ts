@@ -33,8 +33,8 @@ export class SteemiaProvider {
   private username: string = '';
 
   constructor(public http: HttpClient,
-              public util: UtilProvider,
-              private steemConnect: SteemConnectProvider) {
+    public util: UtilProvider,
+    private steemConnect: SteemConnectProvider) {
     this.steemConnect.status.subscribe(res => {
       if (res.status === true) {
         this.username = res.userObject.user;
@@ -119,7 +119,7 @@ export class SteemiaProvider {
       if (this.isEmpty(this.username) === false) {
         que.username = this.username;
       }
-      
+
       result = this.http.get(STEEMIA_SEARCH + 'posts?' + this.util.encodeQueryData(que)).retry(3)
         .share()
     }
@@ -161,7 +161,7 @@ export class SteemiaProvider {
    */
   public get_posts(type: string, query: Query, category?: string) {
     return this.http.get(STEEMIA_POSTS + type + '?' + this.util.encodeQueryData(query)).retry(3)
-        .share();
+      .share();
   }
 
   /**
@@ -250,7 +250,7 @@ export class SteemiaProvider {
    * @param {string} account: Username of the user
    */
   public dispatch_activity(query): Promise<any> {
-    return this.http.get(STEEM_API + 'get_account_history?' + this.util.encodeQueryData(query)).share().toPromise();
+    return this.http.get(STEEM_API + 'get_account_history?' + this.util.encodeQueryData(query)).retry(3).share().toPromise();
   }
 
   /**
@@ -299,12 +299,12 @@ export class SteemiaProvider {
    */
   public dispatch_followers(username: string, limit: number, start_follower?: string): Promise<any> {
 
-     // If not pagination is indicated, start from 0 (A.K.A empty string)
+    // If not pagination is indicated, start from 0 (A.K.A empty string)
     if (!start_follower) {
       start_follower = '';
     }
 
-    return this.http.get(STEEMIA_USERS + 'followers?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_follower}))
+    return this.http.get(STEEMIA_USERS + 'followers?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_follower }))
       .retry(3).toPromise();
   }
 
@@ -321,7 +321,7 @@ export class SteemiaProvider {
       start_following = '';
     }
 
-    return this.http.get(STEEMIA_USERS + 'following?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_following}))
+    return this.http.get(STEEMIA_USERS + 'following?' + this.util.encodeQueryData({ username: username, limit: limit, start: start_following }))
       .retry(3).toPromise();
   }
 
@@ -330,7 +330,7 @@ export class SteemiaProvider {
    * @param {String} username: Username to get stats for
    */
   public dispatch_stats(username: string): Promise<any> {
-    return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({user: username})).retry(3).toPromise();
+    return this.http.get(STEEMIA_USERS + 'stats?' + this.util.encodeQueryData({ user: username })).retry(3).toPromise();
   }
 
   /**
@@ -339,7 +339,7 @@ export class SteemiaProvider {
    * @param {String} target: Username to compare against
    */
   public is_following(username: string, target: string): Promise<any> {
-    return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({username: username, user: target})).retry(3).toPromise();
+    return this.http.get(STEEMIA_USERS + 'is_following?' + this.util.encodeQueryData({ username: username, user: target })).retry(3).toPromise();
   }
 
   /**
@@ -357,8 +357,8 @@ export class SteemiaProvider {
    * @param {String} username: Current user logged in 
    */
   public get_comments_tree(author: string, permlink: string, username: string): Promise<any> {
-    return this.http.get(STEEMIA_POSTS + 'comments-new?author=' + author + 
-                         '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
+    return this.http.get(STEEMIA_POSTS + 'comments-new?author=' + author +
+      '&permlink=' + permlink + '&username=' + username).retry(3).toPromise();
   }
 
   /**
