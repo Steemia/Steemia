@@ -31,7 +31,7 @@
       </span>
       <span class="infos_nick">
         <span class="joined-date">
-          {{ 'pages.profile.joined' | translate }}: {{ account_data?.created | amTimeAgo }}
+          {{ 'pages.profile.joined' | translate }}: {{ util.parse_date(account_data?.created) }}
         </span> |
         <span class="joined-date">
           {{ 'pages.profile.account_value' | translate }}: $ {{ account_data?.estimated_balance}}
