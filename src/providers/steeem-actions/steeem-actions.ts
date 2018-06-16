@@ -21,9 +21,7 @@ import { AlertsProvider } from 'providers/alerts/alerts';
 @Injectable()
 export class SteeemActionsProvider {
 
-  private access_token: string;
   private username: string = '';
-  private options: Object;
 
   constructor(private steemConnect: SteemConnectProvider,
     private socialShare: SocialSharing,

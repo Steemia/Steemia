@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NavController } from 'ionic-angular';
-import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST, RAW_SERVER } from '../../constants/constants';
+import { IMG_SERVER, NO_IMAGE_COMMENT, NO_IMAGE_POST } from '../../constants/constants';
 import moment from 'moment';
 
 /**

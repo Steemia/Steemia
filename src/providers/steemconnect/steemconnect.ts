@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform, LoadingController } from 'ionic-angular'
-import { steemConnect } from 'models/models';
+import { Platform, LoadingController } from 'ionic-angular';
 import SteemConnect from './steemConnectAPI';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs/Subscription';

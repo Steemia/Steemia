@@ -96,7 +96,6 @@
     "ngx-youtube-player": "^0.1.0",
     "rxjs": "^5.5.8",
     "sc2-sdk": "^1.0.2",
-    "steem": "^0.7.1",
     "sw-toolbox": "3.6.0",
     "zone.js": "^0.8.25"
   },

@@ -1,5 +1,5 @@
 import { UtilProvider } from 'providers/util/util';
-import { Component, NgZone, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, MenuController } from 'ionic-angular';
 import { PostsRes } from 'models/models';
 import { SteemiaProvider } from 'providers/steemia/steemia';
@@ -18,8 +18,6 @@ import { SharedServiceProvider } from 'providers/shared-service/shared-service';
   templateUrl: 'author-profile.html'
 })
 export class AuthorProfilePage {
-
-  private skip: number = 0;
   private lastItem = null;
 
   private sections: string = "blog";

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
+import { ThemeableBrowser, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { SettingsProvider } from 'providers/settings/settings';
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
