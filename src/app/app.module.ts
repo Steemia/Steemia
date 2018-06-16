@@ -27,6 +27,7 @@ import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
 
 // COMPONENTS
 import { MaterialMenuComponent } from '../components/material-menu/material-menu';
@@ -90,6 +91,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyApp
   ],
   providers: [
+    Base64ToGallery,
     Keyboard,
     NativePageTransitions,
     SettingsProvider,
