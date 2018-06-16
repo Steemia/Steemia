@@ -20,7 +20,7 @@
   <ion-list no-lines>
     <div *ngFor="let entry of _options.entries">  
       <ion-list-header *ngIf="isDividerEntry(entry) && entry.title">
-        {{ entry.title }}
+        {{ entry.title | translate }}
       </ion-list-header>
       <div class="list-separator" *ngIf="isDividerEntry(entry) && !entry.title"></div>
       <button id="menu-item"
@@ -33,7 +33,7 @@
         (click)="entry.onClick && entry.onClick(entry)"
       >
         <ion-icon name="{{entry.leftIcon}}" item-left *ngIf="entry.leftIcon"></ion-icon>
-        <span id="menu-title">{{ entry.title }}</span>
+        <span id="menu-title">{{ entry.title | translate }}</span>
         <ion-icon name="{{entry.rightIcon}}" item-right *ngIf="entry.rightIcon && !isBadgeEntry(entry)"></ion-icon>
         <ion-badge [color]="entry.badge.color" item-right *ngIf="isBadgeEntry(entry)">{{entry.badge.text}}</ion-badge>
       </button>

@@ -141,21 +141,21 @@ export class MyApp implements OnDestroy {
         }
       },
       entries: [
-        { title: this.translate.instant('menu.home'), leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
+        { title: 'menu.home', leftIcon: 'mdi-home', onClick: () => { this.menuCtrl.close(); } },
         {
-          title: this.translate.instant('menu.wallet'), leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
+          title: 'menu.wallet', leftIcon: 'cash', onClick: () => { this.openPage("WalletPage", 'wallet') }
         },
-        { title: this.translate.instant('menu.notifications'), leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
-        { title: this.translate.instant('menu.my_profile'), leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
-        { title: this.translate.instant('menu.bookmarks'), leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
-        { title: this.translate.instant('menu.settings'), leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
-        { title: this.translate.instant('menu.about'), leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
+        { title: 'menu.notifications', leftIcon: 'mdi-bell', onClick: () => { this.openPage('NotificationsPage') } },
+        { title: 'menu.my_profile', leftIcon: 'mdi-account', onClick: () => { this.openPage('ProfilePage', 'profile') } },
+        { title: 'menu.bookmarks', leftIcon: 'bookmarks', onClick: () => { this.openPage('BookmarksPage') } },
+        { title: 'menu.settings', leftIcon: 'settings', onClick: () => { this.openPage('SettingsPage') } },
+        { title: 'menu.about', leftIcon: 'information-circle', onClick: () => { this.openPage('AboutPage') } },
         {
-          title: this.translate.instant('menu.logout'), leftIcon: 'log-out', onClick: () => {
+          title: 'menu.logout', leftIcon: 'log-out', onClick: () => {
             this.steemConnect.doLogout().then(data => {
               if (data === 'done') {
                 this.menuCtrl.close().then(() => {
-                  this.profilePicture = './assets/steemlogo.png'
+                  this.profilePicture = './assets/icon.png'
                   this.isLoggedIn = false;
                 });
               }
