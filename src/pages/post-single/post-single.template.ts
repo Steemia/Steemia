@@ -142,20 +142,20 @@ export const postSinglePage = `
       <ion-icon name="ios-more"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button ion-fab (click)="share()">
-        <ion-icon name="share"></ion-icon>
+      <button ion-fab (click)="share()" class="black">
+        <ion-icon name="share" class="black"></ion-icon>
         <ion-label>{{ 'pages.post_single.share' | translate }}</ion-label>
       </button>
-      <button ion-fab *ngIf="!is_owner" (click)="reblogAlert()">
-        <ion-icon name="share-alt"></ion-icon>
+      <button ion-fab *ngIf="!is_owner" (click)="reblogAlert()" class="black">
+        <ion-icon name="share-alt" class="black"></ion-icon>
         <ion-label>{{ 'pages.post_single.reblog' | translate }}</ion-label>
       </button>
-      <button ion-fab (click)="castFlag(post?.author, post?.url)">
-        <ion-icon name="flag"></ion-icon>
+      <button ion-fab (click)="castFlag(post?.author, post?.url)" class="black">
+        <ion-icon name="flag" class="black"></ion-icon>
         <ion-label>{{ 'pages.post_single.flag_post' | translate }}</ion-label>
       </button>
-      <button ion-fab *ngIf="is_owner" (click)="editPost()">
-        <ion-icon name="md-create"></ion-icon>
+      <button ion-fab *ngIf="is_owner" (click)="editPost()" class="black">
+        <ion-icon name="md-create" class="black"></ion-icon>
         <ion-label>{{ 'pages.post_single.edit_post' | translate }}</ion-label>
       </button>
     </ion-fab-list>
