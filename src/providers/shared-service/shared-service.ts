@@ -4,6 +4,8 @@ import { ThemeableBrowser, ThemeableBrowserObject } from '@ionic-native/themeabl
 import { SettingsProvider } from 'providers/settings/settings';
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * @author Jayser Mendez
@@ -16,6 +18,8 @@ export class SharedServiceProvider {
   // is to dispatch this event to the subscribed components since we cannot use,
   // ionic events for nested host.
   public reply_status: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  // Current color of navbar in the app.
   private current_color: string = '#488aff';
 
 
@@ -23,8 +27,29 @@ export class SharedServiceProvider {
   // tags will be query.
   public current_tag: BehaviorSubject<string> = new BehaviorSubject("");
 
+  // Subject to change language globally in the app.
+  private change_language: Subject<string> = new Subject();
+
   constructor(private themeableBrowser: ThemeableBrowser, private settings: SettingsProvider,
   private clipboard: Clipboard, private socialShare: SocialSharing) { }
+
+  /**
+   * Method to return the current set lenguage as observable
+   * @public
+   * @return Observable<string>
+   */
+  public watchLanguage(): Observable<string> {
+    return this.change_language.asObservable();
+  }
+
+  /**
+   * Method to change the language in the app
+   * @param {String} lang: Language to set.
+   * @public
+   */
+  public changeLanguage(lang: string): void {
+    this.change_language.next(lang);
+  }
 
   /**
    * Method to open "Steemia" in-app browser

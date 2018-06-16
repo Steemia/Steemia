@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Platform, Nav, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -12,11 +12,13 @@ import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../providers/settings/settings';
 import { TranslateService } from '@ngx-translate/core';
 import { SteeemActionsProvider } from 'providers/steeem-actions/steeem-actions';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   templateUrl: 'app.html',
 })
-export class MyApp {
+export class MyApp implements OnDestroy {
 
   @ViewChild(Nav) nav: Nav;
 
@@ -29,6 +31,8 @@ export class MyApp {
   private profile;
   private background: string = './assets/mb-bg-fb-03.jpg';
   chosenTheme: string;
+  private $language: Subscription;
+
   // Rewards Data
   private rewards = {
     steem: null,
@@ -39,6 +43,7 @@ export class MyApp {
 
   constructor(private platform: Platform,
     private statusBar: StatusBar,
+    private sharedService: SharedServiceProvider,
     private splashScreen: SplashScreen,
     private steemConnect: SteemConnectProvider,
     private menuCtrl: MenuController,
@@ -213,15 +218,22 @@ export class MyApp {
     });
   }
 
-  initTranslate() {
+  /**
+   * Function to initialize the ngx translate default language
+   */
+  private initTranslate(): void {
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang('en');
 
+    // Try to get the language saved in local storage
     this.storage.get('language').then(language => {
+
+      // If there is any language saved there, use it. 
       if (language !== null) {
         this.translate.use(language);
       }
 
+      // Otherwise, try to get the device language and set it. If the language is not found, use English.
       else {
         
         if (this.translate.getBrowserLang() !== undefined) {
@@ -235,6 +247,13 @@ export class MyApp {
       }
     });
 
+    /**
+     * Watch the language from the shared provider to set any changes globally in the app
+     */
+    this.$language = this.sharedService.watchLanguage().subscribe((lang: string) => {
+      this.translate.use(lang);
+    });
+
   }
   /**
    * Method to claim rewards
@@ -244,7 +263,11 @@ export class MyApp {
     const sbd = this.rewards.sbd.toFixed(3).toString() + ' SBD';
     const sp = this.rewards.vesting_steem.toFixed(6).toString() + ' VESTS';
 
-    this.steeemActions.dispatch_claim_reward(steem, sbd, sp).then(data => {
-    });
+    this.steeemActions.dispatch_claim_reward(steem, sbd, sp);
+  }
+
+  ngOnDestroy(): void {
+    // If the language is not null, unsubscribe to avoid memory leak.
+    if (this.$language != null) this.$language.unsubscribe();
   }
 }

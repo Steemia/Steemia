@@ -5,6 +5,7 @@ import { SettingsProvider } from 'providers/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
+import { SharedServiceProvider } from 'providers/shared-service/shared-service';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class SettingsPage {
 
   constructor(public toastCtrl: ToastController,
     public alertCtrl: AlertController,
+    private sharedService: SharedServiceProvider,
     private platform: Platform,
     private storage: Storage,
     private statusBar: StatusBar,
@@ -56,6 +58,11 @@ export class SettingsPage {
       } else {
         this.claim = false;
       }     
+    });
+
+    // Try to get the saved language to set the correct choosen language in the UI.
+    this.storage.get('language').then(language => {
+      this.language = language;
     });
   }
 
@@ -134,17 +141,23 @@ export class SettingsPage {
    * @param event  
    */
   updateLanguage(event): void {
+
+    // Save the language in local storage for later reference.
     this.storage.set('language', event).then(() => {
+
+      // Display a toast saying that the language was saved correctly.
       let toast = this.toastCtrl.create({
         message: this.translate.instant('generic_messages.language-saved'),
         duration: 2000,
         position: 'bottom'
       });
 
-      this.translate.use(this.language);
-
       toast.present();
-    })
+
+      // Send the new language to the shared service which will be set at the root page.
+      this.sharedService.changeLanguage(this.language);
+      
+    });
   }
 
 }
