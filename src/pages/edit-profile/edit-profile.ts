@@ -230,7 +230,7 @@ export class EditProfilePage {
         loader.dismiss();
         this.presentToast(this.translate.instant('image_success'));
         let hash = data.response;
-        this.saveInfo('profile_image', ('https://gateway.ipfs.io/ipfs/' + JSON.parse(hash).Hash) );
+        this.saveInfo('profile_image', ('https://steemia.net/ipfs/' + JSON.parse(hash).Hash) );
       }, (err) => {
         loader.dismiss();
         this.presentToast(err);
