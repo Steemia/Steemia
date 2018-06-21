@@ -21,6 +21,7 @@ export class AuthorProfilePage {
 
   private skip: number = 0;
   private lastItem = null;
+  private transfersLastItem = null;
 
   private sections: string = "blog";
   private account_data: Object;
@@ -29,6 +30,7 @@ export class AuthorProfilePage {
   
   private contents: Array<any> = [];
   private activities: Array<any> = [];
+  private transfers: Array<any> = [];
   private staging: Array<any> = [];
   private is_loading = true;
   private limit: number = 15;
@@ -76,6 +78,7 @@ export class AuthorProfilePage {
     });
 
     this.get_account();
+    this.dispatchTransfers();
     this.dispatchAccountHistory();
 
     this.steemia.dispatch_stats(this.username).then((data: any) => {
@@ -214,6 +217,71 @@ export class AuthorProfilePage {
     })
   }
   
+  /**
+   * Method to dispatch account trasfer history for wallet
+   */
+  private dispatchTransfers() {
+    let query = {
+      account: this.username,
+      from: -1,
+      limit: 99
+    }
+
+    this.steemia.dispatch_activity(query).then(data => {
+      
+      // Assign last item to get more history
+      this.transfersLastItem = data[0][0] - 1;
+      console.log(this.transfersLastItem);
+
+      // Reverse data to sort by date
+      let activities = data.reverse();
+
+      // Pick transfer data
+      for(let activity of activities) {
+        if (activity[1].op[0] === 'transfer' || activity[1].op[0] === 'claim_reward_balance') {
+          this.transfers.push(activity)
+        }
+      }
+      console.log(this.transfers)
+    }).then(() => {
+      // Check transfers array after request. If there is no transfer data, dispatch more transfer data
+      if(this.transfers.length < 1) {
+        this.dispatchMoreTransfers(event);
+      }
+    })
+  }
+
+    /**
+   * Method to dispatch more account trasfer history for wallet
+   */
+  private dispatchMoreTransfers(event) {
+    let query = {
+      account: this.username,
+      from: this.transfersLastItem,
+      limit: 99
+    }
+    this.steemia.dispatch_activity(query).then(data => {
+      
+      // Assign last item to get more history
+      this.transfersLastItem = data[0][0] - 1;
+      console.log(this.transfersLastItem);
+
+      // Reverse data to sort by date
+      let staging = data.reverse();
+
+      // Pick transfer data
+      for(let activity of staging) {
+        if (activity[1].op[0] === 'transfer' || activity[1].op[0] === 'claim_reward_balance') {
+          this.transfers.push(activity)
+        }
+      }
+      console.log(this.transfers)
+
+    }).then(() => {
+      event.complete();
+    })
+  }
+
   /**
    * Method to get account data from API
    */

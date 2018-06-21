@@ -343,6 +343,46 @@
             <p>{{ account_data?.savings_sbd_balance }}</p>
           </ion-item>
         </ion-list>
+        <ion-list class="transfers">
+          <div *ngFor="let transfer of transfers">
+
+            <ion-card *ngIf="transfer[1].op[0] === 'claim_reward_balance'">
+              <ion-item>
+                <ion-avatar class="reward" item-start>
+                  <ion-icon item-start name="trophy"></ion-icon>
+                </ion-avatar>
+                <h2> Claim Rewards</h2>
+                <p *ngIf="transfer[1].op[1].reward_sbd !== '0.000 SBD'">{{ transfer[1].op[1].reward_sbd }}</p>
+                <p *ngIf="transfer[1].op[1].reward_steem !== '0.000 STEEM'">{{ transfer[1].op[1].reward_steem }}</p>
+                <p *ngIf="transfer[1].op[1].reward_vests">{{ transfer[1].op[1].reward_vests }}</p>
+              </ion-item>
+            </ion-card>
+
+            <ion-card *ngIf="transfer[1].op[0] === 'transfer'">
+              <ion-item>
+                <ion-avatar item-start>
+                  <img *ngIf="transfer[1].op[1].from != username" src="https://steemitimages.com/u/{{ transfer[1].op[1].from }}/avatar/small"
+                    (error)="util.imgError('profile',$event)">
+                  <img *ngIf="transfer[1].op[1].from === username" src="https://steemitimages.com/u/{{ transfer[1].op[1].to }}/avatar/small"
+                    (error)="util.imgError('profile',$event)">
+                </ion-avatar>
+                <h2 *ngIf="transfer[1].op[1].from != username" class="incoming">+ {{ transfer[1].op[1].amount }}</h2>
+                <h2 *ngIf="transfer[1].op[1].from === username" class="outgoing">- {{ transfer[1].op[1].amount }}</h2>
+                <p *ngIf="transfer[1].op[1].from != username"> @{{ transfer[1].op[1].from }} </p>
+                <p *ngIf="transfer[1].op[1].from === username"> @{{ transfer[1].op[1].to }} </p>
+              </ion-item>
+              <div>
+                <p padding>
+                  <strong>Memo:</strong> {{ transfer[1].op[1].memo }}
+                </p>
+              </div>
+            </ion-card>
+
+          </div>
+          <ion-infinite-scroll (ionInfinite)="dispatchMoreTransfers($event)" distance="1%">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-list>
       </div>
     </div>
   </div>
