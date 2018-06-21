@@ -1,0 +1,308 @@
+{
+	"menu": {
+		"home": "Anasyfa",
+		"wallet": "Cüzdan",
+		"notifications": "Bildirimler",
+		"my_profile": "Profil",
+		"bookmarks": "Yer İmleri",
+		"settings": "Ayarlar",
+		"about": "Hakkında",
+		"logout": "Çıkış Yap"
+	},
+
+	"tabs": {
+		"feed": "Feed",
+		"new": "New",
+		"hot": "Hot",
+		"trending": "Trending"
+	},
+
+	"reblog": {
+		"title": "Reblog edilsin mi?",
+		"message": "Bu işlem geri alınamaz!",
+		"reblog_action": "Reblog"
+	},
+
+	"pages": {
+		"wallet": {
+			"page_title": "Cüzdan",
+			"title": "{{ wallet }} Cüzdan",
+			"balance": "Bakiye",
+			"buy": "Satın Al",
+			"sell": "Sat",
+			"transfer": "Transfer",
+			"wallet": "Cüzdan",
+			"current_price": "Güncel Fiyat",
+			"claim_rewards": "Ödülleri Topla",
+			"current_rewards": "Ödüllerin...",
+			"prompts": {
+				"transfer": {
+					"title": "Başka Hesaba Transfer",
+					"subtitle": "STEEM varlıklarımı başka hesaba aktar.",
+					"message": "İşlemi tamamlamak için SteemConnect'e yönlendirileceksiniz.",
+					"inputs": {
+						"recipient": "Ödeme alıcısı",
+						"amount": "Ne kadar göndermek istiorsunuz?",
+						"memo": "Bu notu herkes görüntüleyebilir!"
+					},
+					"send": "Gönder"
+				},
+				"add_crypto": {
+					"title": "Bir Adres Ekle",
+					"message": "Bir Kripto Para Adresi Ekle",
+					"continue": "Devam"
+				},
+				"save_address": {
+					"title": "{{ coin }} Adresini Kaydet",
+					"inputs": {
+						"address": "{{ coin }} Adresi"
+					},
+					"save": "Kaydet"
+				}
+			}
+		},
+		"notifications": {
+			"page_title": "Bildirimler",
+			"started_following": "seni takip etmeye başladı",
+			"mentioned_you": "senden bahsetti",
+			"commented": "gönderine yorun yaptı",
+			"sent_you": "sana gönderdi",
+			"reblogged": "gönderini reblog etti"
+		},
+		"bookmarks": {
+			"page_title": "Yer İmleri",
+			"no_bookmarks": "Henüz yer imi eklemedin.",
+			"remove": "Kaldır"
+		},
+		"profile": {
+			"edit_profile": "Profili Düzenle",
+			"joined": "Katıldı",
+			"account_value": "Hesap Değeri",
+			"posts": "Gönderiler",
+			"activity": "Aktivite",
+			"info": "Bilgiler",
+			"wallet": "Cüzdan",
+			"followers": "Takipçiler",
+			"following": "Takip Edilenler",
+			"location": "Adres",
+			"website": "Website"
+		},
+		"edit_comment": {
+			"page_title": "Yorumu Düzenle"
+		},
+		"search": {
+			"placeholder": "Ne arıyorsun?",
+			"examples": {
+				"tags": "- Etiketler: Örneğin, #tr",
+				"users": "- Kullanıcılar: Örneğin, @hsynterkr",
+				"text": "- Herhangi bir yazı: Örneğin, Türkiye" 
+			}
+		},
+		"post_single": {
+			"flag_loading": "Gönderi işaretleniyor, lütfen bekleyin....",
+			"flag_correctly": "Başarıyla işaretlendi!",
+			"reblog_action": "Reblog ediliyor...😎",
+			"post_comment": "Bir yorum bırak...",
+			"post_comment_placeholder": "Bu gönderi hakkında ne düşünüyorsun?",
+			"comments_title": "Yorumlar",
+			"share": "Paylaş",
+			"reblog": "Reblog",
+			"flag_post": "Gönderiyi İşaretle",
+			"edit_post": "Gönderiyi Düzenle"
+		},
+		"about": {
+			"title": "Hakkımızda",
+			"header": "HAKKIMIZDA"
+		},
+		"login": {
+			"welcome": "Selam 👋 Steemia'ya hoşgeldin!",
+			"login": "SteemConnect ile Giriş Yap",
+			"signup_1": "Steem hesabın yok mu?",
+			"signup_2": "KAYIT OL"
+		},
+		"walkthrough": {
+			"welcome": "Hoşgeldin",
+			"slides": {
+				"1": {
+					"description": "is a social networking app built on the decentralized Steem Blockchain that reward users in Steem and Steem Dollars Cryptocurrencies."
+				},
+				"2": {
+					"title": "Notifications",
+					"description": "Get notifications regarding transfers and/or discussions (comments) you are involved in as well as notifications when someone follows you."
+				},
+				"3": {
+					"title": "Bookmarks",
+					"description": "Saw an article of your interest but want to save it for later? We got you! Save it in your bookmark and access it at any time."
+				},
+				"4": {
+					"title": "Wallet",
+					"description": "Keep track of all your Steem and Steem dollars and also feel free to watch your BTC, LTC, and ETH wallets as well!"
+				},
+				"5": {
+					"title": "Ready to get started?",
+					"description": "Start getting rewards for your effort in good content. Post and vote articles of your interest and earn rewards from them."
+				}
+			},
+			"get_started": "Başla",
+			"skip": "Atla"
+		},
+		"pending-payout": {
+			"potential": "Potansiyel Ödeme",
+			"beneficiares": "Komisyonlar"
+		},
+		"settings": {
+			"title": "Ayarlar",
+			"voting-value": "Oy Değeri",
+			"language": "Dil",
+			"currency": "Para Birimi",
+			"theme": "Tema",
+			"select-currency": "Para Birimi Seç",
+			"select-theme": "Tema Seç",
+			"select-language": "Dil Seç",
+			"auto-claim": "Otomatik Topla",
+			"claim-option": "Ödülleri Otomatik Topla"
+		}
+	},
+
+	"modals": {
+		"comments": {
+			"page_title": "Yorumlar",
+			"no_comments": "Henüz bir yorum yok!",
+			"write_comment": "Bir yorum yaz...",
+			"options": {
+				"title": "Seçenekler",
+				"copy": "Metni Kopyala",
+				"flag": "İşaretle(Flag)",
+				"cancel": "Kapat",
+				"edit": "Düzenle"
+			}
+		},
+		"votes": {
+			"page_title": "Beğenenler",
+			"no_votes": "Heniz kimse beğenmedi!"
+		},
+		"edit_post": {
+			"page_title": "Gönderiyi düzenle",
+			"insert_url": "URL Ekle",
+			"url_placeholder": "Url",
+			"mask_url": "URL eklenecek metin"
+		},
+		"edit_profile": {
+			"page_title": "Profili Düzenle",
+			"name": "İsim",
+			"edit": "Düzenle",
+			"about": "Hakkımda",
+			"location": "Adres/Konum",
+			"website": "Website",
+			"social_accounts": "Sosyal Medya Hesapları",
+			"prompts": {
+				"submit_your": "",
+				"redirect_msg": "İşlemi tamamlamak için SteemConnect'e yönlendirileceksiniz!",
+				"here": " adresini gir",
+				"save": "Kaydet"
+			}
+		},
+		"reply_comment": {
+			"page_title": "Yorumu Cevapla",
+			"type_reply": "Yoruma Bir Cevap Yaz"
+		}
+	},
+
+	"general": {
+		"camera_options": {
+			"title": "Bir Fotoğraf Ekle 📷🌄",
+			"camera": "Kamera",
+			"gallery": "Galeri",
+			"custom_url": "URL ile Ekle"
+		},
+		"insert_image": {
+			"title": "İnternetten Ekle",
+			"url": "URL",
+			"cancel": "İptal"
+		}
+	},
+
+	"generic_messages": {
+		"cancel": "İptal",
+		"flag_error": "You have already flagged this post with the same percentage.",
+		"reblogged_error": "You have already reblogged this post",
+		"post_interval": "You may only post once every 5 minutes.",
+		"comment_interval": "You may only comment once every 20 seconds.",
+		"post_big": "Your post is too big.",
+		"empty_message": "A comment cannot be empty.",
+		"tag_error": "You should include at least 1 tag.",
+		"all_fields": "You need to fill all fields.",
+		"not_logged_in": "Önce giriş yapmalısınız!",
+		"reblogged_correctly": "Başarıyla reblog edildi! 😏",
+		"already_reblogged": "Daha önce zaten reblog ettin! 😂",
+		"alert_title": "Uyarı",
+		"dismiss": "Kapat",
+		"please_wait": "Lütfen Bekleyiniz...",
+		"submit": "Paylaş",
+		"flagging": "İşaretlenirken bekleyiniz...",
+		"flag_correct": "Gönderi başarıyla işaretlendi!",
+		"not_more_posts": "Yüklenecek başka gönderi yok!",
+		"working_feature": "Bu özellik için halen çalışıyoruz 👷‍♀️",
+		"likes": "Beğeniler",
+		"reply": "Cevap Ver",
+		"nsfw_message": "Uygunsuz İçerik",
+		"show_images": "Yine de Göster",
+		"reblogged_by": "Reblogged By",
+		"reblogged": "Reblog Edildi",
+		"follow": "Takip Et",
+		"unfollow": "Takipten Çık",
+		"preview_mode": "Görüntüleme Modu",
+		"title": "Başlık",
+		"description": "Gönderi",
+		"tags": "Etiketler",
+		"separated_by": "Etiketleri virgül veya boşluk ile ayırabilirsin",
+		"title_post": "Hikayene bir başlık gir!",
+		"title_tags": "Etiketlerini buraya yaz!",
+		"post_placeholder": "Hikayeni yazmaya başla...",
+		"editing_post": "Gönderin düzenleniyor... 💯",
+		"post_edited": "Gönderi başarıyla düzenlendi!",
+		"collecting_rewards": "Ödüller toplanıyor... 💰💵💸🤑",
+		"rewards_collected": "Ödüller başarıyla toplandı! 😎",
+		"upvote": "Upvote",
+		"rewards": "Ödüller",
+		"default_rewards": "Varsayılan 50% / 50%",
+		"100_rewards": "100% Steem Power",
+		"no_payout": "Ödemeyi Reddet!",
+		"creating_post": "Gönderin yayınlanıyor... 💯",
+		"posted_correctly": "Gönderi başarıyla yayınlandı!",
+		"submit_post": "Hikayeni Anlat",
+		"what_is_on_your": "Bugün aklında ne var?",
+		"clear_data": "Çıkış Yapılıyor! 😔",
+		"theme-saved": "Tema başarıyla değiştirildi 😎",
+		"currency-saved": "Param Birimi başarıyla değiştirildi 😎",
+		"language-saved": "Dil seçeneği değiştirildi 😎",
+		"crypto-address": "KRİPTO PARA ADRESLERİ"
+	},
+
+	"bookmark_action": "Gönderi {{ action }}",
+	"login_now": "Giriş Yap!",
+	"need_to_login": "Bu sayfayı görmek için giriş yapmalısınız'",
+	"all_tags": "Tüm Etiketler",
+	"search_tag": "Etiket Seç",
+	"reset": "Reset",
+	"pick_tag": "Etiket Seç",
+	"Followers": "Takipçiler",
+	"Following": "Takip Edilenler",
+	"name": "name",
+	"about": "about",
+	"location": "location",
+	"facebook": "facebook",
+	"website": "website",
+	"github": "github",
+	"twitter": "twitter",
+	"instagram": "instagram",
+	"youtube": "youtube",
+	"image_success": "Başarıyla yüklendi!",
+	"uploading": "Yükleniyor...",
+	"locating_post": "Gönderi yüklenirken bekleyiniz 💯",
+	"in": "içinde",
+	"days": " gün",
+	"hours": " saat",
+	"minutes": " dakika"
+
+}
