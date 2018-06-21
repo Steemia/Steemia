@@ -133,7 +133,22 @@ export class WalletPage {
       {
         text: this.translate.instant('pages.wallet.prompts.transfer.send'),
         handler: data => {
-          this.browserTab.isAvailable()
+          if(!data.username) {
+            let toast = this.toastCtrl.create({
+              message: 'Username field cannot be empty!',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          } else if(!data.amount) {
+            let toast = this.toastCtrl.create({
+              message: 'Amount field cannot be empty!',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          } else {
+            this.browserTab.isAvailable()
             .then((isAvailable: boolean) => {
               if (isAvailable) {
 
@@ -144,6 +159,7 @@ export class WalletPage {
                 // if custom tabs are not available you may  use InAppBrowser
               }
             });
+          }
         }
       }
       ]
