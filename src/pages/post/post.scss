@@ -111,4 +111,11 @@ page-post {
       .top-four {
             margin-top: -8px;
       }
+
+      .tags {
+            text-transform: lowercase;
+            textarea {
+                  text-transform: lowercase;
+            }
+      }
 }

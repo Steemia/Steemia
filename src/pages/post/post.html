@@ -36,7 +36,7 @@
         <ion-badge color="primary">{{ 'generic_messages.tags' | translate }}</ion-badge>
         <ion-badge color="gray">{{ 'generic_messages.separated_by' | translate }}</ion-badge>
       </ion-label>
-      <ion-textarea type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="{{ 'generic_messages.title_tags' | translate }}"
+      <ion-textarea class="tags" type="text" rows="1" (keydown.enter)="preventEnter($event)" (input)="adjustTextarea($event);" placeholder="{{ 'generic_messages.title_tags' | translate }}"
         [formControl]="storyForm.controls['tags']"></ion-textarea>
     </ion-item>
     <hr />
