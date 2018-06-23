@@ -1,0 +1,308 @@
+{
+	"menu": {
+		"home": "Startseite",
+		"wallet": "Geldbörse",
+		"notifications": "Benachrichtungen",
+		"my_profile": "Mein Profil",
+		"bookmarks": "Lesezeichen",
+		"settings": "Einstellungen",
+		"about": "Über uns",
+		"logout": "Ausloggen"
+	},
+
+	"tabs": {
+		"feed": "Feed",
+		"new": "Neu",
+		"hot": "Hot",
+		"trending": "Trending"
+	},
+
+	"reblog": {
+		"title": "Diesen Artikel teilen?",
+		"message": "Dieser Artikel erscheint auf deinem persönlichen Feed. Diese Aktion kann nicht rückgängig gemacht werden.",
+		"reblog_action": "Teilen"
+	},
+
+	"pages": {
+		"wallet": {
+			"page_title": "Geldbörse",
+			"title": "{{ wallet }} Geldbörse",
+			"balance": "Kontostand",
+			"buy": "Kaufen",
+			"sell": "Verkaufen",
+			"transfer": "Überweisen",
+			"wallet": "Geldbörse",
+			"current_price": "Aktueller Preis",
+			"claim_rewards": "Belohnung einfordern",
+			"current_rewards": "Deine aktuellen Belohnungen",
+			"prompts": {
+				"transfer": {
+					"title": "Überweisung auf Konto",
+					"subtitle": "Geld auf anderes Steemit Konto überweisen",
+					"message": "Klicke auf die untere Schaltfläche, um zu SteemConnect weitergeleitet zu werden, um die Transaktion abzuschließen.",
+					"inputs": {
+						"recipient": "Zahlungsempfänger",
+						"amount": "Wie viel möchtest du senden?",
+						"memo": "Diese Nachricht ist öffentlich!"
+					},
+					"send": "Senden"
+				},
+				"add_crypto": {
+					"title": "Füge eine Adresse hinzu",
+					"message": "Speichere deine Kryptowährungs-Adresse",
+					"continue": "Fortfahren"
+				},
+				"save_address": {
+					"title": "Speichere deine {{ coin }} Adresse",
+					"inputs": {
+						"address": "{{ coin }} Addresse"
+					},
+					"save": "Speichern"
+				}
+			}
+		},
+		"notifications": {
+			"page_title": "Benachrichtungen",
+			"started_following": "folgt dir",
+			"mentioned_you": "hat dich erwähnt",
+			"commented": "hat kommentiert",
+			"sent_you": "hat dir gesendet",
+			"reblogged": "hat deinen Artikel geteilt"
+		},
+		"bookmarks": {
+			"page_title": "Lesezeichen",
+			"no_bookmarks": "Du hast bis jetzt keinen Artikel gespeichert.",
+			"remove": "Entfernen"
+		},
+		"profile": {
+			"edit_profile": "Profil bearbeiten",
+			"joined": "dabei seit",
+			"account_value": "Account Wert",
+			"posts": "Posts",
+			"activity": "Aktivität",
+			"info": "Information",
+			"wallet": "Geldbörse",
+			"followers": "Followers",
+			"following": "Following",
+			"location": "Standort",
+			"website": "Webseite"
+		},
+		"edit_comment": {
+			"page_title": "Kommentar bearbeiten"
+		},
+		"search": {
+			"placeholder": "Nach was suchst du?",
+			"examples": {
+				"tags": "- Tags: Zum Beispiel, #photography",
+				"users": "- Users: Zum Beispiel, @jaysermendez",
+				"text": "- Text: Zum Beispiel, photography" 
+			}
+		},
+		"post_single": {
+			"flag_loading": "Bitte warte bis der Artikel gemeldet wurde.",
+			"flag_correctly": "Der Artikel wurde gemeldet.",
+			"reblog_action": "Warte kurz während wir den Artikel teilen. 😎",
+			"post_comment": "Verfasse ein Kommentar",
+			"post_comment_placeholder": "Was denkst du über den Artikel?",
+			"comments_title": "Kommentare",
+			"share": "share",
+			"reblog": "Teilen",
+			"flag_post": "Artikel melden",
+			"edit_post": "Artikel bearbeiten"
+		},
+		"about": {
+			"title": "Über uns",
+			"header": "ÜBER UNS"
+		},
+		"login": {
+			"welcome": "Willkommen bei Steemia!",
+			"login": "Logge dich mit SteemConnect ein",
+			"signup_1": "Hast du keinen Account?",
+			"signup_2": "MELDE DICH AN!"
+		},
+		"walkthrough": {
+			"welcome": "Willkommen zu",
+			"slides": {
+				"1": {
+					"description": "ist eine Social-Networking-App, die auf der dezentralen Steem-Blockchain aufbaut und User in Steem und Steem Dollars belohnt."
+				},
+				"2": {
+					"title": "Benachrichtigungen",
+					"description": "Erhalte Benachrichtigungen über Transfers und/oder Diskussionen (Kommentare), an denen Du beteiligt bist, sowie Benachrichtigungen, wenn Dir jemand folgt."
+				},
+				"3": {
+					"title": "Lesezeichen",
+					"description": "Du hast einen interessanten Artikel gesehen und möchtest ihn später lesen? Speichere ihn jetzt als Lesezeichen und greife jederzeit darauf zu!"
+				},
+				"4": {
+					"title": "Geldbörse",
+					"description": "Behalte den Überblick über all deine Steem und Steem Dollars und schaue dir auch deine BTC, LTC und ETH Geldbörsen an!"
+				},
+				"5": {
+					"title": "Bereit um zu starten?",
+					"description": "Fange jetzt an, für gute Beiträge Belohnungen zu erhalten. Veröffentliche interessante Artikel und erhalte dafür Steem oder Steem Dollars."
+				}
+			},
+			"get_started": "Beginne jetzt",
+			"skip": "Überspringen"
+		},
+		"pending-payout": {
+			"potential": "Mögliche Auszahlung",
+			"beneficiares": "Empfänger"
+		},
+		"settings": {
+			"title": "Einstellungen",
+			"voting-value": "Abstimmmungswert",
+			"language": "Sprache",
+			"currency": "Währung",
+			"theme": "Theme",
+			"select-currency": "Wähle eine Währung aus",
+			"select-theme": "Wähle ein Theme aus",
+			"select-language": "Wähle eine Sprache aus",
+			"auto-claim": "Automatisch Belohnungen einfordern",
+			"claim-option": "Claim Rewards Auto"
+		}
+	},
+
+	"modals": {
+		"comments": {
+			"page_title": "Kommentare",
+			"no_comments": "Dieser Artikel hat bis jetzt keine Kommentare!",
+			"write_comment": "Verfasse dein Kommentar hier",
+			"options": {
+				"title": "Einstellungen",
+				"copy": "Kopieren",
+				"flag": "Melden",
+				"cancel": "Zurück",
+				"edit": "Bearbeiten"
+			}
+		},
+		"votes": {
+			"page_title": "Likers",
+			"no_votes": "Dieser Artikel hat bis jetzt noch keine Likes!"
+		},
+		"edit_post": {
+			"page_title": "Bearbeite deinen Artikel",
+			"insert_url": "URL einfügen",
+			"url_placeholder": "Hier URL einfügen",
+			"mask_url": "Text um den URL zu markieren"
+		},
+		"edit_profile": {
+			"page_title": "Profil bearbeiten",
+			"name": "Name",
+			"edit": "Bearbeiten",
+			"about": "Über",
+			"location": "Standort",
+			"website": "Website",
+			"social_accounts": "Soziale Medien",
+			"prompts": {
+				"submit_your": "Reiche deine ",
+				"redirect_msg": "Klicke auf die Schaltfläche Speichern, um zu SteemConnect weitergeleitet zu werden, um deine Transaktion abzuschließen.",
+				"here": " hier",
+				"save": "Speichern"
+			}
+		},
+		"reply_comment": {
+			"page_title": "Auf Kommentar antworten",
+			"type_reply": "Hierher kommt deine Antwort"
+		}
+	},
+
+	"general": {
+		"camera_options": {
+			"title": "Wie möchtest du das Bild einfügen? 📷🌄",
+			"camera": "Kamera",
+			"gallery": "Galerie",
+			"custom_url": "benutzerdefinierter URL"
+		},
+		"insert_image": {
+			"title": "Bild einfügen",
+			"url": "URL des Bildes",
+			"cancel": "Zurück"
+		}
+	},
+
+	"generic_messages": {
+		"cancel": "Zurück",
+		"flag_error": "Du hast bereits den Artikel mit dem selben Prozentsatz gemeldet.",
+		"reblogged_error": "Du hast den Artikel schon geteilt.",
+		"post_interval": "Du kannst nur alle 5 Minuten einen Artikel veröffentlichen",
+		"comment_interval": "Du kannst nur alle 20 Sekunden kommentieren",
+		"post_big": "Dein Artikel ist zu lang",
+		"empty_message": "Ein Kommentar kann nicht leer sein",
+		"tag_error": "Du solltest mindestens 1 Tag verwenden",
+		"all_fields": "Du solltest alle Felder ausfüllen",
+		"not_logged_in": "Für diese Aktion musst du angemeldet sein. Bitte logge dich ein und versuche es erneut.",
+		"reblogged_correctly": "Dieser Artikel wurde erfolgreich geteilt. 😏",
+		"already_reblogged": "Du hast diesen Artikel bereits geteilt.",
+		"alert_title": "Achtung",
+		"dismiss": "Ablehnen",
+		"please_wait": "Bitte warten...",
+		"submit": "Einreichen",
+		"flagging": "Bitte warte bis der Artikel gemeldet wurde.",
+		"flag_correct": "Der Artikel wurde gemeldet.",
+		"not_more_posts": "Hier ist nichts mehr.",
+		"working_feature": "Wir arbeiten an diesem Feature! 👷‍♀️",
+		"likes": "Likes",
+		"reply": "Antworten",
+		"nsfw_message": "NOT SAFE FOR WORK",
+		"show_images": "Show Image",
+		"reblogged_by": "Geteilt von",
+		"reblogged": "Geteilt",
+		"follow": "Follow",
+		"unfollow": "Unfollow",
+		"preview_mode": "Vorschaumodus",
+		"title": "Titel",
+		"description": "Beschreibung",
+		"tags": "Tags",
+		"separated_by": "durch Komma oder Leerzeichen getrennt",
+		"title_post": "Hierher kommt der Titel deines Artikels",
+		"title_tags": "Du kannst bis zu 5 Tags wählen.",
+		"post_placeholder": "Hierher kommt dein Artikeltext",
+		"editing_post": "Wir bearbeiten deinen Artikel 💯",
+		"post_edited": "Der Artikel wurde erfolgreich bearbeitet",
+		"collecting_rewards": "Belohnungen werden eingesammelt 💰💵💸🤑",
+		"rewards_collected": "Deine Belohnung ist nun in deinem Account 😎",
+		"upvote": "Upvote",
+		"rewards": "Belohnungen",
+		"default_rewards": "Standard 50% / 50%",
+		"100_rewards": "Power Up 100%",
+		"no_payout": "Decline Payout",
+		"creating_post": "Wir veröffentlichen deinen Artikel 💯",
+		"posted_correctly": "Der Artikel wurde erfolgreich veröffentlicht",
+		"submit_post": "Artikel einreichen",
+		"what_is_on_your": "Was beschäftigt dich heute?",
+		"clear_data": "Bitte warte bis wir die Informationen bereinigt haben 😔",
+		"theme-saved": "Das Theme wurde erfolgreich geändert 😎",
+		"currency-saved": "Die Währung wurde erfolgreich geändert 😎",
+		"language-saved": "Die Sprache wurde erfolgreich geändert 😎",
+		"crypto-address": "CRYPTOCURRENCY ADDRESSES"
+	},
+
+	"bookmark_action": "Lesezeichen {{ action }} erfolgreich",
+	"login_now": "Jetzt einloggen!",
+	"need_to_login": "Um diese Seite zu sehen, musst du dich einloggen!",
+	"all_tags": "Alle Tags",
+	"search_tag": "Einen Tag suchen",
+	"reset": "Zurücksetzen",
+	"pick_tag": "Einen Tag auswählen",
+	"Followers": "Followers",
+	"Following": "Following",
+	"name": "Name",
+	"about": "Über",
+	"location": "Standort",
+	"facebook": "Facebook",
+	"website": "Website",
+	"github": "Github",
+	"twitter": "Twitter",
+	"instagram": "Instagram",
+	"youtube": "Youtube",
+	"image_success": "Bild erfolgreich hochgeladen",
+	"uploading": "Hochladen...",
+	"locating_post": "Bitte warte, bis wir deinen Artikel gefunden haben 💯",
+	"in": "in",
+	"days": " Tage",
+	"hours": " Stunden",
+	"minutes": " Minuten"
+
+}
