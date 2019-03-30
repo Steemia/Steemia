@@ -54,6 +54,7 @@ For more information, please do visit [Utopian Website](https://join.utopian.io/
 - [Jayser Mendez](https://github.com/jayserdny) - Co-Founder / Software Engineer
 - [Oups](https://steemit.com/@oups) - Graphic Designer
 - [Podan Raju](https://steemit.com/@podanrj) - Graphic Designer
+- [Rayner Mendez](https://github.com/RaynerMDZ) - Front-end Developer
 
 If anyone is missing, we are so sorry. We will be doing a separate page to list all the contributors including bugs hunters.
 
