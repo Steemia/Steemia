@@ -50,7 +50,7 @@ For more information, please do visit [Utopian Website](https://join.utopian.io/
 
 ## Contributors
 
-- [Hüseyin Terkir](https://github.com/hsynterkr) - Co-Founder / Software Engineer
+- [Hüseyin Deniz](https://github.com/hsyndeniz) - Co-Founder / Software Engineer
 - [Jayser Mendez](https://github.com/jayserdny) - Co-Founder / Software Engineer
 - [Oups](https://steemit.com/@oups) - Graphic Designer
 - [Podan Raju](https://steemit.com/@podanrj) - Graphic Designer
